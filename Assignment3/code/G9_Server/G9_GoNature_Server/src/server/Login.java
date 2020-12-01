@@ -25,6 +25,7 @@ public class Login {
 	 *                - cell [0]: user name, cell [1]: password
 	 * @param client  ConnectionToClient
 	 */
+	@SuppressWarnings("unchecked")
 	public static void login(ArrayList<Object> recived, ConnectionToClient client) {
 		// add if db up later
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -58,6 +59,7 @@ public class Login {
 	 *                of String = cell [0]: user name, cell [1]: logged in status
 	 * @param client  ConnectionToClient
 	 */
+	@SuppressWarnings("unchecked")
 	public static void updateLoggedInStatus(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();

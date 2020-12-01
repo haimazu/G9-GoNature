@@ -160,7 +160,6 @@ public class ParkGate {
 				client.sendToClient(answer);
 				return;
 			}
-			LocalDateTime now = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			order = new Order(park.getName(), getCapsuleTime().format(formatter).toString(), memberId, id,
 					Integer.parseInt(howMany));
@@ -332,7 +331,6 @@ public class ParkGate {
 	}
 
 	private static int randomStillIn(Park park) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("enteryandexit"); // table name

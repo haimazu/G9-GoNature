@@ -60,6 +60,7 @@ public class Comunication {
 	 *                the order that initiated this method
 	 * @param client  ConnectionToClient
 	 */
+	@SuppressWarnings("static-access")
 	public static void waitlistReplay(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));

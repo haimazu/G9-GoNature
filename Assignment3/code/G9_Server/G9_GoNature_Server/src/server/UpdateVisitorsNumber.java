@@ -24,6 +24,7 @@ public class UpdateVisitorsNumber {
 	 *
 	 */
 
+	@SuppressWarnings("unchecked")
 	public static void updateParkCurrentVisitors(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : updateCurrentVisitors
@@ -58,6 +59,7 @@ public class UpdateVisitorsNumber {
 	 *                [2]: parkName, cell [3]: orderType, cell [4]: amountArrived
 	 * @param client  ConnectionToClient
 	 */
+	@SuppressWarnings("unchecked")
 	public static void updateAccessControl(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -119,6 +121,7 @@ public class UpdateVisitorsNumber {
 	 * @param recived ArrayList of Object cell[0]: calling function name
 	 * @param client ConnectionToClient
 	 */
+	@SuppressWarnings("unchecked")
 	public static void getVisitorsEntryStatus(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -159,6 +162,7 @@ public class UpdateVisitorsNumber {
 	 * @param recived ArrayList of Object cell[0]: calling function name
 	 * @param client  ConnectionToClient
 	 */
+	@SuppressWarnings("unchecked")
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : getParkDetails
