@@ -1,6 +1,6 @@
 package application;
 
-import testInCommon.*;
+import testInCommon.TestFromCommon;
 
 public class Test2 {
 	public static void main(String[] args) {
