@@ -1,10 +1,10 @@
 package application;
 
-public class Test {
+import testInCommon.*;
+
+public class Test2 {
 	public static void main(String[] args) {
-		System.out.println("test");
+		TestFromCommon.main(null);
 		System.out.println("wow its working!");
-		
-		System.out.println("after saved");
-	}
+		}
 }
