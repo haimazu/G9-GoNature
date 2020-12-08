@@ -1,6 +1,8 @@
-package common;
+package userDate;
 
-public class ParkMananger extends Employee{
+import common.Status;
+
+public class DepartmentMananger extends Employee{
 
 	/**
 	 * @param employeeFirstName
@@ -12,7 +14,7 @@ public class ParkMananger extends Employee{
 	 * @param employeeParkName
 	 * @param employeeStatus
 	 */
-	public ParkMananger(String employeeFirstName, String employeeLasttName, String employeeUserName,
+	public DepartmentMananger(String employeeFirstName, String employeeLasttName, String employeeUserName,
 			String employeePassword, int employeeNumber, String employeeEmail, String employeeParkName,
 			Status employeeStatus) {
 		super(employeeFirstName, employeeLasttName, employeeUserName, employeePassword, employeeNumber, employeeEmail,

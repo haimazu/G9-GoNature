@@ -1,5 +1,7 @@
 package common;
 
+import userDate.Employee;
+
 public class ServiceRepresentative extends Employee{
 
 	/**

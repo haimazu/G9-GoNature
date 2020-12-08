@@ -1,5 +1,7 @@
 package common;
 
+import userDate.Employee;
+
 public class LogIn {
 	
 	private String  userName;
