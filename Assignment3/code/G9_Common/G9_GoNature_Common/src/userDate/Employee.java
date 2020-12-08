@@ -1,8 +1,8 @@
 package userDate;
 
 import common.LogIn;
-import common.Park;
 import common.Status;
+import dataLayer.Park;
 
 public class Employee {
 
