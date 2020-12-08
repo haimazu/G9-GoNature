@@ -8,6 +8,7 @@ public class Employee {
 	private String employeePassword;
 	private Status employeeStatus;
 	private LogIn systemUser;
+	private Park park;
 	/**
 	 * @param employeeFirstName
 	 * @param employeeLasttName
@@ -83,6 +84,11 @@ public class Employee {
 	
 	public void exitToTheSystem(String userName, String password) {
 		 systemUser.logoutToGoNatuerSystem();
+	}
+	
+	public void setPark(String ParkName) {
+		this.park=new Park(ParkName);
+		
 	}
 	
 }
