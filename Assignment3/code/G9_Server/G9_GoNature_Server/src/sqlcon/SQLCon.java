@@ -187,7 +187,7 @@ public class SQLCon {
 	//		string in cell 0: command (in this case will always be "select")
 	//		string in cell 1: table name to delete from
 	//		string in cell 2: columns that you want select to return (example: "*" for all, "ID,email" for those only two columns)
-	//		string in cell 3: selector can contain a filter for a more refine search (example: "WHERE ID='1234'", "" if you dont want a filter)
+	//		string in cell 3: condition can contain a filter for a more refine search (example: "WHERE ID='1234'", "" if you dont want a filter)
 	//		string in cell 4: the number of columns that you want select to return (important! provide a string of that number! i.e "7")
 	//NOTE: even if you don't want to filter you will need to provide an empty string on cell 3
 	//output: in case of success returns ArrayList that contains Arraylist of Strings ->
@@ -197,10 +197,10 @@ public class SQLCon {
 	public static ArrayList<ArrayList<String>> select(ArrayList<String> data) {
 		String tableName = data.get(1);
 		String columns = data.get(2);
-		String selector = data.get(3);
+		String condition = data.get(3);
 		int replyColNum = Integer.parseInt(data.get(4));
 		ArrayList<ArrayList<String>> reply = new ArrayList<ArrayList<String>>();
-		String StatmentString = ("SELECT " + columns + " from g9_gonature." + tableName + " " + selector);
+		String StatmentString = ("SELECT " + columns + " from g9_gonature." + tableName + " " + condition);
 		try {
 			ResultSet rs = dbConn.createStatement().executeQuery(StatmentString);
 			while (rs.next()) {
