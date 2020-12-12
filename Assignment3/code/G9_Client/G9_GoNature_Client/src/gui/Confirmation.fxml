@@ -11,6 +11,11 @@
 
 <Pane fx:id="rightOrderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.OrderController">
    <children>
+      <ImageView fitHeight="112.0" fitWidth="189.0" layoutX="109.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@שקופית54-removebg-preview.png" />
+         </image>
+      </ImageView>
       <Pane prefHeight="112.0" prefWidth="400.0" styleClass="pnRightTop">
          <children>
             <Button fx:id="btnBack" focusTraversable="false" layoutX="14.0" layoutY="14.0" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#handlePreOrder" styleClass="btnBackWithImg" />
@@ -27,47 +32,22 @@
             <Separator layoutY="112.0" prefWidth="400.0" />
          </children>
       </Pane>
-      <Label layoutX="75.0" layoutY="120.0" text="Order">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="116.0" layoutY="120.0" text="&gt;&gt;">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="141.0" layoutY="120.0" text="payment">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="202.0" layoutY="120.0" text="&gt;&gt;">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="227.0" layoutY="120.0" styleClass="labelBold" text="confirmation">
+      <Label layoutX="124.0" layoutY="176.0" styleClass="labelBold" text="Everything looks fine," textFill="SEAGREEN">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="124.0" layoutY="154.0" styleClass="labelBold" text="Everything looks fine," textFill="SEAGREEN">
+      <Label layoutX="98.0" layoutY="196.0" styleClass="labelBold" text="we have confirmed your order!" textFill="SEAGREEN">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="98.0" layoutY="174.0" styleClass="labelBold" text="we have confirmed your order!" textFill="SEAGREEN">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="174.0" layoutY="222.0" styleClass="labelBold" text="QR Code" textFill="#009eff">
+      <Label layoutX="174.0" layoutY="240.0" styleClass="labelBold" text="QR Code" textFill="#009eff">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
       </Label>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="128.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="124.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@qr6.png" />
          </image>
@@ -82,31 +62,31 @@
             <Font size="16.0" />
          </font>
       </Hyperlink>
-      <Label layoutX="109.0" layoutY="459.0" styleClass="labelBold" text="We'll send you a reminder!">
+      <Label layoutX="109.0" layoutY="474.0" styleClass="labelBold" text="We'll send you a reminder!">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnCheckOrder" focusTraversable="false" layoutX="135.0" layoutY="500.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="106.0" styleClass="btnNext" text="Home" textAlignment="CENTER">
+      <Button fx:id="btnCheckOrder" focusTraversable="false" layoutX="135.0" layoutY="510.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="106.0" styleClass="btnNext" text="Home" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Label layoutX="39.0" layoutY="194.0" styleClass="labelBold" text="We will not charge you until you arrive at the park" textFill="SEAGREEN">
+      <Label layoutX="39.0" layoutY="216.0" styleClass="labelBold" text="We will not charge you until you arrive at the park" textFill="SEAGREEN">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="126.0" layoutY="407.0" styleClass="labelBold" text="Your order number is: ">
+      <Label layoutX="132.0" layoutY="417.0" styleClass="labelBold" text="Your order number is: ">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label focusTraversable="false" layoutX="184.0" layoutY="431.0" styleClass="labelBold" text="111" textFill="SEAGREEN">
+      <Label focusTraversable="false" layoutX="184.0" layoutY="443.0" styleClass="labelBold" text="111" textFill="SEAGREEN">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Label layoutX="30.0" layoutY="194.0" styleClass="labelBold" text="*" textFill="#d70000">
+      <Label layoutX="30.0" layoutY="215.0" styleClass="labelBold" text="*" textFill="#d70000">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

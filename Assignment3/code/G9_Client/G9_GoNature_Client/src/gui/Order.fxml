@@ -83,7 +83,7 @@
       <Button layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
       <ImageView fitHeight="112.0" fitWidth="189.0" layoutX="109.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../GitHub/G9-GoNature/LOGO/esteam/nobg/crumbs/שקופית52-removebg-preview.png" />
+            <Image url="@שקופית52-removebg-preview.png" />
          </image>
       </ImageView>
    </children>

@@ -21,7 +21,7 @@
       </Label>
       <ImageView fitHeight="112.0" fitWidth="189.0" layoutX="109.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../GitHub/G9-GoNature/LOGO/esteam/nobg/crumbs/שקופית53-removebg-preview.png" />
+            <Image url="@שקופית53-removebg-preview.png" />
          </image>
       </ImageView>
       <Pane prefHeight="112.0" prefWidth="400.0" styleClass="pnRightTop">
