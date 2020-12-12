@@ -89,6 +89,8 @@ public class SQLCon {
 			System.out.println(select(demo7));
 		if (demo7.get(0).equals("select"))
 			System.out.println(select(demo8));
+		disconnectFromDB();
+
 
 	}
 	
@@ -113,6 +115,29 @@ public class SQLCon {
 		}
 		System.out.println("Great Succsess! DB connected!"); //remove after test
 		return true;
+	}
+
+	//input: none
+	//NOTE: make sure that you have an open connection before calling this method
+	//output: true if connection closed successfully, false if failed
+	public static boolean disconnectFromDB() {
+		if (dbConn==null) {
+			System.out.println("disconect failed: the DB is not even connected yet!"); //remove after test
+			return false;
+		} else {
+			try {
+				dbConn.close();			
+				if(dbConn.isClosed()) {
+					System.out.println("closed");//remove after test
+					dbConn = null;
+				}
+			} catch (SQLException q) {
+				q.printStackTrace();
+				return false;
+			} //catch (Exception e) {}  <--remove after test
+			System.out.println("Disconected from DB succsefuly");//remove after test
+			return true;
+		}
 	}
 
 	//input: ArrayList of strings ->
