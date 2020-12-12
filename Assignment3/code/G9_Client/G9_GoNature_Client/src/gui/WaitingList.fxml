@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="pnVerify" prefHeight="400.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ForgotPasswordController">
+   <children>
+      <Label focusTraversable="false" layoutX="85.0" layoutY="83.0" styleClass="labelBold" text="Oops, there is no place." textFill="#d70101">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <Label focusTraversable="false" layoutX="75.0" layoutY="137.0" text="You can enter the waiting list,">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Separator layoutX="75.0" layoutY="185.0" prefHeight="3.0" prefWidth="113.0" />
+      <Label layoutX="191.0" layoutY="177.0" text="Or" />
+      <Separator layoutX="207.0" layoutY="185.0" prefHeight="3.0" prefWidth="113.0" />
+      <Label focusTraversable="false" layoutX="133.0" layoutY="213.0" text="Select another date">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <JFXDatePicker editable="false" focusTraversable="false" layoutX="122.0" layoutY="236.0" promptText="Change Date" />
+      <Button fx:id="btnReset" focusTraversable="false" layoutX="120.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Check" />
+      <Button fx:id="btnReset1" focusTraversable="false" layoutX="277.0" layoutY="134.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnSmallGreen" text="here" />
+      <ImageView fitHeight="83.0" fitWidth="85.0" layoutX="163.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@oops3-removebg-80.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

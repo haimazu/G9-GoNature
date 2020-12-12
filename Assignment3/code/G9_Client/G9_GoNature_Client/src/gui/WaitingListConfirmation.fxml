@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="pnResetPassword" maxHeight="300.0" maxWidth="300.0" prefHeight="400.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ForgotPasswordController">
+   <children>
+      <Label layoutX="30.0" layoutY="73.0" prefHeight="21.0" prefWidth="249.0" text="Here there is some message for the traveler" />
+      <Button fx:id="btnReset" focusTraversable="false" layoutX="63.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="List me" />
+      <Label focusTraversable="false" layoutX="116.0" layoutY="20.0" styleClass="labelBold" text="Confirmation" underline="true">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <JFXCheckBox focusTraversable="false" layoutX="119.0" layoutY="167.0" text="I agree">
+         <font>
+            <Font name="Ebrima" size="12.0" />
+         </font></JFXCheckBox>
+      <ImageView fitHeight="52.0" fitWidth="50.0" layoutX="60.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@waitlist3-removebg-80.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
