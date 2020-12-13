@@ -21,7 +21,8 @@ public class SQLCon {
 		strArrLst.add("3306");
 		strArrLst.add("g9_gonature");
 		strArrLst.add("root");
-		strArrLst.add("NewP@ssword4theSQL");
+		strArrLst.add("123456");
+		//strArrLst.add("NewP@ssword4theSQL");
 		connectToDB(strArrLst);
 
 		ArrayList<String> demo = new ArrayList<String>();
