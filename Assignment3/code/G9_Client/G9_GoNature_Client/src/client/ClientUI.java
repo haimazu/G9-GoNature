@@ -1,6 +1,9 @@
 package client;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import controllers.*;
 import javafx.application.Application;
@@ -27,4 +30,8 @@ public class ClientUI extends Application {
 		
 	}
 
+	
+	public static void sentToChatClient(ArrayList<Object> message) {
+		client.handleMessageFromClientUI(message);
+	}
 }
