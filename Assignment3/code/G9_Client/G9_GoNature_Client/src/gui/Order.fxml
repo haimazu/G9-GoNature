@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="rightOrderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.OrderController">
+   <children>
+      <Pane prefHeight="112.0" prefWidth="400.0" styleClass="pnRightTop">
+         <children>
+            <Button fx:id="btnBack" focusTraversable="false" layoutX="14.0" layoutY="14.0" maxHeight="36.0" maxWidth="36.0" minHeight="36.0" minWidth="36.0" mnemonicParsing="false" onAction="#handlePreOrder" styleClass="btnBackWithImg" />
+            <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="165.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@cart-removebg-80.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="103.0" layoutY="70.0" prefHeight="37.0" prefWidth="215.0" styleClass="labelTitle" text="Standard Order" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Black" size="24.0" />
+               </font>
+            </Label>
+            <Separator layoutY="112.0" prefWidth="400.0" />
+         </children>
+      </Pane>
+      <JFXTextField fx:id="txtParkNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="226.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <FontAwesomeIconView fx:id="parkIcon" fill="#a1a1a1" glyphName="BUILDING" layoutX="306.0" layoutY="261.0" size="16" />
+      <JFXDatePicker editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="25.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
+      <JFXTextField fx:id="txtDay" focusTraversable="false" labelFloat="true" layoutX="182.0" layoutY="286.0" prefHeight="40.0" prefWidth="142.0" promptText="*Arrivel Time (HH:mm)" styleClass="txtField" />
+      <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="346.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <FontAwesomeIconView fx:id="visitorsIcon" fill="#a1a1a1" glyphName="USERS" layoutX="306.0" layoutY="381.0" size="16" />
+      <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="406.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Inviting email" styleClass="txtField" unFocusColor="#a3a3a3">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <FontAwesomeIconView fx:id="invitingIcon" fill="#a1a1a1" glyphName="ENVELOPE" layoutX="306.0" layoutY="441.0" size="16" />
+      <Label layoutX="74.0" layoutY="466.0" text="To select a date, click on the icon next to it." textFill="RED" />
+      <Label layoutX="75.0" layoutY="488.0" text="* Required fields" textFill="RED" />
+      <Button fx:id="btnOrder" focusTraversable="false" layoutX="207.0" layoutY="525.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="82.0" styleClass="btnNext" text="Next" textAlignment="CENTER">
+         <font>
+            <Font name="Bauhaus 93" size="19.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnClear" focusTraversable="false" layoutX="80.0" layoutY="525.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="82.0" styleClass="btnClear" text="Clear" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <JFXTextField focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="201.0" size="16" />
+      <Button layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
+      <ImageView fitHeight="112.0" fitWidth="189.0" layoutX="109.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@שקופית52-removebg-preview.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
