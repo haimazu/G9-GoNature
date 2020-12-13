@@ -37,5 +37,10 @@ public class EchoServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	protected void clientConnected(ConnectionToClient client) {
+		control.logIt("New Client conneted: "+ client.toString() +" "+ this.getPort());
+	}
 
 }
