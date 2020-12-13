@@ -62,8 +62,6 @@ public class ServerController implements Initializable {
 		str.add(getScheme());
 		str.add(getUsername());
 		str.add(getPassword());
-		//ServerUI.connectToDB(str);
-		//if(checkLog()) {
 		if(ServerUI.connectToDB(str)) {
 			btnDisonnect.setDisable(false);
 			btnConnect.setDisable(true);
@@ -75,8 +73,6 @@ public class ServerController implements Initializable {
 
     @FXML
     void disonnect(ActionEvent event) {
-    	//ServerUI.disconnectFromDB();
-    	//if(checkLog()) {
     	if(ServerUI.disconnectFromDB()) {
 			btnDisonnect.setDisable(true);
 			btnConnect.setDisable(false);
@@ -88,8 +84,6 @@ public class ServerController implements Initializable {
     @FXML
     void startServerBtn(ActionEvent event) {
     	EchoServer sv = new EchoServer(Integer.parseInt(getServerPort()),this);
-    	//ServerUI.runServer(sv);
-    	//if(checkLog()) {
     	if (ServerUI.runServer(sv)) {
 	    	stopServer.setDisable(false);
 	    	btnStart.setDisable(true);
@@ -101,8 +95,6 @@ public class ServerController implements Initializable {
 
     @FXML
     void stopServerBtn(ActionEvent event) {
-    	//ServerUI.stopServer();
-    	//if(checkLog()) {
     	if (ServerUI.stopServer()) {
     		stopServer.setDisable(true);
     		btnStart.setDisable(false);
@@ -113,17 +105,6 @@ public class ServerController implements Initializable {
     
     public void logIt(String str) {
     	logUpdate.appendText(str+"\n");
-    }
-    
-    public boolean checkLog() {
-    	String str = ServerUI.getMsg();
-    	if (!str.equals("")) {
-    		logIt(str);
-    		if(str.contains("succsefuly"))
-    			return true;
-    		return false;
-    	}
-    	return true;
     }
 	
 	public String getHost() {
@@ -160,10 +141,10 @@ public class ServerController implements Initializable {
 			@Override
 			public void handle(WindowEvent t) {
 				System.out.println("emergency exit");
-//				if(ServerUI.isServerUP())
-//					ServerUI.stopServer();
-//				if(ServerUI.isDBup())
-//					ServerUI.disconnectFromDB();
+				if(ServerUI.isServerUP())
+					ServerUI.stopServer();
+				if(ServerUI.isDBup())
+					ServerUI.disconnectFromDB();
 				Platform.exit();
 				System.exit(0);
 			}
