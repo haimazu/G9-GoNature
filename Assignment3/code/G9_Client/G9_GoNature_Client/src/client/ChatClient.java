@@ -75,35 +75,14 @@ public class ChatClient extends AbstractClient {
 	 * @param message The message from the UI.
 	 */
 
-	public void handleMessageFromClientUI(String message) {
-//		feedback = "";
-//		ArrayList<String> command = new ArrayList<String>();
-//		if (message.contains("update email")) {
-//			String str[] = message.split(" ");
-//			command.add(str[2]);
-//			command.add(str[3]);
-//		} else if (message.equals("show all")) {
-//			command.add("select *");
-////		} else if (message.equals("disconn")) {
-////			command.add("disconn");
-//		}
-//		try {
-//			sendToServer(command);
-//		} catch (IOException e) {
-//			System.out.println("Could not send message to server.  Terminating client.");
-//			quit();
-//		}
-//		awaitResponse = true;
-//		while (awaitResponse) {
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		if (!feedback.equals("positive")) {
-//			System.out.println("something went wrong");
-//		}
+	public void handleMessageFromClientUI(ArrayList<Object> message) {
+
+		try {
+			sendToServer(message);
+		} catch (IOException e) {
+			System.out.println("Could not send message to server.  Terminating client.");
+			quit();
+		}
 
 	}
 
