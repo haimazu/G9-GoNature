@@ -2,7 +2,7 @@ package orderData;
 
 public class WaitingList {
 	String parkName;
-	int orderNumber;
+	static int queueID;
 	DateAndTime enteredTime;
 	
 }
