@@ -32,7 +32,7 @@ public class Login {
 		query.add("1");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.get(0).isEmpty()) {
-			answer.add(new ArrayList<>(Arrays.asList("Failed")));
+			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
 			answer.add(queryData.get(0));
 		}
