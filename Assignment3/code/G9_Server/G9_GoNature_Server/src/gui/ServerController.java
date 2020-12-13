@@ -80,7 +80,7 @@ public class ServerController implements Initializable {
 
     @FXML
     void startServerBtn(ActionEvent event) {
-    	EchoServer sv = new EchoServer(Integer.parseInt(getServerPort()),null,this);
+    	EchoServer sv = new EchoServer(Integer.parseInt(getServerPort()),this);
     	ServerUI.runServer(sv);
     	
     	if(checkLog()) {
@@ -104,13 +104,13 @@ public class ServerController implements Initializable {
     }
     
     public boolean checkLog() {
-//    	String str = ServerUI.getMsg();
-//    	if (!str.equals("")) {
-//    		logIt(str);
-//    		if(str.contains("succsefuly"))
-//    			return true;
-//    		return false;
-//    	}
+    	String str = ServerUI.getMsg();
+    	if (!str.equals("")) {
+    		logIt(str);
+    		if(str.contains("succsefuly"))
+    			return true;
+    		return false;
+    	}
     	return true;
     }
 	

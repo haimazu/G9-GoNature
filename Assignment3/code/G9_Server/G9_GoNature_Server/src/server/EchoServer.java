@@ -12,9 +12,8 @@ public class EchoServer extends AbstractServer {
 	private static Connection con;
 	private static ServerController control;
 
-	public EchoServer(int port, Connection con, ServerController control) {
+	public EchoServer(int port, ServerController control) {
 		super(port);
-		EchoServer.con = con;
 		EchoServer.control = control;
 	}
 

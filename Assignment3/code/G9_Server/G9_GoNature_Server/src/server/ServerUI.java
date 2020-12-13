@@ -13,7 +13,7 @@ public class ServerUI extends Application {
 	private static boolean serverUP = false;
 	private static ServerController control;
 	private static String msg;
-	private static EchoServer sv;
+	private static EchoServer echoServ;
 
 	public static void main(String args[]) throws Exception {
 		launch(args);
@@ -28,8 +28,7 @@ public class ServerUI extends Application {
 	public static void runServer(EchoServer sv)
 	{
 		if (DBup) {
-			ServerUI.sv = sv;
-			//sv.setCon(MySQLConnection.getDbConn());
+			ServerUI.echoServ = sv;
 	        try {
 	          sv.listen();
 	        } catch (Exception ex) {
@@ -44,7 +43,7 @@ public class ServerUI extends Application {
 	
 	public static void stopServer() {
 		try {
-			sv.close();
+			echoServ.close();
 			System.out.println("covefee");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -72,13 +71,13 @@ public class ServerUI extends Application {
 		ServerUI.msg = msg;
 	}
 	
-//	public static boolean isDBup() {
-//		return DBup;
-//	}
-//
-//	public static boolean isServerUP() {
-//		return serverUP;
-//	}
+	public static boolean isDBup() {
+		return DBup;
+	}
+
+	public static boolean isServerUP() {
+		return serverUP;
+	}
 
 
 }
