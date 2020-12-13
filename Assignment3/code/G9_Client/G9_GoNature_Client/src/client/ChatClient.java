@@ -48,6 +48,16 @@ public class ChatClient extends AbstractClient {
 	 * @param msg The message from the server.
 	 */
 	public void handleMessageFromServer(Object msg) {
+		ArrayList<Object> recived = (ArrayList<Object>) msg;
+		
+		switch ((String)recived.get(0)) {
+			case "login":
+				LoginController.recivedFromServer((boolean)recived.get(1));
+			break;
+
+			default:
+			break;
+		}
 //		feedback = "";
 //		awaitResponse = false;
 //		data.clear();
