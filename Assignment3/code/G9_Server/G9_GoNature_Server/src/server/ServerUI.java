@@ -12,7 +12,6 @@ public class ServerUI extends Application {
 	private static boolean DBup = false;
 	private static boolean serverUP = false;
 	private static ServerController control;
-	private static String msg;
 	private static EchoServer echoServ;
 
 	public static void main(String args[]) throws Exception {
@@ -52,7 +51,6 @@ public class ServerUI extends Application {
 			e.printStackTrace();
 			return false;
 		}
-		//setMsg("Stoped Server succsefuly");
 		serverUP=false;
 		return true;
 	}
@@ -67,21 +65,15 @@ public class ServerUI extends Application {
 	}
 	
 	public static boolean disconnectFromDB() {
+		if (serverUP) {
+			return false;
+			//SERVER UP FAILURE MSG
+		}
 		if(MySQLConnection.disconnectFromDB()) {
 			DBup=false;
 			return true;
 			}
 		return false;
-	}
-
-	public static String getMsg() {
-		String ret = msg;
-		setMsg("");
-		return ret;
-	}
-
-	public static void setMsg(String msg) {
-		ServerUI.msg = msg;
 	}
 	
 	public static boolean isDBup() {
