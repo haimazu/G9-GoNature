@@ -1,0 +1,41 @@
+package server;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.util.ArrayList;
+
+import gui.ServerController;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
+
+public class EchoServer extends AbstractServer {
+	private static ServerController control;
+
+	public EchoServer(int port, ServerController control) {
+		super(port);
+		EchoServer.control = control;
+	}
+
+	@Override
+	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		ArrayList<Object> recived = (ArrayList<Object>) msg;
+		switch ((String) recived.get(0)) {
+		case "login":
+			Login.login((ArrayList<Object>) msg, client);
+			break;
+
+		default:
+			break;
+		}
+		// TODO Auto-generated method stub
+	}
+
+	public static void sendToMyClient(ArrayList<Object> msg, ConnectionToClient client) {
+		try {
+			client.sendToClient(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
