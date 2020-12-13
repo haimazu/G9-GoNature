@@ -65,20 +65,20 @@ public class LoginController implements Initializable {
 			data.add(txtUsername.getText());
 			data.add(txtPassword.getText());
 			msg.add(data);
-System.out.println("hi");
-			//ClientUI.sentToChatClient(msg);
+
+			ClientUI.sentToChatClient(msg);
 
 			// Username and password doesn't match
-//			if (getStatus().equals("Failed")) {
-//				Alert("Failed", "Username or password doesn't match.");
-//				return;
-//			}
+			if (getStatus().equals("Failed")) {
+				Alert("Failed", "Username or password doesn't match.");
+				return;
+			}
 //
 //			// Check the employee type
 //			// Switch to the screen
-//			Stage stage = (Stage) btnLogin.getScene().getWindow();
-//			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
-//			stage.setScene(new Scene(root));
+			Stage stage = (Stage) btnLogin.getScene().getWindow();
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
+			stage.setScene(new Scene(root));
 		}
 	}
 
