@@ -1,4 +1,4 @@
-package sqlcon;
+package server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import common.*;
 import dataLayer.*;
 
-public class SQLCon {
+public class MySQLConnection {
 
 	private static Connection dbConn = null;
 	private static String dbScheme = null;
@@ -21,8 +21,8 @@ public class SQLCon {
 		strArrLst.add("3306");
 		strArrLst.add("g9_gonature");
 		strArrLst.add("root");
-		strArrLst.add("123456");
-		//strArrLst.add("NewP@ssword4theSQL");
+		//strArrLst.add("123456");
+		strArrLst.add("NewP@ssword4theSQL");
 		connectToDB(strArrLst);
 
 		ArrayList<String> demo = new ArrayList<String>();
@@ -213,7 +213,7 @@ public class SQLCon {
 
 	//input: ArrayList of strings ->
 	//		string in cell 0: command (in this case will always be "select")
-	//		string in cell 1: table name to delete from
+	//		string in cell 1: table name to select from
 	//		string in cell 2: columns that you want select to return (example: "*" for all, "ID,email" for those only two columns)
 	//		string in cell 3: condition can contain a filter for a more refine search (example: "WHERE ID='1234'", "" if you dont want a filter)
 	//		string in cell 4: the number of columns that you want select to return (important! provide a string of that number! i.e "7")
@@ -228,7 +228,7 @@ public class SQLCon {
 		String condition = data.get(3);
 		int replyColNum = Integer.parseInt(data.get(4));
 		ArrayList<ArrayList<String>> reply = new ArrayList<ArrayList<String>>();
-		String StatmentString = ("SELECT " + columns + " from g9_gonature." + tableName + " " + condition);
+		String StatmentString = ("SELECT " + columns + " from "+ dbScheme +"." + tableName + " " + condition);
 		try {
 			ResultSet rs = dbConn.createStatement().executeQuery(StatmentString);
 			while (rs.next()) {
