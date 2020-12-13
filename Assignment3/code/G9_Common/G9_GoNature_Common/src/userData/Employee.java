@@ -1,4 +1,4 @@
-package userDate;
+package userData;
 
 import common.LogIn;
 import common.Status;

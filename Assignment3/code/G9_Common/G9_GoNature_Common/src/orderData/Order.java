@@ -7,4 +7,8 @@ public class Order {
 	String orderEmail;
 	OrderType orderType;
 	double price;
+	String parkname;
+	DateAndTime arrivedTime;
+	int memberId;
+	
 }

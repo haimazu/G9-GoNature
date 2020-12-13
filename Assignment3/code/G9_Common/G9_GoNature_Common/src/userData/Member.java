@@ -1,4 +1,4 @@
-package userDate;
+package userData;
 
 public class Member {
 	
