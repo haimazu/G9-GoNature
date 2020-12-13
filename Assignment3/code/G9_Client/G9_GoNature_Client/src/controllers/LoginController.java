@@ -65,20 +65,20 @@ public class LoginController implements Initializable {
 			data.add(txtUsername.getText());
 			data.add(txtPassword.getText());
 			msg.add(data);
-
-			ClientUI.sentToChatClient(msg);
+System.out.println("hi");
+			//ClientUI.sentToChatClient(msg);
 
 			// Username and password doesn't match
-			if (getStatus().equals("Failed")) {
-				Alert("Failed", "Username or password doesn't match.");
-				return;
-			}
-
-			// Check the employee type
-			// Switch to the screen
-			Stage stage = (Stage) btnLogin.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
-			stage.setScene(new Scene(root));
+//			if (getStatus().equals("Failed")) {
+//				Alert("Failed", "Username or password doesn't match.");
+//				return;
+//			}
+//
+//			// Check the employee type
+//			// Switch to the screen
+//			Stage stage = (Stage) btnLogin.getScene().getWindow();
+//			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
+//			stage.setScene(new Scene(root));
 		}
 	}
 
@@ -89,9 +89,10 @@ public class LoginController implements Initializable {
 		boolean userStatus = false;
 		
 		userIcon.setFill(Color.RED);
-		txtUsername.setStyle("-jfx-unfocus-color: red;"
-						   + "-jfx-focus-color: red;"
-				           + "-fx-prompt-text-fill: red;");
+		txtUsername.getStyleClass().add("txtFieldRed");
+//		txtUsername.setStyle("-jfx-unfocus-color: red;"
+//						   + "-jfx-focus-color: red;"
+//				           + "-fx-prompt-text-fill: red;");
 
 		if (username.isEmpty()) {
 			Alert("Failed", "All fields required.");
@@ -99,9 +100,10 @@ public class LoginController implements Initializable {
 			Alert("Failed",
 					"Wrong pattern.\n" + "Username starts with letter, then letters or numbers\n[between 4 to 20]");
 		} else {
-			txtUsername.setStyle("-jfx-unfocus-color: green;"
-					   + "-jfx-focus-color: green;"
-			           + "-fx-prompt-text-fill: green;");
+			txtUsername.getStyleClass().add("txtFieldGreen");
+//			txtUsername.setStyle("-jfx-unfocus-color: green;"
+//					   + "-jfx-focus-color: green;"
+//			           + "-fx-prompt-text-fill: green;");
 			userIcon.setFill(Color.GREEN);
 			userStatus = true;
 		}

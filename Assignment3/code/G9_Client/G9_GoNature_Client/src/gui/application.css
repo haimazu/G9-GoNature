@@ -244,13 +244,29 @@
 /********** All JFXTextFields Style **********/
 .txtField {
     -fx-font-family: Ebrima;
-    -fx-highlight-fill: #009688;
+    -fx-highlight-fill: #a3a3a3;
     -fx-font-size: 14px;
     -fx-prompt-text-fill: #a3a3a3;
     -fx-text-fill: black;
     -fx-padding: 20px 0px 0px 0px;
     -jfx-unfocus-color: #a3a3a3;
-    -jfx-focus-color: #009688;
+    -jfx-focus-color: #a3a3a3;
+}
+
+/********** For JFXTextFields With Invalid Input **********/
+.txtFieldRed {
+	-fx-highlight-fill: red;
+	-fx-prompt-text-fill: red;
+	-jfx-unfocus-color: red;
+    -jfx-focus-color: red;
+}
+
+/********** For JFXTextFields With valid Input **********/
+.txtFieldGreen {
+	-fx-highlight-fill: green;
+	-fx-prompt-text-fill: green;
+	-jfx-unfocus-color: green;
+    -jfx-focus-color: green;
 }
 
 /********** JFXDatePicker & His JFXTextField Style **********/
