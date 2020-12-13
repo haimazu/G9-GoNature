@@ -42,65 +42,66 @@ public class LoginController implements Initializable {
 	private Hyperlink hplForgotPassword;
 	@FXML
 	private Button btnLogin;
-	
+
 	private String status;
 
 	@FXML
 	void back(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnBack.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
-        stage.setScene(new Scene(root));
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+		stage.setScene(new Scene(root));
 	}
 
 	@FXML
-	void login(ActionEvent event) {
+	void login(ActionEvent event) throws IOException {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		// Data fields
 		ArrayList<String> data = new ArrayList<String>();
-		
-		if (checkUsername() && checkPassword()) {			
+
+		if (checkUsername() && checkPassword()) {
 			msg.add("login");
 			data.add(txtUsername.getText());
 			data.add(txtPassword.getText());
 			msg.add(data);
-			
+
 			ClientUI.sentToChatClient(msg);
-			
+
 			// Username and password doesn't match
 			if (status == "Failed") {
 				Alert("Failed", "Username or password doesn't match.");
 				return;
 			}
-			// Success
-			Alert("Success", "You've logged in successfully.");
-			
+
 			// Check the employee type
 			// Switch to the screen
+			Stage stage = (Stage) btnLogin.getScene().getWindow();
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + status + ".fxml"));
+			stage.setScene(new Scene(root));
 		}
 	}
-	
+
 	public boolean checkUsername() {
 		String username = txtUsername.getText();
 		// starts with letter, letters or numbers, between 3 to 20
-    	String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
+		String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
 		boolean userStatus = false;
-		
+
 		if (username.isEmpty()) {
 			Alert("Failed", "All fields required.");
 		} else if (!username.matches(pattern)) {
-			Alert("Failed", "Wrong pattern.\n"
-					+ "Username starts with letter, then letters or numbers\n[between 4 to 20]");
+			Alert("Failed",
+					"Wrong pattern.\n" + "Username starts with letter, then letters or numbers\n[between 4 to 20]");
 		} else {
 			userStatus = true;
 		}
 		return userStatus;
 	}
-	
+
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
 		boolean passStatus = false;
-		
+
 		if (password.isEmpty()) {
 			Alert("Failed", "All fields required.");
 		} else if (password.length() < 8) {
@@ -112,23 +113,23 @@ public class LoginController implements Initializable {
 		}
 		return passStatus;
 	}
-	
+
 	public void Alert(String title, String msg) {
 		if (title == "Success") {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle(title);
 			alert.setHeaderText(null);
 			alert.setContentText(msg);
-			alert.showAndWait();					
-		} else if (title == "Failed"){
+			alert.showAndWait();
+		} else if (title == "Failed") {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle(title);
 			alert.setHeaderText(null);
 			alert.setContentText(msg);
-			alert.showAndWait();		
-		}	
+			alert.showAndWait();
+		}
 	}
-	
+
 	public static void recivedFromServer(String status) {
 		status = status;
 	}
