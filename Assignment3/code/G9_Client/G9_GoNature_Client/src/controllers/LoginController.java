@@ -43,7 +43,7 @@ public class LoginController implements Initializable {
 	@FXML
 	private Button btnLogin;
 	
-	private boolean status;
+	private String status;
 
 	@FXML
 	void back(ActionEvent event) throws IOException {
@@ -68,7 +68,7 @@ public class LoginController implements Initializable {
 			ClientUI.sentToChatClient(msg);
 			
 			// Username and password doesn't match
-			if (!status) {
+			if (status == "Failed") {
 				Alert("Failed", "Username or password doesn't match.");
 				return;
 			}
@@ -129,7 +129,7 @@ public class LoginController implements Initializable {
 		}	
 	}
 	
-	public static void recivedFromServer(boolean status) {
+	public static void recivedFromServer(String status) {
 		status = status;
 	}
 
