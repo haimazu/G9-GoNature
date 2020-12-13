@@ -16,7 +16,7 @@ import ocsf.client.*;
  * @version July 2000
  */
 public class ChatClient extends AbstractClient {
-
+	private boolean awaitResponse = false;
 	/**
 	 * Constructs an instance of the chat client.
 	 *
@@ -48,6 +48,7 @@ public class ChatClient extends AbstractClient {
 	 * @param msg The message from the server.
 	 */
 	public void handleMessageFromServer(Object msg) {
+		awaitResponse = false;
 		ArrayList<Object> recived = (ArrayList<Object>) msg;
 		
 		switch ((String)recived.get(0)) {
@@ -93,6 +94,17 @@ public class ChatClient extends AbstractClient {
 			System.out.println("Could not send message to server.  Terminating client.");
 			quit();
 		}
+		awaitResponse = true;
+		while (awaitResponse) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+//		if (!feedback.equals("positive")) {
+//			System.out.println("something went wrong");
+//		}
 
 	}
 
