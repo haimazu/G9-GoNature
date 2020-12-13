@@ -1,16 +1,21 @@
 package server;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
+import gui.ServerController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
-public class ServerController extends AbstractServer {
+public class EchoServer extends AbstractServer {
+	private static Connection con;
+	private static ServerController control;
 
-	public ServerController(int port) {
+	public EchoServer(int port, Connection con, ServerController control) {
 		super(port);
-		// TODO Auto-generated constructor stub
+		EchoServer.con = con;
+		EchoServer.control = control;
 	}
 
 	@Override

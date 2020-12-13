@@ -244,4 +244,8 @@ public class MySQLConnection {
 		}
 		return reply;
 	}
+	
+	public static Connection getDbConn() {
+		return dbConn;
+	}
 }

@@ -35,6 +35,6 @@ public class Login {
 		} else {
 			answer.add(queryData.get(0));
 		}
-		ServerController.sendToMyClient(answer,client);
+		EchoServer.sendToMyClient(answer,client);
 	}
 }
