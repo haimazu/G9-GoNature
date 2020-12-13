@@ -1,6 +1,6 @@
 package common;
 
-import userDate.Employee;
+import userData.Employee;
 
 public class LogIn {
 	

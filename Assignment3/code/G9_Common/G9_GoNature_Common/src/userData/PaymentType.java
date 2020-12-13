@@ -1,4 +1,4 @@
-package userDate;
+package userData;
 
 public enum PaymentType {
 	CASH,CARDNUMBER;
