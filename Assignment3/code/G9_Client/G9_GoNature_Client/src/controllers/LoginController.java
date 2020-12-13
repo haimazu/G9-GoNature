@@ -21,6 +21,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
@@ -86,6 +87,11 @@ public class LoginController implements Initializable {
 		// starts with letter, letters or numbers, between 3 to 20
 		String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
 		boolean userStatus = false;
+		
+		userIcon.setFill(Color.RED);
+		txtUsername.setStyle("-jfx-unfocus-color: red;"
+						   + "-jfx-focus-color: red;"
+				           + "-fx-prompt-text-fill: red;");
 
 		if (username.isEmpty()) {
 			Alert("Failed", "All fields required.");
@@ -93,6 +99,10 @@ public class LoginController implements Initializable {
 			Alert("Failed",
 					"Wrong pattern.\n" + "Username starts with letter, then letters or numbers\n[between 4 to 20]");
 		} else {
+			txtUsername.setStyle("-jfx-unfocus-color: green;"
+					   + "-jfx-focus-color: green;"
+			           + "-fx-prompt-text-fill: green;");
+			userIcon.setFill(Color.GREEN);
 			userStatus = true;
 		}
 		return userStatus;
@@ -101,6 +111,11 @@ public class LoginController implements Initializable {
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
 		boolean passStatus = false;
+		
+		passIcon.setFill(Color.RED);
+		txtPassword.setStyle("-jfx-unfocus-color: red;"
+				   + "-jfx-focus-color: red;"
+		           + "-fx-prompt-text-fill: red;");
 
 		if (password.isEmpty()) {
 			Alert("Failed", "All fields required.");
@@ -109,6 +124,10 @@ public class LoginController implements Initializable {
 		} else if (password.length() > 30) {
 			Alert("Failed", "Password too long.");
 		} else {
+			txtPassword.setStyle("-jfx-unfocus-color: green;"
+					   + "-jfx-focus-color: green;"
+			           + "-fx-prompt-text-fill: green;");
+			passIcon.setFill(Color.GREEN);
 			passStatus = true;
 		}
 		return passStatus;
