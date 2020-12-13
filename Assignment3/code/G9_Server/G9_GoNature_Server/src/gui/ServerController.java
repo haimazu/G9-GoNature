@@ -62,41 +62,53 @@ public class ServerController implements Initializable {
 		str.add(getScheme());
 		str.add(getUsername());
 		str.add(getPassword());
-		ServerUI.connectToDB(str);
-		if(checkLog()) {
+		//ServerUI.connectToDB(str);
+		//if(checkLog()) {
+		if(ServerUI.connectToDB(str)) {
 			btnDisonnect.setDisable(false);
 			btnConnect.setDisable(true);
+			logIt("DB connected");
 		}
+		else
+			logIt("DB not connected");
     }
 
     @FXML
     void disonnect(ActionEvent event) {
-    	ServerUI.disconnectFromDB();
-    	if(checkLog()) {
+    	//ServerUI.disconnectFromDB();
+    	//if(checkLog()) {
+    	if(ServerUI.disconnectFromDB()) {
 			btnDisonnect.setDisable(true);
 			btnConnect.setDisable(false);
-		}
+			logIt("DB disconnected");
+		} else
+			logIt("DB still connected");
     }
 
     @FXML
     void startServerBtn(ActionEvent event) {
     	EchoServer sv = new EchoServer(Integer.parseInt(getServerPort()),this);
-    	ServerUI.runServer(sv);
-    	
-    	if(checkLog()) {
-    	stopServer.setDisable(false);
-    	btnStart.setDisable(true);
-    	}
+    	//ServerUI.runServer(sv);
+    	//if(checkLog()) {
+    	if (ServerUI.runServer(sv)) {
+	    	stopServer.setDisable(false);
+	    	btnStart.setDisable(true);
+	    	logIt("goNature server up and running");
+    	} else //CHECK IF DBUP ERROR
+    		logIt("ERROR - Could not listen for clients!");
     	
     }
 
     @FXML
     void stopServerBtn(ActionEvent event) {
-    	ServerUI.stopServer();
-    	if(checkLog()) {
+    	//ServerUI.stopServer();
+    	//if(checkLog()) {
+    	if (ServerUI.stopServer()) {
     		stopServer.setDisable(true);
     		btnStart.setDisable(false);
-		}
+    		logIt("Stoped Server succsefuly");
+		} else
+			logIt("goNature server still up");
     }
     
     public void logIt(String str) {

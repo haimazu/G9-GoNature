@@ -25,40 +25,53 @@ public class ServerUI extends Application {
 		control.start(primaryStage);
 	}
 
-	public static void runServer(EchoServer sv)
+	public static boolean runServer(EchoServer sv)
 	{
 		if (DBup) {
 			ServerUI.echoServ = sv;
 	        try {
 	          sv.listen();
 	        } catch (Exception ex) {
-	        	setMsg("ERROR - Could not listen for clients!");
+	        	return false;
+	        	//setMsg("ERROR - Could not listen for clients!");
 	        }
 	        serverUP=true;
+	        return true;
 		}
 		else {
-			setMsg("Please Start DB first");
+			return false;
+			//setMsg("Please Start DB first");
 		}
 	}
 	
-	public static void stopServer() {
+	public static boolean stopServer() {
 		try {
 			echoServ.close();
-			System.out.println("covefee");
+			//System.out.println("covefee");
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
-		setMsg("Stoped Server succsefuly");
+		//setMsg("Stoped Server succsefuly");
 		serverUP=false;
+		return true;
 	}
 
 
-	public static void connectToDB(ArrayList<String> str) {
-		MySQLConnection.connectToDB(str);
+	public static boolean connectToDB(ArrayList<String> data) {
+		if(MySQLConnection.connectToDB(data)) {
+			DBup=true;
+			return true;
+			}
+		return false;
 	}
 	
-	public static void disconnectFromDB() {
-		MySQLConnection.disconnectFromDB();
+	public static boolean disconnectFromDB() {
+		if(MySQLConnection.disconnectFromDB()) {
+			DBup=false;
+			return true;
+			}
+		return false;
 	}
 
 	public static String getMsg() {

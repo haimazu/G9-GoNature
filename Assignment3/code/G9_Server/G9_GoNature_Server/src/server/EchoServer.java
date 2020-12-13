@@ -9,7 +9,6 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class EchoServer extends AbstractServer {
-	private static Connection con;
 	private static ServerController control;
 
 	public EchoServer(int port, ServerController control) {
