@@ -69,7 +69,7 @@ public class LoginController implements Initializable {
 			ClientUI.sentToChatClient(msg);
 
 			// Username and password doesn't match
-			if (status == "Failed") {
+			if (status.equals("Failed")) {
 				Alert("Failed", "Username or password doesn't match.");
 				return;
 			}
