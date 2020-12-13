@@ -44,7 +44,7 @@ public class LoginController implements Initializable {
 	@FXML
 	private Button btnLogin;
 
-	private String status;
+	private static String status;
 
 	@FXML
 	void back(ActionEvent event) throws IOException {
@@ -69,7 +69,7 @@ public class LoginController implements Initializable {
 			ClientUI.sentToChatClient(msg);
 
 			// Username and password doesn't match
-			if (status.equals("Failed")) {
+			if (getStatus().equals("Failed")) {
 				Alert("Failed", "Username or password doesn't match.");
 				return;
 			}
@@ -77,7 +77,7 @@ public class LoginController implements Initializable {
 			// Check the employee type
 			// Switch to the screen
 			Stage stage = (Stage) btnLogin.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + status + ".fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
 			stage.setScene(new Scene(root));
 		}
 	}
@@ -150,8 +150,17 @@ public class LoginController implements Initializable {
 	}
 
 	public static void recivedFromServer(String status) {
-		status = status;
+		setStatus(status);
 	}
+	
+	public static String getStatus() {
+		return status;
+	}
+
+	public static void setStatus(String status) {
+		LoginController.status = status;
+	}
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
