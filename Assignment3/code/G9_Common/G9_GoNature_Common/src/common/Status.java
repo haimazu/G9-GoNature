@@ -5,5 +5,5 @@ public enum Status {
 	DepartmentManager,
 	ParkManager,
 	ServiceRepresentative,
-	ParkWorker
+	ParkEmployee
 }

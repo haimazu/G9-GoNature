@@ -25,9 +25,7 @@ public class ClientUI extends Application {
 			System.out.println("Error: Can't setup connection! Terminating client.");
 			System.exit(1);
 		}
-		System.out.println("hihi");
-		startFrame.start(primaryStage);
-		
+		startFrame.start(primaryStage);		
 	}
 
 	

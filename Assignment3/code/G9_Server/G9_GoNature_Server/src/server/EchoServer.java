@@ -19,10 +19,10 @@ public class EchoServer extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		ArrayList<Object> recived = (ArrayList<Object>)msg;
-		switch ((String)recived.get(0)) {
+		ArrayList<Object> recived = (ArrayList<Object>) msg;
+		switch ((String) recived.get(0)) {
 		case "login":
-			Login.login((ArrayList<Object>)msg, client);
+			Login.login((ArrayList<Object>) msg, client);
 			break;
 
 		default:
@@ -30,8 +30,8 @@ public class EchoServer extends AbstractServer {
 		}
 		// TODO Auto-generated method stub
 	}
-	
-	public static void sendToMyClient(ArrayList<Object>msg, ConnectionToClient client) {
+
+	public static void sendToMyClient(ArrayList<Object> msg, ConnectionToClient client) {
 		try {
 			client.sendToClient(msg);
 		} catch (IOException e) {
