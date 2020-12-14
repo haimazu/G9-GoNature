@@ -20,12 +20,13 @@ public class CreditCardSave {
 		StringBuilder values = new StringBuilder();
 		for (String p : data) {
 			values.append(p);
-			values.append(",");
+			values.append(", ");
 		}
-		//deleting the last " , " 
-		if (values.length() > 0)
+		//deleting the last " , " & " "
+		if (values.length() > 0) {
 			values.deleteCharAt(values.length() - 1);
-		
+			values.deleteCharAt(values.length() - 2);
+		}
 		
 		query.add(values.toString());//adding the values to insert
 		
