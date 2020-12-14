@@ -46,6 +46,7 @@ public class LoginController implements Initializable {
 
 	private static String status;
 
+	// Switch screens: Login -> Welcome
 	@FXML
 	void back(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -53,6 +54,16 @@ public class LoginController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
+	/*
+	 * msg is ArrayList of objects -> 
+	 * 		  [0] -> the function who calling to service from the server "login"
+	 * 		  [1] -> ArrayList of String -> 
+	 * 				 [0] -> username
+	 * 				 [1] -> password
+	 * The function waiting to response from the server and can get:
+	 * 		if success (the user exists) -> we getting the role of the user
+	 * 		else (the user doesn't exists) -> getting "Failed"
+	 * **/
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		// Query
@@ -82,6 +93,7 @@ public class LoginController implements Initializable {
 		}
 	}
 
+	// Check username input before sending to DB
 	public boolean checkUsername() {
 		String username = txtUsername.getText();
 		// starts with letter, letters or numbers, between 3 to 20
@@ -104,6 +116,7 @@ public class LoginController implements Initializable {
 		return userStatus;
 	}
 
+	// Check password input before sending to DB
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
 		boolean passStatus = false;
@@ -125,6 +138,11 @@ public class LoginController implements Initializable {
 		return passStatus;
 	}
 
+	/*
+	 * Getting title and message and showing alerts: 
+	 * 1. Success
+	 * 2. Failed 
+	 * **/
 	public void Alert(String title, String msg) {
 		if (title == "Success") {
 			Alert alert = new Alert(AlertType.INFORMATION);
