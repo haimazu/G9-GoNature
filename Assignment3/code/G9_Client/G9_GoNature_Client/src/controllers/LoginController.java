@@ -73,9 +73,9 @@ public class LoginController implements Initializable {
 				Alert("Failed", "Username or password doesn't match.");
 				return;
 			}
-//
-//			// Check the employee type
-//			// Switch to the screen
+
+			// Check the employee type
+			// Switch to the screen
 			Stage stage = (Stage) btnLogin.getScene().getWindow();
 			Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
 			stage.setScene(new Scene(root));
@@ -90,9 +90,6 @@ public class LoginController implements Initializable {
 		
 		userIcon.setFill(Color.RED);
 		txtUsername.getStyleClass().add("txtFieldRed");
-//		txtUsername.setStyle("-jfx-unfocus-color: red;"
-//						   + "-jfx-focus-color: red;"
-//				           + "-fx-prompt-text-fill: red;");
 
 		if (username.isEmpty()) {
 			Alert("Failed", "All fields required.");
@@ -101,9 +98,6 @@ public class LoginController implements Initializable {
 					"Wrong pattern.\n" + "Username starts with letter, then letters or numbers\n[between 4 to 20]");
 		} else {
 			txtUsername.getStyleClass().add("txtFieldGreen");
-//			txtUsername.setStyle("-jfx-unfocus-color: green;"
-//					   + "-jfx-focus-color: green;"
-//			           + "-fx-prompt-text-fill: green;");
 			userIcon.setFill(Color.GREEN);
 			userStatus = true;
 		}
@@ -115,9 +109,7 @@ public class LoginController implements Initializable {
 		boolean passStatus = false;
 		
 		passIcon.setFill(Color.RED);
-		txtPassword.setStyle("-jfx-unfocus-color: red;"
-				   + "-jfx-focus-color: red;"
-		           + "-fx-prompt-text-fill: red;");
+		txtPassword.getStyleClass().add("txtFieldRed");
 
 		if (password.isEmpty()) {
 			Alert("Failed", "All fields required.");
@@ -126,9 +118,7 @@ public class LoginController implements Initializable {
 		} else if (password.length() > 30) {
 			Alert("Failed", "Password too long.");
 		} else {
-			txtPassword.setStyle("-jfx-unfocus-color: green;"
-					   + "-jfx-focus-color: green;"
-			           + "-fx-prompt-text-fill: green;");
+			txtPassword.getStyleClass().add("txtFieldGreen");
 			passIcon.setFill(Color.GREEN);
 			passStatus = true;
 		}
