@@ -24,8 +24,7 @@ public class CreditCardSave {
 		}
 		//deleting the last " , " & " "
 		if (values.length() > 0) {
-			values.deleteCharAt(values.length() - 1);
-			values.deleteCharAt(values.length() - 2);
+			values.setLength(values.length()-2);
 		}
 		
 		query.add(values.toString());//adding the values to insert
