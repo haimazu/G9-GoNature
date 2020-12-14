@@ -19,12 +19,12 @@ public class ClientUI extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		WelcomeController startFrame = new WelcomeController();
-		try {
-			client = new ChatClient("localhost", 5555, startFrame);
-		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection! Terminating client.");
-			System.exit(1);
-		}
+//		try {
+//			client = new ChatClient("localhost", 5555, startFrame);
+//		} catch (IOException exception) {
+//			System.out.println("Error: Can't setup connection! Terminating client.");
+//			System.exit(1);
+//		}
 		startFrame.start(primaryStage);		
 	}
 	

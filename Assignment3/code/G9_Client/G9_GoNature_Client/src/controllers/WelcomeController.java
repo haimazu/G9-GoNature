@@ -52,7 +52,7 @@ public class WelcomeController implements Initializable {
 		// TODO Auto-generated method stub
 	}
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/ParkEmployee.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("GoNature");
 		primaryStage.setScene(scene);

@@ -57,11 +57,11 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="lblUsernameTitle" layoutX="430.0" layoutY="25.0" styleClass="labelBold" text="Welcome,">
+            <Label layoutX="430.0" layoutY="25.0" styleClass="labelBold" text="Welcome,">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" styleClass="btnSmallRed" text="Logout" />
+            <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" onAction="#logout" styleClass="btnSmallRed" text="Logout" />
             <Separator layoutY="64.0" prefWidth="618.0" />
             <Label fx:id="lblFirstNameTitle" layoutX="489.0" layoutY="25.0" styleClass="labelBold" />
          </children>
@@ -80,46 +80,36 @@
             </Pane>
             <Pane fx:id="pnDashboard" layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight">
                <children>
-                  <Label focusTraversable="false" layoutX="341.0" layoutY="321.0" prefHeight="119.0" prefWidth="253.0" style="-fx-border-color: deceb8;">
+                  <Label focusTraversable="false" layoutX="341.0" layoutY="326.0" prefHeight="104.0" prefWidth="253.0" style="-fx-border-color: deceb8;">
                      <font>
                         <Font size="11.0" />
                      </font></Label>
-                  <Label layoutX="346.0" layoutY="323.0" styleClass="labelBold" text="Price:">
+                  <Label layoutX="346.0" layoutY="330.0" styleClass="labelBold" text="Price:">
                      <font>
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="388.0" layoutY="322.0" text="100$">
+                  <Label fx:id="lblPrice" layoutX="388.0" layoutY="329.0">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="346.0" layoutY="345.0" styleClass="labelBold" text="Quantity Of Orders:">
+                  <Label layoutX="346.0" layoutY="355.0" styleClass="labelBold" text="Discount:" textFill="SEAGREEN">
                      <font>
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="480.0" layoutY="344.0" text="1">
+                  <Label fx:id="lblDiscount" layoutX="413.0" layoutY="354.0" textFill="SEAGREEN">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="346.0" layoutY="369.0" styleClass="labelBold" text="Discount:" textFill="SEAGREEN">
+                  <Label layoutX="346.0" layoutY="405.0" styleClass="labelBold" text="Total Price:">
                      <font>
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="413.0" layoutY="368.0" text="10%" textFill="SEAGREEN">
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="346.0" layoutY="419.0" styleClass="labelBold" text="Total Price:">
-                     <font>
-                        <Font name="Ebrima Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="425.0" layoutY="418.0" text="90$">
+                  <Label fx:id="lblTotalPrice" layoutX="425.0" layoutY="404.0">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>
@@ -128,7 +118,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <Label layoutX="435.0" layoutY="124.0" text="Name">
+                  <Label fx:id="lblParkName" layoutX="435.0" layoutY="122.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
@@ -149,32 +139,32 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <Label layoutX="390.0" layoutY="164.0" text="7/12/2020">
+                  <Label fx:id="lvlDate" layoutX="390.0" layoutY="162.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="389.0" layoutY="204.0" text="19:40">
+                  <Label fx:id="lblTime" layoutX="389.0" layoutY="202.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="476.0" layoutY="244.0" text="1">
+                  <Label fx:id="lblVisitorsNumber" layoutX="476.0" layoutY="242.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="393.0" layoutY="283.0" text="example@gmail.com">
+                  <Label fx:id="lblEmail" layoutX="393.0" layoutY="281.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="346.0" layoutY="394.0" styleClass="labelBold" text="Payment Method:">
+                  <Label layoutX="346.0" layoutY="380.0" styleClass="labelBold" text="Payment Method:">
                      <font>
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="469.0" layoutY="393.0" text="Credit Card">
+                  <Label fx:id="lblPayment" layoutX="469.0" layoutY="379.0">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>
@@ -183,7 +173,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <Label layoutX="463.0" layoutY="84.0" text="123">
+                  <Label fx:id="lblOrderNumber" layoutX="462.0" layoutY="82.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
@@ -194,9 +184,9 @@
                      </font>
                   </Label>
                   <Separator layoutX="309.0" layoutY="41.0" orientation="VERTICAL" prefHeight="468.0" />
-                  <Button fx:id="btnReset3" focusTraversable="false" layoutX="471.0" layoutY="467.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Approve" />
-                  <Button fx:id="btnReset" focusTraversable="false" layoutX="93.0" layoutY="253.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Show Details" />
-                  <JFXTextField fx:id="txtVisitorsNumber1" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="187.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Order Number" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="471.0" layoutY="467.0" mnemonicParsing="false" onAction="#approve" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Approve" />
+                  <Button fx:id="btnShowDetails" focusTraversable="false" layoutX="93.0" layoutY="235.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Show Details" />
+                  <JFXTextField fx:id="txtOrderNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Order Number" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -204,14 +194,15 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <Button fx:id="btnReset1" focusTraversable="false" layoutX="30.0" layoutY="427.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Random Visitor" />
-                  <Button fx:id="btnReset2" focusTraversable="false" layoutX="30.0" layoutY="44.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Barcode Scan" />
-                  <Separator layoutX="30.0" layoutY="165.0" prefHeight="3.0" prefWidth="250.0" />
+                  <Button fx:id="btnRndonVisitor" focusTraversable="false" layoutX="30.0" layoutY="427.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Random Visitor" />
+                  <Button fx:id="btnBarcodeScan" focusTraversable="false" layoutX="30.0" layoutY="44.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Barcode Scan" />
+                  <Separator layoutX="30.0" layoutY="150.0" prefHeight="3.0" prefWidth="250.0" />
                   <ImageView fitHeight="126.0" fitWidth="208.0" layoutX="51.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@park_minimal_nobg_500.png" />
                      </image>
                   </ImageView>
+                  <Separator layoutX="30.0" layoutY="301.0" prefHeight="3.0" prefWidth="250.0" />
                </children>
             </Pane>
          </children>
