@@ -37,9 +37,9 @@ public class WelcomeController implements Initializable {
 	
 	@FXML
     void orderNow(ActionEvent event) throws IOException {
-//		Pane pane = FXMLLoader.load(getClass().getResource("/gui/Order.fxml"));
-//		pnWelcomeRight.getChildren().removeAll();
-//		pnWelcomeRight.getChildren().setAll(pane);
+		Pane pane = FXMLLoader.load(getClass().getResource("/gui/Order.fxml"));
+		pnWelcomeRight.getChildren().removeAll();
+		pnWelcomeRight.getChildren().setAll(pane);
     }
 
     @FXML
