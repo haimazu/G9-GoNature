@@ -23,7 +23,7 @@ public class EchoServer extends AbstractServer {
 		case "login":
 			Login.login((ArrayList<Object>) msg, client);
 			break;
-
+			
 		default:
 			break;
 		}

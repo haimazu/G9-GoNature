@@ -55,7 +55,8 @@ public class ChatClient extends AbstractClient {
 			case "login":
 				LoginController.recivedFromServer(((ArrayList<String>)recived.get(1)));
 			break;
-
+			//case "order":
+				
 			default:
 			break;
 		}
