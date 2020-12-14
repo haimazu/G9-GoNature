@@ -46,6 +46,8 @@ public class LoginController implements Initializable {
 
 	private static String status;
 
+	private boolean userStatus = false, passStatus = false;
+
 	// Switch screens: Login -> Welcome
 	@FXML
 	void back(ActionEvent event) throws IOException {
@@ -56,14 +58,14 @@ public class LoginController implements Initializable {
 
 	/*
 	 * msg is ArrayList of objects -> 
-	 * 		  [0] -> the function who calling to service from the server "login"
-	 * 		  [1] -> ArrayList of String -> 
-	 * 				 [0] -> username
-	 * 				 [1] -> password
-	 * The function waiting to response from the server and can get:
-	 * 		if success (the user exists) -> we getting the role of the user
-	 * 		else (the user doesn't exists) -> getting "Failed"
-	 * **/
+	 * 		[0] -> the function who calling to service from the server "login" 
+	 * 		[1] -> ArrayList of String -> 
+	 * 							[0] -> username 
+	 * 						    [1] -> password 
+	 * The function waiting to response from the server and can get: if
+	 * success (the user exists) -> we getting the role of the user else (the user
+	 * doesn't exists) -> getting "Failed"
+	 **/
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		// Query
@@ -76,7 +78,7 @@ public class LoginController implements Initializable {
 			data.add(txtUsername.getText());
 			data.add(txtPassword.getText());
 			msg.add(data);
-
+			
 			ClientUI.sentToChatClient(msg);
 
 			// Username and password doesn't match
@@ -93,36 +95,26 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	// Check username input before sending to DB
+	// Check password input before sending to DB
 	public boolean checkUsername() {
 		String username = txtUsername.getText();
-		// starts with letter, letters or numbers, between 3 to 20
+		// Username consists a letter then letters or numbers [length of 3-20 characters]
 		String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
-		boolean userStatus = false;
-		
-		userIcon.setFill(Color.RED);
-		txtUsername.getStyleClass().add("txtFieldRed");
 
 		if (username.isEmpty()) {
 			Alert("Failed", "All fields required.");
 		} else if (!username.matches(pattern)) {
-			Alert("Failed",
-					"Wrong pattern.\n" + "Username starts with letter, then letters or numbers\n[between 4 to 20]");
-		} else {
-			txtUsername.getStyleClass().add("txtFieldGreen");
-			userIcon.setFill(Color.GREEN);
-			userStatus = true;
-		}
+			Alert("Failed", "Wrong pattern.\n"
+					+ "Username consists a letter, then letters or numbers.\n"
+					+ "[length of 3-20 characters]");
+		} 
+		
 		return userStatus;
 	}
 
 	// Check password input before sending to DB
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
-		boolean passStatus = false;
-		
-		passIcon.setFill(Color.RED);
-		txtPassword.getStyleClass().add("txtFieldRed");
 
 		if (password.isEmpty()) {
 			Alert("Failed", "All fields required.");
@@ -130,19 +122,14 @@ public class LoginController implements Initializable {
 			Alert("Failed", "Password too short.");
 		} else if (password.length() > 30) {
 			Alert("Failed", "Password too long.");
-		} else {
-			txtPassword.getStyleClass().add("txtFieldGreen");
-			passIcon.setFill(Color.GREEN);
-			passStatus = true;
-		}
+		} 
+		
 		return passStatus;
 	}
 
 	/*
-	 * Getting title and message and showing alerts: 
-	 * 1. Success
-	 * 2. Failed 
-	 * **/
+	 * Getting title and message and showing alerts: 1. Success 2. Failed
+	 **/
 	public void Alert(String title, String msg) {
 		if (title == "Success") {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -162,7 +149,7 @@ public class LoginController implements Initializable {
 	public static void recivedFromServer(String status) {
 		setStatus(status);
 	}
-	
+
 	public static String getStatus() {
 		return status;
 	}
@@ -171,10 +158,51 @@ public class LoginController implements Initializable {
 		LoginController.status = status;
 	}
 
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		txtUsername.textProperty().addListener((obs, oldValue, newValue) -> {
+			userStatus = false;
+			String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
 
+			if (!oldValue.equals(newValue)) {
+
+				userIcon.setFill(Color.RED);
+				txtUsername.setStyle("-jfx-unfocus-color: red; " 
+							       + "-fx-text-fill: red; " 
+								   + "-fx-prompt-text-fill: red;");
+
+				if (!newValue.isEmpty() && newValue.matches(pattern)) {
+					userStatus = true;
+
+					userIcon.setFill(Color.GREEN);
+					txtUsername.setStyle("-jfx-unfocus-color: green; " 
+									   + "-fx-text-fill: green; " 
+									   + "-fx-prompt-text-fill: green;");
+				}
+			}
+		});
+
+		txtPassword.textProperty().addListener((obs, oldValue, newValue) -> {
+			passStatus = false;
+			// Character range between 8 and 30
+			String pattern = "^.{8,30}$";
+
+			if (!oldValue.equals(newValue)) {
+
+				passIcon.setFill(Color.RED);
+				txtPassword.setStyle("-jfx-unfocus-color: red; " 
+								   + "-fx-text-fill: red; " 
+								   + "-fx-prompt-text-fill: red;");
+
+				if (!newValue.isEmpty() && newValue.matches(pattern)) {
+					passStatus = true;
+					
+					passIcon.setFill(Color.GREEN);
+					txtPassword.setStyle("-jfx-unfocus-color: green; " 
+									   + "-fx-text-fill: green; " 
+									   + "-fx-prompt-text-fill: green;");
+				}
+			}
+		});
 	}
 }

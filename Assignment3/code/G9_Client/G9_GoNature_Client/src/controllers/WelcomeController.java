@@ -41,6 +41,7 @@ public class WelcomeController implements Initializable {
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("GoNature");
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 	
