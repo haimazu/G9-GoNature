@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ParkManager">
    <children>
       <VBox prefHeight="400.0" prefWidth="182.0" styleClass="pnAnchor" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -84,12 +84,13 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="lblUsernameTitle" layoutX="395.0" layoutY="26.0" styleClass="labelBold" text="Welcome, Park Manager">
+            <Label layoutX="430.0" layoutY="25.0" styleClass="labelBold" text="Welcome, ">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" styleClass="btnSmallRed" text="Logout" />
+            <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" onAction="#logout" styleClass="btnSmallRed" text="Logout" />
             <Separator layoutY="64.0" prefWidth="618.0" />
+            <Label fx:id="lblFirstNameTitle" layoutX="489.0" layoutY="25.0" styleClass="labelBold" />
          </children>
       </Pane>
       <StackPane layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">

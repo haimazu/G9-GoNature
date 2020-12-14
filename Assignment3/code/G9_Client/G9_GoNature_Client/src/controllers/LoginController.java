@@ -44,7 +44,7 @@ public class LoginController implements Initializable {
 	@FXML
 	private Button btnLogin;
 
-	private static String status;
+	private static String status, firstName;
 
 	private boolean userStatus = false, passStatus = false;
 
@@ -146,8 +146,9 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	public static void recivedFromServer(String status) {
+	public static void recivedFromServer(String status, String firstName) {
 		setStatus(status);
+		setFirstName(firstName);
 	}
 
 	public static String getStatus() {
@@ -156,6 +157,14 @@ public class LoginController implements Initializable {
 
 	public static void setStatus(String status) {
 		LoginController.status = status;
+	}
+	
+	public static String getFirstName() {
+		return firstName;
+	}
+
+	public static void setFirstName(String firstName) {
+		LoginController.firstName = firstName;
 	}
 
 	@Override

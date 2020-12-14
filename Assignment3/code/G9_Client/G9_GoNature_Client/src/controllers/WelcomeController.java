@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,10 +28,24 @@ public class WelcomeController implements Initializable {
 
 	@FXML
 	void login(ActionEvent event) throws IOException {
-		Pane pane = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
-		pnWelcomeRight.getChildren().removeAll();
-		pnWelcomeRight.getChildren().setAll(pane);
+		// switch scene to login
+    	Node node = (Node) event.getSource();     	
+    	Stage stage = (Stage) node.getScene().getWindow();
+		Pane root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+		stage.setScene(new Scene(root));
 	}
+	
+	@FXML
+    void orderNow(ActionEvent event) throws IOException {
+//		Pane pane = FXMLLoader.load(getClass().getResource("/gui/Order.fxml"));
+//		pnWelcomeRight.getChildren().removeAll();
+//		pnWelcomeRight.getChildren().setAll(pane);
+    }
+
+    @FXML
+    void orderNumber(ActionEvent event) {
+
+    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

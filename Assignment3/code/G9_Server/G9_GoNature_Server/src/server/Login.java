@@ -27,11 +27,11 @@ public class Login {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
 		query.add("employee");
-		query.add("role");
+		query.add("role, firstname");
 		query.add("WHERE username='" + data.get(0) + "' AND password='" + data.get(1) + "'" );
-		query.add("1");
+		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.get(0).isEmpty()) {
+		if (queryData.isEmpty()) {
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
 			answer.add(queryData.get(0));
