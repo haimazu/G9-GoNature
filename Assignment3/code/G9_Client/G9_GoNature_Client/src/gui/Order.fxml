@@ -194,7 +194,7 @@
                         <Image url="@שקופית52-removebg-preview.png" />
                      </image>
                   </ImageView>
-                  <JFXTextField fx:id="txtParkNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="226.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtParkName" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="226.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -203,8 +203,8 @@
                      </font>
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="parkIcon" fill="#a1a1a1" glyphName="BUILDING" layoutX="306.0" layoutY="261.0" size="16" />
-                  <JFXDatePicker editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="25.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
-                  <JFXTextField fx:id="txtDay" focusTraversable="false" labelFloat="true" layoutX="182.0" layoutY="286.0" prefHeight="40.0" prefWidth="142.0" promptText="*Arrivel Time (HH:mm)" styleClass="txtField" />
+                  <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="25.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
+                  <JFXTextField fx:id="txtTime" focusTraversable="false" labelFloat="true" layoutX="182.0" layoutY="286.0" prefHeight="40.0" prefWidth="142.0" promptText="*Arrivel Time (HH:mm)" styleClass="txtField" />
                   <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="346.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
@@ -214,7 +214,7 @@
                      </font>
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="visitorsIcon" fill="#a1a1a1" glyphName="USERS" layoutX="306.0" layoutY="381.0" size="16" />
-                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="406.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Inviting email" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="406.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Email" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -235,7 +235,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <JFXTextField focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtmemberID" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
