@@ -27,7 +27,6 @@ public class ClientUI extends Application {
 		}
 		startFrame.start(primaryStage);		
 	}
-
 	
 	public static void sentToChatClient(ArrayList<Object> message) {
 		client.handleMessageFromClientUI(message);

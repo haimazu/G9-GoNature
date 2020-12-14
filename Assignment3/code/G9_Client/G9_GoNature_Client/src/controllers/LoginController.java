@@ -106,7 +106,7 @@ public class LoginController implements Initializable {
 		} else if (!username.matches(pattern)) {
 			Alert("Failed", "Wrong pattern.\n"
 					+ "Username consists a letter, then letters or numbers.\n"
-					+ "[length of 3-20 characters]");
+					+ "[length of 4-20 characters]");
 		} 
 		
 		return userStatus;
@@ -146,9 +146,9 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	public static void recivedFromServer(String status, String firstName) {
-		setStatus(status);
-		setFirstName(firstName);
+	public static void recivedFromServer(ArrayList<String> msgRecived) {
+		setStatus(msgRecived.get(0));
+		setFirstName(msgRecived.get(1));
 	}
 
 	public static String getStatus() {

@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class ParkManager implements Initializable {
+public class ParkManagerController implements Initializable {
 	@FXML
 	private Label lblFirstNameTitle;
 	@FXML
@@ -34,7 +34,7 @@ public class ParkManager implements Initializable {
 	}
 
 	public static void setFirstName(String firstName) {
-		ParkManager.firstName = firstName;
+		ParkManagerController.firstName = firstName;
 	}
 
 	@Override

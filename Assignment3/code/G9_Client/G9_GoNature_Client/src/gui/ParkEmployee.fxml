@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DashboardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ParkEmployeeController">
    <children>
       <VBox prefHeight="400.0" prefWidth="182.0" styleClass="pnAnchor" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -32,7 +32,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Pane>
-            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Access Control" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Access Control" textAlignment="CENTER" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="DASHBOARD" size="15" />
                </graphic>
@@ -40,7 +40,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
+            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="COG" size="16" />
                </graphic>
@@ -57,12 +57,13 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="lblUsernameTitle" layoutX="419.0" layoutY="26.0" styleClass="labelBold" text="Welcome, Employee">
+            <Label fx:id="lblUsernameTitle" layoutX="430.0" layoutY="25.0" styleClass="labelBold" text="Welcome,">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" onAction="#logout" styleClass="btnSmallRed" text="Logout" />
+            <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" styleClass="btnSmallRed" text="Logout" />
             <Separator layoutY="64.0" prefWidth="618.0" />
+            <Label fx:id="lblFirstNameTitle" layoutX="489.0" layoutY="25.0" styleClass="labelBold" />
          </children>
       </Pane>
       <StackPane layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
@@ -193,8 +194,8 @@
                      </font>
                   </Label>
                   <Separator layoutX="309.0" layoutY="41.0" orientation="VERTICAL" prefHeight="468.0" />
-                  <Button fx:id="btnReset3" focusTraversable="false" layoutX="471.0" layoutY="467.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Approve" />
-                  <Button fx:id="btnReset" focusTraversable="false" layoutX="93.0" layoutY="253.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Show Details" />
+                  <Button fx:id="btnReset3" focusTraversable="false" layoutX="471.0" layoutY="467.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Approve" />
+                  <Button fx:id="btnReset" focusTraversable="false" layoutX="93.0" layoutY="253.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Show Details" />
                   <JFXTextField fx:id="txtVisitorsNumber1" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="187.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Order Number" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
@@ -203,8 +204,8 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <Button fx:id="btnReset1" focusTraversable="false" layoutX="30.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Random Visitor" />
-                  <Button fx:id="btnReset2" focusTraversable="false" layoutX="30.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Barcode Scan" />
+                  <Button fx:id="btnReset1" focusTraversable="false" layoutX="30.0" layoutY="427.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Random Visitor" />
+                  <Button fx:id="btnReset2" focusTraversable="false" layoutX="30.0" layoutY="44.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Barcode Scan" />
                   <Separator layoutX="30.0" layoutY="165.0" prefHeight="3.0" prefWidth="250.0" />
                   <ImageView fitHeight="126.0" fitWidth="208.0" layoutX="51.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true">
                      <image>

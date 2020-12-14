@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DashboardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ServiceRepresentativeController">
    <children>
       <VBox prefHeight="400.0" prefWidth="182.0" styleClass="pnAnchor" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -34,7 +34,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Pane>
-            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Add Member" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Add Member" textAlignment="CENTER" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="PLUS" size="16" />
                </graphic>
@@ -42,7 +42,7 @@
                   <Insets left="14.0" />
                </padding>
             </Button>
-            <Button fx:id="btnDashboard1" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Edit / Delete Member" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="btnDashboard1" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Edit / Delete Member" textAlignment="CENTER" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="EDIT" size="16" />
                </graphic>
@@ -50,7 +50,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
+            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="COG" size="16" />
                </graphic>
@@ -67,12 +67,13 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="lblUsernameTitle" layoutX="344.0" layoutY="26.0" styleClass="labelBold" text="Welcome, Service Representative">
+            <Label layoutX="430.0" layoutY="25.0" styleClass="labelBold" text="Welcome,">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
             <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" onAction="#logout" styleClass="btnSmallRed" text="Logout" />
             <Separator layoutY="64.0" prefWidth="618.0" />
+            <Label fx:id="lblFirstNameTitle" layoutX="489.0" layoutY="25.0" styleClass="labelBold" />
          </children>
       </Pane>
       <StackPane layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">

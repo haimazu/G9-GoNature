@@ -16,7 +16,7 @@ public class ServerUI extends Application {
 
 	public static void main(String args[]) throws Exception {
 		launch(args);
-	} 
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -24,58 +24,55 @@ public class ServerUI extends Application {
 		control.start(primaryStage);
 	}
 
-	public static boolean runServer(EchoServer sv)
-	{
+	public static boolean runServer(EchoServer sv) {
 		if (DBup) {
 			ServerUI.echoServ = sv;
-	        try {
-	          sv.listen();
-	        } catch (Exception ex) {
-	        	return false;
-	        	//setMsg("ERROR - Could not listen for clients!");
-	        }
-	        serverUP=true;
-	        return true;
-		}
-		else {
+			try {
+				sv.listen();
+			} catch (Exception ex) {
+				return false;
+				// setMsg("ERROR - Could not listen for clients!");
+			}
+			serverUP = true;
+			return true;
+		} else {
 			return false;
-			//setMsg("Please Start DB first");
+			// setMsg("Please Start DB first");
 		}
 	}
-	
+
 	public static boolean stopServer() {
 		try {
 			echoServ.close();
-			//System.out.println("covefee");
+			// System.out.println("covefee");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
-		serverUP=false;
+		serverUP = false;
 		return true;
 	}
 
-
 	public static boolean connectToDB(ArrayList<String> data) {
-		if(MySQLConnection.connectToDB(data)) {
-			DBup=true;
+		if (MySQLConnection.connectToDB(data)) {
+			DBup = true;
 			return true;
-			}
+		}
 		return false;
 	}
-	
+
 	public static boolean disconnectFromDB() {
 		if (serverUP) {
 			return false;
-			//SERVER UP FAILURE MSG
+			// SERVER UP FAILURE MSG
 		}
-		if(MySQLConnection.disconnectFromDB()) {
-			DBup=false;
+		if (MySQLConnection.disconnectFromDB()) {
+			DBup = false;
 			return true;
-			}
+		}
 		return false;
 	}
-	
+
 	public static boolean isDBup() {
 		return DBup;
 	}
@@ -83,6 +80,5 @@ public class ServerUI extends Application {
 	public static boolean isServerUP() {
 		return serverUP;
 	}
-
 
 }
