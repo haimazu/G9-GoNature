@@ -156,7 +156,7 @@ public class ServerController implements Initializable {
 		// TODO Auto-generated method stub
 		dbhost.setText("localhost"); 
 		dbusername.setText("root");
-		dbpass.setText("NewP@ssword4theSQL");
+		dbpass.setText("o2da#W$E");
 		dbscheme.setText("g9_gonature");
 		dbport.setText("3306");
 		serverport.setText("5555");

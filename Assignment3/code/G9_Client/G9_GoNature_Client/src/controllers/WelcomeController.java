@@ -47,17 +47,18 @@ public class WelcomeController implements Initializable {
 
     }
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-	}
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/ParkEmployee.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("GoNature");
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
+	}
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
 	}
 	
 }
