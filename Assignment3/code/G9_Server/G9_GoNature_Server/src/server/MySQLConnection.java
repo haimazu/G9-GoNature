@@ -151,12 +151,6 @@ public class MySQLConnection {
 	//output: true if update successful, false if failed
 	public static boolean insert(ArrayList<String> data) {
 		String tableName = data.get(1);
-		
-		//**********************************************************************
-		//Note from Nastya : in insert command we need the columns names also
-		//**********************************************************************
-		//String columns=data.get(2); add this ?
-		
 		String values = data.get(2); 
 		String statmentString = ("INSERT into " + dbScheme + "." + tableName + " values (" + values + ")");
 		return execute(statmentString, data);
