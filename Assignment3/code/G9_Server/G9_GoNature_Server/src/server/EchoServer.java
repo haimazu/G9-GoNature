@@ -24,7 +24,10 @@ public class EchoServer extends AbstractServer {
 			Login.login((ArrayList<Object>) msg, client);
 			break;
 		case "orderParksNameList":
-			
+			break;
+		case "ParkEmployee":	
+			ExistingOrderCheck.getOrderDetailsByOrderNumber((ArrayList<Object>) msg, client);
+			break;
 		default:
 			break;
 		}

@@ -54,10 +54,14 @@ public class ChatClient extends AbstractClient {
 		switch ((String)received.get(0)) {
 			case "login":
 				LoginController.receivedFromServer(((ArrayList<String>)received.get(1)));
-			break;
+				break;
 			case "orderParksNameList":
 				OrderController.recivedFromServerParksNames(((ArrayList<String>)received.get(1)));
-				
+				break;
+			//case "order":
+			case "ParkEmployee":
+				ParkEmployeeController.receivedFromServerOrderDetails((ArrayList<String>)received.get(1));
+				break;
 			default:
 			break;
 		}
