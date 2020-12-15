@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -55,7 +56,7 @@
       <Button fx:id="btnReset" focusTraversable="false" layoutX="28.0" layoutY="539.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
       <Button fx:id="btnReset1" focusTraversable="false" layoutX="675.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
       <Button fx:id="btnReset2" focusTraversable="false" layoutX="601.0" layoutY="539.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="19.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Save" />
-      <JFXTextField fx:id="txtVisitorsNumber1" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="527.0" layoutY="423.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+      <JFXTextField fx:id="txtVisitorsNumber1" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="528.0" layoutY="423.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="119.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -64,7 +65,6 @@
          </font>
       </JFXTextField>
       <JFXDatePicker editable="false" focusTraversable="false" layoutX="71.0" layoutY="434.0" prefHeight="25.0" prefWidth="110.0" promptText="Arrivel Date" styleClass="datePicker" />
-      <JFXTextField fx:id="txtDay1" focusTraversable="false" labelFloat="true" layoutX="240.0" layoutY="423.0" prefHeight="40.0" prefWidth="142.0" promptText="Arrivel Time (HH:mm)" styleClass="txtField" />
       <Label layoutX="396.0" layoutY="445.0" styleClass="labelBold" text="Visitors Amount:">
          <font>
             <Font size="16.0" />
@@ -85,6 +85,7 @@
             <Font name="Tahoma Bold" size="24.0" />
          </font>
       </Label>
+      <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="243.0" layoutY="413.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
    </children>
    <effect>
       <InnerShadow />

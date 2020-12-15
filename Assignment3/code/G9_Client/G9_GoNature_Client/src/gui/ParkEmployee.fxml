@@ -195,7 +195,7 @@
                      </font>
                   </JFXTextField>
                   <Button fx:id="btnRndonVisitor" focusTraversable="false" layoutX="30.0" layoutY="427.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Random Visitor" />
-                  <Button fx:id="btnBarcodeScan" focusTraversable="false" layoutX="30.0" layoutY="44.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Barcode Scan" />
+                  <Button fx:id="btnBarcodeScan" focusTraversable="false" layoutX="30.0" layoutY="44.0" mnemonicParsing="false" onAction="#barcodeScan" prefHeight="19.0" prefWidth="157.0" styleClass="btnWelcome" text="Barcode Scan" />
                   <Separator layoutX="30.0" layoutY="150.0" prefHeight="3.0" prefWidth="250.0" />
                   <ImageView fitHeight="126.0" fitWidth="208.0" layoutX="51.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true">
                      <image>

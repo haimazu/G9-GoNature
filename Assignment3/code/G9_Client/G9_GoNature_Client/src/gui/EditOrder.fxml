@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -18,47 +19,6 @@
    <children>
       <Pane fx:id="pnWelcomeRight" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRightTop">
          <children>
-            <Label focusTraversable="false" layoutX="80.0" layoutY="417.0" prefHeight="124.0" prefWidth="253.0" style="-fx-border-color: #deceb8;" />
-            <Label layoutX="88.0" layoutY="425.0" styleClass="labelBold" text="Price:">
-               <font>
-                  <Font name="Ebrima Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="130.0" layoutY="424.0" text="100$">
-               <font>
-                  <Font name="Ebrima" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="88.0" layoutY="447.0" styleClass="labelBold" text="Quantity Of Orders:">
-               <font>
-                  <Font name="Ebrima Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="222.0" layoutY="446.0" text="1">
-               <font>
-                  <Font name="Ebrima" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="88.0" layoutY="470.0" styleClass="labelBold" text="Discount:" textFill="SEAGREEN">
-               <font>
-                  <Font name="Ebrima Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="155.0" layoutY="469.0" text="10%" textFill="SEAGREEN">
-               <font>
-                  <Font name="Ebrima" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="88.0" layoutY="516.0" styleClass="labelBold" text="Total Price:">
-               <font>
-                  <Font name="Ebrima Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="166.0" layoutY="515.0" text="90$">
-               <font>
-                  <Font name="Ebrima" size="14.0" />
-               </font>
-            </Label>
             <Label focusTraversable="false" layoutX="118.0" layoutY="561.0" text="You can see all your orders">
                <font>
                   <Font name="Ebrima" size="16.0" />
@@ -68,7 +28,7 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label layoutX="176.0" layoutY="224.0" text="Name">
+            <Label layoutX="176.0" layoutY="222.0" text="Name">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
@@ -89,34 +49,24 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label layoutX="131.0" layoutY="264.0" text="7/12/2020">
+            <Label layoutX="131.0" layoutY="262.0" text="7/12/2020">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="130.0" layoutY="304.0" text="19:40">
+            <Label layoutX="130.0" layoutY="302.0" text="19:40">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="217.0" layoutY="344.0" text="1">
+            <Label layoutX="217.0" layoutY="342.0" text="1">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="134.0" layoutY="383.0" text="example@gmail.com">
+            <Label layoutX="134.0" layoutY="381.0" text="example@gmail.com">
                <font>
                   <Font name="Ebrima" size="16.0" />
-               </font>
-            </Label>
-            <Label layoutX="88.0" layoutY="493.0" styleClass="labelBold" text="Payment Method:">
-               <font>
-                  <Font name="Ebrima Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="211.0" layoutY="492.0" text="Credit Card">
-               <font>
-                  <Font name="Ebrima" size="14.0" />
                </font>
             </Label>
             <Hyperlink focusTraversable="false" layoutX="308.0" layoutY="557.0" text="here">
@@ -132,7 +82,7 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label layoutX="202.0" layoutY="184.0" text="123">
+            <Label layoutX="202.0" layoutY="182.0" text="123">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
@@ -140,6 +90,31 @@
             <Label focusTraversable="false" layoutX="81.0" layoutY="137.0" styleClass="labelBold" text="Order Details:" textAlignment="CENTER">
                <font>
                   <Font name="Tahoma Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label focusTraversable="false" layoutX="81.0" layoutY="435.0" prefHeight="104.0" prefWidth="253.0" style="-fx-border-color: deceb8;">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <Label layoutX="86.0" layoutY="439.0" styleClass="labelBold" text="Price:">
+               <font>
+                  <Font name="Ebrima Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="86.0" layoutY="464.0" styleClass="labelBold" text="Discount:" textFill="SEAGREEN">
+               <font>
+                  <Font name="Ebrima Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="86.0" layoutY="514.0" styleClass="labelBold" text="Total Price:">
+               <font>
+                  <Font name="Ebrima Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="86.0" layoutY="489.0" styleClass="labelBold" text="Payment Method:">
+               <font>
+                  <Font name="Ebrima Bold" size="14.0" />
                </font>
             </Label>
          </children>
@@ -156,8 +131,8 @@
                   <Font name="Ebrima" size="14.0" />
                </font>
             </JFXTextField>
-            <JFXDatePicker editable="false" focusTraversable="false" layoutX="130.0" layoutY="279.0" prefHeight="25.0" prefWidth="110.0" promptText="Arrivel Date" styleClass="datePicker" />
-            <JFXTextField fx:id="txtDay1" focusTraversable="false" labelFloat="true" layoutX="130.0" layoutY="360.0" prefHeight="40.0" prefWidth="142.0" promptText="Arrivel Time (HH:mm)" styleClass="txtField" />
+            <JFXDatePicker editable="false" focusTraversable="false" layoutX="130.0" layoutY="279.0" prefHeight="29.0" prefWidth="148.0" promptText="Arrivel Date" styleClass="datePicker" />
+            <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
             <Label layoutX="130.0" layoutY="157.0" styleClass="labelBold" text="Edit the visitors amount:">
                <font>
                   <Font size="16.0" />

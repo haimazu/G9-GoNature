@@ -6,8 +6,6 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextField;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ParkEmployeeController implements Initializable {
@@ -84,8 +81,13 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	@FXML
+	void barcodeScan(ActionEvent event) {
+
+	}
+
+	@FXML
 	void showDetails(ActionEvent event) {
-		
+
 	}
 
 	@FXML
@@ -103,20 +105,20 @@ public class ParkEmployeeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// get the user firstname from the login 
+		// get the user firstname from the login
 		setFirstName(LoginController.getFirstName());
 		// add the user first name to say "Welcome, firstname"
 		lblFirstNameTitle.setText(getFirstName());
-		
+
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
 
 			// \\d -> only digits
-			// * -> escaped special characters	
-			if (!newValue.matches("\\d")) {	
+			// * -> escaped special characters
+			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtOrderNumber.setText(newValue.replaceAll("[^\\d]", ""));
-			} 
+			}
 		});
 	}
 }

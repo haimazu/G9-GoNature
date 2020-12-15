@@ -245,7 +245,7 @@
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="201.0" size="16" />
                   <Button layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
-                  <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" layoutX="189.0" layoutY="277.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
+                  <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="189.0" layoutY="277.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
                </children>
             </Pane>
          </children>
