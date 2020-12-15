@@ -80,38 +80,22 @@
             </Pane>
             <Pane fx:id="pnDashboard" layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight">
                <children>
-                  <Label focusTraversable="false" layoutX="341.0" layoutY="326.0" prefHeight="104.0" prefWidth="253.0" style="-fx-border-color: deceb8;">
+                  <Label focusTraversable="false" layoutX="342.0" layoutY="36.0" styleClass="labelBold" text="Order Details:" textAlignment="CENTER">
+                     <font>
+                        <Font name="Tahoma Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label focusTraversable="false" layoutX="341.0" layoutY="326.0" prefHeight="127.0" prefWidth="253.0" style="-fx-border-color: deceb8;">
                      <font>
                         <Font size="11.0" />
                      </font></Label>
-                  <Label layoutX="346.0" layoutY="330.0" styleClass="labelBold" text="Price:">
+                  <Label layoutX="342.0" layoutY="84.0" styleClass="labelBold" text="Order Number:">
                      <font>
-                        <Font name="Ebrima Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblPrice" layoutX="388.0" layoutY="329.0">
+                        <Font size="16.0" />
+                     </font></Label>
+                  <Label fx:id="lblOrderNumber" layoutX="462.0" layoutY="82.0">
                      <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="346.0" layoutY="355.0" styleClass="labelBold" text="Discount:" textFill="SEAGREEN">
-                     <font>
-                        <Font name="Ebrima Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblDiscount" layoutX="413.0" layoutY="354.0" textFill="SEAGREEN">
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="346.0" layoutY="405.0" styleClass="labelBold" text="Total Price:">
-                     <font>
-                        <Font name="Ebrima Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblTotalPrice" layoutX="425.0" layoutY="404.0">
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
+                        <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
                   <Label layoutX="342.0" layoutY="124.0" styleClass="labelBold" text="Park Name:">
@@ -127,60 +111,86 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <Label layoutX="342.0" layoutY="204.0" styleClass="labelBold" text="Time:">
-                     <font>
-                        <Font size="16.0" />
-                     </font></Label>
-                  <Label layoutX="342.0" layoutY="244.0" styleClass="labelBold" text="Visitors Number:">
-                     <font>
-                        <Font size="16.0" />
-                     </font></Label>
-                  <Label layoutX="342.0" layoutY="284.0" styleClass="labelBold" text="Email:">
-                     <font>
-                        <Font size="16.0" />
-                     </font></Label>
                   <Label fx:id="lblDate" layoutX="390.0" layoutY="162.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
+                  <Label layoutX="342.0" layoutY="204.0" styleClass="labelBold" text="Time:">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
                   <Label fx:id="lblTime" layoutX="389.0" layoutY="202.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
+                  <Label layoutX="342.0" layoutY="244.0" styleClass="labelBold" text="Visitors Number:">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
                   <Label fx:id="lblVisitorsNumber" layoutX="476.0" layoutY="242.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
+                  <Label layoutX="342.0" layoutY="284.0" styleClass="labelBold" text="Email:">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
                   <Label fx:id="lblEmail" layoutX="393.0" layoutY="281.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="346.0" layoutY="380.0" styleClass="labelBold" text="Payment Method:">
+                  <Label layoutX="346.0" layoutY="330.0" styleClass="labelBold" text="Visitors Entered:">
                      <font>
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblPayment" layoutX="469.0" layoutY="379.0">
+                  <Label fx:id="lblVisitorsEntered" layoutX="459.0" layoutY="329.0">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="342.0" layoutY="84.0" styleClass="labelBold" text="Order Number:">
+                  <Label layoutX="346.0" layoutY="355.0" styleClass="labelBold" text="Price:">
                      <font>
-                        <Font size="16.0" />
-                     </font></Label>
-                  <Label fx:id="lblOrderNumber" layoutX="462.0" layoutY="82.0">
-                     <font>
-                        <Font name="Ebrima" size="16.0" />
+                        <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label focusTraversable="false" layoutX="342.0" layoutY="36.0" styleClass="labelBold" text="Order Details:" textAlignment="CENTER">
+                  <Label fx:id="lblPrice" layoutX="388.0" layoutY="354.0">
                      <font>
-                        <Font name="Tahoma Bold" size="24.0" />
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="346.0" layoutY="380.0" styleClass="labelBold" text="Discount:" textFill="SEAGREEN">
+                     <font>
+                        <Font name="Ebrima Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiscount" layoutX="413.0" layoutY="379.0" textFill="SEAGREEN">
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="346.0" layoutY="405.0" styleClass="labelBold" text="Payment Method:">
+                     <font>
+                        <Font name="Ebrima Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPayment" layoutX="469.0" layoutY="404.0">
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="346.0" layoutY="430.0" styleClass="labelBold" text="Total Price:">
+                     <font>
+                        <Font name="Ebrima Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalPrice" layoutX="425.0" layoutY="429.0">
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
                      </font>
                   </Label>
                   <Separator layoutX="309.0" layoutY="41.0" orientation="VERTICAL" prefHeight="468.0" />

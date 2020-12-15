@@ -44,15 +44,6 @@ public class ParkEmployeeController implements Initializable {
 	private Pane pnDashboard;
 
 	@FXML
-	private Label lblPrice;
-	@FXML
-	private Label lblDiscount;
-	@FXML
-	private Label lblPayment;
-	@FXML
-	private Label lblTotalPrice;
-
-	@FXML
 	private Label lblOrderNumber;
 	@FXML
 	private Label lblParkName;
@@ -64,12 +55,25 @@ public class ParkEmployeeController implements Initializable {
 	private Label lblVisitorsNumber;
 	@FXML
 	private Label lblEmail;
+	
+	@FXML
+    private Label lblVisitorsEntered;
+	@FXML
+	private Label lblPrice;
+	@FXML
+	private Label lblDiscount;
+	@FXML
+	private Label lblPayment;
+	@FXML
+	private Label lblTotalPrice;
 
 	@FXML
 	private Button btnBarcodeScan;
 
 	@FXML
 	private JFXTextField txtOrderNumber;
+	@FXML
+    private JFXTextField txtVisitorsEntered;
 	@FXML
 	private Button btnShowDetails;
 
@@ -95,15 +99,25 @@ public class ParkEmployeeController implements Initializable {
 		// call showDetails() function to set up all the order details
 		// SELECT * FROM orders ORDER BY orderNumber LIMIT 1;
 		txtOrderNumber.setText(String.valueOf(getOrderNumberFromBarcode()));
+		txtVisitorsEntered.setText(String.valueOf(getVisitorsEnteredFromBarcode()));
 		showDetails(event);
 	}
 
 	private int getOrderNumberFromBarcode() {	
 		return 1111;
 	}
+	
+	private int getVisitorsEnteredFromBarcode() {	
+		return 8;
+	}
 
 	@FXML
 	void showDetails(ActionEvent event) {
+		
+		if (txtOrderNumber.getText().isEmpty() || txtVisitorsEntered.getText().isEmpty()) {
+			Alert("Failed", "All fields required.");
+			return;
+		}
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		// Data fields
@@ -116,10 +130,10 @@ public class ParkEmployeeController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 		
 		if (orderDetails.get(0).equals("No such order")) {
-			Alert("Failed", "No such order");
+			Alert("Failed", "No such order.");
 			return;
 		}
-		
+			
 		// 2021-01-01 08:00:00
 		String DateAndTime = orderDetails.get(2);
 		String[] splitDateAndTime = DateAndTime.split(" "); 
@@ -144,6 +158,7 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsNumber.setText(orderDetails.get(3));
 			lblEmail.setText(orderDetails.get(4));
 			
+			lblVisitorsEntered.setText(txtVisitorsEntered.getText());
 			lblPrice.setText(orderDetails.get(5) + "₪");
 			lblDiscount.setText(orderDetails.get(6) + "%");
 			lblPayment.setText(orderDetails.get(7));
@@ -165,6 +180,13 @@ public class ParkEmployeeController implements Initializable {
 
 	@FXML
 	void approve(ActionEvent event) {
+		// check if the amount of "visitorsEntered" greater than the invitation.
+		if (Integer.parseInt(txtVisitorsEntered.getText()) > 
+			Integer.parseInt(lblVisitorsNumber.getText()) ) {
+			Alert("Failed", "The amount of visitors doesn't match the invitation.");
+			return;
+		}
+		
 		// check date and then time
 		if (checkDate() && checkTime()) {
 			Alert("Success", "Thank you, hope you enjoy your time in the park.");
@@ -246,6 +268,8 @@ public class ParkEmployeeController implements Initializable {
 	public void clearAllFields() {
 		txtOrderNumber.clear();
 		lblOrderNumber.setText("");
+		txtVisitorsEntered.clear();
+		lblVisitorsEntered.setText("");
 		lblParkName.setText("");
 		lblDate.setText("");
 		lblTime.setText("");
@@ -269,6 +293,17 @@ public class ParkEmployeeController implements Initializable {
 			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtOrderNumber.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+		});
+		
+		// force the field to be numeric only
+		txtVisitorsEntered.textProperty().addListener((obs, oldValue, newValue) -> {
+
+			// \\d -> only digits
+			// * -> escaped special characters
+			if (!newValue.matches("\\d")) {
+				// ^\\d -> everything that not a digit
+				txtVisitorsEntered.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
 	}
