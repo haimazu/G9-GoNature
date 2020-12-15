@@ -21,6 +21,22 @@ public class Park {
 		}
 	}
 
+	public int getMaxAmountOrders() {
+		return maxAmountOrders;
+	}
+
+	public void setMaxAmountOrders(int maxAmountOrders) {
+		this.maxAmountOrders = maxAmountOrders;
+	}
+
+	public int getMaximumCapacityInPark() {
+		return maximumCapacityInPark;
+	}
+
+	public void setMaximumCapacityInPark(int maximumCapacityInPark) {
+		this.maximumCapacityInPark = maximumCapacityInPark;
+	}
+
 	public boolean check() {
 		if(maxAmountOrders<=maximumCapacityInPark)
 			return false;

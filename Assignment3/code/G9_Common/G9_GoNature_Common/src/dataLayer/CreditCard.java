@@ -38,10 +38,6 @@ public class CreditCard {
 		this.cvc = cvc;
 	}
 
-	//in use for CreditCardSave in server side
-	public String toStringForCreditCardSave() {
-		return "'" + cardNumber + "','" + cardHolderName + "','"
-				+ expirationDate + "','" + cvc + "'";
-	}
+	
 
 }

@@ -7,7 +7,7 @@ import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 //executed by Nastya
-public class Reservation {
+public class NewOrder {
 
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 
@@ -39,7 +39,7 @@ public class Reservation {
 	}
 
 	public static boolean availableCapacity4Order(int visitorsNumber) {
-
+		
 		return true;
 	}
 
