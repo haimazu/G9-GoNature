@@ -157,7 +157,7 @@ public class ServerController implements Initializable {
 		dbhost.setText("localhost"); 
 		dbusername.setText("root");
 		//NewP@ssword4theSQL
-		dbpass.setText("o2da#W$E");
+		dbpass.setText("NewP@ssword4theSQL");
 		dbscheme.setText("g9_gonature");
 		dbport.setText("3306");
 		serverport.setText("5555");
