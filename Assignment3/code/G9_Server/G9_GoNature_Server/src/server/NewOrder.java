@@ -69,6 +69,7 @@ public class NewOrder {
 		} else {
 			answer.add(queryData.get(0));
 		}
+		System.out.println(answer);
 		EchoServer.sendToMyClient(answer, client);
 
 	}

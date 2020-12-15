@@ -84,6 +84,7 @@ public class OrderController implements Initializable {
 
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
+		System.out.println(parksNames);
 	}
 
 	@FXML
@@ -261,13 +262,12 @@ public class OrderController implements Initializable {
 				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
 			}
 		});
-//		
-//		ArrayList<Object> parkNamesArr = new ArrayList<>();
-//		parkNamesArr.add("orderParksNameList");
-//		ClientUI.sentToChatClient(parkNamesArr);
-//		ParksNames.add("kuku");
-//		ParksNames.add("muku");
-//		ParksNames.add("tuku");
+		
+		ArrayList<Object> parkNamesArr = new ArrayList<>();
+		parkNamesArr.add("orderParksNameList");
+		ClientUI.sentToChatClient(parkNamesArr);
+
+		System.out.println(ParksNames);
 //		txtParkName.setItems(FXCollections.observableArrayList(ParksNames));
 //		txtParkName.getSelectionModel().selectFirst();
 
