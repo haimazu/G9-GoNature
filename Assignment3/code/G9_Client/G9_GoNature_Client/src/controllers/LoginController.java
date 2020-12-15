@@ -83,7 +83,7 @@ public class LoginController implements Initializable {
 
 			// Username and password doesn't match
 			if (getStatus().equals("Failed")) {
-				Alert("Failed", "Username or password doesn't match.");
+				Alert("Username or password doesn't match.");
 				return;
 			}
 
@@ -102,9 +102,9 @@ public class LoginController implements Initializable {
 		String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
 
 		if (username.isEmpty()) {
-			Alert("Failed", "All fields required.");
+			Alert("All fields required.");
 		} else if (!username.matches(pattern)) {
-			Alert("Failed", "Wrong pattern.\n"
+			Alert("Wrong pattern.\n"
 					+ "Username consists a letter, then letters or numbers.\n"
 					+ "[length of 4-20 characters]");
 		} 
@@ -117,100 +117,94 @@ public class LoginController implements Initializable {
 		String password = txtPassword.getText();
 
 		if (password.isEmpty()) {
-			Alert("Failed", "All fields required.");
+			Alert("All fields required.");
 		} else if (password.length() < 8) {
-			Alert("Failed", "Password too short.");
+			Alert("Password too short.");
 		} else if (password.length() > 30) {
-			Alert("Failed", "Password too long.");
+			Alert("Password too long.");
 		} 
 		
 		return passStatus;
 	}
 
-	/*
-	 * Getting title and message and showing alerts: 1. Success 2. Failed
-	 **/
-	public void Alert(String title, String msg) {
-		if (title == "Success") {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle(title);
-			alert.setHeaderText(null);
-			alert.setContentText(msg);
-			alert.showAndWait();
-		} else if (title == "Failed") {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle(title);
-			alert.setHeaderText(null);
-			alert.setContentText(msg);
-			alert.showAndWait();
-		}
+	// showing alert message
+	public void Alert(String msg) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Failed");
+		alert.setHeaderText(null);
+		alert.setContentText(msg);
+		alert.showAndWait();
 	}
 
-	public static void recivedFromServer(ArrayList<String> msgRecived) {
-		setStatus(msgRecived.get(0));
-		setFirstName(msgRecived.get(1));
+	// received data from the server
+	public static void receivedFromServer(ArrayList<String> msgReceived) {
+		setStatus(msgReceived.get(0));
+		setFirstName(msgReceived.get(1));
 	}
 
+	// get the 'role' of the user
 	public static String getStatus() {
 		return status;
 	}
 
+	// set the 'role' of the user
 	public static void setStatus(String status) {
 		LoginController.status = status;
 	}
 	
+	// get the 'firstName' of the user
 	public static String getFirstName() {
 		return firstName;
 	}
 
+	// set the 'firstName' of the user
 	public static void setFirstName(String firstName) {
 		LoginController.firstName = firstName;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		// active listener for the username text field
 		txtUsername.textProperty().addListener((obs, oldValue, newValue) -> {
 			userStatus = false;
+			// Username consists a letter then letters or numbers [length of 3-20 characters]
 			String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
 
-			if (!oldValue.equals(newValue)) {
-
-				userIcon.setFill(Color.RED);
-				txtUsername.setStyle("-jfx-unfocus-color: red; " 
+			// the text field painted red if doesn't match the conditions
+			userIcon.setFill(Color.RED);
+			txtUsername.setStyle("-jfx-unfocus-color: red; " 
 							       + "-fx-text-fill: red; " 
 								   + "-fx-prompt-text-fill: red;");
 
-				if (!newValue.isEmpty() && newValue.matches(pattern)) {
-					userStatus = true;
-
-					userIcon.setFill(Color.GREEN);
-					txtUsername.setStyle("-jfx-unfocus-color: green; " 
-									   + "-fx-text-fill: green; " 
-									   + "-fx-prompt-text-fill: green;");
-				}
+		    // otherwise -> match the conditions, painted green
+			if (!newValue.isEmpty() && newValue.matches(pattern)) {
+				userStatus = true;
+				userIcon.setFill(Color.GREEN);
+				txtUsername.setStyle("-jfx-unfocus-color: green; " 
+								+ "-fx-text-fill: green; " 
+									+ "-fx-prompt-text-fill: green;");
 			}
 		});
 
+		// active listener for the password text field
 		txtPassword.textProperty().addListener((obs, oldValue, newValue) -> {
 			passStatus = false;
 			// Character range between 8 and 30
 			String pattern = "^.{8,30}$";
 
-			if (!oldValue.equals(newValue)) {
+			// the password field painted red if doesn't match the conditions
+			passIcon.setFill(Color.RED);
+			txtPassword.setStyle("-jfx-unfocus-color: red; " 
+							   + "-fx-text-fill: red; " 
+						       + "-fx-prompt-text-fill: red;");
 
-				passIcon.setFill(Color.RED);
-				txtPassword.setStyle("-jfx-unfocus-color: red; " 
-								   + "-fx-text-fill: red; " 
-								   + "-fx-prompt-text-fill: red;");
-
-				if (!newValue.isEmpty() && newValue.matches(pattern)) {
-					passStatus = true;
-					
-					passIcon.setFill(Color.GREEN);
-					txtPassword.setStyle("-jfx-unfocus-color: green; " 
-									   + "-fx-text-fill: green; " 
-									   + "-fx-prompt-text-fill: green;");
-				}
+			// otherwise -> match the conditions, painted green
+			if (!newValue.isEmpty() && newValue.matches(pattern)) {
+				passStatus = true;				
+				passIcon.setFill(Color.GREEN);
+				txtPassword.setStyle("-jfx-unfocus-color: green; " 
+								   + "-fx-text-fill: green; " 
+								   + "-fx-prompt-text-fill: green;");
 			}
 		});
 	}

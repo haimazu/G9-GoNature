@@ -49,11 +49,11 @@ public class ChatClient extends AbstractClient {
 	 */
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
-		ArrayList<Object> recived = (ArrayList<Object>) msg;
+		ArrayList<Object> received = (ArrayList<Object>) msg;
 		
-		switch ((String)recived.get(0)) {
+		switch ((String)received.get(0)) {
 			case "login":
-				LoginController.recivedFromServer(((ArrayList<String>)recived.get(1)));
+				LoginController.receivedFromServer(((ArrayList<String>)received.get(1)));
 			break;
 			//case "order":
 				

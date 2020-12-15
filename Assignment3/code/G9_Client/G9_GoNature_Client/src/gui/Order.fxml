@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -203,8 +204,7 @@
                      </font>
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="parkIcon" fill="#a1a1a1" glyphName="BUILDING" layoutX="306.0" layoutY="261.0" size="16" />
-                  <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="25.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
-                  <JFXTextField fx:id="txtTime" focusTraversable="false" labelFloat="true" layoutX="182.0" layoutY="286.0" prefHeight="40.0" prefWidth="142.0" promptText="*Arrivel Time (HH:mm)" styleClass="txtField" />
+                  <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
                   <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="346.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
@@ -230,7 +230,7 @@
                         <Font name="Bauhaus 93" size="19.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnClear" focusTraversable="false" layoutX="80.0" layoutY="525.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="82.0" styleClass="btnClear" text="Clear" textAlignment="CENTER">
+                  <Button fx:id="btnClear" focusTraversable="false" layoutX="80.0" layoutY="525.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clear" prefHeight="40.0" prefWidth="82.0" styleClass="btnClear" text="Clear" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -245,6 +245,7 @@
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="201.0" size="16" />
                   <Button layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
+                  <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" layoutX="189.0" layoutY="277.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
                </children>
             </Pane>
          </children>

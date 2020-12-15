@@ -8,11 +8,13 @@ import java.util.ResourceBundle;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ChatClient;
 import client.ClientUI;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,9 +59,8 @@ public class OrderController implements Initializable {
 	private Button btnHome;
 	@FXML
 	private JFXDatePicker txtdate;
-
 	@FXML
-	private JFXTextField txtTime;
+    private JFXComboBox<String> cbxArrivelTime;
 
 	@FXML
 	private JFXTextField txtVisitorsNumber;
@@ -99,7 +100,11 @@ public class OrderController implements Initializable {
 
 	@FXML
 	void clear(ActionEvent event) {
-
+		txtVisitorsNumber.clear();
+		txtInvitingEmail.clear();
+		txtParkName.clear();
+		txtdate.getEditor().clear();
+		txtmemberID.clear();
 	}
 
 	/*
@@ -128,7 +133,6 @@ public class OrderController implements Initializable {
 			input.add(txtInvitingEmail.getText());
 			input.add(txtParkName.getText());
 			input.add(txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			input.add(txtTime.getText());
 			input.add(txtmemberID.getText());
 			msg.add(input);
 			imgOrder.setImage(imgOrderFull);
@@ -153,7 +157,8 @@ public class OrderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00"));
+		cbxArrivelTime.getSelectionModel().selectFirst();
 		// we wanted to enable to pick only a date from now and on
 
 		/*
@@ -169,19 +174,16 @@ public class OrderController implements Initializable {
 	public static void recivedFromServer(ArrayList<String> msgRecived) {
 
 	}
-	/*Not working !!! exception in receiving empty date !!!!!! */
-
-	// check if the fields are empty
+	/*Not working !!! exception in receiving empty date !!!!!! */	// check if the fields are empty
 	public boolean checkEmptyFields() {
 		Alert alert = new Alert(AlertType.ERROR);
 		String visitorsNumber = txtVisitorsNumber.getText();
 		String email = txtInvitingEmail.getText();
 		String parkNum = txtParkName.getText();
 		String date = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		String time = txtTime.getText();
 		String memberId = txtmemberID.getText();
 
-		if (visitorsNumber.isEmpty() || email.isEmpty() || parkNum.isEmpty() || date.isEmpty() || time.isEmpty()
+		if (visitorsNumber.isEmpty() || email.isEmpty() || parkNum.isEmpty() || date.isEmpty()
 				|| memberId.isEmpty()) {
 			alert.setTitle("Empty Fields");
 			alert.setHeaderText(null);

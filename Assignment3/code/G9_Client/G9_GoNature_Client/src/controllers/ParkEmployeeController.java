@@ -85,7 +85,7 @@ public class ParkEmployeeController implements Initializable {
 
 	@FXML
 	void showDetails(ActionEvent event) {
-
+		
 	}
 
 	@FXML
@@ -103,7 +103,9 @@ public class ParkEmployeeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// get the user firstname from the login 
 		setFirstName(LoginController.getFirstName());
+		// add the user first name to say "Welcome, firstname"
 		lblFirstNameTitle.setText(getFirstName());
 		
 		// force the field to be numeric only
