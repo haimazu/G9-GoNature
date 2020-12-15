@@ -195,7 +195,7 @@
                         <Image url="@שקופית52-removebg-preview.png" />
                      </image>
                   </ImageView>
-                  <JFXTextField fx:id="txtParkName" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="226.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtmemberID" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -203,8 +203,11 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <FontAwesomeIconView fx:id="parkIcon" fill="#a1a1a1" glyphName="BUILDING" layoutX="306.0" layoutY="261.0" size="16" />
+                  <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="201.0" size="16" />
+                  <Button layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
+                  <JFXComboBox fx:id="cbxParkName" focusColor="SEAGREEN" focusTraversable="false" layoutX="74.0" layoutY="216.0" prefHeight="50.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3" />
                   <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
+                  <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="189.0" layoutY="277.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
                   <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="346.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
@@ -235,17 +238,6 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <JFXTextField fx:id="txtmemberID" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </JFXTextField>
-                  <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="201.0" size="16" />
-                  <Button layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
-                  <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="189.0" layoutY="277.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
                </children>
             </Pane>
          </children>

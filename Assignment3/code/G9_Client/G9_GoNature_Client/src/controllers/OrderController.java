@@ -9,13 +9,10 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
-import client.ChatClient;
 import client.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,17 +24,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class OrderController implements Initializable {
 	@FXML
@@ -65,6 +59,8 @@ public class OrderController implements Initializable {
 	private JFXDatePicker txtdate;
 	@FXML
 	private JFXComboBox<String> cbxArrivelTime;
+	@FXML
+    private JFXComboBox<String> cbxParkName;
 
 	@FXML
 	private JFXTextField txtVisitorsNumber;
@@ -135,7 +131,7 @@ public class OrderController implements Initializable {
 			msg.add("order");
 			input.add(txtVisitorsNumber.getText());
 			input.add(txtInvitingEmail.getText());
-			// input.add(txtParkName.getAccessibleText());
+			//input.add(cbxParkName.getAccessibleText());
 			input.add(txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			input.add(cbxArrivelTime.getAccessibleText());
 			input.add(txtmemberID.getText());
@@ -148,7 +144,6 @@ public class OrderController implements Initializable {
 
 			} else if (btnContinue == event.getSource()) {
 				pnConfirmation.toFront();
-
 			}
 		}
 	}
@@ -158,7 +153,6 @@ public class OrderController implements Initializable {
 		Stage stage = (Stage) btnHome.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		stage.setScene(new Scene(root));
-
 	}
 
 	public static void recivedFromServer(ArrayList<Object> msgRecived) {
@@ -249,10 +243,10 @@ public class OrderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00 - 20:00"));
+		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 		cbxArrivelTime.getSelectionModel().selectFirst();
 
-		// user can choose todate only date today until next year.
+		// user can choose to date only date today until next year.
 		txtdate.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
@@ -268,9 +262,8 @@ public class OrderController implements Initializable {
 		ClientUI.sentToChatClient(parkNamesArr);
 
 		System.out.println(ParksNames);
-//		txtParkName.setItems(FXCollections.observableArrayList(ParksNames));
-//		txtParkName.getSelectionModel().selectFirst();
-
+		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
+		cbxParkName.getSelectionModel().selectFirst();
 	}
 
 }
