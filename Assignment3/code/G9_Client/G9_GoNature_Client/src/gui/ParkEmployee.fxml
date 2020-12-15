@@ -139,7 +139,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <Label fx:id="lvlDate" layoutX="390.0" layoutY="162.0">
+                  <Label fx:id="lblDate" layoutX="390.0" layoutY="162.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
                      </font>

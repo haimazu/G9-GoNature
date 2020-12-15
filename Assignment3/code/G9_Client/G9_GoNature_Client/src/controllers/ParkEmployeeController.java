@@ -2,6 +2,8 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextField;
@@ -12,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -49,7 +53,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Label lblParkName;
 	@FXML
-	private Label lvlDate;
+	private Label lblDate;
 	@FXML
 	private Label lblTime;
 	@FXML
@@ -72,6 +76,10 @@ public class ParkEmployeeController implements Initializable {
 	private Button btnApprove;
 
 	private static String firstName;
+	private boolean entryStatus = false;
+	private LocalDateTime arrivelTime;
+	private int hour, minutes;
+	private int day, mongth, year;
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -82,17 +90,63 @@ public class ParkEmployeeController implements Initializable {
 
 	@FXML
 	void barcodeScan(ActionEvent event) {
-
+		// get order number from the server
+		// call showDetails() function to set up all the order details
 	}
 
 	@FXML
 	void showDetails(ActionEvent event) {
-
+		// set up all the order details and the payment method
 	}
 
 	@FXML
 	void approve(ActionEvent event) {
+		if (entryStatus) {
+			Alert("Success", "Thank you, hope you enjoy your time in the park.");
+		// wrong date
+		// wrong time
+		} else {
+			Alert("Failed", "wrong.");
+		}
+	}
+	
+	public boolean checkDate() {	
+		arrivelTime = LocalDateTime.now();
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("mm/dd/yyyy");	
+		String date = lblDate.getText();
 
+		System.out.println(arrivelTime.format(dateFormat));
+		
+		return entryStatus;
+	}
+	
+	public boolean checkTime() {
+		arrivelTime = LocalDateTime.now();
+		String time = lblTime.getText();
+		
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+		String[] split = time.split(":"); 
+		
+		System.out.println(arrivelTime.format(timeFormat));
+		
+		return entryStatus;		
+	}
+	
+	// showing alert message
+	public void Alert(String title, String msg) {
+		if (title == "Success") {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle(title);
+			alert.setHeaderText(null);
+			alert.setContentText(msg);
+			alert.showAndWait();
+		} else if (title == "Failed"){
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle(title);
+			alert.setHeaderText(null);
+			alert.setContentText(msg);
+			alert.showAndWait();
+		}
 	}
 
 	public static String getFirstName() {

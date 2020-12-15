@@ -235,7 +235,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <JFXTextField fx:id="txtmemberID" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtmemberID" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
