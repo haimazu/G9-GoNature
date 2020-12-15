@@ -2,9 +2,12 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
 
@@ -26,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,7 +64,7 @@ public class OrderController implements Initializable {
 	@FXML
 	private JFXDatePicker txtdate;
 	@FXML
-    private JFXComboBox<String> cbxArrivelTime;
+	private JFXComboBox<String> cbxArrivelTime;
 
 	@FXML
 	private JFXTextField txtVisitorsNumber;
@@ -75,8 +79,12 @@ public class OrderController implements Initializable {
 
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
-	
 
+	private static ArrayList<String> ParksNames = new ArrayList<>();
+
+	public static void setParksNames(ArrayList<String> parksNames) {
+		ParksNames = parksNames;
+	}
 
 	@FXML
 	void back(ActionEvent event) throws IOException {
@@ -102,37 +110,33 @@ public class OrderController implements Initializable {
 	void clear(ActionEvent event) {
 		txtVisitorsNumber.clear();
 		txtInvitingEmail.clear();
-		txtParkName.clear();
+		// txtParkName.clear();
 		txtdate.getEditor().clear();
 		txtmemberID.clear();
 	}
 
 	/*
-	 * msg is ArrayList of objects -> [0] -> the function who calling to service from the server "order" 
-	 * 								  [1] -> ArrayList of String -> 
-	 * 															[0] -> visitors number
-	 * 															[1] -> email 
-	 * 															[2] -> park name 
-	 * 															[3] -> arrival date 
-	 * 															[4] -> arrival time 
-	 * 															[5] ->member id (optional)
+	 * msg is ArrayList of objects -> [0] -> the function who calling to service
+	 * from the server "order" [1] -> ArrayList of String -> [0] -> visitors number
+	 * [1] -> email [2] -> park name [3] -> arrival date [4] -> arrival time [5] ->
+	 * member id (optional)
 	 * 
-	 * By clicking button next the function will check it the values in the field are correct - if so, send them to server 
-	 * we will receive from the server: 
+	 * By clicking button next the function will check it the values in the field
+	 * are correct - if so, send them to server we will receive from the server:
 	 **/
 	@FXML
 	void next(ActionEvent event) {
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> input = new ArrayList<>();
-		
+
 		// continue only if the fields are correct
-		if (checkEmptyFields()) {
-			
+		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()) {
 			msg.add("order");
 			input.add(txtVisitorsNumber.getText());
 			input.add(txtInvitingEmail.getText());
-			input.add(txtParkName.getText());
+			// input.add(txtParkName.getAccessibleText());
 			input.add(txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			input.add(cbxArrivelTime.getAccessibleText());
 			input.add(txtmemberID.getText());
 			msg.add(input);
 			imgOrder.setImage(imgOrderFull);
@@ -153,45 +157,119 @@ public class OrderController implements Initializable {
 		Stage stage = (Stage) btnHome.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		stage.setScene(new Scene(root));
+
+	}
+
+	public static void recivedFromServer(ArrayList<Object> msgRecived) {
+
+	}
+
+	public static void recivedFromServerParksNames(ArrayList<String> parks) {
+		setParksNames(parks);
+	}
+
+	public boolean checkNotEmptyFields() {
+		String visitorsNumber = txtVisitorsNumber.getText();
+		String email = txtInvitingEmail.getText();
+		// String parkNum = txtParkName.getAccessibleText();
+		String date = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String memberId = txtmemberID.getText();
+
+		if (visitorsNumber.isEmpty() || email.isEmpty() || /* parkNum.isEmpty() || */ date.isEmpty()
+				|| memberId.isEmpty()) {
+			Alert("Empty Fields");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean checkCorrectEmail() {
+		String email = txtInvitingEmail.getText();
+		String nameMethod = "email";
+		if (!validInput(nameMethod, email)) {
+			Alert("Invalid email address");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean checkCorrectAmountVisitor() {
+		String AmountVisitor = txtVisitorsNumber.getText();
+		String nameMethod = "AmountVisitor";
+		if (!validInput(nameMethod, AmountVisitor) || AmountVisitor.equals("0")) {
+			Alert("Invalid amount of visitors");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean checkCorrectMemberId() {
+		String memberId = txtmemberID.getText();
+		String nameMethod = "memberId";
+		boolean flag = true;
+		if (validInput(nameMethod, memberId)) {
+			return true;
+		} else if (validInput("ID", memberId)) {
+			return true;
+		}
+		Alert("Invalid member-ID / ID ");
+		return false;
+	}
+
+	public static final Pattern VALIDEMAIL = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+			Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALIDAmountVisito = Pattern.compile("^[0-9]{0,3}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALIDMemberId = Pattern.compile("^[a-zA-Z]{1}[0-9]{5}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALIDID = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
+
+	public static boolean validInput(String nameMathod, String txt) {
+		Matcher matcher = null;
+		if (nameMathod.equals("email")) {
+			matcher = VALIDEMAIL.matcher(txt);
+
+		} else if (nameMathod.equals("AmountVisitor")) {
+			matcher = VALIDAmountVisito.matcher(txt);
+		} else if (nameMathod.equals("memberId")) {
+			matcher = VALIDMemberId.matcher(txt);
+		} else if (nameMathod.equals("ID")) {
+			matcher = VALIDID.matcher(txt);
+		}
+		return matcher.find();
+	}
+
+	// showing alert message
+	public void Alert(String msg) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Failed");
+		alert.setHeaderText(null);
+		alert.setContentText(msg);
+		alert.showAndWait();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00"));
+		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00 - 20:00"));
 		cbxArrivelTime.getSelectionModel().selectFirst();
-		// we wanted to enable to pick only a date from now and on
 
-		/*
-		 * txtdate.setDayCellFactory(param -> new DateCell() {
-		 * 
-		 * @Override public void updateItem(LocalDate date, boolean empty) {
-		 * super.updateItem(date, empty); setDisable(empty ||
-		 * date.compareTo(LocalDate.now()) > 0 ); } });
-		 */
+		// user can choose todate only date today until next year.
+		txtdate.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
 
-	}
-
-	public static void recivedFromServer(ArrayList<String> msgRecived) {
-
-	}
-	/*Not working !!! exception in receiving empty date !!!!!! */	// check if the fields are empty
-	public boolean checkEmptyFields() {
-		Alert alert = new Alert(AlertType.ERROR);
-		String visitorsNumber = txtVisitorsNumber.getText();
-		String email = txtInvitingEmail.getText();
-		String parkNum = txtParkName.getText();
-		String date = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		String memberId = txtmemberID.getText();
-
-		if (visitorsNumber.isEmpty() || email.isEmpty() || parkNum.isEmpty() || date.isEmpty()
-				|| memberId.isEmpty()) {
-			alert.setTitle("Empty Fields");
-			alert.setHeaderText(null);
-			alert.setContentText("One or more fields are empty. Please fill in all fields!");
-			alert.showAndWait();
-			return false;
-		}
-		return true;
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+//		
+//		ArrayList<Object> parkNamesArr = new ArrayList<>();
+//		parkNamesArr.add("orderParksNameList");
+//		ClientUI.sentToChatClient(parkNamesArr);
+//		ParksNames.add("kuku");
+//		ParksNames.add("muku");
+//		ParksNames.add("tuku");
+//		txtParkName.setItems(FXCollections.observableArrayList(ParksNames));
+//		txtParkName.getSelectionModel().selectFirst();
 
 	}
 
