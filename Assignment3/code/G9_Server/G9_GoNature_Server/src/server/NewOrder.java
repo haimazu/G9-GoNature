@@ -42,7 +42,35 @@ public class NewOrder {
 		
 		return true;
 	}
+	
+	//func that returns all parks names
+	public static void ParksNames(ArrayList<Object> recived, ConnectionToClient client) {
+		
+		// the returned values stored here
+				ArrayList<Object> answer = new ArrayList<Object>();
+				// the service name : ParksNames
+				answer.add(recived.get(0));
+				// cell 0: recivedFromServerParksNames
 
+				ArrayList<String> query = new ArrayList<String>();
+				query.add("select"); // command
+				query.add("park"); // table name
+				query.add("parkName"); // columns to select from
+				query.add(""); // condition - non -> all parks names required
+				query.add("1"); // how many columns returned
+
+				ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+				if (queryData.get(0).isEmpty()) {
+					//no parks in DB
+					answer.add(new ArrayList<String>(Arrays.asList("Failed")));
+				} else {
+					answer.add(queryData.get(0));
+				}
+				EchoServer.sendToMyClient(answer, client);
+		
+		
+	}
+	
 	public static String toStringForReservation(Order data) {
 		return "'" + data.getOrderNumber() + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','"
 				+ data.getOrderType() + "','" + data.getPrice() + "','" + data.getParkname() + "','"
