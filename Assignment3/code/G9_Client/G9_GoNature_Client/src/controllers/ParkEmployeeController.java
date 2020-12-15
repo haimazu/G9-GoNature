@@ -3,10 +3,10 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextField;
@@ -126,19 +126,41 @@ public class ParkEmployeeController implements Initializable {
 		// 2021-01-01
 		String date = splitDateAndTime[0];
 		
-		// 08:00:00 -> 08:00
-		String time = (String) splitDateAndTime[1].subSequence(0, 5);
+		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
+		// iFormatter -> input format
+		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		// oFormatter -> output format
+		DateFormat oFormatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			String strDateTime = oFormatter.format(iFormatter.parse(date));
+
+			// 08:00:00 -> 08:00
+			String time = (String) splitDateAndTime[1].subSequence(0, 5);
+			
+			lblOrderNumber.setText(orderDetails.get(0));
+			lblParkName.setText(orderDetails.get(1));
+			lblDate.setText(strDateTime);
+			lblTime.setText(time);
+			lblVisitorsNumber.setText(orderDetails.get(3));
+			lblEmail.setText(orderDetails.get(4));
+			
+			lblPrice.setText(orderDetails.get(5) + "₪");
+			lblDiscount.setText(orderDetails.get(6) + "%");
+			lblPayment.setText(orderDetails.get(7));
+			
+			float price = Float.parseFloat(orderDetails.get(5));
+			float discount = Float.parseFloat(orderDetails.get(6));
+			float totalPrice;
+			
+			// totalPrice = price * ((100 - discount) / 100)
+			totalPrice = price * ((100 - discount) / 100);
+			
+			lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
+			btnApprove.setDisable(false);
 		
-		lblOrderNumber.setText(orderDetails.get(0));
-		lblParkName.setText(orderDetails.get(1));
-		lblDate.setText(date);
-		lblTime.setText(time);
-		lblVisitorsNumber.setText(orderDetails.get(3));
-		lblEmail.setText(orderDetails.get(4));
-		
-		lblPrice.setText(orderDetails.get(5));
-		lblDiscount.setText(orderDetails.get(6));
-		lblPayment.setText(orderDetails.get(7));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -146,6 +168,7 @@ public class ParkEmployeeController implements Initializable {
 		// check date and then time
 		if (checkDate() && checkTime()) {
 			Alert("Success", "Thank you, hope you enjoy your time in the park.");
+			clearAllFields();
 		} 
 	}
 	
@@ -167,10 +190,14 @@ public class ParkEmployeeController implements Initializable {
 	}
 	
 	public boolean checkDate() {	
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String currentDate = lblDate.getText();
-		
-		if (currentDate.equals(dateFormat.format(new Date()))) {
+		LocalDateTime arrivelDate = LocalDateTime.now();
+		// "dd-MM-yyyy"
+		String currentDate = arrivelDate.getDayOfMonth() + "-" 
+					       + arrivelDate.getMonthValue() + "-" 
+				           + arrivelDate.getYear();
+		String orderDate = lblDate.getText();
+				
+		if (currentDate.equals(orderDate)) {
 			return true;
 		}
 			
@@ -180,28 +207,19 @@ public class ParkEmployeeController implements Initializable {
 	
 	public boolean checkTime() {
 		LocalDateTime arrivelTime = LocalDateTime.now();
+		// currentHour = hh
 		int currentHour = arrivelTime.getHour();
-		// periodTime = hh:mm-hh:mm
-		String periodTime = lblTime.getText();
-		String[] splitTime = periodTime.split("-"); 
 		// startTime = hh:mm
-		String startTime = splitTime[0];
-		// endTime = hh:mm
-		String endTime = splitTime[1];
+		String startTime = lblTime.getText();
+		String[] splitStartTime = startTime.split(":"); 
+		// stringArrivelHour = hh
+		String stringArrivelHour = splitStartTime[0];
+		int arrivelHour = Integer.parseInt(stringArrivelHour);
 		
-		splitTime = startTime.split(":"); 
-		// tmpStartHour = hh
-		String tmpStartHour = splitTime[0];
-		// startHour = (int)hh
-		int startHour = Integer.parseInt(tmpStartHour);
-		
-		splitTime = endTime.split(":"); 
-		// tmpEndHour = hh
-		String tmpEndHour = splitTime[0];
-		// endHour = (int)hh
-		int endHour = Integer.parseInt(tmpEndHour);
-		
-		if (currentHour >= startHour && currentHour < endHour) {
+		// currentHour = 08:00         | 12:00
+		// arrivelHour = 08:00 - 12:00 | 12:00 - 16:00
+		if ((currentHour >= arrivelHour && currentHour < 12)
+				|| (currentHour >= arrivelHour && currentHour < 23)) {
 			return true;
 		}
 		
@@ -224,10 +242,25 @@ public class ParkEmployeeController implements Initializable {
 	public static void receivedFromServerOrderDetails(ArrayList<String> orderDetails) {
 		ParkEmployeeController.orderDetails = orderDetails;
 	}
+	
+	public void clearAllFields() {
+		txtOrderNumber.clear();
+		lblOrderNumber.setText("");
+		lblParkName.setText("");
+		lblDate.setText("");
+		lblTime.setText("");
+		lblVisitorsNumber.setText("");
+		lblEmail.setText("");
+		lblPrice.setText("");
+		lblDiscount.setText("");
+		lblPayment.setText("");
+		lblTotalPrice.setText("");
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		btnApprove.setDisable(true);
+		
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
 

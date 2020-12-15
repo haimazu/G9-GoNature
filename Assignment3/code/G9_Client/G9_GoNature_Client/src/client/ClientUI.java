@@ -3,9 +3,7 @@ package client;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
-import controllers.*;
+import controllers.WelcomeController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

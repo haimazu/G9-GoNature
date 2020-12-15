@@ -48,7 +48,7 @@ public class WelcomeController implements Initializable {
     }
 
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/ParkEmployee.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("GoNature");
 		primaryStage.setScene(scene);
