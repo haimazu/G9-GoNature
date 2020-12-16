@@ -10,15 +10,13 @@ public class Order {
 	int percent;
 	double totalPrice;
 	String parkname;
-<<<<<<< Updated upstream
-	DateAndTime arrivedTime;
-	String memberId = null;
-	int ID = 0;
-=======
+
+
+
 	String arrivedTime;
 	String memberId=null;
 	int ID=0;
->>>>>>> Stashed changes
+
 
 	/**
 	 * @param visitorsNumber
