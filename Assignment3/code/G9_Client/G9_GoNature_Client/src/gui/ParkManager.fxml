@@ -246,16 +246,17 @@
                         <DropShadow color="#a89696" height="50.0" radius="24.5" width="50.0" />
                      </effect>
                   </Pane>
-                  <JFXTextField focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="170.0" promptText="Manager Discount (%)" styleClass="txtField" />
+                  <JFXTextField focusTraversable="false" labelFloat="true" layoutX="31.0" layoutY="220.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" />
+                  <JFXTextField focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="170.0" prefHeight="40.0" prefWidth="145.0" promptText="Manager Discount (%)" styleClass="txtField" />
                   <JFXDatePicker editable="false" focusTraversable="false" layoutX="222.0" layoutY="181.0" promptText="From Date" />
-                  <JFXDatePicker editable="false" focusTraversable="false" layoutX="425.0" layoutY="181.0" promptText="To Date" />
-                  <Button focusTraversable="false" layoutX="529.0" layoutY="229.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" />
-                  <Label fx:id="lblTitle1" focusTraversable="false" layoutX="26.0" layoutY="267.0" styleClass="labelBold" text="Last 10 reports:">
+                  <JFXDatePicker editable="false" focusTraversable="false" layoutX="433.0" layoutY="181.0" prefHeight="29.0" prefWidth="174.0" promptText="To Date" />
+                  <Button focusTraversable="false" layoutX="529.0" layoutY="235.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" />
+                  <Label fx:id="lblTitle1" focusTraversable="false" layoutX="26.0" layoutY="283.0" styleClass="labelBold" text="Last 10 reports:">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TableView focusTraversable="false" layoutX="27.0" layoutY="307.0" prefHeight="215.0" prefWidth="570.0" tableMenuButtonVisible="true">
+                  <TableView focusTraversable="false" layoutX="27.0" layoutY="315.0" prefHeight="215.0" prefWidth="570.0" tableMenuButtonVisible="true">
                     <columns>
                       <TableColumn prefWidth="197.0" text="Name" />
                       <TableColumn prefWidth="185.0" text="Type" />
