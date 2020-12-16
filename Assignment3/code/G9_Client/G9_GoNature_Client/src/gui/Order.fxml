@@ -204,7 +204,7 @@
                      </font>
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="201.0" size="16" />
-                  <Button layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
+                  <Button fx:id="information" layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
                   <JFXComboBox fx:id="cbxParkName" focusColor="SEAGREEN" focusTraversable="false" layoutX="74.0" layoutY="216.0" prefHeight="50.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3" />
                   <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
                   <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="189.0" layoutY="277.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
