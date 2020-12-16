@@ -1,18 +1,18 @@
 package orderData;
 
 public class Order {
-	
+
 	int orderNumber;
 	int visitorsNumber;
 	String orderEmail;
 	OrderType orderType;
 	double price;
-	int Percent;
+	int percent;
 	double totalPrice;
 	String parkname;
 	DateAndTime arrivedTime;
-	String memberId=null;
-	int ID=0;
+	String memberId = null;
+	int ID = 0;
 
 	/**
 	 * @param visitorsNumber

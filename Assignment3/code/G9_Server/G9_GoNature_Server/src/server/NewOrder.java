@@ -13,17 +13,13 @@ public class NewOrder {
 
 	/*
 	 * * Received is ArrayList of objects -> [0] -> the function who calling to
-	 * service from the server "order" [1] -> ArrayList of String :
-	 * [0] -> visitors amount 
-	 * [1] -> email 
-	 * [2] -> park name 
-	 * [3] -> arrival date 
-	 * [4] -> arrival time
+	 * service from the server "order" [1] -> ArrayList of String : [0] -> visitors
+	 * amount [1] -> email [2] -> park name [3] -> arrival date [4] -> arrival time
 	 * [5] -> member id (optional)
 	 * 
 	 * answer is array List of object -> [0] -> the function who calling to service
 	 * from the server "order" [1] -> ArrayList of String ->[0]true / false in
-	 * string if success new order [1] object order [2] price after discount [3]  discount 
+	 * string if success new order [1]   order 
 	 * 
 	 */
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
@@ -41,17 +37,7 @@ public class NewOrder {
 		else {
 			
 			
-//			switch (data.) {
-//			case value:
-//				
-//				break;
-//
-//			default:
-//				break;
-//			}
-//			
-			
-			
+
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("orders"); // table name
@@ -66,25 +52,17 @@ public class NewOrder {
 		}
 
 	}
-	
-	public static double totalPrice(int visitorsAmount,OrderType ot) {
-		
-		
-		
+
+	public static double totalPrice(int visitorsAmount, OrderType ot) {
+
 		return 10;
 	}
 
 	// check if needed to be sent null or empty in order number
 	public static String toStringForReservation(Order data) {
-		return "'" + "" + "','"
-				+ data.getVisitorsNumber() + "','" 
-				+ data.getOrderEmail() + "','" 
-				+ data.getOrderType() + "','"
-				+ data.getPrice() + "','" 
-				+ data.getParkname() + "','" 
-				+ data.getArrivedTime() + "','"
-				+ data.getMemberId() + "','" 
-				+ data.getID() + "'";
+		return "'" + "" + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderType()
+				+ "','" + data.getPrice() + "','" + data.getParkname() + "','" + data.getArrivedTime() + "','"
+				+ data.getMemberId() + "','" + data.getID() + "'";
 	}
 
 //*******************************************************************
@@ -115,8 +93,8 @@ public class NewOrder {
 			// no parks in DB
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
-			///******************
-			//ArrayList<String> parkNames = new ArrayList<String>();
+			/// ******************
+			// ArrayList<String> parkNames = new ArrayList<String>();
 			answer.add(queryData.get(0));
 		}
 		EchoServer.sendToMyClient(answer, client);
