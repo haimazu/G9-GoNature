@@ -4,6 +4,10 @@
 	-fx-background-color: #deceb8;
 }
 
+.tooltip {
+    -fx-show-delay: 0.00000001ms;
+}
+
 /********** Right Pane **********/
 .pnRight {
     -fx-background-color: #FFFFF0;

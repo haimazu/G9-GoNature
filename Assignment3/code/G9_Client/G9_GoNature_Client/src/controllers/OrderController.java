@@ -334,7 +334,7 @@ public class OrderController implements Initializable {
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
-
+		
 	}
 
 }
