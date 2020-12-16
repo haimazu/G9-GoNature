@@ -67,15 +67,16 @@ public class NewOrder {
 			// no parks in DB
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
-			answer.add(new ArrayList<String>(Arrays.asList(queryData.get(0).get(0),queryData.get(1).get(0),queryData.get(2).get(0))));
+			answer.add(queryData.get(0));
 		}
-
 		EchoServer.sendToMyClient(answer, client);
+
 	}
 
+	// check if needed to be sent null or empty in order number
 	public static String toStringForReservation(Order data) {
-		return "'" + data.getOrderNumber() + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','"
-				+ data.getOrderType() + "','" + data.getPrice() + "','" + data.getParkname() + "','"
-				+ data.getArrivedTime() + "','" + data.getMemberId() + "'";
+		return "'" + "" + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderType()
+				+ "','" + data.getPrice() + "','" + data.getParkname() + "','" + data.getArrivedTime() + "','"
+				+ data.getMemberId() + "','" + data.getID() + "'";
 	}
 }
