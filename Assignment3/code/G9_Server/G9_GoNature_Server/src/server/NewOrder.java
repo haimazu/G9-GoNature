@@ -6,10 +6,22 @@ import java.util.Arrays;
 import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
+import orderData.OrderType;
 
 //executed by Nastya
 public class NewOrder {
 
+	/*
+	 * * Received is ArrayList of objects -> [0] -> the function who calling to
+	 * service from the server "order" [1] -> ArrayList of String : [0] -> visitors
+	 * amount [1] -> email [2] -> park name [3] -> arrival date [4] -> arrival time
+	 * [5] -> member id (optional)
+	 * 
+	 * answer is array List of object -> [0] -> the function who calling to service
+	 * from the server "order" [1] -> ArrayList of String ->[0]true / false in
+	 * string if success new order [1]   order 
+	 * 
+	 */
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -23,6 +35,8 @@ public class NewOrder {
 		}
 
 		else {
+			
+			
 
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
@@ -37,6 +51,18 @@ public class NewOrder {
 			EchoServer.sendToMyClient(answer, client);
 		}
 
+	}
+
+	public static double totalPrice(int visitorsAmount, OrderType ot) {
+
+		return 10;
+	}
+
+	// check if needed to be sent null or empty in order number
+	public static String toStringForReservation(Order data) {
+		return "'" + "" + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderType()
+				+ "','" + data.getPrice() + "','" + data.getParkname() + "','" + data.getArrivedTime() + "','"
+				+ data.getMemberId() + "','" + data.getID() + "'";
 	}
 
 //*******************************************************************
@@ -67,15 +93,12 @@ public class NewOrder {
 			// no parks in DB
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
-			answer.add(new ArrayList<String>(Arrays.asList(queryData.get(0).get(0),queryData.get(1).get(0),queryData.get(2).get(0))));
+			/// ******************
+			// ArrayList<String> parkNames = new ArrayList<String>();
+			answer.add(queryData.get(0));
 		}
-
 		EchoServer.sendToMyClient(answer, client);
+
 	}
 
-	public static String toStringForReservation(Order data) {
-		return "'" + data.getOrderNumber() + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','"
-				+ data.getOrderType() + "','" + data.getPrice() + "','" + data.getParkname() + "','"
-				+ data.getArrivedTime() + "','" + data.getMemberId() + "'";
-	}
 }
