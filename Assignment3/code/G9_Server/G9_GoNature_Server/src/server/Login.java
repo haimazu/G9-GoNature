@@ -28,7 +28,7 @@ public class Login {
 		query.add("select");
 		query.add("employee");
 		query.add("role, firstname");
-		query.add("WHERE username='" + data.get(0) + "' AND password='" + data.get(1) + "'" );
+		query.add("WHERE username='" + data.get(0) + "' AND password='" + data.get(1) + "'");
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty()) {

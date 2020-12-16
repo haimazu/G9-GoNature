@@ -26,7 +26,10 @@ public class EchoServer extends AbstractServer {
 		case "orderParksNameList":
 			NewOrder.ParksNames((ArrayList<Object>) msg, client);
 			break;
-		case "ParkEmployee":	
+		case "ordersByIdOrMemberId":	
+			ExistingOrderCheck.getOrderDetailsByIdOrMemberId((ArrayList<Object>) msg, client);
+			break;
+		case "ordersByOrderNumber":	
 			ExistingOrderCheck.getOrderDetailsByOrderNumber((ArrayList<Object>) msg, client);
 			break;
 		case "order":
