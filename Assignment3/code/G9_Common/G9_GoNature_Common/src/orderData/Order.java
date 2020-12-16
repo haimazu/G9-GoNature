@@ -9,6 +9,15 @@ public class Order {
 	String parkname;
 	DateAndTime arrivedTime;
 	int memberId;
+	int ID;
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
+	}
 
 	public int getOrderNumber() {
 		return orderNumber;
