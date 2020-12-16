@@ -7,8 +7,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
@@ -22,7 +25,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ParkEmployeeController implements Initializable {
@@ -55,9 +61,9 @@ public class ParkEmployeeController implements Initializable {
 	private Label lblVisitorsNumber;
 	@FXML
 	private Label lblEmail;
-	
+
 	@FXML
-    private Label lblVisitorsEntered;
+	private Label lblVisitorsEntered;
 	@FXML
 	private Label lblPrice;
 	@FXML
@@ -73,7 +79,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private JFXTextField txtOrderNumber;
 	@FXML
-    private JFXTextField txtVisitorsEntered;
+	private JFXTextField txtVisitorsEntered;
 	@FXML
 	private Button btnShowDetails;
 
@@ -81,10 +87,32 @@ public class ParkEmployeeController implements Initializable {
 	private Button btnRndonVisitor;
 
 	@FXML
+	private JFXRadioButton radEnter;
+	@FXML
+	private JFXRadioButton radExit;
+	@FXML
+    private ToggleGroup radGroupStatus;
+	@FXML
 	private Button btnApprove;
 
+	// discount by types of visitors
+	// single / family -> pre-booked
+	public static final float SINGLE_OR_FAMILY_PRE_BOOKED = 10;
+	public static final float SINGLE_OR_FAMILY_PRE_BOOKED_AND_MEMBERS = 20;
+	// single / family -> random visitor/s
+	public static final float SINGLE_OR_FAMILY_AND_MEMBERS = 20;
+	// group -> pre-booked (guide not pay)
+	public static final float GROUP_PRE_BOOKED = 25;
+	public static final float GROUP_PRE_BOOKED_AND_ALREADY_PAID = 12;
+	// group -> random visit (guide pay)
+	public static final float GROUP_PRE_BOOKED_RANDOM_VISIT = 10;
+
+	// check if we already was is the DB
+	private boolean informationExists = false;
+	private String radVisitorStatusText;
 	private static String firstName;
 	private static ArrayList<String> orderDetails;
+	private Map<String, Integer> orderDocumentation = new HashMap<String, Integer>();
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -95,51 +123,83 @@ public class ParkEmployeeController implements Initializable {
 
 	@FXML
 	void barcodeScan(ActionEvent event) {
+		informationExists = true;
 		// get order number from the server
 		// call showDetails() function to set up all the order details
 		// SELECT * FROM orders ORDER BY orderNumber LIMIT 1;
-		txtOrderNumber.setText(String.valueOf(getOrderNumberFromBarcode()));
+		// txtOrderNumber.setText(String.valueOf(getOrderNumberFromBarcodeByID()));
 		txtVisitorsEntered.setText(String.valueOf(getVisitorsEnteredFromBarcode()));
+
+		int id = getOrderNumberFromBarcodeByID();
+		int memberId = getOrderNumberFromBarcodeByMemberId();
+
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+		// Data fields
+		ArrayList<String> data = new ArrayList<String>();
+
+		msg.add("ordersByIdOrMemberId");
+		data.add(String.valueOf(id));
+		msg.add(data);
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
+
+		txtOrderNumber.setText(orderDetails.get(0));
+
 		showDetails(event);
 	}
 
-	private int getOrderNumberFromBarcode() {	
-		return 1111;
+	private int getOrderNumberFromBarcodeByID() {
+		return 123456;
 	}
-	
-	private int getVisitorsEnteredFromBarcode() {	
+
+	private int getOrderNumberFromBarcodeByMemberId() {
+		return 2;
+	}
+
+	private int getVisitorsEnteredFromBarcode() {
 		return 8;
 	}
 
 	@FXML
 	void showDetails(ActionEvent event) {
-		
+
 		if (txtOrderNumber.getText().isEmpty() || txtVisitorsEntered.getText().isEmpty()) {
 			Alert("Failed", "All fields required.");
 			return;
 		}
-		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();
-		// Data fields
-		ArrayList<String> data = new ArrayList<String>();
-		
-		msg.add("ParkEmployee");
-		data.add(txtOrderNumber.getText().toString());
-		msg.add(data);
-		// set up all the order details and the payment method
-		ClientUI.sentToChatClient(msg);
-		
-		if (orderDetails.get(0).equals("No such order")) {
+
+		if (!informationExists) {
+			// Query
+			ArrayList<Object> msg = new ArrayList<Object>();
+			// Data fields
+			ArrayList<String> data = new ArrayList<String>();
+
+			msg.add("ordersByOrderNumber");
+			data.add(txtOrderNumber.getText().toString());
+			msg.add(data);
+			// set up all the order details and the payment method
+			ClientUI.sentToChatClient(msg);
+
+			if (orderDetails.get(0).equals("No such order")) {
+				Alert("Failed", "No such order.");
+				clearAllFields();
+				return;
+			}
+		}
+
+		if (!(orderDetails.get(0).equals(txtOrderNumber.getText()))) {
 			Alert("Failed", "No such order.");
+			clearAllFields();
 			return;
 		}
-			
+
 		// 2021-01-01 08:00:00
-		String DateAndTime = orderDetails.get(2);
-		String[] splitDateAndTime = DateAndTime.split(" "); 
+		String DateAndTime = orderDetails.get(6);
+		String[] splitDateAndTime = DateAndTime.split(" ");
 		// 2021-01-01
 		String date = splitDateAndTime[0];
-		
+
 		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
 		// iFormatter -> input format
 		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -150,29 +210,36 @@ public class ParkEmployeeController implements Initializable {
 
 			// 08:00:00 -> 08:00
 			String time = (String) splitDateAndTime[1].subSequence(0, 5);
-			
+
 			lblOrderNumber.setText(orderDetails.get(0));
-			lblParkName.setText(orderDetails.get(1));
+			lblParkName.setText(orderDetails.get(5));
 			lblDate.setText(strDateTime);
 			lblTime.setText(time);
-			lblVisitorsNumber.setText(orderDetails.get(3));
-			lblEmail.setText(orderDetails.get(4));
-			
+			lblVisitorsNumber.setText(orderDetails.get(1));
+			lblEmail.setText(orderDetails.get(2));
+
 			lblVisitorsEntered.setText(txtVisitorsEntered.getText());
-			lblPrice.setText(orderDetails.get(5) + "₪");
-			lblDiscount.setText(orderDetails.get(6) + "%");
-			lblPayment.setText(orderDetails.get(7));
-			
-			float price = Float.parseFloat(orderDetails.get(5));
-			float discount = Float.parseFloat(orderDetails.get(6));
+			lblPrice.setText(orderDetails.get(4) + "₪");
+
+			// need to calculate:
+			// order type -> random / not random?
+			// member / not member?
+			// payed / not payed?
+			// there is parkManager discount too?
+			// lblDiscount.setText(orderDetails.get(6) + "%");
+			lblPayment.setText(orderDetails.get(9));
+
+			float price = Float.parseFloat(orderDetails.get(4));
+			// float discount = Float.parseFloat(orderDetails.get(6));
 			float totalPrice;
-			
+
 			// totalPrice = price * ((100 - discount) / 100)
-			totalPrice = price * ((100 - discount) / 100);
-			
-			lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
+			// totalPrice = price * ((100 - discount) / 100);
+
+			// lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
+			informationExists = false;
 			btnApprove.setDisable(false);
-		
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -181,19 +248,79 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 		// check if the amount of "visitorsEntered" greater than the invitation.
-		if (Integer.parseInt(txtVisitorsEntered.getText()) > 
-			Integer.parseInt(lblVisitorsNumber.getText()) ) {
+		if (!lblVisitorsNumber.getText().isEmpty()
+				&& (Integer.parseInt(txtVisitorsEntered.getText()) > Integer.parseInt(lblVisitorsNumber.getText()))) {
 			Alert("Failed", "The amount of visitors doesn't match the invitation.");
 			return;
 		}
-		
+
+		if (!(orderDetails.get(0).equals(txtOrderNumber.getText()))) {
+			Alert("Failed", "No such order.");
+			clearAllFields();
+			return;
+		}
+
 		// check date and then time
 		if (checkDate() && checkTime()) {
-			Alert("Success", "Thank you, hope you enjoy your time in the park.");
+
+			if (orderDocumentation.size() < 1 && radVisitorStatusText.equals("Enter")) {
+				int visitorsEntered = Integer.parseInt(txtVisitorsEntered.getText());
+				orderDocumentation.put(txtOrderNumber.getText(), visitorsEntered);
+				Alert("Success", txtVisitorsEntered.getText() + " entered.");
+			} else {
+				// check to see if visitors are enter or leave the park
+				for (Map.Entry<String, Integer> orderNumber : orderDocumentation.entrySet()) {
+					// get -> currentVisitors;
+					int visitorsEntered = Integer.parseInt(txtVisitorsEntered.getText());
+					int subVisitorsOrderAmount;
+					
+					if (txtVisitorsEntered.getText().equals(lblVisitorsNumber.getText())) {
+						subVisitorsOrderAmount = 0;
+					} else {
+						subVisitorsOrderAmount = orderNumber.getValue() - visitorsEntered;
+					}
+
+					/*** Enter ***/
+					// there is 2 cases:
+					// 1. doesn't exists in the list -> entering the park
+					// 2. they are in the list, but they didn't take advantage of all the visits
+					if (radVisitorStatusText.equals("Enter")) {
+						// 1. doesn't exists in the list -> entering the park
+						if (orderNumber.getKey().equals(txtOrderNumber.getText())) {
+							if (subVisitorsOrderAmount > 0) {
+								// the method put will replace the value of an existing key 
+								// and will create it if doesn't exist.
+								orderDocumentation.put(orderNumber.getKey(), subVisitorsOrderAmount);
+								Alert("Success", txtVisitorsEntered.getText() + " visitor/s entered.");
+								// we need to update the "currentVisitors"
+								// "currentVisitors += visitorsEntered"
+								// UPDATE.. currentVisitors
+								// 2. they are in the list, but they didn't take advantage of all the visits						
+							} else {
+								Alert("Failed", "You've used all the places.");
+							}
+						} else {
+							orderDocumentation.put(orderNumber.getKey(), subVisitorsOrderAmount);
+							Alert("Success", txtVisitorsEntered.getText() + " visitor/s entered.");
+						}
+					/*** Exit ***/
+					} else if (radVisitorStatusText.equals("Exit")) {
+						// if exists in the list -> leavening the park
+						orderDocumentation.remove(orderNumber.getKey());
+						Alert("Success", txtVisitorsEntered.getText() + " visitor/s leaved.");
+						// we need to update the "currentVisitors"
+						// "currentVisitors -= visitorsEntered"
+						// UPDATE.. currentVisitors
+					}
+				}
+			}
+
+			informationExists = false;
 			clearAllFields();
-		} 
+		}
+		System.out.println(orderDocumentation);
 	}
-	
+
 	// showing alert message
 	public void Alert(String title, String msg) {
 		if (title == "Success") {
@@ -202,7 +329,7 @@ public class ParkEmployeeController implements Initializable {
 			alert.setHeaderText(null);
 			alert.setContentText(msg);
 			alert.showAndWait();
-		} else if (title == "Failed"){
+		} else if (title == "Failed") {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle(title);
 			alert.setHeaderText(null);
@@ -210,43 +337,41 @@ public class ParkEmployeeController implements Initializable {
 			alert.showAndWait();
 		}
 	}
-	
-	public boolean checkDate() {	
+
+	public boolean checkDate() {
 		LocalDateTime arrivelDate = LocalDateTime.now();
 		// "dd-MM-yyyy"
-		String currentDate = arrivelDate.getDayOfMonth() + "-" 
-					       + arrivelDate.getMonthValue() + "-" 
-				           + arrivelDate.getYear();
+		String currentDate = arrivelDate.getDayOfMonth() + "-" + arrivelDate.getMonthValue() + "-"
+				+ arrivelDate.getYear();
 		String orderDate = lblDate.getText();
-				
+
 		if (currentDate.equals(orderDate)) {
 			return true;
 		}
-			
+
 		Alert("Failed", "Invalid date.");
 		return false;
 	}
-	
+
 	public boolean checkTime() {
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		// currentHour = hh
 		int currentHour = arrivelTime.getHour();
 		// startTime = hh:mm
 		String startTime = lblTime.getText();
-		String[] splitStartTime = startTime.split(":"); 
+		String[] splitStartTime = startTime.split(":");
 		// stringArrivelHour = hh
 		String stringArrivelHour = splitStartTime[0];
 		int arrivelHour = Integer.parseInt(stringArrivelHour);
-		
-		// currentHour = 08:00         | 12:00
+
+		// currentHour = 08:00 | 12:00
 		// arrivelHour = 08:00 - 12:00 | 12:00 - 16:00
-		if ((currentHour >= arrivelHour && currentHour < 12)
-				|| (currentHour >= arrivelHour && currentHour < 23)) {
+		if ((currentHour >= arrivelHour && currentHour < 12) || (currentHour >= arrivelHour && currentHour < 23)) {
 			return true;
 		}
-		
+
 		Alert("Failed", "Invalid time.");
-		return false;		
+		return false;
 	}
 
 	public static String getFirstName() {
@@ -255,7 +380,7 @@ public class ParkEmployeeController implements Initializable {
 
 	public static void setFirstName(String firstName) {
 		ParkEmployeeController.firstName = firstName;
-	}	
+	}
 
 	public static ArrayList<String> getOrderDetails() {
 		return orderDetails;
@@ -284,7 +409,8 @@ public class ParkEmployeeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnApprove.setDisable(true);
-		
+		radEnter.setSelected(true);
+
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
 
@@ -295,7 +421,7 @@ public class ParkEmployeeController implements Initializable {
 				txtOrderNumber.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
-		
+
 		// force the field to be numeric only
 		txtVisitorsEntered.textProperty().addListener((obs, oldValue, newValue) -> {
 
@@ -304,6 +430,15 @@ public class ParkEmployeeController implements Initializable {
 			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtVisitorsEntered.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+		});
+
+		// listen to changes in selected toggle
+		radGroupStatus.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
+			if (newToggle == radEnter) {
+				radVisitorStatusText = ((RadioButton) radGroupStatus.getSelectedToggle()).getText();
+			} else if (newToggle == radExit) {
+				radVisitorStatusText = ((RadioButton) radGroupStatus.getSelectedToggle()).getText();
 			}
 		});
 	}
