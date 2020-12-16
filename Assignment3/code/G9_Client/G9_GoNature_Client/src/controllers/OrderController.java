@@ -1,5 +1,7 @@
 package controllers;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -27,6 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -72,6 +75,9 @@ public class OrderController implements Initializable {
 	//private JFXTextField txtParkName;
 	@FXML
 	private ImageView imgOrder;
+	
+	  @FXML
+	    private Button information;
 
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
@@ -122,24 +128,25 @@ public class OrderController implements Initializable {
 	 **/
 	@FXML
 	void next(ActionEvent event) {
-		ArrayList<Object> msg = new ArrayList<>();
+		ArrayList<Object> msgForServer = new ArrayList<>();
 		ArrayList<String> input = new ArrayList<>();
 
 		// continue only if the fields are correct
-		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()) {
-			msg.add("order");
+		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId() &&checkCurrentTime()) {
+			msgForServer.add("order");
 			input.add(txtVisitorsNumber.getText());
 			input.add(txtInvitingEmail.getText());
-			input.add(cbxParkName.getValue());
+			input.add(cbxParkName.getValue().toString());
 			input.add(txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			input.add(cbxArrivelTime.getAccessibleText());
 			input.add(txtmemberID.getText());
-			msg.add(input);
+			msgForServer.add(input);
+			
 			imgOrder.setImage(imgOrderFull);
 
 			if (btnNext == event.getSource()) {
 				pnPayment.toFront();
-				ClientUI.sentToChatClient(msg);
+				ClientUI.sentToChatClient(msgForServer);
 
 			} else if (btnContinue == event.getSource()) {
 				pnConfirmation.toFront();
@@ -154,8 +161,10 @@ public class OrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	public static void recivedFromServer(ArrayList<Object> msgRecived) {
-
+	public static void recivedFromServer(ArrayList<String> arrayList) {
+		if(arrayList.get(0).equals("false")) {
+			
+		}
 	}
 
 	public static void recivedFromServerParksNames(ArrayList<String> parks) {
@@ -166,17 +175,31 @@ public class OrderController implements Initializable {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		String email = txtInvitingEmail.getText();
 		String parkNum = cbxParkName.getValue();
-		String date = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		System.out.println(date); 
 		String memberId = txtmemberID.getText();
-
-		if (visitorsNumber.isEmpty() || email.isEmpty() ||  parkNum.isEmpty() || date.isEmpty()
-				|| memberId.isEmpty()) {
-			Alert("Empty Fields");
+		if (visitorsNumber.isEmpty() || email.isEmpty() ||  parkNum.isEmpty() || memberId.isEmpty()) {
+			Alert("One or more of the fields are empty.\n Please fill them in and try again.");
 			return false;
 		}
 		return true;
 	}
+	
+	public boolean checkCurrentTime() {
+		LocalDate date = txtdate.getValue(); 
+		String [] arrSplit=cbxArrivelTime.getValue().toString().split("-");
+		String [] hour=arrSplit[0].split(":");
+		LocalTime arrivalTime = LocalTime.of(Integer.parseInt( hour[0]),00,00);
+ 
+		LocalTime now = LocalTime.now(); 
+		if(date.compareTo(LocalDate.now())==0  && now.compareTo(arrivalTime)>=0 ) {
+			Alert("You're trying to book for a time that has already passed. Please select a future time\r\n");
+//			if(now.compareTo(arrivalTime)>=)
+//			cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
+//			cbxArrivelTime.getSelectionModel().selectFirst();
+		   return false;
+		}
+		return true;
+	}
+	
 
 	public boolean checkCorrectEmail() {
 		String email = txtInvitingEmail.getText();
@@ -198,6 +221,9 @@ public class OrderController implements Initializable {
 		return true;
 	}
 
+	// start with letter except from g= member
+	//start with letter g = guid
+	// id - traveler / member
 	public boolean checkCorrectMemberId() {
 		String memberId = txtmemberID.getText();
 		String nameMethod = "memberId";
@@ -240,6 +266,9 @@ public class OrderController implements Initializable {
 		alert.setContentText(msg);
 		alert.showAndWait();
 	}
+	
+
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -247,22 +276,24 @@ public class OrderController implements Initializable {
 		cbxArrivelTime.getSelectionModel().selectFirst();
 
 		// user can choose to date only date today until next year.
+		
 		txtdate.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
 				LocalDate today = LocalDate.now();
 				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-
 				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
 			}
 		});
+		//txtdate = new JFXDatePicker(LocalDate.now());
+		txtdate.setValue(LocalDate.now());
 		
-		ArrayList<Object> parkNamesArr = new ArrayList<>();
-		parkNamesArr.add("orderParksNameList");
-		ClientUI.sentToChatClient(parkNamesArr);
 
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
 		cbxParkName.getSelectionModel().selectFirst();
+		
+		information.setTooltip(new Tooltip("In order to get a discount insert member ID or ID number\nof the person that made the order"));
+		
 	}
 
 }

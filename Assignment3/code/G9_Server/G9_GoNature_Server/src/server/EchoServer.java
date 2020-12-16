@@ -29,6 +29,8 @@ public class EchoServer extends AbstractServer {
 		case "ParkEmployee":	
 			ExistingOrderCheck.getOrderDetailsByOrderNumber((ArrayList<Object>) msg, client);
 			break;
+		case "order":
+			NewOrder.NewReservation((ArrayList<Object>) msg, client);
 		default:
 			break;
 		}

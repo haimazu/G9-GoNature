@@ -10,6 +10,17 @@ import orderData.Order;
 //executed by Nastya
 public class NewOrder {
 
+	/*
+	 * 	 * recived is ArrayList of objects -> [0] -> the function who calling to service
+	 * from the server "order" [1] -> ArrayList of String -> [0] -> visitors number
+	 * [1] -> email [2] -> park name [3] -> arrival date [4] -> arrival time [5] ->
+	 * member id (optional)
+	 * 
+	 * answer is array List of object -> [0] -> the function who calling to service
+	 * from the server "order" [1] -> ArrayList of String ->[0]true / false in string if success new order 
+	 * [1] order number [2] price [3] visitor amount [4] discount [5] total price 
+	 * 
+	 */
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
