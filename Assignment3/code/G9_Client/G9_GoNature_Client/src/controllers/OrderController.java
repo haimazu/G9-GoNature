@@ -35,6 +35,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import orderData.Order;
 
 public class OrderController implements Initializable {
 	@FXML
@@ -83,15 +84,16 @@ public class OrderController implements Initializable {
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
 
 	private static ArrayList<String> ParksNames = new ArrayList<>();
-	private static ArrayList<String> dataFormServer = new ArrayList<>();
+	private static Order orderSuccess;
 
-	public static ArrayList<String> getDataFormServer() {
-		return dataFormServer;
+	public static Order getOrderSuccess() {
+		return orderSuccess;
 	}
 
-	public static void setDataFormServer(ArrayList<String> dataFormServer) {
-		OrderController.dataFormServer = dataFormServer;
+	public static void setOrderSuccess(Order orderSuccess) {
+		OrderController.orderSuccess = orderSuccess;
 	}
+
 
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
@@ -179,8 +181,16 @@ public class OrderController implements Initializable {
 	}
 
 	// recived the answer if the reservation success
-	public static void recivedFromServer(ArrayList<String> arrayList) {
-		setDataFormServer(arrayList);
+	public static void recivedFromServer(Object newOrder) {
+		if(newOrder instanceof String) {
+			String status = (String) newOrder;
+		}
+		else {
+			Order myOrder = (Order)newOrder;
+
+		}
+		
+
 
 	}
 
@@ -308,6 +318,7 @@ public class OrderController implements Initializable {
 		// txtdate = new JFXDatePicker(LocalDate.now());
 		txtdate.setValue(LocalDate.now());
 
+		
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
 		cbxParkName.getSelectionModel().selectFirst();
 

@@ -1,15 +1,37 @@
 package orderData;
 
 public class Order {
+	
 	int orderNumber;
 	int visitorsNumber;
 	String orderEmail;
 	OrderType orderType;
 	double price;
+	int Percent;
+	double totalPrice;
 	String parkname;
 	DateAndTime arrivedTime;
-	int memberId;
-	int ID;
+	String memberId=null;
+	int ID=0;
+
+	/**
+	 * @param visitorsNumber
+	 * @param orderEmail
+	 * @param parkname
+	 * @param arrivedTime
+	 * @param memberId
+	 * @param iD
+	 */
+	public Order(int visitorsNumber, String orderEmail, String parkname, DateAndTime arrivedTime, String memberId,
+			int iD) {
+		super();
+		this.visitorsNumber = visitorsNumber;
+		this.orderEmail = orderEmail;
+		this.parkname = parkname;
+		this.arrivedTime = arrivedTime;
+		this.memberId = memberId;
+		ID = iD;
+	}
 
 	public int getID() {
 		return ID;
@@ -75,11 +97,11 @@ public class Order {
 		this.arrivedTime = arrivedTime;
 	}
 
-	public int getMemberId() {
+	public String getMemberId() {
 		return memberId;
 	}
 
-	public void setMemberId(int memberId) {
+	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
 
