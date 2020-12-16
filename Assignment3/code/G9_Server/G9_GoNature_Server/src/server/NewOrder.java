@@ -69,7 +69,7 @@ public class NewOrder {
 		} else {
 			answer.add(new ArrayList<String>(Arrays.asList(queryData.get(0).get(0),queryData.get(1).get(0),queryData.get(2).get(0))));
 		}
-		System.out.println(answer);
+
 		EchoServer.sendToMyClient(answer, client);
 	}
 

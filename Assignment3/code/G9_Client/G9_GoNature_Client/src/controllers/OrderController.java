@@ -68,8 +68,8 @@ public class OrderController implements Initializable {
 	private JFXTextField txtInvitingEmail;
 	@FXML
 	private JFXTextField txtmemberID;
-	@FXML
-	private JFXTextField txtParkName;
+	//@FXML
+	//private JFXTextField txtParkName;
 	@FXML
 	private ImageView imgOrder;
 
@@ -107,7 +107,6 @@ public class OrderController implements Initializable {
 	void clear(ActionEvent event) {
 		txtVisitorsNumber.clear();
 		txtInvitingEmail.clear();
-		// txtParkName.clear();
 		txtdate.getEditor().clear();
 		txtmemberID.clear();
 	}
@@ -131,7 +130,7 @@ public class OrderController implements Initializable {
 			msg.add("order");
 			input.add(txtVisitorsNumber.getText());
 			input.add(txtInvitingEmail.getText());
-			//input.add(cbxParkName.getAccessibleText());
+			input.add(cbxParkName.getValue());
 			input.add(txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			input.add(cbxArrivelTime.getAccessibleText());
 			input.add(txtmemberID.getText());
@@ -166,11 +165,12 @@ public class OrderController implements Initializable {
 	public boolean checkNotEmptyFields() {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		String email = txtInvitingEmail.getText();
-		// String parkNum = txtParkName.getAccessibleText();
+		String parkNum = cbxParkName.getValue();
 		String date = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		System.out.println(date); 
 		String memberId = txtmemberID.getText();
 
-		if (visitorsNumber.isEmpty() || email.isEmpty() || /* parkNum.isEmpty() || */ date.isEmpty()
+		if (visitorsNumber.isEmpty() || email.isEmpty() ||  parkNum.isEmpty() || date.isEmpty()
 				|| memberId.isEmpty()) {
 			Alert("Empty Fields");
 			return false;
@@ -261,7 +261,6 @@ public class OrderController implements Initializable {
 		parkNamesArr.add("orderParksNameList");
 		ClientUI.sentToChatClient(parkNamesArr);
 
-		System.out.println(ParksNames);
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
 		cbxParkName.getSelectionModel().selectFirst();
 	}
