@@ -85,6 +85,17 @@ public class OrderController implements Initializable {
 
 	private static ArrayList<String> ParksNames = new ArrayList<>();
 	private static Order orderSuccess;
+	private Order order;
+	private static String status="not";
+	private  String memberId=null;
+	private  int ID=0;
+	public static String getStatus() {
+		return status;
+	}
+
+	public static void setStatus(String status) {
+		OrderController.status = status;
+	}
 
 	public static Order getOrderSuccess() {
 		return orderSuccess;
@@ -93,7 +104,6 @@ public class OrderController implements Initializable {
 	public static void setOrderSuccess(Order orderSuccess) {
 		OrderController.orderSuccess = orderSuccess;
 	}
-
 
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
@@ -139,27 +149,25 @@ public class OrderController implements Initializable {
 	@FXML
 	void next(ActionEvent event) throws IOException {
 		ArrayList<Object> msgForServer = new ArrayList<>();
-		ArrayList<String> input = new ArrayList<>();
+
 
 		// continue only if the fields are correct
 		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()
 				&& checkCurrentTime()) {
 			msgForServer.add("order");
-			input.add(txtVisitorsNumber.getText());
-			input.add(txtInvitingEmail.getText());
-			input.add(cbxParkName.getValue().toString());
-			input.add(txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			input.add(cbxArrivelTime.getAccessibleText());
-			input.add(txtmemberID.getText());
-			msgForServer.add(input);
+			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+					+ cbxArrivelTime.getAccessibleText();
 
+			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
+					cbxParkName.getValue().toString(),strDateTime, this.memberId,this.ID);
+			msgForServer.add(order);
 			imgOrder.setImage(imgOrderFull);
 
 			if (btnNext == event.getSource()) {
 
 				ClientUI.sentToChatClient(msgForServer);
 
-				if (dataFormServer.get(0).equals("false")) {
+				if (this.status.equals("Faild")) {
 					Pane pane = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml.fxml"));
 					pnOrder.getChildren().removeAll();
 					pnOrder.getChildren().setAll(pane);
@@ -169,6 +177,10 @@ public class OrderController implements Initializable {
 			} else if (btnContinue == event.getSource()) {
 				pnConfirmation.toFront();
 			}
+		}
+		else {
+			this.memberId=null;
+			this.ID=0;
 		}
 	}
 
@@ -182,16 +194,13 @@ public class OrderController implements Initializable {
 
 	// recived the answer if the reservation success
 	public static void recivedFromServer(Object newOrder) {
-		if(newOrder instanceof String) {
+		if (newOrder instanceof String) {
 			String status = (String) newOrder;
+			setStatus(status);
+		} else {
+			Order myOrder = (Order) newOrder;
+			setOrderSuccess(myOrder);
 		}
-		else {
-			Order myOrder = (Order)newOrder;
-
-		}
-		
-
-
 	}
 
 	// return list of all the parks names
@@ -249,6 +258,7 @@ public class OrderController implements Initializable {
 			Alert("Invalid amount of visitors");
 			return false;
 		}
+
 		return true;
 	}
 
@@ -258,10 +268,11 @@ public class OrderController implements Initializable {
 	public boolean checkCorrectMemberId() {
 		String memberId = txtmemberID.getText();
 		String nameMethod = "memberId";
-		boolean flag = true;
 		if (validInput(nameMethod, memberId)) {
+			this.memberId=memberId;
 			return true;
 		} else if (validInput("ID", memberId)) {
+			this.ID= Integer.parseInt(memberId);
 			return true;
 		}
 		Alert("Invalid member-ID / ID ");
@@ -272,7 +283,7 @@ public class OrderController implements Initializable {
 	public static final Pattern VALIDEMAIL = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDAmountVisito = Pattern.compile("^[0-9]{0,3}$", Pattern.CASE_INSENSITIVE);
-	public static final Pattern VALIDMemberId = Pattern.compile("^[a-zA-Z]{1}[0-9]{5}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALIDMemberId = Pattern.compile("^[f,g]{1}[0-9]{5}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDID = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
 
 	// check valid input
@@ -318,7 +329,6 @@ public class OrderController implements Initializable {
 		// txtdate = new JFXDatePicker(LocalDate.now());
 		txtdate.setValue(LocalDate.now());
 
-		
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
 		cbxParkName.getSelectionModel().selectFirst();
 

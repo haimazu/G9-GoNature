@@ -10,9 +10,15 @@ public class Order {
 	int percent;
 	double totalPrice;
 	String parkname;
+<<<<<<< Updated upstream
 	DateAndTime arrivedTime;
 	String memberId = null;
 	int ID = 0;
+=======
+	String arrivedTime;
+	String memberId=null;
+	int ID=0;
+>>>>>>> Stashed changes
 
 	/**
 	 * @param visitorsNumber
@@ -22,7 +28,7 @@ public class Order {
 	 * @param memberId
 	 * @param iD
 	 */
-	public Order(int visitorsNumber, String orderEmail, String parkname, DateAndTime arrivedTime, String memberId,
+	public Order(int visitorsNumber, String orderEmail, String parkname, String arrivedTime, String memberId,
 			int iD) {
 		super();
 		this.visitorsNumber = visitorsNumber;
@@ -89,11 +95,11 @@ public class Order {
 		this.parkname = parkname;
 	}
 
-	public DateAndTime getArrivedTime() {
+	public String getArrivedTime() {
 		return arrivedTime;
 	}
 
-	public void setArrivedTime(DateAndTime arrivedTime) {
+	public void setArrivedTime(String arrivedTime) {
 		this.arrivedTime = arrivedTime;
 	}
 
