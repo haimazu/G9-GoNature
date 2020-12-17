@@ -86,9 +86,10 @@ public class OrderController implements Initializable {
 	private static ArrayList<String> ParksNames = new ArrayList<>();
 	private static Order orderSuccess;
 	private Order order;
-	private static String status="not";
-	private  String memberId=null;
-	private  int ID=0;
+	private static String status = "not";
+	private String memberId = null;
+	private int ID = 0;
+
 	public static String getStatus() {
 		return status;
 	}
@@ -138,18 +139,16 @@ public class OrderController implements Initializable {
 	}
 
 	/*
-	 * msg is ArrayList of objects -> [0] -> the function who calling to service
-	 * from the server "order" [1] -> ArrayList of String -> [0] -> visitors number
-	 * [1] -> email [2] -> park name [3] -> arrival date [4] -> arrival time [5] ->
-	 * member id (optional)
+	 * msgForServer is ArrayList of objects -> [0] -> name of the class [1] -> order
+	 * Object
 	 * 
-	 * By clicking button next the function will check it the values in the field
-	 * are correct - if so, send them to server we will receive from the server:
+	 * By clicking button next the function will check it the values in the fields
+	 * are correct - if so, send them to server 
+	 * 
 	 **/
 	@FXML
 	void next(ActionEvent event) throws IOException {
 		ArrayList<Object> msgForServer = new ArrayList<>();
-
 
 		// continue only if the fields are correct
 		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()
@@ -159,7 +158,7 @@ public class OrderController implements Initializable {
 					+ cbxArrivelTime.getAccessibleText();
 
 			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
-					cbxParkName.getValue().toString(),strDateTime, this.memberId,this.ID);
+					cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
 			msgForServer.add(order);
 			imgOrder.setImage(imgOrderFull);
 
@@ -177,10 +176,9 @@ public class OrderController implements Initializable {
 			} else if (btnContinue == event.getSource()) {
 				pnConfirmation.toFront();
 			}
-		}
-		else {
-			this.memberId=null;
-			this.ID=0;
+		} else {
+			this.memberId = null;
+			this.ID = 0;
 		}
 	}
 
@@ -192,7 +190,12 @@ public class OrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	// recived the answer if the reservation success
+
+	/*
+	 * recived the answer if the reservation success
+	 * string if it faild
+	 * Order Object if success
+	 */
 	public static void recivedFromServer(Object newOrder) {
 		if (newOrder instanceof String) {
 			String status = (String) newOrder;
@@ -269,10 +272,10 @@ public class OrderController implements Initializable {
 		String memberId = txtmemberID.getText();
 		String nameMethod = "memberId";
 		if (validInput(nameMethod, memberId)) {
-			this.memberId=memberId;
+			this.memberId = memberId;
 			return true;
 		} else if (validInput("ID", memberId)) {
-			this.ID= Integer.parseInt(memberId);
+			this.ID = Integer.parseInt(memberId);
 			return true;
 		}
 		Alert("Invalid member-ID / ID ");

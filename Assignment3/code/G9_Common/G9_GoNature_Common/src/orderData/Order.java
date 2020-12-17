@@ -10,9 +10,6 @@ public class Order {
 	int percent;
 	double totalPrice;
 	String parkname;
-
-
-
 	String arrivedTime;
 	String memberId=null;
 	int ID=0;
