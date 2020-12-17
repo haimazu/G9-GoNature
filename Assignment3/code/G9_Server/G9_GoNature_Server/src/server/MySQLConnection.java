@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import common.*;
-import dataLayer.*;
+//import common.*;
+//import dataLayer.*;
 
 public class MySQLConnection {
 

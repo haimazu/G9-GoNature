@@ -1,7 +1,7 @@
 package server;
 
 import java.io.IOException;
-import java.sql.Connection;
+//import java.sql.Connection;
 import java.util.ArrayList;
 
 import gui.ServerController;
@@ -18,22 +18,23 @@ public class EchoServer extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		@SuppressWarnings("unchecked")
 		ArrayList<Object> recived = (ArrayList<Object>) msg;
 		switch ((String) recived.get(0)) {
 		case "login":
-			Login.login((ArrayList<Object>) msg, client);
+			Login.login(recived, client);
 			break;
 		case "orderParksNameList":
-			NewOrder.ParksNames((ArrayList<Object>) msg, client);
+			NewOrder.ParksNames(recived, client);
 			break;
 		case "ordersByIdOrMemberId":	
-			ExistingOrderCheck.getOrderDetailsByIdOrMemberId((ArrayList<Object>) msg, client);
+			ExistingOrderCheck.getOrderDetailsByIdOrMemberId(recived, client);
 			break;
 		case "ordersByOrderNumber":	
-			ExistingOrderCheck.getOrderDetailsByOrderNumber((ArrayList<Object>) msg, client);
+			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 			break;
 		case "order":
-			NewOrder.NewReservation((ArrayList<Object>) msg, client);
+			NewOrder.NewReservation(recived, client);
 		default:
 			break;
 		}

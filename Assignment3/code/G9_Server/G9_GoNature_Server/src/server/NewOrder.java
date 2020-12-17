@@ -3,7 +3,7 @@ package server;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import dataLayer.CreditCard;
+//import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 import orderData.OrderType;
@@ -61,7 +61,7 @@ public class NewOrder {
 	// check if needed to be sent null or empty in order number
 	public static String toStringForReservation(Order data) {
 		return "'" + "" + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderType()
-				+ "','" + data.getPrice() + "','" + data.getParkname() + "','" + data.getArrivedTime() + "','"
+				+ "','" + data.getPrice() + "','" + data.getParkName() + "','" + data.getArrivedTime() + "','"
 				+ data.getMemberId() + "','" + data.getID() + "'";
 	}
 
