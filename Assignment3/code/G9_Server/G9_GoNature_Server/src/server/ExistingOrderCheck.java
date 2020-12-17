@@ -41,10 +41,10 @@ public class ExistingOrderCheck {
 	public static void getOrderDetailsByIdOrMemberId(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : existingOrderCheck
+		// the service name : ordersByIdOrMemberId
 		answer.add(recived.get(0));
 		// the data that sent from the client
-		// cell 0: orderNumber
+		// cell 0: ID / memberId
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
 
 		ArrayList<String> query = new ArrayList<String>();
@@ -66,7 +66,7 @@ public class ExistingOrderCheck {
 	public static void getOrderDetailsByOrderNumber(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : existingOrderCheck
+		// the service name : ordersByOrderNumber
 		answer.add(recived.get(0));
 		// the data that sent from the client
 		// cell 0: orderNumber
