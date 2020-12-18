@@ -19,7 +19,7 @@ public class NewOrder {
 	 * 
 	 * answer is array List of object -> [0] -> the function who calling to service
 	 * from the server "order" [1] -> ArrayList of String ->[0]true / false in
-	 * string if success new order [1]   order 
+	 * string if success new order [1] order
 	 * 
 	 */
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
@@ -35,8 +35,6 @@ public class NewOrder {
 		}
 
 		else {
-			
-			
 
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
@@ -95,7 +93,8 @@ public class NewOrder {
 		} else {
 			/// ******************
 			// ArrayList<String> parkNames = new ArrayList<String>();
-			answer.add(queryData.get(0));
+			for (ArrayList<String> a : queryData)
+				answer.add(a);
 		}
 		EchoServer.sendToMyClient(answer, client);
 
