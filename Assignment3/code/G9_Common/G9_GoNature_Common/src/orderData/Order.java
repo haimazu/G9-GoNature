@@ -17,12 +17,10 @@ public class Order {
 
 	//this constructor is only for OrderConroller from method next -DO NOT USE IT!!!
 	public Order(int visitorsNumber,String orderEmail,String orderPhone,String parkName,String arrivedTime,String memberId,String ID) {
-		this.orderNumber = orderNumber;
+
 		this.visitorsNumber = visitorsNumber;
 		this.orderEmail = orderEmail;
 		this.orderPhone = orderPhone;
-		this.orderType = orderType;
-		this.price = price;
 		this.parkName = parkName;
 		this.arrivedTime = arrivedTime;
 		this.memberId = memberId;

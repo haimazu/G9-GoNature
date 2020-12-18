@@ -7,34 +7,35 @@ import java.util.Arrays;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 import orderData.OrderType;
+import server.WaitingList;
+import userData.Member;
 
 //executed by Nastya
 public class NewOrder {
 
-	/*
-	 * * Received is ArrayList of objects -> [0] -> the function who calling to
-	 * service from the server "order" [1] -> ArrayList of String : [0] -> visitors
-	 * amount [1] -> email [2] -> park name [3] -> arrival date [4] -> arrival time
-	 * [5] -> member id (optional)
-	 * 
-	 * answer is array List of object -> [0] -> the function who calling to service
-	 * from the server "order" [1] -> ArrayList of String ->[0]true / false in
-	 * string if success new order [1] order
-	 * 
-	 */
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
-
+		WaitingList a = null;
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // credit card object received
 
 		// check if the capacity of orders is full
-		if (!availableCapacity4Order(data.getVisitorsNumber())) {
+		if ((!a.checkForAvailableSpots(recived, client)) || (data.getMemberId() == null && data.getID() == null)) {
 			answer.add(false);
 			EchoServer.sendToMyClient(answer, client);
 		}
 
 		else {
+
+			if (data.getMemberId() != null) {
+
+			}
+
+			// לבדוק ID אן MEMBERID,
+			// אם לא ריקיםן. מושכת את הממבר ובודקת את הסוג שלו
+			// לבדוק אם קיים. אם לא אז לא חבר ולא מקבל את ההנחה
+
+			Member memb; // to check the member type by order
 
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
@@ -63,12 +64,38 @@ public class NewOrder {
 				+ data.getMemberId() + "','" + data.getID() + "'";
 	}
 
-//*******************************************************************
-	public static boolean availableCapacity4Order(int visitorsNumber) {
+	public static Member MemerCheck(Order ord) {
 
-		return true;
+		// the returned values stored here
+		ArrayList<Object> answer = new ArrayList<Object>();
+		// the service name : ParksNames
+
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("member"); // table name
+		query.add("*"); // columns to select from
+		if (ord.getMemberId() != null && ord.getID() != null)
+			query.add("WHERE memberNumber='" + ord.getMemberId() + "'" + " OR ID='=" + ord.getID() + "'");
+		else if (ord.getMemberId() != null)
+			query.add("WHERE memberNumber='" + ord.getMemberId() + "'"); // condition - non -> all parks names required
+		else if (ord.getID() != null)
+			query.add("WHERE ID='" + ord.getID() + "'");
+		query.add("9"); // how many columns returned
+
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+		if (queryData.get(0).isEmpty()) {
+			// no parks in DB
+			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
+		} else {
+			ArrayList<String> parkNames = new ArrayList<String>();
+			for (ArrayList<String> a : queryData)
+				for (String b : a)
+					parkNames.add(b);
+			answer.add(parkNames);
+		}
+		return null;
+
 	}
-	// *******************************************************************
 
 	// func that returns all parks names
 	public static void ParksNames(ArrayList<Object> recived, ConnectionToClient client) {
@@ -91,7 +118,6 @@ public class NewOrder {
 			// no parks in DB
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
-			/// ******************
 			ArrayList<String> parkNames = new ArrayList<String>();
 			for (ArrayList<String> a : queryData)
 				for (String b : a)
