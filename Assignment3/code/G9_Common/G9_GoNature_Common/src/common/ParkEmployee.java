@@ -2,7 +2,7 @@ package common;
 
 import userData.Employee;
 
-public class ParkWorker extends Employee {
+public class ParkEmployee extends Employee {
 
 
 	/**
@@ -15,7 +15,7 @@ public class ParkWorker extends Employee {
 	 * @param employeeParkName
 	 * @param employeeStatus
 	 */
-	public ParkWorker(String employeeFirstName, String employeeLasttName, String employeeUserName,
+	public ParkEmployee(String employeeFirstName, String employeeLasttName, String employeeUserName,
 			String employeePassword, int employeeNumber, String employeeEmail, String employeeParkName,
 			Status employeeStatus) {
 		super(employeeFirstName, employeeLasttName, employeeUserName, employeePassword, employeeNumber, employeeEmail,
