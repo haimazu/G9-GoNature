@@ -11,6 +11,7 @@ public class Order implements Serializable{
 	String orderPhone; 
 	OrderType orderType;
 	double price;
+	double totalPrice;
 	String parkName;
 	String arrivedTime;
 	String memberId;
@@ -30,19 +31,21 @@ public class Order implements Serializable{
 		this.ID = ID;
 	}
 	
-	public Order(int orderNumber, int visitorsNumber,String orderEmail,String orderPhone, OrderType orderType,double price,String parkName,String arrivedTime,String memberId,String ID) {
+	public Order(int orderNumber, int visitorsNumber,String orderEmail,String orderPhone, OrderType orderType,double price,double totalPrice ,String parkName,String arrivedTime,String memberId,String ID) {
 		this.orderNumber = orderNumber;
 		this.visitorsNumber = visitorsNumber;
 		this.orderEmail = orderEmail;
 		this.orderPhone = orderPhone;
 		this.orderType = orderType;
 		this.price = price;
+		this.totalPrice=totalPrice;
 		this.parkName = parkName;
 		this.arrivedTime = arrivedTime;
 		this.memberId = memberId;
 		this.ID = ID;
 	}
 
+	
 	public Order(ArrayList<String> orderFromDB) {
 		this.orderNumber = Integer.parseInt(orderFromDB.get(0));
 		this.visitorsNumber = Integer.parseInt(orderFromDB.get(1));
@@ -50,10 +53,11 @@ public class Order implements Serializable{
 		this.orderPhone = orderFromDB.get(3);
 		this.orderType = OrderType.valueOf(orderFromDB.get(4));
 		this.price = Double.parseDouble(orderFromDB.get(5));
-		this.parkName = orderFromDB.get(6);
-		this.arrivedTime = orderFromDB.get(7);
-		this.memberId = orderFromDB.get(8);
-		this.ID = orderFromDB.get(9);
+		this.totalPrice = Double.parseDouble(orderFromDB.get(6));
+		this.parkName = orderFromDB.get(7);
+		this.arrivedTime = orderFromDB.get(8);
+		this.memberId = orderFromDB.get(9);
+		this.ID = orderFromDB.get(10);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -108,6 +108,7 @@ public class OrderController implements Initializable {
 
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
+		System.out.println(ParksNames);
 	}
 
 	@FXML
