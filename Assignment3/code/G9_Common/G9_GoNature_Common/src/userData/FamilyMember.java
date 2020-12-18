@@ -14,7 +14,7 @@ public class FamilyMember extends Member{
 	 * @param memberPaymentType
 	 */
 	public FamilyMember(String memberID, String memberFirstNAme, String memberLastNAme, int memberNumber,
-			String memberPhoneNumber, String memberEmail, PaymentType memberPaymentType,int familyMembersAmount) {
+			String memberPhoneNumber, String memberEmail, String memberPaymentType,int familyMembersAmount) {
 		super(memberID, memberFirstNAme, memberLastNAme, memberNumber, memberPhoneNumber, memberEmail, memberPaymentType);
 		
 		

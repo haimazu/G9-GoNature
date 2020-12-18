@@ -26,14 +26,12 @@ public class NewOrder {
 		}
 
 		else {
-			if (memb == null) {
 
-			}
 			// לבדוק ID אן MEMBERID,
 			// אם לא ריקיםן. מושכת את הממבר ובודקת את הסוג שלו
 			// לבדוק אם קיים. אם לא אז לא חבר ולא מקבל את ההנחה
 
-			data = totalPrice(data, memb);
+			data = totalPrice(data, memb);// updating the prices in the order
 
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
@@ -50,50 +48,60 @@ public class NewOrder {
 
 	}
 
+	// input: Order with empty totalPrice & price & orderType, a Member
+	//
+	// output: Order with updated totalPrice and price and orderType
 	public static Order totalPrice(Order ord, Member memb) {
 
 		int parkEnteryPrice = CurrentPriceInPark(ord);
-		// if the order is not 4 a member
 		ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber());
-		if (memb == null) {
-			ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());
-		} else {
+		if (memb == null) {// if the order is not 4 a member
+			ord.setOrderType(OrderType.SINGLE);
+			ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
+		} else {// if the order is for some members
 
 			switch (memb.getMemberOrderType()) {
-			case SINGLE:
-				// ?
-
-				break;
 			case FAMILY:
+				ord.setOrderType(OrderType.FAMILY);
 				int familymembers = Integer.parseInt(memb.getAmount());
 				int notFamilyMembers = ord.getVisitorsNumber() - familymembers;
 				if (notFamilyMembers < 0)
 					notFamilyMembers = 0;
-				ord.setPrice((familymembers) * parkEnteryPrice * 0.85);
+				ord.setPrice(familymembers * parkEnteryPrice * 0.85);
 				ord.setPrice(ord.getPrice() * 0.75 + notFamilyMembers * parkEnteryPrice * 0.85);
-
 				break;
 			case GROUP:
-
+				ord.setOrderType(OrderType.GROUP);
+				int groupAmount = Integer.parseInt(memb.getAmount());
+				ord.setPrice(groupAmount * parkEnteryPrice * 0.75);
 				break;
 			default:
 				break;
 			}
-
 		}
 		return ord;
 	}
 
 	// check if needed to be sent null or empty in order number
 	public static String toStringForReservation(Order data) {
-		return "'" + "" + "','" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderType()
-				+ "','" + data.getPrice() + "','" + data.getParkName() + "','" + data.getArrivedTime() + "','"
-				+ data.getMemberId() + "','" + data.getID() + "'";
+		
+		String s=Double. toString(data.getTotalPrice());
+		String p=Double. toString(data.getPrice());
+		return "'" + "" + "','" 
+				+ data.getVisitorsNumber() + "','" 
+				+ data.getOrderEmail() + "','" 
+				+ data.getOrderPhone()+ "','"
+				+ data.getOrderType().toString() + "','" 
+				+ s + "','"
+				+ p + "','" 
+				+ data.getParkName() + "','" 
+				+ data.getArrivedTime() + "','" 
+				+ data.getMemberId() + "','"
+				+ data.getID() + "'";
 	}
 
 	// checks if u a member and return the member from DB
 	public static Member MemerCheck(Order ord) {
-
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("member"); // table name
