@@ -90,7 +90,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private JFXRadioButton radExit;
 	@FXML
-    private ToggleGroup radGroupStatus;
+	private ToggleGroup radGroupStatus;
 	@FXML
 	private Button btnApprove;
 
@@ -193,55 +193,20 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 
-		// 2021-01-01 08:00:00
-		String DateAndTime = orderDetails.get(6);
-		String[] splitDateAndTime = DateAndTime.split(" ");
-		// 2021-01-01
-		String date = splitDateAndTime[0];
+		/****** calculate discount ******/
+		float price = Float.parseFloat(orderDetails.get(5));
+		// float discount = Float.parseFloat(orderDetails.get(6));
+		float totalPrice;
 
-		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
-		// iFormatter -> input format
-		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		// oFormatter -> output format
-		DateFormat oFormatter = new SimpleDateFormat("dd-MM-yyyy");
-		try {
-			String strDateTime = oFormatter.format(iFormatter.parse(date));
+		// totalPrice = price * ((100 - discount) / 100)
+		// totalPrice = price * ((100 - discount) / 100);
 
-			// 08:00:00 -> 08:00
-			String time = (String) splitDateAndTime[1].subSequence(0, 5);
+		// lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
 
-			lblOrderNumber.setText(orderDetails.get(0));
-			lblParkName.setText(orderDetails.get(5));
-			lblDate.setText(strDateTime);
-			lblTime.setText(time);
-			lblVisitorsNumber.setText(orderDetails.get(1));
-			lblEmail.setText(orderDetails.get(2));
+		printOrderDetails();
 
-			lblVisitorsEntered.setText(txtVisitorsEntered.getText());
-			lblPrice.setText(orderDetails.get(4) + "₪");
-
-			// need to calculate:
-			// order type -> random / not random?
-			// member / not member?
-			// payed / not payed?
-			// there is parkManager discount too?
-			// lblDiscount.setText(orderDetails.get(6) + "%");
-			lblPayment.setText(orderDetails.get(9));
-
-			float price = Float.parseFloat(orderDetails.get(4));
-			// float discount = Float.parseFloat(orderDetails.get(6));
-			float totalPrice;
-
-			// totalPrice = price * ((100 - discount) / 100)
-			// totalPrice = price * ((100 - discount) / 100);
-
-			// lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
-			informationExists = false;
-			btnApprove.setDisable(false);
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		informationExists = false;
+		btnApprove.setDisable(false);
 	}
 
 	@FXML
@@ -262,17 +227,21 @@ public class ParkEmployeeController implements Initializable {
 		// check date and then time
 		if (checkDate() && checkTime()) {
 
+			int orderVisitorsNumber = Integer.parseInt(txtOrderNumber.getText());
+			int visitorsEntered = Integer.parseInt(txtVisitorsEntered.getText());
+			int visitorsLeaved = Integer.parseInt(txtVisitorsEntered.getText());
+			// calcPlaces = visitorsEntered - orderVisitorsNumber
+			// Math.abs(calcPlaces);
+
 			if (orderDocumentation.size() < 1 && radVisitorStatusText.equals("Enter")) {
-				int visitorsEntered = Integer.parseInt(txtVisitorsEntered.getText());
 				orderDocumentation.put(txtOrderNumber.getText(), visitorsEntered);
-				Alert("Success", txtVisitorsEntered.getText() + " entered.");
+				Alert("Success", visitorsEntered + " entered.");
 			} else {
 				// check to see if visitors are enter or leave the park
 				for (Map.Entry<String, Integer> orderNumber : orderDocumentation.entrySet()) {
 					// get -> currentVisitors;
-					int visitorsEntered = Integer.parseInt(txtVisitorsEntered.getText());
 					int subVisitorsOrderAmount;
-					
+
 					if (txtVisitorsEntered.getText().equals(lblVisitorsNumber.getText())) {
 						subVisitorsOrderAmount = 0;
 					} else {
@@ -287,14 +256,14 @@ public class ParkEmployeeController implements Initializable {
 						// 1. doesn't exists in the list -> entering the park
 						if (orderNumber.getKey().equals(txtOrderNumber.getText())) {
 							if (subVisitorsOrderAmount > 0) {
-								// the method put will replace the value of an existing key 
+								// the method put will replace the value of an existing key
 								// and will create it if doesn't exist.
 								orderDocumentation.put(orderNumber.getKey(), subVisitorsOrderAmount);
 								Alert("Success", txtVisitorsEntered.getText() + " visitor/s entered.");
 								// we need to update the "currentVisitors"
 								// "currentVisitors += visitorsEntered"
 								// UPDATE.. currentVisitors
-								// 2. they are in the list, but they didn't take advantage of all the visits						
+								// 2. they are in the list, but they didn't take advantage of all the visits
 							} else {
 								Alert("Failed", "You've used all the places.");
 							}
@@ -302,7 +271,7 @@ public class ParkEmployeeController implements Initializable {
 							orderDocumentation.put(orderNumber.getKey(), subVisitorsOrderAmount);
 							Alert("Success", txtVisitorsEntered.getText() + " visitor/s entered.");
 						}
-					/*** Exit ***/
+						/*** Exit ***/
 					} else if (radVisitorStatusText.equals("Exit")) {
 						// if exists in the list -> leavening the park
 						orderDocumentation.remove(orderNumber.getKey());
@@ -318,6 +287,47 @@ public class ParkEmployeeController implements Initializable {
 			clearAllFields();
 		}
 		System.out.println(orderDocumentation);
+	}
+
+	public void printOrderDetails() {
+		// 2021-01-01 08:00:00
+		String DateAndTime = orderDetails.get(8);
+		String[] splitDateAndTime = DateAndTime.split(" ");
+		// 2021-01-01
+		String date = splitDateAndTime[0];
+
+		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
+		// iFormatter -> input format
+		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		// oFormatter -> output format
+		DateFormat oFormatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			String strDateTime = oFormatter.format(iFormatter.parse(date));
+
+			// 08:00:00 -> 08:00
+			String time = (String) splitDateAndTime[1].subSequence(0, 5);
+
+			lblOrderNumber.setText(orderDetails.get(0));
+			lblParkName.setText(orderDetails.get(7));
+			lblDate.setText(strDateTime);
+			lblTime.setText(time);
+			lblVisitorsNumber.setText(orderDetails.get(1));
+			lblEmail.setText(orderDetails.get(2));
+
+			lblVisitorsEntered.setText(txtVisitorsEntered.getText());
+			lblPrice.setText(orderDetails.get(5) + "₪");
+
+			// need to calculate:
+			// order type -> random / not random?
+			// member / not member?
+			// payed / not payed?
+			// there is parkManager discount too?
+			// lblDiscount.setText(orderDetails.get(6) + "%");
+			// lblPayment.setText(orderDetails.get(9));
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// showing alert message
@@ -388,7 +398,7 @@ public class ParkEmployeeController implements Initializable {
 	public static void receivedFromServerOrderDetails(ArrayList<String> orderDetails) {
 		ParkEmployeeController.orderDetails = orderDetails;
 	}
-	
+
 	public void clearAllFields() {
 		txtOrderNumber.clear();
 		lblOrderNumber.setText("");
@@ -423,12 +433,13 @@ public class ParkEmployeeController implements Initializable {
 
 		// force the field to be numeric only
 		txtVisitorsEntered.textProperty().addListener((obs, oldValue, newValue) -> {
-
+			lblVisitorsEntered.setText(newValue);
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtVisitorsEntered.setText(newValue.replaceAll("[^\\d]", ""));
+				lblVisitorsEntered.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
 
