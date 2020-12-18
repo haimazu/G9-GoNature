@@ -65,7 +65,7 @@ public class PaymentController implements Initializable {
 		this.pymanetOrder = orderPyment;
 	}
 
-	public boolean checkEmpty() {
+	public boolean checkNotEmptyFields() {
 		if(!(radioCash.isSelected() || radioPayPal.isSelected() || radioPayPal.isSelected() )) {
 			alert.setAlert("you need to choose payment method");
 			return false;

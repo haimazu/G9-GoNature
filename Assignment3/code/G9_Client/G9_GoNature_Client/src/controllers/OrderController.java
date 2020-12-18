@@ -90,6 +90,8 @@ public class OrderController implements Initializable {
 	private String memberId = null;
 	private String ID = null;
 	private AlertController alert = new AlertController();
+	
+	private PaymentController payStatus;
 
 	public static String getStatus() {
 		return status;
@@ -173,10 +175,13 @@ public class OrderController implements Initializable {
 					pnOrder.getChildren().removeAll();
 					pnOrder.getChildren().setAll(pane);
 				} else {
+					payStatus = new PaymentController(orderSuccess);
 					pnPayment.toFront();
 				}
 			} else if (btnContinue == event.getSource()) {
-				pnConfirmation.toFront();
+			
+				if (payStatus.checkNotEmptyFields())
+					pnConfirmation.toFront();
 			}
 		} else {
 			this.memberId = null;
