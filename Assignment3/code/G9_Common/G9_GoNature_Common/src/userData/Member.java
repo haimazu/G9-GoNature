@@ -15,8 +15,41 @@ public class Member {
 	String memberEmail;
 	String memberPaymentType;
 	OrderType memberOrderType;
+	String amount;
 	
 	
+	public String getMemberFirstName() {
+		return memberFirstName;
+	}
+
+	public void setMemberFirstName(String memberFirstName) {
+		this.memberFirstName = memberFirstName;
+	}
+
+	public String getMemberLastName() {
+		return memberLastName;
+	}
+
+	public void setMemberLastName(String memberLastName) {
+		this.memberLastName = memberLastName;
+	}
+
+	public OrderType getMemberOrderType() {
+		return memberOrderType;
+	}
+
+	public void setMemberOrderType(OrderType memberOrderType) {
+		this.memberOrderType = memberOrderType;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+
 	//constructor from DB
 	public Member(ArrayList<String> memberFromDB) {
 		this.memberID = memberFromDB.get(0);
@@ -26,7 +59,7 @@ public class Member {
 		this.memberPhoneNumber = memberFromDB.get(4);
 		this.memberEmail = memberFromDB.get(5);
 		this.memberPaymentType = memberFromDB.get(6);
-		this.memberOrderType= OrderType.valueOf(memberFromDB.get(4));
+		this.memberOrderType= OrderType.valueOf(memberFromDB.get(7));
 	}
 	
 	public Member(String memberID, String memberFirstNAme, String memberLastNAme, int memberNumber,
