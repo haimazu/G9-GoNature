@@ -155,7 +155,7 @@ public class OrderController implements Initializable {
 				&& checkCurrentTime()) {
 			msgForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-					+ cbxArrivelTime.getAccessibleText();
+					+ " " + cbxArrivelTime.getValue().toString();
 
 			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),"0549991234",
 					cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
