@@ -48,6 +48,7 @@ public class PaymentController implements Initializable {
 	private JFXCheckBox CheckBoxAgreed;
 
 	private Order pymanetOrder;
+	private AlertController alert;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -56,18 +57,28 @@ public class PaymentController implements Initializable {
 		this.txtdDiscount.setText(String.valueOf(1 - (pymanetOrder.getTotalPrice() / pymanetOrder.getTotalPrice())));
 		this.txtVisitoramountPrice.setText(String.valueOf(pymanetOrder.getVisitorsNumber()));
 	}
-	
-	
+
 	/**
 	 * 
 	 */
 	public PaymentController(Order orderPyment) {
-		this.pymanetOrder=orderPyment;
+		this.pymanetOrder = orderPyment;
 	}
-
 
 	public boolean checkEmpty() {
-		if()
+		if(!(radioCash.isSelected() || radioPayPal.isSelected() || radioPayPal.isSelected() )) {
+			alert.setAlert("you need to choose payment method");
+			return false;
+		}
+		if(!CheckBoxAgreed.isSelected()) {
+			alert.setAlert("you need to aprove the terms");
+			return false;
+		}
+		return true;				
 	}
+	
+	
+	
+	
 
 }
