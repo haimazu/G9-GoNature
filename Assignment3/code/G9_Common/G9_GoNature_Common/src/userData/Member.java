@@ -1,32 +1,73 @@
 package userData;
 
+import java.util.ArrayList;
+
+import orderData.OrderType;
+
 public class Member {
 	
 
 	String memberID;
-	String memberFirstNAme;
-	String memberLastNAme;
+	String memberFirstName;
+	String memberLastName;
 	int memberNumber;
 	String memberPhoneNumber;
 	String memberEmail;
-	PaymentType memberPaymentType;
+	String memberPaymentType;
+	OrderType memberOrderType;
+	String amount;
 	
 	
-	/**
-	 * @param memberID
-	 * @param memberFirstNAme
-	 * @param memberLastNAme
-	 * @param memberNumber
-	 * @param memberPhoneNumber
-	 * @param memberEmail
-	 * @param memberPaymentType
-	 */
+	public String getMemberFirstName() {
+		return memberFirstName;
+	}
+
+	public void setMemberFirstName(String memberFirstName) {
+		this.memberFirstName = memberFirstName;
+	}
+
+	public String getMemberLastName() {
+		return memberLastName;
+	}
+
+	public void setMemberLastName(String memberLastName) {
+		this.memberLastName = memberLastName;
+	}
+
+	public OrderType getMemberOrderType() {
+		return memberOrderType;
+	}
+
+	public void setMemberOrderType(OrderType memberOrderType) {
+		this.memberOrderType = memberOrderType;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+
+	//constructor from DB
+	public Member(ArrayList<String> memberFromDB) {
+		this.memberID = memberFromDB.get(0);
+		this.memberFirstName =  memberFromDB.get(1);
+		this.memberLastName = memberFromDB.get(2);
+		this.memberNumber = Integer.parseInt(memberFromDB.get(3));
+		this.memberPhoneNumber = memberFromDB.get(4);
+		this.memberEmail = memberFromDB.get(5);
+		this.memberPaymentType = memberFromDB.get(6);
+		this.memberOrderType= OrderType.valueOf(memberFromDB.get(7));
+	}
+	
 	public Member(String memberID, String memberFirstNAme, String memberLastNAme, int memberNumber,
-			String memberPhoneNumber, String memberEmail, PaymentType memberPaymentType) {
+			String memberPhoneNumber, String memberEmail, String memberPaymentType) {
 		super();
 		this.memberID = memberID;
-		this.memberFirstNAme = memberFirstNAme;
-		this.memberLastNAme = memberLastNAme;
+		this.memberFirstName = memberFirstNAme;
+		this.memberLastName = memberLastNAme;
 		this.memberNumber = memberNumber;
 		this.memberPhoneNumber = memberPhoneNumber;
 		this.memberEmail = memberEmail;
@@ -39,16 +80,16 @@ public class Member {
 		this.memberID = memberID;
 	}
 	public String getMemberFirstNAme() {
-		return memberFirstNAme;
+		return memberFirstName;
 	}
 	public void setMemberFirstNAme(String memberFirstNAme) {
-		this.memberFirstNAme = memberFirstNAme;
+		this.memberFirstName = memberFirstNAme;
 	}
 	public String getMemberLastNAme() {
-		return memberLastNAme;
+		return memberLastName;
 	}
 	public void setMemberLastNAme(String memberLastNAme) {
-		this.memberLastNAme = memberLastNAme;
+		this.memberLastName = memberLastNAme;
 	}
 	public int getMemberNumber() {
 		return memberNumber;
@@ -68,10 +109,10 @@ public class Member {
 	public void setMemberEmail(String memberEmail) {
 		this.memberEmail = memberEmail;
 	}
-	public PaymentType getMemberPaymentType() {
+	public String getMemberPaymentType() {
 		return memberPaymentType;
 	}
-	public void setMemberPaymentType(PaymentType memberPaymentType) {
+	public void setMemberPaymentType(String memberPaymentType) {
 		this.memberPaymentType = memberPaymentType;
 	}
 	

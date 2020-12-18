@@ -88,7 +88,8 @@ public class OrderController implements Initializable {
 	private Order order;
 	private static String status = "not";
 	private String memberId = null;
-	private int ID = 0;
+	private String ID = null;
+	private AlertController alert = new AlertController();
 
 	public static String getStatus() {
 		return status;
@@ -108,6 +109,7 @@ public class OrderController implements Initializable {
 
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
+		System.out.println(ParksNames);
 	}
 
 	@FXML
@@ -143,7 +145,7 @@ public class OrderController implements Initializable {
 	 * Object
 	 * 
 	 * By clicking button next the function will check it the values in the fields
-	 * are correct - if so, send them to server 
+	 * are correct - if so, send them to server
 	 * 
 	 **/
 	@FXML
@@ -154,11 +156,11 @@ public class OrderController implements Initializable {
 		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()
 				&& checkCurrentTime()) {
 			msgForServer.add("order");
-			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-					+ cbxArrivelTime.getAccessibleText();
+			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
+					+ cbxArrivelTime.getValue().toString();
 
 			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
-					cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
+					"0549991234", cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
 			msgForServer.add(order);
 			imgOrder.setImage(imgOrderFull);
 
@@ -178,7 +180,7 @@ public class OrderController implements Initializable {
 			}
 		} else {
 			this.memberId = null;
-			this.ID = 0;
+			this.ID = null;
 		}
 	}
 
@@ -190,11 +192,9 @@ public class OrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-
 	/*
-	 * recived the answer if the reservation success
-	 * string if it faild
-	 * Order Object if success
+	 * recived the answer if the reservation success string if it faild Order Object
+	 * if success
 	 */
 	public static void recivedFromServer(Object newOrder) {
 		if (newOrder instanceof String) {
@@ -218,7 +218,7 @@ public class OrderController implements Initializable {
 		String parkNum = cbxParkName.getValue();
 		String memberId = txtmemberID.getText();
 		if (visitorsNumber.isEmpty() || email.isEmpty() || parkNum.isEmpty() || memberId.isEmpty()) {
-			Alert("One or more of the fields are empty.\n Please fill them in and try again.");
+			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 			return false;
 		}
 		return true;
@@ -233,7 +233,7 @@ public class OrderController implements Initializable {
 
 		LocalTime now = LocalTime.now();
 		if (date.compareTo(LocalDate.now()) == 0 && now.compareTo(arrivalTime) >= 0) {
-			Alert("You're trying to book for a time that has already passed. Please select a future time\r\n");
+			alert.setAlert("You're trying to book for a time that has already passed. Please select a future time\r\n");
 //			if(now.compareTo(arrivalTime)>=)
 //			cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 //			cbxArrivelTime.getSelectionModel().selectFirst();
@@ -247,7 +247,7 @@ public class OrderController implements Initializable {
 		String email = txtInvitingEmail.getText();
 		String nameMethod = "email";
 		if (!validInput(nameMethod, email)) {
-			Alert("Invalid email address");
+			alert.setAlert("Invalid email address");
 			return false;
 		}
 		return true;
@@ -258,7 +258,7 @@ public class OrderController implements Initializable {
 		String AmountVisitor = txtVisitorsNumber.getText();
 		String nameMethod = "AmountVisitor";
 		if (!validInput(nameMethod, AmountVisitor) || AmountVisitor.equals("0")) {
-			Alert("Invalid amount of visitors");
+			alert.setAlert("Invalid amount of visitors");
 			return false;
 		}
 
@@ -275,10 +275,10 @@ public class OrderController implements Initializable {
 			this.memberId = memberId;
 			return true;
 		} else if (validInput("ID", memberId)) {
-			this.ID = Integer.parseInt(memberId);
+			this.ID = memberId;
 			return true;
 		}
-		Alert("Invalid member-ID / ID ");
+		alert.setAlert("Invalid member-ID / ID ");
 		return false;
 	}
 
@@ -305,15 +305,6 @@ public class OrderController implements Initializable {
 		return matcher.find();
 	}
 
-	// showing alert message
-	public void Alert(String msg) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Failed");
-		alert.setHeaderText(null);
-		alert.setContentText(msg);
-		alert.showAndWait();
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
@@ -337,7 +328,7 @@ public class OrderController implements Initializable {
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
-		
+
 	}
 
 }
