@@ -92,9 +92,11 @@ public class NewOrder {
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
 			/// ******************
-			// ArrayList<String> parkNames = new ArrayList<String>();
+			ArrayList<String> parkNames = new ArrayList<String>();
 			for (ArrayList<String> a : queryData)
-				answer.add(a);
+				for (String b : a)
+					parkNames.add(b);
+			answer.add(parkNames);
 		}
 		EchoServer.sendToMyClient(answer, client);
 
