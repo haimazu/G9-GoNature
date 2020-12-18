@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EditOrderController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManageOrderController">
    <children>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRightTop">
          <children>
@@ -69,7 +69,7 @@
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Hyperlink focusTraversable="false" layoutX="308.0" layoutY="557.0" text="here">
+            <Hyperlink focusTraversable="false" layoutX="308.0" layoutY="557.0" onAction="#switchTomember" text="here">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
@@ -121,9 +121,9 @@
       </Pane>
       <Pane layoutX="400.0" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight">
          <children>
-            <Button focusTraversable="false" layoutX="129.0" layoutY="437.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Update" />
+            <Button fx:id="btnUpdate" focusTraversable="false" layoutX="129.0" layoutY="437.0" mnemonicParsing="false" onAction="#update" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Update" />
             <Button focusTraversable="false" layoutX="140.0" layoutY="538.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
-            <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="130.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+            <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="130.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -131,8 +131,8 @@
                   <Font name="Ebrima" size="14.0" />
                </font>
             </JFXTextField>
-            <JFXDatePicker editable="false" focusTraversable="false" layoutX="130.0" layoutY="279.0" prefHeight="29.0" prefWidth="148.0" promptText="Arrivel Date" styleClass="datePicker" />
-            <JFXComboBox focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
+            <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="130.0" layoutY="279.0" prefHeight="29.0" prefWidth="148.0" promptText="Arrivel Date" styleClass="datePicker" />
+            <JFXComboBox fx:id="cbxArriveTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
             <Label layoutX="130.0" layoutY="157.0" styleClass="labelBold" text="Edit the visitors amount:">
                <font>
                   <Font size="16.0" />
@@ -148,7 +148,7 @@
             <Separator layoutX="66.0" layoutY="513.0" prefHeight="3.0" prefWidth="113.0" />
             <Label layoutX="184.0" layoutY="505.0" text="Or" />
             <Separator layoutX="201.0" layoutY="513.0" prefHeight="3.0" prefWidth="113.0" />
-            <Button focusTraversable="false" layoutX="11.0" layoutY="124.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
+            <Button fx:id="btnBack" focusTraversable="false" layoutX="11.0" layoutY="124.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
          </children>
       </Pane>
       <Pane prefHeight="112.0" prefWidth="800.0" styleClass="pnAnchor">
