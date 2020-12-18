@@ -61,12 +61,12 @@ public class WelcomeController implements Initializable {
 	@FXML
 	void go(ActionEvent event) throws IOException {
 		String orderNum = txtOrderNum.getText();
-		if(checkValidOrederNum(orderNum))
-		{
+		//if(checkValidOrederNum(orderNum))
+		//{
 		Stage stage = (Stage) btnOrderNumber.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
 		stage.setScene(new Scene(root));
-		}
+	//	}
 		
 	}
 

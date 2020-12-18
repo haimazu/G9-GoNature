@@ -22,10 +22,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
+import javafx.scene.control.Hyperlink;
 import javafx.stage.Stage;
 import orderData.Order;
 
 public class ManageOrderController implements Initializable {
+	@FXML
+	private Hyperlink lnkSwitch;
 	private Order orderFromServer;
 	@FXML
 	private Button btnBack;
@@ -110,6 +113,13 @@ public class ManageOrderController implements Initializable {
 			return false;
 		}
 		return true;
+	}
+
+	@FXML
+	void switchToMember(ActionEvent event) throws IOException {
+//		Stage stage = (Stage)lnkSwitch.getScene().getWindow();
+//		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
+//		stage.setScene(new Scene(root));
 	}
 
 }

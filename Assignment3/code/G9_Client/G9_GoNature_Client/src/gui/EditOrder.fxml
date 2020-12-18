@@ -69,7 +69,7 @@
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Hyperlink focusTraversable="false" layoutX="308.0" layoutY="557.0" onAction="#switchTomember" text="here">
+            <Hyperlink fx:id="lnkSwitch" focusTraversable="false" layoutX="308.0" layoutY="557.0" onAction="#switchToMember" text="here">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
