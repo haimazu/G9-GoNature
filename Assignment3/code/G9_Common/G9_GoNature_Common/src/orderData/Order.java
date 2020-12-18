@@ -1,8 +1,9 @@
 package orderData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Order {
+public class Order implements Serializable {
 
 	int orderNumber;
 	int visitorsNumber;
