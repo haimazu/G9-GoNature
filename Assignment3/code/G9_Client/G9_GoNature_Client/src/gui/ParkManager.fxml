@@ -35,7 +35,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Pane>
-            <Button fx:id="btnVisits1" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="DASHBOARD" size="16" />
                </graphic>
@@ -84,13 +84,13 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="430.0" layoutY="25.0" styleClass="labelBold" text="Welcome, ">
+            <Label layoutX="418.0" layoutY="25.0" styleClass="labelBold" text="Welcome, ">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
             <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" onAction="#logout" styleClass="btnSmallRed" text="Logout" />
             <Separator layoutY="64.0" prefWidth="618.0" />
-            <Label fx:id="lblFirstNameTitle" layoutX="489.0" layoutY="25.0" styleClass="labelBold" />
+            <Label fx:id="lblFirstNameTitle" layoutX="477.0" layoutY="25.0" styleClass="labelBold" />
          </children>
       </Pane>
       <StackPane layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">

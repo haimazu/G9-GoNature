@@ -35,7 +35,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="btnVisitsReport1" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="DASHBOARD" size="15" />
                </graphic>
@@ -79,16 +79,16 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="430.0" layoutY="25.0" styleClass="labelBold" text="Welcome, ">
+            <Label layoutX="418.0" layoutY="25.0" styleClass="labelBold" text="Welcome, ">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
             <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" onAction="#logout" styleClass="btnSmallRed" text="Logout" />
             <Separator layoutY="64.0" prefWidth="618.0" />
-            <Label fx:id="lblFirstNameTitle" layoutX="489.0" layoutY="25.0" styleClass="labelBold" />
+            <Label fx:id="lblFirstNameTitle" layoutX="477.0" layoutY="25.0" styleClass="labelBold" />
          </children>
       </Pane>
-      <StackPane layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
+      <StackPane fx:id="pnStack" layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
          <children>
             <Pane fx:id="pnSettings" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
@@ -156,13 +156,12 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnReportView" focusTraversable="false" layoutX="455.0" layoutY="57.0" mnemonicParsing="false" styleClass="btnMiddleButtons" text="Report View" />
                   <JFXTextField focusTraversable="false" layoutX="88.0" layoutY="42.0" promptText="Park Name" styleClass="txtField" />
                </children>
             </Pane>
-            <Pane fx:id="pnVisits1" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
-                  <Label fx:id="lblTitle1" layoutX="26.0" layoutY="220.0" styleClass="labelBold" text="Last 10 reports:">
+                  <Label layoutX="26.0" layoutY="220.0" styleClass="labelBold" text="Last 10 reports:">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

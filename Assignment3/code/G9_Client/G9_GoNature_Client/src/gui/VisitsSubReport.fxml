@@ -52,7 +52,7 @@
       </TableView>
       <JFXDatePicker editable="false" focusTraversable="false" layoutX="51.0" layoutY="229.0" promptText="From Date" />
       <JFXDatePicker editable="false" focusTraversable="false" layoutX="51.0" layoutY="285.0" promptText="To Date" />
-      <Button fx:id="btnReportView" focusTraversable="false" layoutX="81.0" layoutY="336.0" mnemonicParsing="false" onAction="#reportView" styleClass="btnSubmitForConfirmation" text="Submit for confirmation" />
+      <Button fx:id="btnReportView" focusTraversable="false" layoutX="81.0" layoutY="336.0" mnemonicParsing="false" styleClass="btnSubmitForConfirmation" text="Submit for confirmation" />
    </children>
    <effect>
       <DropShadow />

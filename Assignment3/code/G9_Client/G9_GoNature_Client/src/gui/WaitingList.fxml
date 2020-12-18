@@ -30,8 +30,8 @@
          </font>
       </Label>
       <JFXDatePicker editable="false" focusTraversable="false" layoutX="122.0" layoutY="236.0" promptText="Change Date" />
-      <Button fx:id="btnReset" focusTraversable="false" layoutX="120.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Check" />
-      <Button fx:id="btnReset1" focusTraversable="false" layoutX="277.0" layoutY="134.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnSmallGreen" text="here" />
+      <Button fx:id="btnCheck" focusTraversable="false" layoutX="120.0" layoutY="305.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Check" />
+      <Button fx:id="btnHere" focusTraversable="false" layoutX="277.0" layoutY="134.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" styleClass="btnSmallGreen" text="here" />
       <ImageView fitHeight="83.0" fitWidth="85.0" layoutX="163.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@oops3-removebg-80.png" />

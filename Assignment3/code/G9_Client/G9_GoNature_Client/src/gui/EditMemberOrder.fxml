@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane styleClass="rightPane">
          <children>
@@ -53,10 +53,10 @@
             <TableColumn minWidth="0.0" prefWidth="76.0" text="Price" />
         </columns>
       </TableView>
-      <Button fx:id="btnReset" focusTraversable="false" layoutX="28.0" layoutY="539.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
-      <Button fx:id="btnReset1" focusTraversable="false" layoutX="675.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
-      <Button fx:id="btnReset2" focusTraversable="false" layoutX="601.0" layoutY="539.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="19.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Save" />
-      <JFXTextField fx:id="txtVisitorsNumber1" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="528.0" layoutY="423.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="119.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+      <Button fx:id="btnBack" focusTraversable="false" layoutX="28.0" layoutY="539.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
+      <Button fx:id="btnCancelOrder" focusTraversable="false" layoutX="675.0" layoutY="436.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
+      <Button fx:id="btnSave" focusTraversable="false" layoutX="601.0" layoutY="539.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Save" />
+      <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="528.0" layoutY="423.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="119.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -80,12 +80,17 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label focusTraversable="false" layoutX="27.0" layoutY="392.0" styleClass="labelBold" text="Edit Order &lt;#&gt;:" textAlignment="CENTER">
+      <Label focusTraversable="false" layoutX="27.0" layoutY="392.0" styleClass="labelBold" text="Edit Order" textAlignment="CENTER">
          <font>
             <Font name="Tahoma Bold" size="24.0" />
          </font>
       </Label>
       <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="243.0" layoutY="413.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
+      <Label fx:id="lblOrderNumber" focusTraversable="false" layoutX="151.0" layoutY="392.0" styleClass="labelBold" text="&lt;#&gt;:" textAlignment="CENTER">
+         <font>
+            <Font name="Tahoma Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
    <effect>
       <InnerShadow />
