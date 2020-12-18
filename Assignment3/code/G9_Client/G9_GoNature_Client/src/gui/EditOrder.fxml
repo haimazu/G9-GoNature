@@ -132,7 +132,7 @@
                </font>
             </JFXTextField>
             <JFXDatePicker editable="false" focusTraversable="false" layoutX="130.0" layoutY="279.0" prefHeight="29.0" prefWidth="148.0" promptText="Arrivel Date" styleClass="datePicker" />
-            <JFXComboBox focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
+            <JFXComboBox focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
             <Label layoutX="130.0" layoutY="157.0" styleClass="labelBold" text="Edit the visitors amount:">
                <font>
                   <Font size="16.0" />
