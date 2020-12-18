@@ -88,7 +88,7 @@ public class OrderController implements Initializable {
 	private Order order;
 	private static String status = "not";
 	private String memberId = null;
-	private int ID = 0;
+	private String ID = null;
 
 	public static String getStatus() {
 		return status;
@@ -157,7 +157,7 @@ public class OrderController implements Initializable {
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 					+ cbxArrivelTime.getAccessibleText();
 
-			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
+			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),"0549991234",
 					cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
 			msgForServer.add(order);
 			imgOrder.setImage(imgOrderFull);
@@ -178,7 +178,7 @@ public class OrderController implements Initializable {
 			}
 		} else {
 			this.memberId = null;
-			this.ID = 0;
+			this.ID = null;
 		}
 	}
 
@@ -275,7 +275,7 @@ public class OrderController implements Initializable {
 			this.memberId = memberId;
 			return true;
 		} else if (validInput("ID", memberId)) {
-			this.ID = Integer.parseInt(memberId);
+			this.ID = memberId;
 			return true;
 		}
 		Alert("Invalid member-ID / ID ");

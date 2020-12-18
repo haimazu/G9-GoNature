@@ -15,6 +15,20 @@ public class Order {
 	String memberId;
 	String ID;
 
+	//this constructor is only for OrderConroller from method next -DO NOT USE IT!!!
+	public Order(int visitorsNumber,String orderEmail,String orderPhone,String parkName,String arrivedTime,String memberId,String ID) {
+		this.orderNumber = orderNumber;
+		this.visitorsNumber = visitorsNumber;
+		this.orderEmail = orderEmail;
+		this.orderPhone = orderPhone;
+		this.orderType = orderType;
+		this.price = price;
+		this.parkName = parkName;
+		this.arrivedTime = arrivedTime;
+		this.memberId = memberId;
+		this.ID = ID;
+	}
+	
 	public Order(int orderNumber, int visitorsNumber,String orderEmail,String orderPhone, OrderType orderType,double price,String parkName,String arrivedTime,String memberId,String ID) {
 		this.orderNumber = orderNumber;
 		this.visitorsNumber = visitorsNumber;
