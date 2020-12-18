@@ -167,7 +167,7 @@ public class LoginController implements Initializable {
 		// active listener for the username text field
 		txtUsername.textProperty().addListener((obs, oldValue, newValue) -> {
 			userStatus = false;
-			// Username consists a letter then letters or numbers [length of 3-20 characters]
+			// Username consists a letter then letters or numbers [length of 4-20 characters]
 			String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
 
 			// the text field painted red if doesn't match the conditions
