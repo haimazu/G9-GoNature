@@ -1,5 +1,8 @@
 package controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -7,42 +10,64 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-public class PaymentController {
+import orderData.Order;
 
-    @FXML
-    private Label txtprice;
+public class PaymentController implements Initializable {
 
-    @FXML
-    private Label txtVisitoramountPrice;
+	@FXML
+	private Label txtprice;
 
-    @FXML
-    private Label txtdDiscount;
+	@FXML
+	private Label txtVisitoramountPrice;
 
-    @FXML
-    private Label txtTotalPrice;
+	@FXML
+	private Label txtdDiscount;
 
-    @FXML
-    private JFXRadioButton radioCash;
+	@FXML
+	private Label txtTotalPrice;
 
-    @FXML
-    private JFXRadioButton radioPayPal;
+	@FXML
+	private JFXRadioButton radioCash;
 
-    @FXML
-    private JFXRadioButton radioCreditCard;
+	@FXML
+	private JFXRadioButton radioPayPal;
 
-    @FXML
-    private Button btnContinue;
+	@FXML
+	private JFXRadioButton radioCreditCard;
 
-    @FXML
-    private JFXCheckBox CheckBoxAgreed;
-    
-    
-    
-    
-    
+	@FXML
+	private Button btnContinue;
+
+	@FXML
+	private JFXCheckBox CheckBoxAgreed;
+
+	private Order pymanetOrder;
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.txtprice.setText(String.valueOf(pymanetOrder.getPrice()));
+		this.txtTotalPrice.setText(String.valueOf(pymanetOrder.getTotalPrice()));
+		this.txtdDiscount.setText(String.valueOf(1 - (pymanetOrder.getTotalPrice() / pymanetOrder.getTotalPrice())));
+		this.txtVisitoramountPrice.setText(String.valueOf(pymanetOrder.getVisitorsNumber()));
+	}
+	
+	
+	/**
+	 * 
+	 */
+	public PaymentController(Order orderPyment) {
+		this.pymanetOrder=orderPyment;
+	}
+
+
+	public boolean checkEmpty() {
+		if()
+	}
+
 }
