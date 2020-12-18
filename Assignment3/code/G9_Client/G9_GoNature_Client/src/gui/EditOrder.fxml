@@ -15,9 +15,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WelcomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="pnAnchor" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EditOrderController">
    <children>
-      <Pane fx:id="pnWelcomeRight" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRightTop">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRightTop">
          <children>
             <Label focusTraversable="false" layoutX="118.0" layoutY="561.0" text="You can see all your orders">
                <font>
@@ -121,9 +121,9 @@
       </Pane>
       <Pane layoutX="400.0" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight">
          <children>
-            <Button fx:id="btnReset" focusTraversable="false" layoutX="129.0" layoutY="437.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Update" />
-            <Button fx:id="btnReset1" focusTraversable="false" layoutX="140.0" layoutY="538.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
-            <JFXTextField fx:id="txtVisitorsNumber1" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="130.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+            <Button focusTraversable="false" layoutX="129.0" layoutY="437.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Update" />
+            <Button focusTraversable="false" layoutX="140.0" layoutY="538.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
+            <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="130.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -132,7 +132,7 @@
                </font>
             </JFXTextField>
             <JFXDatePicker editable="false" focusTraversable="false" layoutX="130.0" layoutY="279.0" prefHeight="29.0" prefWidth="148.0" promptText="Arrivel Date" styleClass="datePicker" />
-            <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
+            <JFXComboBox focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
             <Label layoutX="130.0" layoutY="157.0" styleClass="labelBold" text="Edit the visitors amount:">
                <font>
                   <Font size="16.0" />
@@ -148,7 +148,7 @@
             <Separator layoutX="66.0" layoutY="513.0" prefHeight="3.0" prefWidth="113.0" />
             <Label layoutX="184.0" layoutY="505.0" text="Or" />
             <Separator layoutX="201.0" layoutY="513.0" prefHeight="3.0" prefWidth="113.0" />
-            <Button fx:id="btnReset2" focusTraversable="false" layoutX="11.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
+            <Button focusTraversable="false" layoutX="11.0" layoutY="124.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
          </children>
       </Pane>
       <Pane prefHeight="112.0" prefWidth="800.0" styleClass="pnAnchor">
