@@ -18,25 +18,24 @@ public class NewOrder {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // credit card object received
-
+		Member memb = MemerCheck(data); // to check the member type by order
 		// check if the capacity of orders is full
-		if ((!a.checkForAvailableSpots(recived, client)) || (data.getMemberId() == null && data.getID() == null)) {
+		if ((!a.checkForAvailableSpots(recived, client)) ) {
 			answer.add(false);
 			EchoServer.sendToMyClient(answer, client);
 		}
 
 		else {
-
-			if (data.getMemberId() != null) {
-
+			if(memb == null) {
+				
 			}
-
 			// לבדוק ID אן MEMBERID,
 			// אם לא ריקיםן. מושכת את הממבר ובודקת את הסוג שלו
 			// לבדוק אם קיים. אם לא אז לא חבר ולא מקבל את ההנחה
 
-			Member memb; // to check the member type by order
-
+			data =totalPrice(data,memb);
+			
+			
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("orders"); // table name
@@ -51,10 +50,26 @@ public class NewOrder {
 		}
 
 	}
+	
+	public static int CurrentPriceInPark(Order ord){
+		
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("park"); // table name
+		query.add("entryPrice"); // columns to select from
+		query.add("WHERE parkName='"+ord.getParkName()+"'"); // condition - non -> all parks names required
+		query.add("1"); // how many columns returned
 
-	public static double totalPrice(int visitorsAmount, OrderType ot) {
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 
-		return 10;
+		return Integer.parseInt(queryData.get(0).get(0));
+	}
+
+	public static Order totalPrice(Order ord, Member memb) {
+		
+		if(memb.get)
+		
+		return ord;
 	}
 
 	// check if needed to be sent null or empty in order number
@@ -64,36 +79,27 @@ public class NewOrder {
 				+ data.getMemberId() + "','" + data.getID() + "'";
 	}
 
+	
+	//checks if u a member
 	public static Member MemerCheck(Order ord) {
-
-		// the returned values stored here
-		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : ParksNames
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("member"); // table name
 		query.add("*"); // columns to select from
-		if (ord.getMemberId() != null && ord.getID() != null)
-			query.add("WHERE memberNumber='" + ord.getMemberId() + "'" + " OR ID='=" + ord.getID() + "'");
-		else if (ord.getMemberId() != null)
-			query.add("WHERE memberNumber='" + ord.getMemberId() + "'"); // condition - non -> all parks names required
+//		if (ord.getMemberId() != null && ord.getID() != null)
+//			query.add("WHERE memberNumber='" + ord.getMemberId() + "'" + " OR ID='=" + ord.getID() + "'");
+		if (ord.getMemberId() != null)
+			query.add("WHERE memberNumber='" + ord.getMemberId() + "'");
 		else if (ord.getID() != null)
 			query.add("WHERE ID='" + ord.getID() + "'");
 		query.add("9"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.get(0).isEmpty()) {
-			// no parks in DB
-			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
-		} else {
-			ArrayList<String> parkNames = new ArrayList<String>();
-			for (ArrayList<String> a : queryData)
-				for (String b : a)
-					parkNames.add(b);
-			answer.add(parkNames);
-		}
-		return null;
+		if (queryData.get(0).isEmpty())
+			return null;
+		else
+			return new Member(queryData.get(0));
 
 	}
 
