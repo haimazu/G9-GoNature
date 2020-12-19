@@ -104,7 +104,7 @@
                         <Image url="@שקופית53-removebg-preview.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="116.0" layoutY="173.0" text="100$">
+                  <Label fx:id="txtprice" layoutX="116.0" layoutY="173.0" text="100$">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
@@ -114,7 +114,7 @@
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="188.0" layoutY="195.0" text="1">
+                  <Label fx:id="txtVisitoramountPrice" layoutX="188.0" layoutY="195.0" text="1">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
@@ -124,7 +124,7 @@
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="142.0" layoutY="217.0" text="10%" textFill="SEAGREEN">
+                  <Label fx:id="txtdDiscount" layoutX="142.0" layoutY="217.0" text="10%" textFill="SEAGREEN">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
@@ -134,7 +134,7 @@
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="157.0" layoutY="239.0" text="90$">
+                  <Label fx:id="txtTotalPrice" layoutX="157.0" layoutY="239.0" text="90$">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
@@ -144,17 +144,17 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <JFXRadioButton focusTraversable="false" layoutX="110.0" layoutY="303.0" text="Cash">
+                  <JFXRadioButton fx:id="radioCash" focusTraversable="false" layoutX="110.0" layoutY="303.0" text="Cash">
                      <font>
                         <Font name="Ebrima" size="15.0" />
                      </font>
                   </JFXRadioButton>
-                  <JFXRadioButton focusTraversable="false" layoutX="110.0" layoutY="343.0" text="PayPal">
+                  <JFXRadioButton fx:id="radioPayPal" focusTraversable="false" layoutX="110.0" layoutY="343.0" text="PayPal">
                      <font>
                         <Font name="Ebrima" size="15.0" />
                      </font>
                   </JFXRadioButton>
-                  <JFXRadioButton focusTraversable="false" layoutX="110.0" layoutY="383.0" text="Credit Card">
+                  <JFXRadioButton fx:id="radioCreditCard" focusTraversable="false" layoutX="110.0" layoutY="383.0" text="Credit Card">
                      <font>
                         <Font name="Ebrima" size="15.0" />
                      </font>
@@ -175,7 +175,7 @@
                         <Image url="@credit2-removebg-35.png" />
                      </image>
                   </ImageView>
-                  <JFXCheckBox focusTraversable="false" layoutX="73.0" layoutY="442.0" text="I agreed to GoNature" />
+                  <JFXCheckBox fx:id="CheckBoxAgreed" focusTraversable="false" layoutX="73.0" layoutY="442.0" text="I agreed to GoNature" />
                   <ImageView fitHeight="70.0" fitWidth="211.0" layoutX="90.0" layoutY="540.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@21003iA17164FD7E6237A2.png" />
@@ -217,7 +217,7 @@
                      </font>
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="visitorsIcon" fill="#a1a1a1" glyphName="USERS" layoutX="306.0" layoutY="381.0" size="16" />
-                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="406.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="406.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Email" styleClass="txtField" unFocusColor="#a3a3a3" visible="false">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -238,6 +238,14 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
+                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="74.0" layoutY="407.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Inviting Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </JFXTextField>
                </children>
             </Pane>
          </children>
