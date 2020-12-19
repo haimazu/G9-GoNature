@@ -1,9 +1,9 @@
 package orderData;
 
 public enum OrderType {
-	SINGLE("single"),
-	FAMILY("family"),
-	GROUP("group");
+	REGULAR("random"), //no membership, not from a group
+	MEMBER("member"),//has a membership
+	GROUP("group"); //with a guide
 	
 	public final String label;
 	

@@ -56,13 +56,13 @@ public class NewOrder {
 		int parkEnteryPrice = CurrentPriceInPark(ord);
 		ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber());
 		if (memb == null) {// if the order is not 4 a member
-			ord.setOrderType(OrderType.SINGLE);
+			ord.setOrderType(OrderType.REGULAR);
 			ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
 		} else {// if the order is for some members
 
 			switch (memb.getMemberOrderType()) {
-			case FAMILY:
-				ord.setOrderType(OrderType.FAMILY);
+			case MEMBER:
+				ord.setOrderType(OrderType.MEMBER);
 				int familymembers = Integer.parseInt(memb.getAmount());
 				int notFamilyMembers = ord.getVisitorsNumber() - familymembers;
 				if (notFamilyMembers < 0)
