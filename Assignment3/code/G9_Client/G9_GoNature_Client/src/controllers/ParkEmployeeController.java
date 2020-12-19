@@ -227,58 +227,56 @@ public class ParkEmployeeController implements Initializable {
 		// check date and then time
 		if (checkDate() && checkTime()) {
 
-			int orderVisitorsNumber = Integer.parseInt(txtOrderNumber.getText());
+			int orderVisitorsNumber = Integer.parseInt(lblVisitorsNumber.getText());
 			int visitorsEntered = Integer.parseInt(txtVisitorsEntered.getText());
 			int visitorsLeaved = Integer.parseInt(txtVisitorsEntered.getText());
-			// calcPlaces = visitorsEntered - orderVisitorsNumber
-			// Math.abs(calcPlaces);
+			int placesLeft = 0;
 
+			// doesn't exists in the list -> entering the park
 			if (orderDocumentation.size() < 1 && radVisitorStatusText.equals("Enter")) {
 				orderDocumentation.put(txtOrderNumber.getText(), visitorsEntered);
 				Alert("Success", visitorsEntered + " entered.");
 			} else {
 				// check to see if visitors are enter or leave the park
 				for (Map.Entry<String, Integer> orderNumber : orderDocumentation.entrySet()) {
-					// get -> currentVisitors;
-					int subVisitorsOrderAmount;
 
-					if (txtVisitorsEntered.getText().equals(lblVisitorsNumber.getText())) {
-						subVisitorsOrderAmount = 0;
-					} else {
-						subVisitorsOrderAmount = orderNumber.getValue() - visitorsEntered;
-					}
-
-					/*** Enter ***/
-					// there is 2 cases:
-					// 1. doesn't exists in the list -> entering the park
-					// 2. they are in the list, but they didn't take advantage of all the visits
+					/*** Enter ***/					
+					// they are in the list, but they didn't take advantage of all the visits
 					if (radVisitorStatusText.equals("Enter")) {
-						// 1. doesn't exists in the list -> entering the park
+						
 						if (orderNumber.getKey().equals(txtOrderNumber.getText())) {
-							if (subVisitorsOrderAmount > 0) {
+							placesLeft = orderVisitorsNumber - (visitorsEntered + orderNumber.getValue());
+							if (placesLeft >= 0) {
 								// the method put will replace the value of an existing key
 								// and will create it if doesn't exist.
-								orderDocumentation.put(orderNumber.getKey(), subVisitorsOrderAmount);
-								Alert("Success", txtVisitorsEntered.getText() + " visitor/s entered.");
+								orderDocumentation.put(orderNumber.getKey(), placesLeft);
+								Alert("Success", visitorsEntered + " visitor/s entered."
+										+ "\n" + placesLeft + " more places left. ");
 								// we need to update the "currentVisitors"
 								// "currentVisitors += visitorsEntered"
 								// UPDATE.. currentVisitors
-								// 2. they are in the list, but they didn't take advantage of all the visits
 							} else {
 								Alert("Failed", "You've used all the places.");
 							}
-						} else {
-							orderDocumentation.put(orderNumber.getKey(), subVisitorsOrderAmount);
-							Alert("Success", txtVisitorsEntered.getText() + " visitor/s entered.");
-						}
-						/*** Exit ***/
-					} else if (radVisitorStatusText.equals("Exit")) {
+						} 
+					/*** Exit ***/
+					} else {
+						placesLeft = orderNumber.getValue() - visitorsLeaved;
 						// if exists in the list -> leavening the park
-						orderDocumentation.remove(orderNumber.getKey());
-						Alert("Success", txtVisitorsEntered.getText() + " visitor/s leaved.");
-						// we need to update the "currentVisitors"
-						// "currentVisitors -= visitorsEntered"
-						// UPDATE.. currentVisitors
+						if (placesLeft > 0) {
+							orderDocumentation.remove(orderNumber.getKey());
+							Alert("Success", visitorsLeaved + " visitor/s leaved.\n"
+									+ placesLeft + " visitor/s are still in the park.");
+							// we need to update the "currentVisitors"
+							// "currentVisitors -= visitorsEntered"
+							// UPDATE.. currentVisitors
+						// all the visitors on this order, leaved
+						} else if (placesLeft == 0){
+							Alert("Failed", "All the visitor/s or this order, have left.");
+						// wrong number, not match the orderNumber
+						} else {
+							Alert("Failed", "The amount of visitors doesn't match the invitation.");
+						}
 					}
 				}
 			}
@@ -419,6 +417,7 @@ public class ParkEmployeeController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
+		radVisitorStatusText = "Enter";
 
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
