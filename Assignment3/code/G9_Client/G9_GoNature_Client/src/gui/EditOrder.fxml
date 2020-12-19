@@ -28,7 +28,7 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label layoutX="176.0" layoutY="222.0" text="Name">
+            <Label fx:id="lblParkName" layoutX="176.0" layoutY="222.0">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
@@ -49,22 +49,22 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label layoutX="131.0" layoutY="262.0" text="7/12/2020">
+            <Label fx:id="lblDate" layoutX="131.0" layoutY="262.0">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="130.0" layoutY="302.0" text="19:40">
+            <Label fx:id="lblTime" layoutX="130.0" layoutY="302.0">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="217.0" layoutY="342.0" text="1">
+            <Label fx:id="lblVisitors" layoutX="217.0" layoutY="342.0">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="134.0" layoutY="381.0" text="example@gmail.com">
+            <Label fx:id="lblMail" layoutX="134.0" layoutY="381.0">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
@@ -82,7 +82,7 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label layoutX="202.0" layoutY="182.0" text="123">
+            <Label fx:id="lblOrderNum" layoutX="202.0" layoutY="182.0">
                <font>
                   <Font name="Ebrima" size="16.0" />
                </font>
@@ -115,6 +115,11 @@
             <Label layoutX="86.0" layoutY="489.0" styleClass="labelBold" text="Payment Method:">
                <font>
                   <Font name="Ebrima Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPrice" layoutX="126.0" layoutY="438.0" prefHeight="21.0" prefWidth="36.0">
+               <font>
+                  <Font name="Ebrima" size="14.0" />
                </font>
             </Label>
          </children>
