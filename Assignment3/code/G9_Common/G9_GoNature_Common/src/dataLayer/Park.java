@@ -3,20 +3,39 @@ package dataLayer;
 public class Park {
 
 	private String name;
-	private int maxAmountOrders = 0;
 	private int maximumCapacityInPark = 0;
 	private int currentAmount = 0;
+	private int maxAmountOrders = 0;
+	private int enteryPrice;
+	private int mangerDiscount;
 
-	//******************************************************
-	//needed to be checked that 'maxAmountOrders < maximumCapacityInPark'  while editing!!
-	//******************************************************
-	
+	// ******************************************************
+	// needed to be checked that 'maxAmountOrders < maximumCapacityInPark' while
+	// editing!!
+	// ******************************************************
+
+	public int getEnteryPrice() {
+		return enteryPrice;
+	}
+
+	public void setEnteryPrice(int enteryPrice) {
+		this.enteryPrice = enteryPrice;
+	}
+
+	public int getMangerDiscount() {
+		return mangerDiscount;
+	}
+
+	public void setMangerDiscount(int mangerDiscount) {
+		this.mangerDiscount = mangerDiscount;
+	}
+
 	public Park(String name, int maxAmountOrders, int maximumCapacityInPark, int currentAmount) {
 		this.name = name;
 		this.maxAmountOrders = maxAmountOrders;
 		this.maximumCapacityInPark = maximumCapacityInPark;
 		this.currentAmount = currentAmount;
-		if(!check()) {
+		if (!check()) {
 			System.out.println("Orders capacity is bigger than the Park Capacity!");
 		}
 	}
@@ -38,10 +57,11 @@ public class Park {
 	}
 
 	public boolean check() {
-		if(maxAmountOrders<=maximumCapacityInPark)
+		if (maxAmountOrders <= maximumCapacityInPark)
 			return false;
 		return true;
 	}
+
 	public Park(String name) {
 		this.name = name;
 	}
