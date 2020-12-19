@@ -2,8 +2,6 @@ package server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-//import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 import orderData.OrderType;
@@ -38,10 +36,12 @@ public class NewOrder {
 			query.add("orders"); // table name
 			query.add(toStringForReservation(data)); // values in query format
 
-			if (MySQLConnection.insert(query))
+			if (MySQLConnection.insert(query)) {
 				answer.add(true);
+				answer.add(data);
+			}
 			else
-				answer.add(false);
+				answer.add("Failed");
 
 			EchoServer.sendToMyClient(answer, client);
 		}
@@ -82,7 +82,9 @@ public class NewOrder {
 		return ord;
 	}
 
-	// check if needed to be sent null or empty in order number
+	//input: order
+	//
+	// output: to string for a query
 	public static String toStringForReservation(Order data) {
 		
 		String s=Double. toString(data.getTotalPrice());
@@ -101,7 +103,9 @@ public class NewOrder {
 				+ data.getAmountArrived()+"'";
 	}
 
-	// checks if u a member and return the member from DB
+	//input: order
+	//
+	//output:  checks if u a member and return the member from DB
 	public static Member MemerCheck(Order ord) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -123,22 +127,27 @@ public class NewOrder {
 
 	}
 
-	// return the current price of entry in the park selected in the order
+	//input: order
+	//
+	// output: returns the current price of entry in the park with manger discount calculated
+	//selected in the order
 	public static int CurrentPriceInPark(Order ord) {
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("park"); // table name
-		query.add("entryPrice"); // columns to select from
-		query.add("WHERE parkName='" + ord.getParkName() + "'"); // condition - non -> all parks names required
-		query.add("1"); // how many columns returned
+		query.add("entryPrice,mangerDiscount"); // columns to select from
+		query.add("WHERE parkName='" + ord.getParkName() + "'"); // condition 
+		query.add("2"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-
-		return Integer.parseInt(queryData.get(0).get(0));
+		//returns the price of entry to the park with a manager discount
+		return Integer.parseInt(queryData.get(0).get(0))*Integer.parseInt(queryData.get(0).get(1));
 	}
 
-	// func that returns all parks names
+	//input: ArrayList<Object>, ConnectionToClient
+	//
+	//output: returns to client side with a list of parks names from DB
 	public static void ParksNames(ArrayList<Object> recived, ConnectionToClient client) {
 
 		// the returned values stored here
