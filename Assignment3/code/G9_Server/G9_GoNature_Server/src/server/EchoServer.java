@@ -35,6 +35,8 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "order":
 			NewOrder.NewReservation(recived, client);
+		case "checkValidOrderNum":
+			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 		default:
 			break;
 		}

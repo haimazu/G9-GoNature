@@ -2,6 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,13 +26,30 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import orderData.Order;
+import javafx.scene.control.Label;
 
 public class ManageOrderController implements Initializable {
 	@FXML
+	private Label lblPrice;
+	@FXML
+	private Label lblParkName;
+
+	@FXML
+	private Label lblDate;
+	@FXML
+	private Label lblOrderNum;
+	@FXML
+	private Label lblTime;
+
+	@FXML
+	private Label lblVisitors;
+	@FXML
+	private Label lblMail;
+	@FXML
 	private Hyperlink lnkSwitch;
-	private Order orderFromServer;
 	@FXML
 	private Button btnBack;
 	@FXML
@@ -45,8 +65,37 @@ public class ManageOrderController implements Initializable {
 	private JFXComboBox<String> cbxArriveTime;
 
 	private AlertController alert = new AlertController();
+	private static ArrayList<String> orderDetails;
 
-	private static void setOrderdetails(Order order) {
+	private void setOrderdetails() {
+		// 2021-01-01 08:00:00
+		String DateAndTime = orderDetails.get(8);
+		String[] splitDateAndTime = DateAndTime.split(" ");
+		// 2021-01-01
+		String date = splitDateAndTime[0];
+
+		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
+		// iFormatter -> input format
+		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		// oFormatter -> output format
+		DateFormat oFormatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			String strDateTime = oFormatter.format(iFormatter.parse(date));
+
+			// 08:00:00 -> 08:00
+			String time = (String) splitDateAndTime[1].subSequence(0, 5);
+
+			lblOrderNum.setText(orderDetails.get(0));
+			lblParkName.setText(orderDetails.get(7));
+			lblDate.setText(strDateTime);
+			lblTime.setText(time);
+			lblVisitors.setText(orderDetails.get(1));
+			lblMail.setText(orderDetails.get(2));
+
+			lblPrice.setText(orderDetails.get(5) + "₪");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -54,6 +103,7 @@ public class ManageOrderController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 		cbxArriveTime.getSelectionModel().selectFirst();
+		setOrderdetails();
 
 		// initialize date value with today
 		// The user can pick a date only from today until this day next year
@@ -67,10 +117,6 @@ public class ManageOrderController implements Initializable {
 		});
 
 		txtdate.setValue(LocalDate.now());
-	}
-
-	public static void recievedOrderFromServer(Order order) {
-		setOrderdetails(order);
 	}
 
 	@FXML
