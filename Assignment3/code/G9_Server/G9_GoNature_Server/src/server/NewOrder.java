@@ -97,7 +97,8 @@ public class NewOrder {
 				+ data.getParkName() + "','" 
 				+ data.getArrivedTime() + "','" 
 				+ data.getMemberId() + "','"
-				+ data.getID() + "'";
+				+ data.getID() + "','"
+				+ data.getAmountArrived()+"'";
 	}
 
 	// checks if u a member and return the member from DB

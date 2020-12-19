@@ -16,6 +16,7 @@ public class Order implements Serializable {
 	String arrivedTime;
 	String memberId;
 	String ID;
+	int amountArrived;
 
 	// this constructor is only for OrderConroller from method next -DO NOT USE
 	// IT!!!
@@ -44,6 +45,7 @@ public class Order implements Serializable {
 		this.arrivedTime = arrivedTime;
 		this.memberId = memberId;
 		this.ID = ID;
+		this.amountArrived=0;
 	}
 
 	public Order(ArrayList<String> orderFromDB) {
@@ -58,7 +60,16 @@ public class Order implements Serializable {
 		this.arrivedTime = orderFromDB.get(8);
 		this.memberId = orderFromDB.get(9);
 		this.ID = orderFromDB.get(10);
+		this.amountArrived=Integer.parseInt(orderFromDB.get(11));
 		// TODO Auto-generated constructor stub
+	}
+
+	public int getAmountArrived() {
+		return amountArrived;
+	}
+
+	public void setAmountArrived(int amountArrived) {
+		this.amountArrived = amountArrived;
 	}
 
 	public double getTotalPrice() {
