@@ -29,6 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -80,6 +81,9 @@ public class OrderController implements Initializable {
 	@FXML
 	private Button information;
 
+	@FXML
+	private Hyperlink btnHere;
+
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
 
@@ -90,7 +94,7 @@ public class OrderController implements Initializable {
 	private String memberId = null;
 	private String ID = null;
 	private AlertController alert = new AlertController();
-	
+
 	private PaymentController payStatus;
 
 	public static String getStatus() {
@@ -178,7 +182,7 @@ public class OrderController implements Initializable {
 					pnPayment.toFront();
 				}
 			} else if (btnContinue == event.getSource()) {
-			
+
 				if (payStatus.checkNotEmptyFields())
 					pnConfirmation.toFront();
 			}
@@ -191,8 +195,15 @@ public class OrderController implements Initializable {
 	// home button
 	@FXML
 	void home(ActionEvent event) throws IOException {
-		Stage stage = (Stage) btnHome.getScene().getWindow();
+		Stage stage = (Stage) btnHere.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+		stage.setScene(new Scene(root));
+	}
+
+	@FXML
+	void here(ActionEvent event) throws IOException {
+		Stage stage = (Stage) btnHere.getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
 		stage.setScene(new Scene(root));
 	}
 

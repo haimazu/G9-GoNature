@@ -44,7 +44,7 @@
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="124.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="picOR" fitHeight="150.0" fitWidth="200.0" layoutX="124.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@qr6.png" />
                      </image>
@@ -54,7 +54,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Hyperlink focusTraversable="false" layoutX="261.0" layoutY="558.0" text="here">
+                  <Hyperlink fx:id="btnHere" focusTraversable="false" layoutX="261.0" layoutY="558.0" onAction="#here" text="here">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -79,7 +79,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label focusTraversable="false" layoutX="184.0" layoutY="443.0" styleClass="labelBold" text="111" textFill="SEAGREEN">
+                  <Label fx:id="txtOrderNum" focusTraversable="false" layoutX="184.0" layoutY="443.0" styleClass="labelBold" text="111" textFill="SEAGREEN">
                      <font>
                         <Font size="18.0" />
                      </font>
