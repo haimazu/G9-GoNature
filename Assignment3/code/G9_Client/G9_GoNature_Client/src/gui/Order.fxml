@@ -238,6 +238,14 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
+                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="74.0" layoutY="407.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Inviting Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </JFXTextField>
                </children>
             </Pane>
          </children>
