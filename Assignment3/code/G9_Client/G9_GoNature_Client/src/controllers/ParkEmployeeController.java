@@ -111,13 +111,15 @@ public class ParkEmployeeController implements Initializable {
 	private Button btnApprove;
 
 	// check if we already was is the DB
+	private AlertController alert = new AlertController();
 	private boolean informationExists = false;
 	private String radVisitorStatusText;
 	private static String firstName;
 	private static Order orderDetails;
 	private static Park parkDetails;
 	private static String error = "";
-	//private Map<String, Integer> orderDocumentation = new HashMap<String, Integer>();
+	// private Map<String, Integer> orderDocumentation = new HashMap<String,
+	// Integer>();
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -126,31 +128,22 @@ public class ParkEmployeeController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
+	// input: Id / memberId
+	// output: order details
 	@FXML
 	void barcodeScan(ActionEvent event) {
 		informationExists = true;
 		// get order number from the server
 		// call showDetails() function to set up all the order details
-		// SELECT * FROM orders ORDER BY orderNumber LIMIT 1;
-		// txtOrderNumber.setText(String.valueOf(getOrderNumberFromBarcodeByID()));
 
 		int id = getOrderNumberFromBarcodeByID();
 		int memberId = getOrderNumberFromBarcodeByMemberId();
 		System.out.println("MemberId: " + memberId);
 
-		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();
-		// Data fields
-		ArrayList<String> data = new ArrayList<String>();
-
-		msg.add("ordersByIdOrMemberId");
-		data.add(String.valueOf(memberId));
-		msg.add(data);
-		// set up all the order details and the payment method
-		ClientUI.sentToChatClient(msg);
+		sendToServer("ordersByIdOrMemberId", String.valueOf(memberId));
 
 		if (getError().equals("No such order")) {
-			Alert("Failed", "No such order.");
+			alert.failedAlert("Failed", "No such order.");
 			clearAllFields();
 			return;
 		}
@@ -166,9 +159,9 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	private int getOrderNumberFromBarcodeByMemberId() {
-		//Random rand = new Random();
+		// Random rand = new Random();
 		// generate random integers in range 0 to 3
-		//return rand.nextInt(4);
+		// return rand.nextInt(4);
 		return 2;
 	}
 
@@ -176,55 +169,39 @@ public class ParkEmployeeController implements Initializable {
 		return 2;
 	}
 
+	// input: order number
+	// output: order details
 	@FXML
 	void showDetails(ActionEvent event) {
-	
+
 		if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
-			Alert("Failed", "All fields required.");
+			alert.failedAlert("Failed", "All fields required.");
 			return;
 		}
 
 		// will not enter if already has information from the barcodeScan
 		if (!informationExists) {
-			// Query
-			ArrayList<Object> msg = new ArrayList<Object>();
-			// Data fields
-			ArrayList<String> data = new ArrayList<String>();
-
-			msg.add("ordersByOrderNumber");
-			data.add(txtOrderNumber.getText().toString());
-			msg.add(data);
-			// set up all the order details and the payment method
-			ClientUI.sentToChatClient(msg);
+			sendToServer("ordersByOrderNumber", txtOrderNumber.getText());
 
 			if (error.equals("No such order")) {
-				Alert("Failed", "No such order.");
+				alert.failedAlert("Failed", "No such order.");
 				clearAllFields();
 				return;
 			}
 		}
 
 		if (!(String.valueOf(orderDetails.getOrderNumber()).equals(txtOrderNumber.getText()))) {
-			Alert("Failed", "No such order.");
+			alert.failedAlert("Failed", "No such order.");
 			clearAllFields();
 			return;
 		}
-		
-		// Query
-		ArrayList<Object> msg1 = new ArrayList<Object>();
-		// Data fields
-		ArrayList<String> data1 = new ArrayList<String>();
-		
-		msg1.add("getParkDetails");
-		data1.add(orderDetails.getParkName());
-		msg1.add(data1);
-		// set up all the order details and the payment method
-		ClientUI.sentToChatClient(msg1);
-		
+
+		sendToServer("getParkDetails", orderDetails.getParkName());
+
 		lblCurrentVisitors.setText(String.valueOf(parkDetails.getCurrentAmount()));
 
 		/****** calculate discount ******/
-		//float price = Float.parseFloat(orderDetails.get(5));
+		// float price = Float.parseFloat(orderDetails.get(5));
 		// float discount = Float.parseFloat(orderDetails.get(6));
 
 		// lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
@@ -244,63 +221,65 @@ public class ParkEmployeeController implements Initializable {
 		lblTimeTitle.setVisible(true);
 		lblRandomTime.setVisible(true);
 		txtRandomVisitorsAmount.setVisible(true);
-				
 	}
 
 	@FXML
 	void approve(ActionEvent event) {
 
-		// random mode
-		if (btnRandomVisitor.isVisible()) {
-			int maxVisitors = 10;
-			int currentVisitors = 1;
-			int freePlace = maxVisitors - currentVisitors;
-			// check if the amount of "visitorsEntered" greater than the invitation.
-			if (!txtRandomVisitorsAmount.getText().isEmpty()
-					&& (Integer.parseInt(txtRandomVisitorsAmount.getText()) < freePlace)) {
-				Alert("Failed", "The amount of visitors doesn't match the invitation.");
-				return;
-			} else {
-				// update current visitors
-			}
-		// barcode / regular entry
-		} else {				
-			// check if the amount of "visitorsEntered" greater than the invitation.
-			if (!lblVisitorsNumber.getText().isEmpty()
-					&& (Integer.parseInt(txtVisitorsAmount.getText()) > Integer.parseInt(lblVisitorsNumber.getText()))) {
-				Alert("Failed", "The amount of visitors doesn't match the invitation.");
-				return;
-			}
-	
-			if (!(String.valueOf(orderDetails.getOrderNumber()).equals(txtOrderNumber.getText()))) {
-				Alert("Failed", "No such order.");
-				clearAllFields();
-				return;
-			}
-	
-			// check date and time
-			if (checkDate() && checkTime()) {
-	
-				// doesn't exists in the list -> entering the park
-				if (radVisitorStatusText.equals("Enter")) {
-					
-					Alert("Success", orderDetails.getAmountArrived() + " entered.");
+		if (checkFreePlaces()) {
+			// random mode
+			if (btnRandomVisitor.isVisible()) {
+				int maxVisitors = 10;
+				int currentVisitors = 1;
+				int freePlace = maxVisitors - currentVisitors;
+				// check if the amount of "visitorsEntered" greater than the invitation.
+				if (!txtRandomVisitorsAmount.getText().isEmpty()
+						&& (Integer.parseInt(txtRandomVisitorsAmount.getText()) < freePlace)) {
+					alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
+					return;
 				} else {
+					// update current visitors
+				}
+				// barcode / regular entry
+			} else {
+				// check if the amount of "visitorsEntered" greater than the invitation.
+				if (!lblVisitorsNumber.getText().isEmpty() && (Integer.parseInt(txtVisitorsAmount.getText()) > Integer
+						.parseInt(lblVisitorsNumber.getText()))) {
+					alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
+					return;
+				}
+	
+				if (!(String.valueOf(orderDetails.getOrderNumber()).equals(txtOrderNumber.getText()))) {
+					alert.failedAlert("Failed", "No such order.");
+					clearAllFields();
+					return;
+				}
+	
+				// check date and time
+				if (checkDate() && checkTime()) {
+	
+					// doesn't exists in the list -> entering the park
+					if (radVisitorStatusText.equals("Enter")) {
+	
+						alert.successAlert("Success", orderDetails.getAmountArrived() + " entered.");
+					} else {
 						/*** Enter ***/
 						// they are in the list, but they didn't take advantage of all the visits
 						if (radVisitorStatusText.equals("Enter")) {
 	
-						/*** Exit ***/
+							/*** Exit ***/
 						} else {
-							
+	
 						}
 					}
 				}
 			}
-
+		} else {
+			alert.failedAlert("Failed", "We're sorry, the park is full.\nPlease try again later.");
+		}
 		informationExists = false;
 		clearAllFields();
-		
+
 		btnApprove.setDisable(false);
 	}
 
@@ -332,33 +311,8 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
 			lblPrice.setText(orderDetails.getPrice() + "₪");
 
-			// need to calculate:
-			// order type -> random / not random?
-			// member / not member?
-			// payed / not payed?
-			// there is parkManager discount too?
-			// lblDiscount.setText(orderDetails.get(6) + "%");
-			// lblPayment.setText(orderDetails.get(9));
-
 		} catch (ParseException e) {
 			e.printStackTrace();
-		}
-	}
-
-	// showing alert message
-	public void Alert(String title, String msg) {
-		if (title == "Success") {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle(title);
-			alert.setHeaderText(null);
-			alert.setContentText(msg);
-			alert.showAndWait();
-		} else if (title == "Failed") {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle(title);
-			alert.setHeaderText(null);
-			alert.setContentText(msg);
-			alert.showAndWait();
 		}
 	}
 
@@ -373,7 +327,7 @@ public class ParkEmployeeController implements Initializable {
 			return true;
 		}
 
-		Alert("Failed", "Invalid date.");
+		alert.failedAlert("Failed", "Invalid date.");
 		return false;
 	}
 
@@ -394,8 +348,28 @@ public class ParkEmployeeController implements Initializable {
 			return true;
 		}
 
-		Alert("Failed", "Invalid time.");
+		alert.failedAlert("Failed", "Invalid time.");
 		return false;
+	}
+	
+	public boolean checkFreePlaces() {
+		if (parkDetails.getCurrentAmount() < parkDetails.getMaximumCapacityInPark()) {
+			return true;
+		}
+		return false;
+	}
+
+	public void sendToServer(String type, String dbColumns) {
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+		// Data fields
+		ArrayList<String> data = new ArrayList<String>();
+
+		msg.add("getParkDetails");
+		data.add(orderDetails.getParkName());
+		msg.add(data);
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
 	}
 
 	public static String getFirstName() {
@@ -405,7 +379,7 @@ public class ParkEmployeeController implements Initializable {
 	public static void setFirstName(String firstName) {
 		ParkEmployeeController.firstName = firstName;
 	}
-	
+
 	public static String getError() {
 		return error;
 	}
@@ -422,12 +396,12 @@ public class ParkEmployeeController implements Initializable {
 		if (order.get(0).equals("No such order")) {
 			setError("No such order");
 		} else {
-			ParkEmployeeController.orderDetails = new Order(order);	
-		} 
+			ParkEmployeeController.orderDetails = new Order(order);
+		}
 	}
-	
+
 	public static void receivedFromServerParkDetails(ArrayList<String> park) {
-		ParkEmployeeController.parkDetails = new Park(park);	
+		ParkEmployeeController.parkDetails = new Park(park);
 	}
 
 	public void clearAllFields() {
@@ -463,13 +437,13 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(false);
 		txtRandomVisitorsAmount.setVisible(false);
 		radVisitorStatusText = "Enter";
-		
+
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.getHour() + ":" + arrivelTime.getMinute());
-		
+
 		LocalDateTime arrivelDate = LocalDateTime.now();
-		lblRandomDate.setText(arrivelDate.getDayOfMonth() + "-" + arrivelDate.getMonthValue() + "-"
-				+ arrivelDate.getYear());
+		lblRandomDate
+				.setText(arrivelDate.getDayOfMonth() + "-" + arrivelDate.getMonthValue() + "-" + arrivelDate.getYear());
 
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {

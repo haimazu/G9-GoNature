@@ -15,23 +15,7 @@ public class Park {
 	// needed to be checked that 'maxAmountOrders < maximumCapacityInPark' while
 	// editing!!
 	// ******************************************************
-
-	public int getEnteryPrice() {
-		return enteryPrice;
-	}
-
-	public void setEnteryPrice(int enteryPrice) {
-		this.enteryPrice = enteryPrice;
-	}
-
-	public int getMangerDiscount() {
-		return mangerDiscount;
-	}
-
-	public void setMangerDiscount(int mangerDiscount) {
-		this.mangerDiscount = mangerDiscount;
-	}
-
+	
 	public Park(String name, int maxAmountOrders, int maximumCapacityInPark, int currentAmount) {
 		this.name = name;
 		this.maxAmountOrders = maxAmountOrders;
@@ -48,6 +32,22 @@ public class Park {
 		this.maximumCapacityInPark = Integer.parseInt(parkFromDB.get(2));
 		this.maxAmountOrders = Integer.parseInt(parkFromDB.get(3));
 		this.mangerDiscount = Integer.parseInt(parkFromDB.get(5));
+	}
+	
+	public int getEnteryPrice() {
+		return enteryPrice;
+	}
+
+	public void setEnteryPrice(int enteryPrice) {
+		this.enteryPrice = enteryPrice;
+	}
+
+	public int getMangerDiscount() {
+		return mangerDiscount;
+	}
+
+	public void setMangerDiscount(int mangerDiscount) {
+		this.mangerDiscount = mangerDiscount;
 	}
 
 	public int getMaxAmountOrders() {
