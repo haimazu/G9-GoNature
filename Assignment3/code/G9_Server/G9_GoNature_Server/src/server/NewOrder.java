@@ -10,7 +10,7 @@ import userData.Member;
 
 //executed by Nastya
 public class NewOrder {
-
+	
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList a = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -25,17 +25,15 @@ public class NewOrder {
 
 		else {
 
-			// לבדוק ID אן MEMBERID,
-			// אם לא ריקיםן. מושכת את הממבר ובודקת את הסוג שלו
-			// לבדוק אם קיים. אם לא אז לא חבר ולא מקבל את ההנחה
-
 			data = totalPrice(data, memb);// updating the prices in the order
 
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("orders"); // table name
 			query.add(toStringForReservation(data)); // values in query format
-
+			
+			System.out.println(query.toString());
+			
 			if (MySQLConnection.insert(query)) {
 				answer.add(true);
 				answer.add(data);
@@ -89,18 +87,18 @@ public class NewOrder {
 		
 		String s=Double. toString(data.getTotalPrice());
 		String p=Double. toString(data.getPrice());
-		return "'" 
-				+ data.getVisitorsNumber() + "','" 
-				+ data.getOrderEmail() + "','" 
-				+ data.getOrderPhone()+ "','"
-				+ data.getOrderType().toString() + "','" 
-				+ s + "','"
-				+ p + "','" 
-				+ data.getParkName() + "','" 
-				+ data.getArrivedTime() + "','" 
-				+ data.getMemberId() + "','"
-				+ data.getID() + "','"
-				+ data.getAmountArrived()+"'";
+		return "'" + data.getVisitorsNumber() + "','" 
+					+ data.getOrderEmail() + "','" 
+					+ data.getOrderPhone()+ "','"
+					+ data.getOrderType().toString() + "','" 
+					+ s + "','"
+					+ p + "','" 
+					+ data.getParkName() + "','" 
+					+ data.getArrivedTime() + "','" 
+					+ data.getMemberId() + "','"
+					+ data.getID() + "','"
+					+ data.getAmountArrived()+"','"
+					+"'orderNumber.nextval";
 	}
 
 	//input: order
