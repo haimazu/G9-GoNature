@@ -9,6 +9,7 @@ import ocsf.server.ConnectionToClient;
 //returns the order if exists in the DB
 //if not, the returned arrayList will be empty --> need to 
 //be checked on the client's side
+import orderData.Order;
 
 public class ExistingOrderCheck {
 
@@ -41,6 +42,7 @@ public class ExistingOrderCheck {
 	public static void getOrderDetailsByIdOrMemberId(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
+
 		// the service name : ordersByIdOrMemberId
 		answer.add(recived.get(0));
 		// the data that sent from the client
@@ -52,7 +54,7 @@ public class ExistingOrderCheck {
 		query.add("orders"); // table name
 		query.add("*"); // columns to select from
 		query.add("WHERE ID = '" + data.get(0) + "' OR memberId = '" + data.get(0) + "'"); // condition
-		query.add("10"); // how many columns returned
+		query.add("12"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty()) {
@@ -60,6 +62,7 @@ public class ExistingOrderCheck {
 		} else {
 			answer.add(queryData.get(0));
 		}
+
 		EchoServer.sendToMyClient(answer, client);
 	}
 	
@@ -77,7 +80,7 @@ public class ExistingOrderCheck {
 		query.add("orders"); // table name
 		query.add("*"); // columns to select from
 		query.add("WHERE orderNumber = '" + data.get(0) + "'"); // condition
-		query.add("10"); // how many columns returned
+		query.add("12"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty()) {
@@ -85,6 +88,7 @@ public class ExistingOrderCheck {
 		} else {
 			answer.add(queryData.get(0));
 		}
+		
 		EchoServer.sendToMyClient(answer, client);
 	}
 

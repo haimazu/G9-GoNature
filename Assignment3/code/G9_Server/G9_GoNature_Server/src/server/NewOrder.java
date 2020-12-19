@@ -12,7 +12,7 @@ import userData.Member;
 public class NewOrder {
 
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
-		WaitingList a = null;
+		WaitingList a = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // credit card object received
@@ -89,7 +89,7 @@ public class NewOrder {
 		
 		String s=Double. toString(data.getTotalPrice());
 		String p=Double. toString(data.getPrice());
-		return "'" + "" + "','" 
+		return "'" 
 				+ data.getVisitorsNumber() + "','" 
 				+ data.getOrderEmail() + "','" 
 				+ data.getOrderPhone()+ "','"
@@ -120,7 +120,7 @@ public class NewOrder {
 		query.add("9"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.get(0).isEmpty())
+		if (queryData.isEmpty())
 			return null;
 		else
 			return new Member(queryData.get(0));

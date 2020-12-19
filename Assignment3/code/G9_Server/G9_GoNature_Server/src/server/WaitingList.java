@@ -65,7 +65,7 @@ public class WaitingList {
 		query = new ArrayList<String>();
 		query.add("select");
 		query.add("park");
-		query.add("maxAmountOrders");
+		query.add("maxOrderVisitorsAmount");
 		query.add("WHERE parkName = '" + parkName + "'");
 		query.add("1");
 		ArrayList<ArrayList<String>> maxAmount = MySQLConnection.select(query);

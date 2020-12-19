@@ -7,8 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXRadioButton;
@@ -29,6 +31,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import orderData.Order;
 
 public class ParkEmployeeController implements Initializable {
 	@FXML
@@ -62,7 +65,7 @@ public class ParkEmployeeController implements Initializable {
 	private Label lblEmail;
 
 	@FXML
-	private Label lblVisitorsEntered;
+	private Label lblVisitorsAmount;
 	@FXML
 	private Label lblPrice;
 	@FXML
@@ -78,12 +81,22 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private JFXTextField txtOrderNumber;
 	@FXML
-	private JFXTextField txtVisitorsEntered;
+	private JFXTextField txtVisitorsAmount;
 	@FXML
 	private Button btnShowDetails;
 
 	@FXML
-	private Button btnRndonVisitor;
+	private Button btnRandomVisitor;
+	@FXML
+	private Label lblDateTitle;
+	@FXML
+	private Label lblRandomDate;
+	@FXML
+	private Label lblTimeTitle;
+	@FXML
+	private Label lblRandomTime;
+	@FXML
+	private JFXTextField txtRandomVisitorsAmount;
 
 	@FXML
 	private JFXRadioButton radEnter;
@@ -94,24 +107,13 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnApprove;
 
-	// discount by types of visitors
-	// single / family -> pre-booked
-	public static final float SINGLE_OR_FAMILY_PRE_BOOKED = 10;
-	public static final float SINGLE_OR_FAMILY_PRE_BOOKED_AND_MEMBERS = 20;
-	// single / family -> random visitor/s
-	public static final float SINGLE_OR_FAMILY_AND_MEMBERS = 20;
-	// group -> pre-booked (guide not pay)
-	public static final float GROUP_PRE_BOOKED = 25;
-	public static final float GROUP_PRE_BOOKED_AND_ALREADY_PAID = 12;
-	// group -> random visit (guide pay)
-	public static final float GROUP_PRE_BOOKED_RANDOM_VISIT = 10;
-
 	// check if we already was is the DB
 	private boolean informationExists = false;
 	private String radVisitorStatusText;
 	private static String firstName;
-	private static ArrayList<String> orderDetails;
-	private Map<String, Integer> orderDocumentation = new HashMap<String, Integer>();
+	private static Order orderDetails;
+	private static String error = "";
+	//private Map<String, Integer> orderDocumentation = new HashMap<String, Integer>();
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -123,14 +125,15 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void barcodeScan(ActionEvent event) {
 		informationExists = true;
+		error = "";
 		// get order number from the server
 		// call showDetails() function to set up all the order details
 		// SELECT * FROM orders ORDER BY orderNumber LIMIT 1;
 		// txtOrderNumber.setText(String.valueOf(getOrderNumberFromBarcodeByID()));
-		txtVisitorsEntered.setText(String.valueOf(getVisitorsEnteredFromBarcode()));
 
 		int id = getOrderNumberFromBarcodeByID();
 		int memberId = getOrderNumberFromBarcodeByMemberId();
+		System.out.println("MemberId: " + memberId);
 
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
@@ -138,12 +141,19 @@ public class ParkEmployeeController implements Initializable {
 		ArrayList<String> data = new ArrayList<String>();
 
 		msg.add("ordersByIdOrMemberId");
-		data.add(String.valueOf(id));
+		data.add(String.valueOf(memberId));
 		msg.add(data);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
 
-		txtOrderNumber.setText(orderDetails.get(0));
+		if (error.equals("No such order")) {
+			Alert("Failed", "No such order.");
+			clearAllFields();
+			return;
+		}
+
+		txtOrderNumber.setText(String.valueOf(orderDetails.getOrderNumber()));
+		txtVisitorsAmount.setText(String.valueOf(getVisitorsEnteredFromBarcode()));
 
 		showDetails(event);
 	}
@@ -153,6 +163,9 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	private int getOrderNumberFromBarcodeByMemberId() {
+		//Random rand = new Random();
+		// generate random integers in range 0 to 3
+		//return rand.nextInt(4);
 		return 2;
 	}
 
@@ -162,8 +175,9 @@ public class ParkEmployeeController implements Initializable {
 
 	@FXML
 	void showDetails(ActionEvent event) {
-
-		if (txtOrderNumber.getText().isEmpty() || txtVisitorsEntered.getText().isEmpty()) {
+		error = "";
+		
+		if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
 			Alert("Failed", "All fields required.");
 			return;
 		}
@@ -181,21 +195,21 @@ public class ParkEmployeeController implements Initializable {
 			// set up all the order details and the payment method
 			ClientUI.sentToChatClient(msg);
 
-			if (orderDetails.get(0).equals("No such order")) {
+			if (error.equals("No such order")) {
 				Alert("Failed", "No such order.");
 				clearAllFields();
 				return;
 			}
 		}
 
-		if (!(orderDetails.get(0).equals(txtOrderNumber.getText()))) {
+		if (!(String.valueOf(orderDetails.getOrderNumber()).equals(txtOrderNumber.getText()))) {
 			Alert("Failed", "No such order.");
 			clearAllFields();
 			return;
 		}
 
 		/****** calculate discount ******/
-		float price = Float.parseFloat(orderDetails.get(5));
+		//float price = Float.parseFloat(orderDetails.get(5));
 		// float discount = Float.parseFloat(orderDetails.get(6));
 
 		// lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
@@ -203,90 +217,80 @@ public class ParkEmployeeController implements Initializable {
 		printOrderDetails();
 
 		informationExists = false;
+	}
+
+	@FXML
+	void randomVisitor(ActionEvent event) {
 		btnApprove.setDisable(false);
+		btnRandomVisitor.setVisible(false);
+		lblDateTitle.setVisible(true);
+		lblRandomDate.setVisible(true);
+		lblTimeTitle.setVisible(true);
+		lblRandomTime.setVisible(true);
+		txtRandomVisitorsAmount.setVisible(true);
+				
 	}
 
 	@FXML
 	void approve(ActionEvent event) {
-		// check if the amount of "visitorsEntered" greater than the invitation.
-		if (!lblVisitorsNumber.getText().isEmpty()
-				&& (Integer.parseInt(txtVisitorsEntered.getText()) > Integer.parseInt(lblVisitorsNumber.getText()))) {
-			Alert("Failed", "The amount of visitors doesn't match the invitation.");
-			return;
-		}
 
-		if (!(orderDetails.get(0).equals(txtOrderNumber.getText()))) {
-			Alert("Failed", "No such order.");
-			clearAllFields();
-			return;
-		}
-
-		// check date and time
-		if (checkDate() && checkTime()) {
-
-			int orderVisitorsNumber = Integer.parseInt(lblVisitorsNumber.getText());
-			int visitorsEntered = Integer.parseInt(txtVisitorsEntered.getText());
-			int visitorsLeaved = Integer.parseInt(txtVisitorsEntered.getText());
-			int placesLeft = 0;
-
-			// doesn't exists in the list -> entering the park
-			if (orderDocumentation.size() < 1 && radVisitorStatusText.equals("Enter")) {
-				orderDocumentation.put(txtOrderNumber.getText(), visitorsEntered);
-				Alert("Success", visitorsEntered + " entered.");
+		// random mode
+		if (btnRandomVisitor.isVisible()) {
+			int maxVisitors = 10;
+			int currentVisitors = 1;
+			int freePlace = maxVisitors - currentVisitors;
+			// check if the amount of "visitorsEntered" greater than the invitation.
+			if (!txtRandomVisitorsAmount.getText().isEmpty()
+					&& (Integer.parseInt(txtRandomVisitorsAmount.getText()) < freePlace)) {
+				Alert("Failed", "The amount of visitors doesn't match the invitation.");
+				return;
 			} else {
-				// check to see if visitors are enter or leave the park
-				for (Map.Entry<String, Integer> orderNumber : orderDocumentation.entrySet()) {
-
-					/*** Enter ***/					
-					// they are in the list, but they didn't take advantage of all the visits
-					if (radVisitorStatusText.equals("Enter")) {
-						
-						if (orderNumber.getKey().equals(txtOrderNumber.getText())) {
-							placesLeft = orderVisitorsNumber - (visitorsEntered + orderNumber.getValue());
-							if (placesLeft >= 0) {
-								// the method put will replace the value of an existing key
-								// and will create it if doesn't exist.
-								orderDocumentation.put(orderNumber.getKey(), placesLeft);
-								Alert("Success", visitorsEntered + " visitor/s entered."
-										+ "\n" + placesLeft + " more places left. ");
-								// we need to update the "currentVisitors"
-								// "currentVisitors += visitorsEntered"
-								// UPDATE.. currentVisitors
-							} else {
-								Alert("Failed", "You've used all the places.");
-							}
-						} 
-					/*** Exit ***/
-					} else {
-						placesLeft = orderNumber.getValue() - visitorsLeaved;
-						// if exists in the list -> leavening the park
-						if (placesLeft > 0) {
-							orderDocumentation.remove(orderNumber.getKey());
-							Alert("Success", visitorsLeaved + " visitor/s leaved.\n"
-									+ placesLeft + " visitor/s are still in the park.");
-							// we need to update the "currentVisitors"
-							// "currentVisitors -= visitorsEntered"
-							// UPDATE.. currentVisitors
-						// all the visitors on this order, leaved
-						} else if (placesLeft == 0){
-							Alert("Failed", "All the visitor/s or this order, have left.");
-						// wrong number, not match the orderNumber
+				// update current visitors
+			}
+		// barcode / regular entry
+		} else {				
+			// check if the amount of "visitorsEntered" greater than the invitation.
+			if (!lblVisitorsNumber.getText().isEmpty()
+					&& (Integer.parseInt(txtVisitorsAmount.getText()) > Integer.parseInt(lblVisitorsNumber.getText()))) {
+				Alert("Failed", "The amount of visitors doesn't match the invitation.");
+				return;
+			}
+	
+			if (!(String.valueOf(orderDetails.getOrderNumber()).equals(txtOrderNumber.getText()))) {
+				Alert("Failed", "No such order.");
+				clearAllFields();
+				return;
+			}
+	
+			// check date and time
+			if (checkDate() && checkTime()) {
+	
+				// doesn't exists in the list -> entering the park
+				if (radVisitorStatusText.equals("Enter")) {
+					
+					Alert("Success", orderDetails.getAmountArrived() + " entered.");
+				} else {
+						/*** Enter ***/
+						// they are in the list, but they didn't take advantage of all the visits
+						if (radVisitorStatusText.equals("Enter")) {
+	
+						/*** Exit ***/
 						} else {
-							Alert("Failed", "The amount of visitors doesn't match the invitation.");
+							
 						}
 					}
 				}
 			}
 
-			informationExists = false;
-			clearAllFields();
-		}
-		System.out.println(orderDocumentation);
+		informationExists = false;
+		clearAllFields();
+		
+		btnApprove.setDisable(false);
 	}
 
 	public void printOrderDetails() {
 		// 2021-01-01 08:00:00
-		String DateAndTime = orderDetails.get(8);
+		String DateAndTime = orderDetails.getArrivedTime();
 		String[] splitDateAndTime = DateAndTime.split(" ");
 		// 2021-01-01
 		String date = splitDateAndTime[0];
@@ -302,15 +306,15 @@ public class ParkEmployeeController implements Initializable {
 			// 08:00:00 -> 08:00
 			String time = (String) splitDateAndTime[1].subSequence(0, 5);
 
-			lblOrderNumber.setText(orderDetails.get(0));
-			lblParkName.setText(orderDetails.get(7));
+			lblOrderNumber.setText(String.valueOf(orderDetails.getOrderNumber()));
+			lblParkName.setText(orderDetails.getParkName());
 			lblDate.setText(strDateTime);
 			lblTime.setText(time);
-			lblVisitorsNumber.setText(orderDetails.get(1));
-			lblEmail.setText(orderDetails.get(2));
+			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
+			lblEmail.setText(orderDetails.getOrderEmail());
 
-			lblVisitorsEntered.setText(txtVisitorsEntered.getText());
-			lblPrice.setText(orderDetails.get(5) + "₪");
+			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
+			lblPrice.setText(orderDetails.getPrice() + "₪");
 
 			// need to calculate:
 			// order type -> random / not random?
@@ -386,19 +390,23 @@ public class ParkEmployeeController implements Initializable {
 		ParkEmployeeController.firstName = firstName;
 	}
 
-	public static ArrayList<String> getOrderDetails() {
+	public static Order getOrderDetails() {
 		return orderDetails;
 	}
 
-	public static void receivedFromServerOrderDetails(ArrayList<String> orderDetails) {
-		ParkEmployeeController.orderDetails = orderDetails;
+	public static void receivedFromServerOrderDetails(ArrayList<String> order) {
+		if (order.get(0).equals("No such order")) {
+			error = "No such order";
+		} else {
+			ParkEmployeeController.orderDetails = new Order(order);	
+		} 
 	}
 
 	public void clearAllFields() {
 		txtOrderNumber.clear();
 		lblOrderNumber.setText("");
-		txtVisitorsEntered.clear();
-		lblVisitorsEntered.setText("");
+		txtVisitorsAmount.clear();
+		lblVisitorsAmount.setText("");
 		lblParkName.setText("");
 		lblDate.setText("");
 		lblTime.setText("");
@@ -408,12 +416,23 @@ public class ParkEmployeeController implements Initializable {
 		lblDiscount.setText("");
 		lblPayment.setText("");
 		lblTotalPrice.setText("");
+		lblDateTitle.setVisible(false);
+		lblRandomDate.setVisible(false);
+		lblTimeTitle.setVisible(false);
+		lblRandomTime.setVisible(false);
+		txtRandomVisitorsAmount.setVisible(false);
+		btnApprove.setDisable(false);
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
+		lblDateTitle.setVisible(false);
+		lblRandomDate.setVisible(false);
+		lblTimeTitle.setVisible(false);
+		lblRandomTime.setVisible(false);
+		txtRandomVisitorsAmount.setVisible(false);
 		radVisitorStatusText = "Enter";
 
 		// force the field to be numeric only
@@ -428,14 +447,26 @@ public class ParkEmployeeController implements Initializable {
 		});
 
 		// force the field to be numeric only
-		txtVisitorsEntered.textProperty().addListener((obs, oldValue, newValue) -> {
-			lblVisitorsEntered.setText(newValue);
+		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
+			lblVisitorsAmount.setText(newValue);
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
-				txtVisitorsEntered.setText(newValue.replaceAll("[^\\d]", ""));
-				lblVisitorsEntered.setText(newValue.replaceAll("[^\\d]", ""));
+				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
+				lblVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+		});
+
+		// force the field to be numeric only
+		txtRandomVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
+			lblVisitorsAmount.setText(newValue);
+			// \\d -> only digits
+			// * -> escaped special characters
+			if (!newValue.matches("\\d")) {
+				// ^\\d -> everything that not a digit
+				txtRandomVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
+				lblVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
 

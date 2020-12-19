@@ -10,8 +10,8 @@ public class Order implements Serializable {
 	String orderEmail;
 	String orderPhone;
 	OrderType orderType;
-	double totalPrice;
 	double price;
+	double totalPrice;
 	String parkName;
 	String arrivedTime;
 	String memberId;
