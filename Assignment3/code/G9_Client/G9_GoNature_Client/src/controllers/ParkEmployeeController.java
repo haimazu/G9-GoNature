@@ -169,6 +169,8 @@ public class ParkEmployeeController implements Initializable {
 		return 2;
 	}
 
+	// input: order number
+	// output: order details
 	@FXML
 	void showDetails(ActionEvent event) {
 
@@ -224,54 +226,57 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 
-		// random mode
-		if (btnRandomVisitor.isVisible()) {
-			int maxVisitors = 10;
-			int currentVisitors = 1;
-			int freePlace = maxVisitors - currentVisitors;
-			// check if the amount of "visitorsEntered" greater than the invitation.
-			if (!txtRandomVisitorsAmount.getText().isEmpty()
-					&& (Integer.parseInt(txtRandomVisitorsAmount.getText()) < freePlace)) {
-				alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
-				return;
-			} else {
-				// update current visitors
-			}
-			// barcode / regular entry
-		} else {
-			// check if the amount of "visitorsEntered" greater than the invitation.
-			if (!lblVisitorsNumber.getText().isEmpty() && (Integer.parseInt(txtVisitorsAmount.getText()) > Integer
-					.parseInt(lblVisitorsNumber.getText()))) {
-				alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
-				return;
-			}
-
-			if (!(String.valueOf(orderDetails.getOrderNumber()).equals(txtOrderNumber.getText()))) {
-				alert.failedAlert("Failed", "No such order.");
-				clearAllFields();
-				return;
-			}
-
-			// check date and time
-			if (checkDate() && checkTime()) {
-
-				// doesn't exists in the list -> entering the park
-				if (radVisitorStatusText.equals("Enter")) {
-
-					alert.successAlert("Success", orderDetails.getAmountArrived() + " entered.");
+		if (checkFreePlaces()) {
+			// random mode
+			if (btnRandomVisitor.isVisible()) {
+				int maxVisitors = 10;
+				int currentVisitors = 1;
+				int freePlace = maxVisitors - currentVisitors;
+				// check if the amount of "visitorsEntered" greater than the invitation.
+				if (!txtRandomVisitorsAmount.getText().isEmpty()
+						&& (Integer.parseInt(txtRandomVisitorsAmount.getText()) < freePlace)) {
+					alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
+					return;
 				} else {
-					/*** Enter ***/
-					// they are in the list, but they didn't take advantage of all the visits
+					// update current visitors
+				}
+				// barcode / regular entry
+			} else {
+				// check if the amount of "visitorsEntered" greater than the invitation.
+				if (!lblVisitorsNumber.getText().isEmpty() && (Integer.parseInt(txtVisitorsAmount.getText()) > Integer
+						.parseInt(lblVisitorsNumber.getText()))) {
+					alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
+					return;
+				}
+	
+				if (!(String.valueOf(orderDetails.getOrderNumber()).equals(txtOrderNumber.getText()))) {
+					alert.failedAlert("Failed", "No such order.");
+					clearAllFields();
+					return;
+				}
+	
+				// check date and time
+				if (checkDate() && checkTime()) {
+	
+					// doesn't exists in the list -> entering the park
 					if (radVisitorStatusText.equals("Enter")) {
-
-						/*** Exit ***/
+	
+						alert.successAlert("Success", orderDetails.getAmountArrived() + " entered.");
 					} else {
-
+						/*** Enter ***/
+						// they are in the list, but they didn't take advantage of all the visits
+						if (radVisitorStatusText.equals("Enter")) {
+	
+							/*** Exit ***/
+						} else {
+	
+						}
 					}
 				}
 			}
+		} else {
+			alert.failedAlert("Failed", "We're sorry, the park is full.\nPlease try again later.");
 		}
-
 		informationExists = false;
 		clearAllFields();
 
@@ -305,14 +310,6 @@ public class ParkEmployeeController implements Initializable {
 
 			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
 			lblPrice.setText(orderDetails.getPrice() + "₪");
-
-			// need to calculate:
-			// order type -> random / not random?
-			// member / not member?
-			// payed / not payed?
-			// there is parkManager discount too?
-			// lblDiscount.setText(orderDetails.get(6) + "%");
-			// lblPayment.setText(orderDetails.get(9));
 
 		} catch (ParseException e) {
 			e.printStackTrace();
