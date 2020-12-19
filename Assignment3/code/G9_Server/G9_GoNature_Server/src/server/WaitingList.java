@@ -41,8 +41,7 @@ public class WaitingList {
 	// in cell 0: String "checkForAvailableSpots"
 	// in cell 1: Order class of a given order to check if it can fit
 	//
-	// output: True -> if there are available spots at the given park at the given
-	// time
+	// output: True -> if there are available spots at the given park at the given time
 	// False -> if there are no spots available
 	public boolean checkForAvailableSpots(ArrayList<Object> recived, ConnectionToClient client) {
 		Order order = (Order) recived.get(1);
@@ -83,7 +82,7 @@ public class WaitingList {
 	//
 	// output:
 	public boolean pullFromWaitList(ArrayList<Object> recived, ConnectionToClient client) {
-		Order order = (Order) recived.get(1);
+		Order order = (Order) recived.get(1); //been deleted
 		String parkName = order.getParkName();
 		String arrivedTime = order.getArrivedTime();
 		ArrayList<String> query = new ArrayList<String>();
@@ -91,13 +90,15 @@ public class WaitingList {
 		query.add("waitingList");
 		query.add("*");
 		query.add("WHERE parkName = '" + parkName + "' AND arrivedTime ='" + arrivedTime + "' SORT BY orderNumber");
-		query.add("1");
+		query.add("1");//fix
 		ArrayList<ArrayList<String>> waitingInLineArr = MySQLConnection.select(query);
 		if (waitingInLineArr.get(0).isEmpty())
 			return true; // no one in line
 		ArrayList<String> firstInLine = waitingInLineArr.get(0); // first in line
 		Order firstInLineOrder = new Order(firstInLine);
 		ArrayList<Object> arrayForSpots = new ArrayList<Object>();
+		arrayForSpots.add("");//fix
+
 		arrayForSpots.add(firstInLineOrder);
 		if (!checkForAvailableSpots(arrayForSpots, client))
 			return true; // no space for the first in line
