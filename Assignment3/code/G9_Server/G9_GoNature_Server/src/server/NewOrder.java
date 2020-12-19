@@ -85,14 +85,14 @@ public class NewOrder {
 	// output: to string for a query
 	public static String toStringForReservation(Order data) {
 		
-		String s=Double. toString(data.getTotalPrice());
-		String p=Double. toString(data.getPrice());
+		String afterDiscount=Double. toString(data.getTotalPrice());
+		String beforDiscount=Double. toString(data.getPrice());
 		return "'" + data.getVisitorsNumber() + "','" 
 					+ data.getOrderEmail() + "','" 
 					+ data.getOrderPhone()+ "','"
 					+ data.getOrderType().toString() + "','" 
-					+ s + "','"
-					+ p + "','" 
+					+ afterDiscount + "','"
+					+ beforDiscount + "','" 
 					+ data.getParkName() + "','" 
 					+ data.getArrivedTime() + "','" 
 					+ data.getMemberId() + "','"
