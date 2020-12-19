@@ -98,7 +98,7 @@ public class NewOrder {
 					+ data.getMemberId() + "','"
 					+ data.getID() + "','"
 					+ data.getAmountArrived()+"','"
-					+"'orderNumber.nextval";
+					+5555+"'";
 	}
 
 	//input: order
