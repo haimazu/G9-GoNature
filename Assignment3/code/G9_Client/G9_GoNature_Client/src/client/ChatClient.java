@@ -65,8 +65,12 @@ public class ChatClient extends AbstractClient {
 			case "ordersByOrderNumber":
 				ParkEmployeeController.receivedFromServerOrderDetails((ArrayList<String>)received.get(1));
 				break;
+			case "getParkDetails":
+				ParkEmployeeController.receivedFromServerParkDetails((ArrayList<String>)received.get(1));
+				break;
 			case "order":
 				OrderController.recivedFromServer((Object)received.get(1));
+				break;
 			case "checkValidOrderNum":
 				WelcomeController.recievedFromServerValidOrder((ArrayList<String>)received.get(1));
 				break;
