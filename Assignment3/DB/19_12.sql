@@ -146,6 +146,8 @@ CREATE TABLE `park` (
   `parkName` varchar(45) NOT NULL,
   `currentVisitoreAmount` varchar(45) DEFAULT NULL,
   `maxVisitorAmount` varchar(45) DEFAULT NULL,
+  `maxOrderVisitorsAmount` varchar(45) DEFAULT NULL,
+  `entryPrice` varchar(45) DEFAULT '100',
   PRIMARY KEY (`parkName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -156,7 +158,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('disney','0','150'),('jurasic','0','100'),('universal','0','250');
+INSERT INTO `park` VALUES ('disney','0','150',NULL,'100'),('jurasic','0','100',NULL,'100'),('universal','0','250',NULL,'100');
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,4 +232,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-18 14:38:13
+-- Dump completed on 2020-12-19 12:33:55
