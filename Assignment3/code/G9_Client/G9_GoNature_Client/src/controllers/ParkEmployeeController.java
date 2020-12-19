@@ -17,6 +17,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
+import dataLayer.Park;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,6 +46,8 @@ public class ParkEmployeeController implements Initializable {
 
 	@FXML
 	private Label lblTitle;
+	@FXML
+	private Label lblCurrentVisitors;
 
 	@FXML
 	private Pane pnSettings;
@@ -112,6 +115,7 @@ public class ParkEmployeeController implements Initializable {
 	private String radVisitorStatusText;
 	private static String firstName;
 	private static Order orderDetails;
+	private static Park parkDetails;
 	private static String error = "";
 	//private Map<String, Integer> orderDocumentation = new HashMap<String, Integer>();
 
@@ -125,7 +129,6 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void barcodeScan(ActionEvent event) {
 		informationExists = true;
-		error = "";
 		// get order number from the server
 		// call showDetails() function to set up all the order details
 		// SELECT * FROM orders ORDER BY orderNumber LIMIT 1;
@@ -146,7 +149,7 @@ public class ParkEmployeeController implements Initializable {
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
 
-		if (error.equals("No such order")) {
+		if (getError().equals("No such order")) {
 			Alert("Failed", "No such order.");
 			clearAllFields();
 			return;
@@ -175,8 +178,7 @@ public class ParkEmployeeController implements Initializable {
 
 	@FXML
 	void showDetails(ActionEvent event) {
-		error = "";
-		
+	
 		if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
 			Alert("Failed", "All fields required.");
 			return;
@@ -207,6 +209,19 @@ public class ParkEmployeeController implements Initializable {
 			clearAllFields();
 			return;
 		}
+		
+		// Query
+		ArrayList<Object> msg1 = new ArrayList<Object>();
+		// Data fields
+		ArrayList<String> data1 = new ArrayList<String>();
+		
+		msg1.add("getParkDetails");
+		data1.add(orderDetails.getParkName());
+		msg1.add(data1);
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg1);
+		
+		lblCurrentVisitors.setText(String.valueOf(parkDetails.getCurrentAmount()));
 
 		/****** calculate discount ******/
 		//float price = Float.parseFloat(orderDetails.get(5));
@@ -217,6 +232,7 @@ public class ParkEmployeeController implements Initializable {
 		printOrderDetails();
 
 		informationExists = false;
+		btnApprove.setDisable(false);
 	}
 
 	@FXML
@@ -389,6 +405,14 @@ public class ParkEmployeeController implements Initializable {
 	public static void setFirstName(String firstName) {
 		ParkEmployeeController.firstName = firstName;
 	}
+	
+	public static String getError() {
+		return error;
+	}
+
+	public static void setError(String error) {
+		ParkEmployeeController.error = error;
+	}
 
 	public static Order getOrderDetails() {
 		return orderDetails;
@@ -396,10 +420,14 @@ public class ParkEmployeeController implements Initializable {
 
 	public static void receivedFromServerOrderDetails(ArrayList<String> order) {
 		if (order.get(0).equals("No such order")) {
-			error = "No such order";
+			setError("No such order");
 		} else {
 			ParkEmployeeController.orderDetails = new Order(order);	
 		} 
+	}
+	
+	public static void receivedFromServerParkDetails(ArrayList<String> park) {
+		ParkEmployeeController.parkDetails = new Park(park);	
 	}
 
 	public void clearAllFields() {
@@ -422,6 +450,7 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(false);
 		txtRandomVisitorsAmount.setVisible(false);
 		btnApprove.setDisable(false);
+		btnRandomVisitor.setVisible(true);
 	}
 
 	@Override
@@ -434,6 +463,13 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(false);
 		txtRandomVisitorsAmount.setVisible(false);
 		radVisitorStatusText = "Enter";
+		
+		LocalDateTime arrivelTime = LocalDateTime.now();
+		lblRandomTime.setText(arrivelTime.getHour() + ":" + arrivelTime.getMinute());
+		
+		LocalDateTime arrivelDate = LocalDateTime.now();
+		lblRandomDate.setText(arrivelDate.getDayOfMonth() + "-" + arrivelDate.getMonthValue() + "-"
+				+ arrivelDate.getYear());
 
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {

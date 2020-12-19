@@ -1,5 +1,7 @@
 package dataLayer;
 
+import java.util.ArrayList;
+
 public class Park {
 
 	private String name;
@@ -38,6 +40,14 @@ public class Park {
 		if (!check()) {
 			System.out.println("Orders capacity is bigger than the Park Capacity!");
 		}
+	}
+	
+	public Park(ArrayList<String> parkFromDB) {
+		this.name = parkFromDB.get(0);
+		this.currentAmount = Integer.parseInt(parkFromDB.get(1));
+		this.maximumCapacityInPark = Integer.parseInt(parkFromDB.get(2));
+		this.maxAmountOrders = Integer.parseInt(parkFromDB.get(3));
+		this.mangerDiscount = Integer.parseInt(parkFromDB.get(5));
 	}
 
 	public int getMaxAmountOrders() {

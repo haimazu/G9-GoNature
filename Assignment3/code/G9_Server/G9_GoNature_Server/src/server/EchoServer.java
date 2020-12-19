@@ -33,10 +33,15 @@ public class EchoServer extends AbstractServer {
 		case "ordersByOrderNumber":	
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 			break;
+		case "getParkDetails":
+			UpdateVisitorsNumber.getParkDetails(recived, client);
+			break;
 		case "order":
 			NewOrder.NewReservation(recived, client);
+			break;
 		case "checkValidOrderNum":
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
+			break;
 		default:
 			break;
 		}
