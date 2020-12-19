@@ -35,7 +35,7 @@ public class NewOrder {
 			System.out.println(query.toString());
 			
 			if (MySQLConnection.insert(query)) {
-				answer.add(true);
+				//answer.add(true);
 				answer.add(data);
 			}
 			else
@@ -98,7 +98,7 @@ public class NewOrder {
 					+ data.getMemberId() + "','"
 					+ data.getID() + "','"
 					+ data.getAmountArrived()+"','"
-					+5555+"'";
+					+5465+"'";
 	}
 
 	//input: order

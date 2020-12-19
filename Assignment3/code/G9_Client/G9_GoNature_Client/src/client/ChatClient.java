@@ -51,7 +51,7 @@ public class ChatClient extends AbstractClient {
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 		ArrayList<Object> received = (ArrayList<Object>) msg;
-		
+		System.out.println(received);
 		switch ((String)received.get(0)) {
 			case "login":
 				LoginController.receivedFromServer(((ArrayList<String>)received.get(1)));

@@ -11,8 +11,10 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
@@ -83,6 +85,10 @@ public class OrderController implements Initializable {
 
 	@FXML
 	private Button information;
+	
+	/*
+	 * confirmation screen:
+	 */
 
 	@FXML
 	private Hyperlink btnHere;
@@ -93,6 +99,9 @@ public class OrderController implements Initializable {
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
 
+	/*
+	 * my values:
+	 */
 	private static ArrayList<String> ParksNames = new ArrayList<>();
 	private static Order orderSuccess;
 	private Order order;
@@ -101,8 +110,37 @@ public class OrderController implements Initializable {
 	private String ID = null;
 	private AlertController alert = new AlertController();
 
-	private PaymentController payStatus; // contriller for paymnt to check the fields
+	
+	
+	//private static PaymentController payStatus; // contriller for paymnt to check the fields
 
+	/*
+	 * payment screen:
+	 */
+	
+	@FXML
+	private JFXRadioButton radioCash;
+
+	@FXML
+	private JFXRadioButton radioPayPal;
+
+	@FXML
+	private JFXRadioButton radioCreditCard;
+	
+	@FXML
+	private JFXCheckBox CheckBoxAgreed;
+	
+	@FXML
+	private Label txtprice;
+
+	@FXML
+	private Label txtVisitoramountPrice;
+
+	@FXML
+	private Label txtdDiscount;
+
+	@FXML
+	private Label txtTotalPrice;
 
 	/*
 	 * status to check if the order success
@@ -121,6 +159,7 @@ public class OrderController implements Initializable {
 
 	public static void setOrderSuccess(Order orderSuccess) {
 		OrderController.orderSuccess = orderSuccess;
+		System.out.println(orderSuccess);
 	}
 
 	public static void setParksNames(ArrayList<String> parksNames) {
@@ -173,8 +212,6 @@ public class OrderController implements Initializable {
 			msgForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
 					+ getArrivalTime(cbxArrivelTime.getValue().toString());
-			System.out.println(strDateTime);
-
 			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					"0549991234", cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
 			msgForServer.add(this.order);
@@ -189,13 +226,17 @@ public class OrderController implements Initializable {
 					Parent root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
 					stage.setScene(new Scene(root));
 				} else {
-					payStatus = new PaymentController(orderSuccess);
+
+					this.txtprice.setText(String.valueOf(orderSuccess.getPrice()));
+					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()));
+					this.txtdDiscount.setText(String.valueOf(1 - (orderSuccess.getTotalPrice() / orderSuccess.getTotalPrice())));
+					this.txtVisitoramountPrice.setText(String.valueOf(orderSuccess.getVisitorsNumber()));					
 					pnPayment.toFront();
 					//add send to server detail of payment add to db and object order
 				}
 			} else if (btnContinue == event.getSource()) {
 
-				if (payStatus.checkNotEmptyFields()) {
+				if (checkNotEmptyFieldsPaymentScreen()) {
 					this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
 					pnConfirmation.toFront();
 				}
@@ -207,6 +248,18 @@ public class OrderController implements Initializable {
 		}
 	}
 
+	public boolean checkNotEmptyFieldsPaymentScreen() {
+		if(!(radioCash.isSelected() || radioPayPal.isSelected() || radioPayPal.isSelected() )) {
+			alert.setAlert("you need to choose payment method");
+			return false;
+		}
+		if(!CheckBoxAgreed.isSelected()) {
+			alert.setAlert("you need to aprove the terms");
+			return false;
+		}
+		return true;				
+	}
+	
 	// home button
 	@FXML
 	void home(ActionEvent event) throws IOException {
@@ -229,13 +282,14 @@ public class OrderController implements Initializable {
 	 * if success
 	 */
 	public static void recivedFromServer(Object newOrder) {
-		System.out.println(newOrder);
+		System.out.println("here "+newOrder);
 		if (newOrder instanceof String) {
 			String status = (String) newOrder;
 			setStatus(status);
 		} else {
 			Order myOrder = (Order) newOrder;
 			setOrderSuccess(myOrder);
+			//payStatus = new PaymentController(orderSuccess);
 		}
 	}
 
@@ -367,9 +421,9 @@ public class OrderController implements Initializable {
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
 		
-		 txtmemberID.setText("315818567");
+		 txtmemberID.setText("315818987");
 		 txtVisitorsNumber.setText("2");
-		 txtInvitingEmail.setText("bar@bar.ci");
+		 txtInvitingEmail.setText("bar@bark.ci");
 		 
 
 	}
