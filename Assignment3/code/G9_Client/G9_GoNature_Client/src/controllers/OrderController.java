@@ -159,12 +159,10 @@ public class OrderController implements Initializable {
 
 	public static void setOrderSuccess(Order orderSuccess) {
 		OrderController.orderSuccess = orderSuccess;
-		System.out.println(orderSuccess);
 	}
 
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
-		System.out.println(ParksNames);
 	}
 
 	@FXML
