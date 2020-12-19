@@ -121,6 +121,7 @@ CREATE TABLE `orders` (
   `arrivedTime` datetime DEFAULT NULL,
   `memberID` varchar(45) DEFAULT NULL,
   `ID` varchar(45) DEFAULT NULL,
+  `amountArrived` varchar(45) DEFAULT '0',
   PRIMARY KEY (`orderNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -131,7 +132,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1111,'10','a@b.c',NULL,'guide',400,NULL,'jurasic','2021-01-02 10:00:00','1','123456'),(2222,'5','d@e.f',NULL,'single',100,NULL,'disney','2020-12-16 10:00:00','','987656432');
+INSERT INTO `orders` VALUES (1111,'10','a@b.c',NULL,'guide',400,NULL,'jurasic','2021-01-02 10:00:00','1','123456','0'),(2222,'5','d@e.f',NULL,'single',100,NULL,'disney','2020-12-16 10:00:00','','987656432','0');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,6 +149,7 @@ CREATE TABLE `park` (
   `maxVisitorAmount` varchar(45) DEFAULT NULL,
   `maxOrderVisitorsAmount` varchar(45) DEFAULT NULL,
   `entryPrice` varchar(45) DEFAULT '100',
+  `mangerDiscount` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`parkName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -158,7 +160,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('disney','0','150',NULL,'100'),('jurasic','0','100',NULL,'100'),('universal','0','250',NULL,'100');
+INSERT INTO `park` VALUES ('disney','0','150',NULL,'100',NULL),('jurasic','0','100',NULL,'100',NULL),('universal','0','250',NULL,'100',NULL);
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,4 +234,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-19 12:33:55
+-- Dump completed on 2020-12-19 13:07:31
