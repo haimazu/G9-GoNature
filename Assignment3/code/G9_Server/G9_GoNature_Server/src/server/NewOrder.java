@@ -26,7 +26,12 @@ public class NewOrder {
 		else {
 
 			data = totalPrice(data, memb);// updating the prices in the order
-
+			//////////////
+			/////Roi//////
+			//////////////
+			data.setOrderNumber(Counter.getCounter().orderNum()); //get an ordernumber
+			//////////////
+			//////////////
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("orders"); // table name
@@ -98,7 +103,7 @@ public class NewOrder {
 					+ data.getMemberId() + "','"
 					+ data.getID() + "','"
 					+ data.getAmountArrived()+"','"
-					+5465+"'";
+					+ data.getOrderNumber() +"'";
 	}
 
 	//input: order
