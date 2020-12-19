@@ -176,7 +176,7 @@ public class OrderController implements Initializable {
 
 			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					"0549991234", cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
-			msgForServer.add(order);
+			msgForServer.add(this.order);
 			imgOrder.setImage(imgOrderFull);
 
 			if (btnNext == event.getSource()) {
@@ -359,6 +359,11 @@ public class OrderController implements Initializable {
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
+		
+		 txtmemberID.setText("315818567");
+		 txtVisitorsNumber.setText("2");
+		 txtInvitingEmail.setText("bar@bar.ci");
+		 
 
 	}
 
