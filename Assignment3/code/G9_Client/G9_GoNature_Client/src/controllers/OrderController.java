@@ -30,6 +30,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +39,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import orderData.Order;
 
+/*
+ *  This controller include all three screen of success order
+ */
 public class OrderController implements Initializable {
 	@FXML
 	private StackPane pnStackOrder;
@@ -73,8 +77,7 @@ public class OrderController implements Initializable {
 	private JFXTextField txtInvitingEmail;
 	@FXML
 	private JFXTextField txtmemberID;
-	// @FXML
-	// private JFXTextField txtParkName;
+
 	@FXML
 	private ImageView imgOrder;
 
@@ -83,6 +86,9 @@ public class OrderController implements Initializable {
 
 	@FXML
 	private Hyperlink btnHere;
+
+	@FXML
+	private Label txtOrderNum;
 
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
@@ -95,8 +101,12 @@ public class OrderController implements Initializable {
 	private String ID = null;
 	private AlertController alert = new AlertController();
 
-	private PaymentController payStatus;
+	private PaymentController payStatus; // contriller for paymnt to check the fields
 
+
+	/*
+	 * status to check if the order success
+	 */
 	public static String getStatus() {
 		return status;
 	}
@@ -180,11 +190,15 @@ public class OrderController implements Initializable {
 				} else {
 					payStatus = new PaymentController(orderSuccess);
 					pnPayment.toFront();
+					//add send to server detail of payment add to db and object order
 				}
 			} else if (btnContinue == event.getSource()) {
 
-				if (payStatus.checkNotEmptyFields())
+				if (payStatus.checkNotEmptyFields()) {
+					this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
 					pnConfirmation.toFront();
+				}
+
 			}
 		} else {
 			this.memberId = null;
@@ -205,6 +219,8 @@ public class OrderController implements Initializable {
 		Stage stage = (Stage) btnHere.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
 		stage.setScene(new Scene(root));
+
+		// ManageOrderController editOrder=new ManageOrderController();
 	}
 
 	/*
