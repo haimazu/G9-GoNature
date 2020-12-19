@@ -157,7 +157,7 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	private int getVisitorsEnteredFromBarcode() {
-		return 8;
+		return 2;
 	}
 
 	@FXML
@@ -168,6 +168,7 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 
+		// will not enter if already has information from the barcodeScan
 		if (!informationExists) {
 			// Query
 			ArrayList<Object> msg = new ArrayList<Object>();
@@ -196,10 +197,6 @@ public class ParkEmployeeController implements Initializable {
 		/****** calculate discount ******/
 		float price = Float.parseFloat(orderDetails.get(5));
 		// float discount = Float.parseFloat(orderDetails.get(6));
-		float totalPrice;
-
-		// totalPrice = price * ((100 - discount) / 100)
-		// totalPrice = price * ((100 - discount) / 100);
 
 		// lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
 
@@ -224,7 +221,7 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 
-		// check date and then time
+		// check date and time
 		if (checkDate() && checkTime()) {
 
 			int orderVisitorsNumber = Integer.parseInt(lblVisitorsNumber.getText());

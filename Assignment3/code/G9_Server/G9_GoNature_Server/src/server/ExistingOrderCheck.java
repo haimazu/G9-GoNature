@@ -66,7 +66,7 @@ public class ExistingOrderCheck {
 	public static void getOrderDetailsByOrderNumber(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : ordersByOrderNumber
+		// the service name : orderByOrderNumber
 		answer.add(recived.get(0));
 		// the data that sent from the client
 		// cell 0: orderNumber

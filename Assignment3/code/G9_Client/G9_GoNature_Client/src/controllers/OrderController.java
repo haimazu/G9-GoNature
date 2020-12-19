@@ -138,7 +138,6 @@ public class OrderController implements Initializable {
 	void clear(ActionEvent event) {
 		txtVisitorsNumber.clear();
 		txtInvitingEmail.clear();
-		txtdate.getEditor().clear();
 		txtmemberID.clear();
 	}
 
