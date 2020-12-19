@@ -3,6 +3,7 @@ package orderData;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
 public class Order implements Serializable {
 
 	int orderNumber;
@@ -158,6 +159,14 @@ public class Order implements Serializable {
 
 	public void setID(String iD) {
 		ID = iD;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [orderNumber=" + orderNumber + ", visitorsNumber=" + visitorsNumber + ", orderEmail=" + orderEmail
+				+ ", orderPhone=" + orderPhone + ", orderType=" + orderType + ", totalPrice=" + totalPrice + ", price="
+				+ price + ", parkName=" + parkName + ", arrivedTime=" + arrivedTime + ", memberId=" + memberId + ", ID="
+				+ ID + ", amountArrived=" + amountArrived + "]";
 	}
 
 	public String toStringForDB() {
