@@ -65,11 +65,12 @@ public class ManageOrderController implements Initializable {
 	private JFXComboBox<String> cbxArriveTime;
 
 	private AlertController alert = new AlertController();
-	private static ArrayList<String> orderDetails;
+
+	private static ArrayList<String> orderDetailsMan;
 
 	private void setOrderdetails() {
 		// 2021-01-01 08:00:00
-		String DateAndTime = orderDetails.get(8);
+		String DateAndTime = orderDetailsMan.get(8);
 		String[] splitDateAndTime = DateAndTime.split(" ");
 		// 2021-01-01
 		String date = splitDateAndTime[0];
@@ -85,14 +86,14 @@ public class ManageOrderController implements Initializable {
 			// 08:00:00 -> 08:00
 			String time = (String) splitDateAndTime[1].subSequence(0, 5);
 
-			lblOrderNum.setText(orderDetails.get(0));
-			lblParkName.setText(orderDetails.get(7));
+			lblOrderNum.setText(orderDetailsMan.get(0));
+			lblParkName.setText(orderDetailsMan.get(7));
 			lblDate.setText(strDateTime);
 			lblTime.setText(time);
-			lblVisitors.setText(orderDetails.get(1));
-			lblMail.setText(orderDetails.get(2));
+			lblVisitors.setText(orderDetailsMan.get(1));
+			lblMail.setText(orderDetailsMan.get(2));
 
-			lblPrice.setText(orderDetails.get(5) + "₪");
+			lblPrice.setText(orderDetailsMan.get(5) + "₪");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -166,6 +167,14 @@ public class ManageOrderController implements Initializable {
 //		Stage stage = (Stage)lnkSwitch.getScene().getWindow();
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
 //		stage.setScene(new Scene(root));
+	}
+	
+	public static ArrayList<String> getOrderDetailsMan() {
+		return orderDetailsMan;
+	}
+
+	public static void setOrderDetailsMan(ArrayList<String> orderDetailsMan1) {
+		orderDetailsMan = orderDetailsMan1;
 	}
 
 }

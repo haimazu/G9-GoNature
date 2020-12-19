@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import com.jfoenix.controls.JFXTextField;
 
@@ -74,17 +75,27 @@ public class WelcomeController implements Initializable {
 	void go(ActionEvent event) throws IOException {
 		String orderNum = txtOrderNum.getText().toString();
 
-		ArrayList<Object> msg = new ArrayList<>();
-		ArrayList<String> data = new ArrayList<>();
-		msg.add("checkValidOrderNum");
-		data.add(orderNum);
-		msg.add(data);
+		
 		if (orderNum.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid order Number.");
 		else {
+			ArrayList<Object> msg = new ArrayList<>();
+			ArrayList<String> data = new ArrayList<>();
+			msg.add("checkValidOrderNum");
+			data.add(orderNum);
+			msg.add(data);
 			ClientUI.sentToChatClient(msg);
-			System.out.println(msg);
-			// if the order number is wrong , replace the buttons 
+			
+			for (int i=0;i<5;i++) {
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("after5");
+			
 			if (orderDetails.get(0).equals("No such order")) {
 				alert.setAlert("Failed, No such order.");
 				btnOrderNumber.setVisible(true);
@@ -96,9 +107,12 @@ public class WelcomeController implements Initializable {
 			} else {
 				Stage stage = (Stage) btnGo.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
+				ManageOrderController.setOrderDetailsMan(orderDetails);
 				stage.setScene(new Scene(root));
 				orderDetails.clear();
 			}
+			
+			System.out.println(orderDetails);
 		}
 	}
 
@@ -106,14 +120,16 @@ public class WelcomeController implements Initializable {
 		return orderDetails;
 	}
 
-	public static void setOrderDetails(ArrayList<String> orderDetails) {
-		WelcomeController.orderDetails = orderDetails;
+	public static void setOrderDetails(ArrayList<String> orderDetails1) {
+		orderDetails = orderDetails1;
 	}
 
 	public static void recievedFromServerValidOrder(ArrayList<String> orderDetails) {
-
-		WelcomeController.orderDetails = orderDetails;
-		System.out.println(orderDetails);
+		System.out.println("MADE IT ALIVE");
+		setOrderDetails(orderDetails);
+		//System.out.println(msg);
+		// if the order number is wrong , replace the buttons 
+		
 	}
 
 	public void start(Stage primaryStage) throws Exception {
