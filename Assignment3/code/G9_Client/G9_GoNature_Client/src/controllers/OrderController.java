@@ -172,7 +172,8 @@ public class OrderController implements Initializable {
 				&& checkCurrentTime()) {
 			msgForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
-					+ cbxArrivelTime.getValue().toString();
+					+ getArrivalTime(cbxArrivelTime.getValue().toString());
+			System.out.println(strDateTime);
 
 			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					"0549991234", cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
@@ -183,10 +184,10 @@ public class OrderController implements Initializable {
 
 				ClientUI.sentToChatClient(msgForServer);
 
-				if (this.status.equals("Faild")) {
-					Pane pane = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml.fxml"));
-					pnOrder.getChildren().removeAll();
-					pnOrder.getChildren().setAll(pane);
+				if (this.status.equals("Failed")) {
+					Stage stage = (Stage) btnNext.getScene().getWindow();
+					Parent root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
+					stage.setScene(new Scene(root));
 				} else {
 					payStatus = new PaymentController(orderSuccess);
 					pnPayment.toFront();
@@ -228,6 +229,7 @@ public class OrderController implements Initializable {
 	 * if success
 	 */
 	public static void recivedFromServer(Object newOrder) {
+		System.out.println(newOrder);
 		if (newOrder instanceof String) {
 			String status = (String) newOrder;
 			setStatus(status);
@@ -273,6 +275,11 @@ public class OrderController implements Initializable {
 		return true;
 	}
 
+	public String getArrivalTime(String time) {
+		String[] array=cbxArrivelTime.getValue().toString().split("-");
+		return array[0];
+	}
+	
 	// check correct email
 	public boolean checkCorrectEmail() {
 		String email = txtInvitingEmail.getText();
