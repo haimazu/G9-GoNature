@@ -48,6 +48,9 @@ public class EchoServer extends AbstractServer {
 		case "checkValidOrderNum":
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 			break;
+		case "orderPaymentMathod":
+			PaymentData.PaymentInsertData(recived, client);
+			break;
 		default:
 			break;
 		}
