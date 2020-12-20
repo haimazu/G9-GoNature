@@ -3,6 +3,8 @@ package client;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.mysql.cj.admin.ServerController;
+
 import controllers.WelcomeController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -15,7 +17,7 @@ public class ClientUI extends Application {
 	} // end main
 
 	public void start(Stage primaryStage) throws Exception {
-
+		
 		WelcomeController startFrame = new WelcomeController();
 		try {
 			client = new ChatClient("localhost", 5555, startFrame);

@@ -77,5 +77,30 @@ public class UpdateVisitorsNumber {
 		
 		EchoServer.sendToMyClient(answer, client);
 	}
+	
+	public static void updateParkCurrentVisitors(ArrayList<Object> recived, ConnectionToClient client) {
+		// query
+		ArrayList<Object> answer = new ArrayList<Object>();
+		// the service name : updateCurrentVisitors
+		answer.add(recived.get(0));
+		// the data that sent from the client
+		// cell 0: parkName
+		// cell 1: currentVisitoreAmount
+		ArrayList<String> data = (ArrayList<String>) recived.get(1);
+
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("update"); // command
+		query.add("park"); // table name
+		query.add("currentVisitoreAmount = '" + data.get(1) + "'"); // columns to update
+		query.add("parkName"); // condition
+		query.add(data.get(0)); // parkName value
+
+		if (MySQLConnection.update(query))
+			answer.add(true);
+		else
+			answer.add(false);
+		
+		EchoServer.sendToMyClient(answer, client);
+	}
 
 }

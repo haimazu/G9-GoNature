@@ -207,7 +207,7 @@ public class MySQLConnection {
 			System.out.println("Oh no...\n" + e);
 			return false;
 		}
-		System.out.println("executed " + command + " on table" + tableName + " (affected " + r + " rows)");
+		System.out.println("executed " + command + " on table " + tableName + " (affected " + r + " rows)");
 		return true;
 	}
 

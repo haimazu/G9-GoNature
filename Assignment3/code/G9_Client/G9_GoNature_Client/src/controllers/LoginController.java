@@ -45,7 +45,7 @@ public class LoginController implements Initializable {
 	private Button btnLogin;
 
 	private static String status, firstName;
-
+	private static String parkName;
 	private boolean userStatus = false, passStatus = false;
 
 	// Switch screens: Login -> Welcome
@@ -140,6 +140,7 @@ public class LoginController implements Initializable {
 	public static void receivedFromServer(ArrayList<String> msgReceived) {
 		setStatus(msgReceived.get(0));
 		setFirstName(msgReceived.get(1));
+		setParkName(msgReceived.get(2));
 	}
 
 	// get the 'role' of the user
@@ -160,6 +161,14 @@ public class LoginController implements Initializable {
 	// set the 'firstName' of the user
 	public static void setFirstName(String firstName) {
 		LoginController.firstName = firstName;
+	}	
+
+	public static String getParkName() {
+		return "jurasic";
+	}
+
+	public static void setParkName(String parkName) {
+		LoginController.parkName = parkName;
 	}
 
 	@Override

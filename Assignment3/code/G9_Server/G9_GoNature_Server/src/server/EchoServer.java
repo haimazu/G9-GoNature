@@ -36,6 +36,9 @@ public class EchoServer extends AbstractServer {
 		case "getParkDetails":
 			UpdateVisitorsNumber.getParkDetails(recived, client);
 			break;
+		case "updateCurrentVisitors":
+			UpdateVisitorsNumber.updateParkCurrentVisitors(recived, client);
+			break;
 		case "order":
 			NewOrder.NewReservation(recived, client);
 			break;
