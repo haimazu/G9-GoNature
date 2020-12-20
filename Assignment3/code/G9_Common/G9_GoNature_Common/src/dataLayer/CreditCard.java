@@ -5,6 +5,15 @@ public class CreditCard {
 	String cardHolderName;
 	String expirationDate;
 	int cvc;
+	int orderNumber;
+
+	public int getOrderNumber() {
+		return orderNumber;
+	}
+
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
+	}
 
 	public int getCardNumber() {
 		return cardNumber;
