@@ -120,6 +120,7 @@ public class ParkEmployeeController implements Initializable {
 	private static Order orderDetails;
 	private static Park parkDetails;
 	private static boolean currentVisitorsUpdateStatus = false;
+	private static boolean amountArrivedStatus = false;
 	private static String error = "";
 	// private Map<String, Integer> orderDocumentation = new HashMap<String,
 	// Integer>();
@@ -257,7 +258,21 @@ public class ParkEmployeeController implements Initializable {
 							alert.ensureAlert("Ensure", "Are you sure you want to approve?");
 							if (alert.getAction().get() == ButtonType.OK) {
 								if (checkFreePlacesInTheGateway()) {
-									// TODO table order: update -> amountArrived
+									// ArrayList<String> data, sending to the server to update the current visitors amount
+									// input: cell 0: orderNumber
+									//        cell 1: new arrived amount (updated one)
+									// output: message with the result of the update: true if success
+									//                                                false, otherwise
+									ArrayList<String> data = new ArrayList<String>();
+									data.add(String.valueOf(orderDetails.getOrderNumber()));
+									data.add(lblVisitorsNumber.getText());
+									sendToServer("updateAmountArrived", data);
+									
+									// check if the update failed and showing alert
+									if (!getAmountArrivedStatus()) {
+										alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+									}
+									
 									// Integer.parseInt(lblVisitorsNumber.getText())
 									// discount
 									txtRandomVisitorsAmount.setText(String.valueOf(tooManyVisitors));
@@ -270,25 +285,23 @@ public class ParkEmployeeController implements Initializable {
 						// amount of visitors is less than in the order
 						} else {
 							if (checkFreePlacesInTheGateway()) {
-								// TODO table order: update -> amountArrived
-								// Integer.parseInt(lblVisitorsNumber.getText())
-								// discount
-								
 								// ArrayList<String> data, sending to the server to update the current visitors amount
-								// input: cell 0: parkName
-								//        cell 1: new current visitors (updated one)
+								// input: cell 0: orderNumber
+								//        cell 1: new arrived amount (updated one)
 								// output: message with the result of the update: true if success
 								//                                                false, otherwise
 								ArrayList<String> data = new ArrayList<String>();
-								int addCurrent = Integer.parseInt(txtVisitorsAmount.getText()) + parkDetails.getCurrentAmount();
-								data.add(getParkName());
-								data.add(String.valueOf(addCurrent));
-								sendToServer("updateCurrentVisitors", data);
+								data.add(String.valueOf(orderDetails.getOrderNumber()));
+								data.add(txtVisitorsAmount.getText());
+								sendToServer("updateAmountArrived", data);
 								
 								// check if the update failed and showing alert
-								if (!getCurrentVisitorsUpdateStatus()) {
+								if (!getAmountArrivedStatus()) {
 									alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
 								}
+								
+								txtRandomVisitorsAmount.setText(txtVisitorsAmount.getText());
+								execRandomVisitor();
 							} 
 						}
 
@@ -488,6 +501,10 @@ public class ParkEmployeeController implements Initializable {
 	public static boolean getCurrentVisitorsUpdateStatus() {
 		return currentVisitorsUpdateStatus;
 	}
+	
+	public static boolean getAmountArrivedStatus() {
+		return amountArrivedStatus;
+	}
 
 	public static void receivedFromServerOrderDetails(ArrayList<String> order) {
 		if (order.get(0).equals("No such order")) {
@@ -503,6 +520,10 @@ public class ParkEmployeeController implements Initializable {
 	
 	public static void receivedFromServerCurrentVisitorsUpdateStatus(ArrayList<String> status) {
 		ParkEmployeeController.currentVisitorsUpdateStatus = Boolean.parseBoolean(status.get(0));
+	}
+	
+	public static void receivedFromServerAmountArrivedStatus(ArrayList<String> status) {
+		ParkEmployeeController.amountArrivedStatus = Boolean.parseBoolean(status.get(0));
 	}
 
 	public void clearAllFields() {
