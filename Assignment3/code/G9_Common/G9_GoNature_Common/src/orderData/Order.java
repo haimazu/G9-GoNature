@@ -8,7 +8,7 @@ public class Order implements Serializable {
 	int visitorsNumber;
 	String orderEmail;
 	String orderPhone;
-	OrderType orderType;
+	OrderType orderType; 
 	double price; //before discount
 	double totalPrice; //after discount
 	String parkName;
@@ -162,4 +162,17 @@ public class Order implements Serializable {
 		ID = iD;
 	}
 
+	@Override
+	public String toString() {
+		return "Order [orderNumber=" + orderNumber + ", visitorsNumber=" + visitorsNumber + ", orderEmail=" + orderEmail
+				+ ", orderPhone=" + orderPhone + ", orderType=" + orderType + ", totalPrice=" + totalPrice + ", price="
+				+ price + ", parkName=" + parkName + ", arrivedTime=" + arrivedTime + ", memberId=" + memberId + ", ID="
+				+ ID + ", amountArrived=" + amountArrived + "]";
+	}
+
+	public String toStringForDB() {
+		return "'" + getOrderNumber() + "','" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone()
+				+ "','" + getOrderType().toString().toLowerCase() + "','" + getPrice() + "','" + getParkName() + "','"
+				+ getArrivedTime() + "','" + getMemberId() + "'" + getID() + "'";
+	}
 }
