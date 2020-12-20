@@ -197,9 +197,9 @@ public class NewOrder {
 		query.add(data.get(0)); // parkName value
 
 		if (MySQLConnection.update(query))
-			answer.add(true);
+			answer.add(new ArrayList<String>(Arrays.asList("true")));
 		else
-			answer.add(false);
+			answer.add(new ArrayList<String>(Arrays.asList("false")));
 		
 		EchoServer.sendToMyClient(answer, client);
 	}

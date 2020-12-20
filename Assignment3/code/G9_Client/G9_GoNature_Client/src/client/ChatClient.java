@@ -48,6 +48,7 @@ public class ChatClient extends AbstractClient {
 	 *
 	 * @param msg The message from the server.
 	 */
+
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 		ArrayList<Object> received = (ArrayList<Object>) msg;
@@ -71,7 +72,7 @@ public class ChatClient extends AbstractClient {
 				ParkEmployeeController.receivedFromServerCurrentVisitorsUpdateStatus((ArrayList<String>)received.get(1));
 				break;
 			case "updateAmountArrived":
-				ParkEmployeeController.receivedFromServerCurrentVisitorsUpdateStatus((ArrayList<String>)received.get(1));
+				ParkEmployeeController.receivedFromServerAmountArrivedStatus((ArrayList<String>)received.get(1));
 				break;
 			case "order":
 				OrderController.recivedFromServer((Object)received.get(1));
