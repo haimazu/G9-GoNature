@@ -29,15 +29,13 @@ public class NewOrder {
 			//////////////
 			/////Roi//////
 			//////////////
-			data.setOrderNumber(Counter.getCounter().orderNum()); //get an ordernumber
+			data.setOrderNumber(Counter.getCounter().orderNum()); //get an order number
 			//////////////
 			//////////////
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("orders"); // table name
 			query.add(toStringForReservation(data)); // values in query format
-			
-			System.out.println(query.toString());
 			
 			if (MySQLConnection.insert(query)) {
 				//answer.add(true);
@@ -57,10 +55,10 @@ public class NewOrder {
 	public static Order totalPrice(Order ord, Member memb) {
 
 		int parkEnteryPrice = CurrentPriceInPark(ord);
-		ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber());
+		ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());
 		if (memb == null) {// if the order is not 4 a member
 			ord.setOrderType(OrderType.REGULAR);
-			ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
+			ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
 		} else {// if the order is for some members
 
 			switch (memb.getMemberOrderType()) {
@@ -70,13 +68,13 @@ public class NewOrder {
 				int notFamilyMembers = ord.getVisitorsNumber() - familymembers;
 				if (notFamilyMembers < 0)
 					notFamilyMembers = 0;
-				ord.setPrice(familymembers * parkEnteryPrice * 0.85);
-				ord.setPrice(ord.getPrice() * 0.75 + notFamilyMembers * parkEnteryPrice * 0.85);
+				ord.setTotalPrice(familymembers * parkEnteryPrice * 0.85);
+				ord.setTotalPrice(ord.getPrice() * 0.75 + notFamilyMembers * parkEnteryPrice * 0.85);
 				break;
 			case GROUP:
 				ord.setOrderType(OrderType.GROUP);
 				int groupAmount = Integer.parseInt(memb.getAmount());
-				ord.setPrice(groupAmount * parkEnteryPrice * 0.75);
+				ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
 				break;
 			default:
 				break;

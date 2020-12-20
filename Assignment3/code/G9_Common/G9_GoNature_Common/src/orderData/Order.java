@@ -5,18 +5,18 @@ import java.util.ArrayList;
 
 public class Order implements Serializable {
 
-	int orderNumber;
 	int visitorsNumber;
 	String orderEmail;
 	String orderPhone;
 	OrderType orderType;
-	double price;
-	double totalPrice;
+	double price; //before discount
+	double totalPrice; //after discount
 	String parkName;
 	String arrivedTime;
 	String memberId;
 	String ID;
 	int amountArrived;
+	int orderNumber;
 
 	// this constructor is only for OrderConroller from method next -DO NOT USE
 	// IT!!!
@@ -34,7 +34,7 @@ public class Order implements Serializable {
 
 	public Order(int orderNumber, int visitorsNumber, String orderEmail, String orderPhone, OrderType orderType,
 			double price, double totalPrice, String parkName, String arrivedTime, String memberId, String ID) {
-		this.orderNumber = orderNumber;
+
 		this.visitorsNumber = visitorsNumber;
 		this.orderEmail = orderEmail;
 		this.orderPhone = orderPhone;
@@ -46,6 +46,7 @@ public class Order implements Serializable {
 		this.memberId = memberId;
 		this.ID = ID;
 		this.amountArrived = 0;
+		this.orderNumber = orderNumber;
 	}
 
 	public Order(ArrayList<String> orderFromDB) {
@@ -161,17 +162,4 @@ public class Order implements Serializable {
 		ID = iD;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [orderNumber=" + orderNumber + ", visitorsNumber=" + visitorsNumber + ", orderEmail=" + orderEmail
-				+ ", orderPhone=" + orderPhone + ", orderType=" + orderType + ", totalPrice=" + totalPrice + ", price="
-				+ price + ", parkName=" + parkName + ", arrivedTime=" + arrivedTime + ", memberId=" + memberId + ", ID="
-				+ ID + ", amountArrived=" + amountArrived + "]";
-	}
-
-	public String toStringForDB() {
-		return "'" + getOrderNumber() + "','" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone()
-				+ "','" + getOrderType().toString().toLowerCase() + "','" + getPrice() + "','" + getParkName() + "','"
-				+ getArrivedTime() + "','" + getMemberId() + "'" + getID() + "'";
-	}
 }
