@@ -25,7 +25,7 @@ public class NewOrder {
 
 		// check if the capacity of orders is full
 		if ((!a.checkForAvailableSpots(recived, client))) {
-			answer.add("Failed");//need to enter waiting list
+			answer.add("Failed");// need to enter waiting list
 			EchoServer.sendToMyClient(answer, client);
 		}
 
@@ -68,14 +68,18 @@ public class NewOrder {
 			if (!occasional)
 				ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
 			else
-				ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
+				ord.setTotalPrice(parkEnteryPrice * ord.getAmountArrived() * 0.85);
 		} else {// if the order is for members/group
 
 			switch (memb.getMemberOrderType()) {
 			case MEMBER:
 				ord.setOrderType(OrderType.MEMBER);
 				int familymembers = Integer.parseInt(memb.getMemberAmount());
-				int notFamilyMembers = ord.getVisitorsNumber() - familymembers;
+				int notFamilyMembers;
+				if (occasional)
+					notFamilyMembers = ord.getAmountArrived() - familymembers;
+				else
+					notFamilyMembers = ord.getVisitorsNumber() - familymembers;
 				if (notFamilyMembers < 0)
 					notFamilyMembers = 0;
 				ord.setTotalPrice(familymembers * parkEnteryPrice * 0.80);
@@ -87,10 +91,14 @@ public class NewOrder {
 			case GROUP:
 				ord.setOrderType(OrderType.GROUP);
 				int groupAmount = Integer.parseInt(memb.getMemberAmount());
-				if (!occasional)
+				if (!occasional) {
+					groupAmount = Integer.parseInt(memb.getMemberAmount());
 					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
-				else
+				}
+				else {
+					groupAmount = ord.getAmountArrived();
 					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.90);
+				}
 				break;
 			default:
 				break;
@@ -98,8 +106,6 @@ public class NewOrder {
 		}
 		return ord;
 	}
-
-	
 
 	// input: order
 	//
