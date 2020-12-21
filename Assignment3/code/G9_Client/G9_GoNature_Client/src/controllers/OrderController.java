@@ -64,7 +64,8 @@ public class OrderController implements Initializable {
 	private Button btnContinue;
 
 	@FXML
-	public static Pane pnConfirmation;
+	private Pane pnConfirmation;
+
 	@FXML
 	private Button btnHome;
 	@FXML
@@ -95,7 +96,7 @@ public class OrderController implements Initializable {
 	private Hyperlink btnHere;
 
 	@FXML
-	private static Label txtOrderNum;
+	private Label txtOrderNum;
 
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
@@ -110,8 +111,7 @@ public class OrderController implements Initializable {
 	private String memberId = null;
 	private String ID = null;
 	private AlertController alert = new AlertController();
-	//private static Boolean paymentStatus =false;
-	private int flag=1;
+
 
 	// private static PaymentController payStatus; // contriller for paymnt to check
 	// the fields
@@ -202,6 +202,15 @@ public class OrderController implements Initializable {
 		txtmemberID.clear();
 	}
 
+	@FXML
+	void crditCardClick(ActionEvent event) throws IOException {
+		Stage stage = new Stage();
+		Pane root = FXMLLoader.load(getClass().getResource("/gui/CreditCard.fxml"));
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+
 	/*
 	 * msgForServer is ArrayList of objects -> [0] -> name of the class [1] -> order
 	 * Object
@@ -213,11 +222,11 @@ public class OrderController implements Initializable {
 	@FXML
 	void next(ActionEvent event) throws IOException {
 		ArrayList<Object> msgNewOrderForServer = new ArrayList<>();
-		//ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
+		// ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
 
 		// continue only if the fields are correct
 		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()
-				&& checkCurrentTime()) {
+				&& checkCurrentTime() && checkCorrectPhone()) {
 			msgNewOrderForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
 					+ getArrivalTime(cbxArrivelTime.getValue().toString());
@@ -227,13 +236,15 @@ public class OrderController implements Initializable {
 			imgOrder.setImage(imgOrderFull);
 
 			if (btnNext == event.getSource()) {
-				
-				ClientUI.sentToChatClient(msgNewOrderForServer);
 
+				ClientUI.sentToChatClient(msgNewOrderForServer);
+				System.out.println(status);
 				if (this.status.equals("Failed")) {
-					Stage stage = (Stage) btnNext.getScene().getWindow();
-					Parent root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
-					stage.setScene(new Scene(root));
+					Stage stage = new Stage();
+					Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
+					Scene scene = new Scene(root);
+					stage.setScene(scene);
+					stage.show();
 				} else {
 
 					this.txtprice.setText(String.valueOf(orderSuccess.getPrice()));
@@ -243,41 +254,32 @@ public class OrderController implements Initializable {
 					this.txtVisitoramountPrice.setText(String.valueOf(orderSuccess.getVisitorsNumber()));
 					pnPayment.toFront();
 					groupRadioButton();
-					//msgEditPaymentForServer.add("orderPaymentMathod");
-					//msgEditPaymentForServer.add(orderSuccess);
+					// msgEditPaymentForServer.add("orderPaymentMathod");
+					// msgEditPaymentForServer.add(orderSuccess);
 					// add send to server detail of payment add to db and object order
 				}
 			} else if (btnContinue == event.getSource()) {
 
 				if (checkNotEmptyFieldsPaymentScreen()) {
-					//msgEditPaymentForServer.add(paymentChosen());
-					if(paymentChosen().equals("CreditCard")) {
-						//ClientUI.sentToChatClient(msgEditPaymentForServer);
-						this.flag=0;
-						//Node node = (Node) event.getSource();
-						Stage stage = (Stage) btnContinue.getScene().getWindow();
-						Pane root = FXMLLoader.load(getClass().getResource("/gui/CreditCard.fxml"));
-						stage.setScene(new Scene(root));	
-					}
-					if (flag==1) {
-						//this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
-						updateOrderNum();
-						pnConfirmation.toFront();
-					}
-//					if(this.paymentStatus) {
-//
-//					}
+
+					this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
+					pnConfirmation.toFront();
 				}
+
 			}
-		} else {
+
+		} else
+
+		{
 			this.memberId = null;
 			this.ID = null;
 		}
 	}
 
-	public static void updateOrderNum() {
-		txtOrderNum.setText(String.valueOf(orderSuccess.getOrderNumber()));
-	}
+//	public static void updateOrderNum() {
+//		txtOrderNum.setText(String.valueOf(orderSuccess.getOrderNumber()));
+//	}
+
 	public String paymentChosen() {
 		if (radioCash.isSelected())
 			return "Cash";
@@ -423,26 +425,31 @@ public class OrderController implements Initializable {
 		return false;
 	}
 
+	public boolean checkCorrectPhone() {
+		return true;
+	}
+
 	// pattern for check
 	public static final Pattern VALIDEMAIL = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDAmountVisito = Pattern.compile("^[0-9]{0,3}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDMemberId = Pattern.compile("^[f,g]{1}[0-9]{5}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDID = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALIDPhone = Pattern.compile("^[0-9]{3}[0-9]{7}$", Pattern.CASE_INSENSITIVE);
 
 	// check valid input
 	public static boolean validInput(String nameMathod, String txt) {
 		Matcher matcher = null;
 		if (nameMathod.equals("email")) {
 			matcher = VALIDEMAIL.matcher(txt);
-
 		} else if (nameMathod.equals("AmountVisitor")) {
 			matcher = VALIDAmountVisito.matcher(txt);
 		} else if (nameMathod.equals("memberId")) {
 			matcher = VALIDMemberId.matcher(txt);
 		} else if (nameMathod.equals("ID")) {
 			matcher = VALIDID.matcher(txt);
-		}
+		} else if (nameMathod.equals("Phone"))
+			matcher = VALIDID.matcher(txt);
 		return matcher.find();
 	}
 
@@ -469,7 +476,6 @@ public class OrderController implements Initializable {
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
-
 		txtmemberID.setText("315818987");
 		txtVisitorsNumber.setText("2");
 		txtInvitingEmail.setText("bar@bark.ci");

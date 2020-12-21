@@ -21,8 +21,7 @@ public class Order implements Serializable {
 	// this constructor is only for ParkEmployeeController from method next -DO NOT USE
 		// IT!!!
 	//server side updates : check if member,calculate price
-	public Order(OrderType orderType,String parkName,String arrivedTime,String memberId,String ID, int amountArrived) {
-		this.orderType=orderType;
+	public Order(String parkName,String arrivedTime,String memberId,String ID, int amountArrived) {
 		this.parkName=parkName;
 		this.arrivedTime=arrivedTime;
 		this.amountArrived=amountArrived;
@@ -188,5 +187,12 @@ public class Order implements Serializable {
 		return "'" + getOrderNumber() + "','" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone()
 				+ "','" + getOrderType().toString().toLowerCase() + "','" + getPrice() + "','" + getParkName() + "','"
 				+ getArrivedTime() + "','" + getMemberId() + "'" + getID() + "'";
+	}
+	
+	//checks if the order is for occasional visitor
+	public boolean isOccasional() {
+		if(this.orderEmail==null&& this.orderPhone==null)
+			return true;
+		return false;
 	}
 }

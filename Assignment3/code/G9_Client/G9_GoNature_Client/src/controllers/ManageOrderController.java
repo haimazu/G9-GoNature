@@ -45,6 +45,14 @@ public class ManageOrderController implements Initializable {
 	private Label lblTime;
 
 	@FXML
+	private Label lblDiscount;
+
+	@FXML
+	private Label lblPayment;
+
+	@FXML
+	private Label lblTotal;
+	@FXML
 	private Label lblVisitors;
 	@FXML
 	private Label lblMail;
@@ -66,11 +74,9 @@ public class ManageOrderController implements Initializable {
 
 	private AlertController alert = new AlertController();
 
-	private static ArrayList<String> orderDetailsMan;
-
-	private void setOrderdetails() {
+	void presentOrderdetails(Order details) {
 		// 2021-01-01 08:00:00
-		String DateAndTime = orderDetailsMan.get(8);
+		String DateAndTime = details.getArrivedTime();
 		String[] splitDateAndTime = DateAndTime.split(" ");
 		// 2021-01-01
 		String date = splitDateAndTime[0];
@@ -86,14 +92,16 @@ public class ManageOrderController implements Initializable {
 			// 08:00:00 -> 08:00
 			String time = (String) splitDateAndTime[1].subSequence(0, 5);
 
-			lblOrderNum.setText(orderDetailsMan.get(0));
-			lblParkName.setText(orderDetailsMan.get(7));
+			lblOrderNum.setText(String.valueOf(details.getOrderNumber()));
+			lblParkName.setText(details.getParkName());
 			lblDate.setText(strDateTime);
 			lblTime.setText(time);
-			lblVisitors.setText(orderDetailsMan.get(1));
-			lblMail.setText(orderDetailsMan.get(2));
-
-			lblPrice.setText(orderDetailsMan.get(5) + "₪");
+			lblVisitors.setText(String.valueOf(details.getVisitorsNumber()));
+			lblMail.setText(details.getOrderEmail());
+			lblPrice.setText(details.getPrice() + "₪");
+			this.lblTotal.setText(String.valueOf(details.getTotalPrice()));
+			double discValue = (1 - (details.getTotalPrice() / details.getPrice())) * 100;
+			this.lblDiscount.setText(String.format("%.1f", discValue) + "%");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -104,7 +112,7 @@ public class ManageOrderController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 		cbxArriveTime.getSelectionModel().selectFirst();
-		setOrderdetails();
+		presentOrderdetails(WelcomeController.getOrderDetails());
 
 		// initialize date value with today
 		// The user can pick a date only from today until this day next year
@@ -163,18 +171,13 @@ public class ManageOrderController implements Initializable {
 	}
 
 	@FXML
+	/*
+	 * NICE TO HAVE!!!!!!
+	 */
 	void switchToMember(ActionEvent event) throws IOException {
 //		Stage stage = (Stage)lnkSwitch.getScene().getWindow();
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
 //		stage.setScene(new Scene(root));
-	}
-	
-	public static ArrayList<String> getOrderDetailsMan() {
-		return orderDetailsMan;
-	}
-
-	public static void setOrderDetailsMan(ArrayList<String> orderDetailsMan1) {
-		orderDetailsMan = orderDetailsMan1;
 	}
 
 }

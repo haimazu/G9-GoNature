@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import orderData.Order;
 
 public class WelcomeController implements Initializable {
 	@FXML
@@ -36,7 +37,7 @@ public class WelcomeController implements Initializable {
 	private Button btnGo;
 
 	private AlertController alert = new AlertController();
-	private static ArrayList<String> orderDetails;
+	private static Order orderDetails;
 
 	@FXML
 	void login(ActionEvent event) throws IOException {
@@ -96,39 +97,37 @@ public class WelcomeController implements Initializable {
 			}
 			System.out.println("after5");
 			
-			if (orderDetails.get(0).equals("No such order")) {
+			if (orderDetails.equals(null)) {
 				alert.setAlert("Failed, No such order.");
 				btnOrderNumber.setVisible(true);
 				btnGo.setVisible(false);
 				txtOrderNum.setVisible(false);
-				orderDetails.clear();
 				return;
-
 			} else {
 				Stage stage = (Stage) btnGo.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
-				ManageOrderController.setOrderDetailsMan(orderDetails);
+				setOrderDetails(orderDetails);
 				stage.setScene(new Scene(root));
-				orderDetails.clear();
 			}
-			
+			WelcomeController.setOrderDetails(null);
 			System.out.println(orderDetails);
 		}
 	}
 
-	public static ArrayList<String> getOrderDetails() {
+	public static Order getOrderDetails() {
 		return orderDetails;
 	}
 
-	public static void setOrderDetails(ArrayList<String> orderDetails1) {
-		orderDetails = orderDetails1;
+	public static void setOrderDetails(Order orderDetails2) {
+		orderDetails = orderDetails2;
 	}
 
-	public static void recievedFromServerValidOrder(ArrayList<String> orderDetails) {
+	public static void recievedFromServerValidOrder(Object orderDetails) {
 		System.out.println("MADE IT ALIVE");
-		setOrderDetails(orderDetails);
-		//System.out.println(msg);
-		// if the order number is wrong , replace the buttons 
+		if (orderDetails instanceof Order)
+			setOrderDetails((Order)orderDetails);
+		else
+			setOrderDetails(null);
 		
 	}
 
@@ -147,6 +146,7 @@ public class WelcomeController implements Initializable {
 		parkNamesArr.add("orderParksNameList");
 		ClientUI.sentToChatClient(parkNamesArr);
 	}
+
 
 
 }
