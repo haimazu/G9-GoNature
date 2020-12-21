@@ -81,7 +81,7 @@ public class ChatClient extends AbstractClient {
 				OrderController.recivedFromServer((Object)received.get(1));
 				break;
 			case "checkValidOrderNum":
-				WelcomeController.recievedFromServerValidOrder((ArrayList<String>)received.get(1));
+				WelcomeController.recievedFromServerValidOrder((Order)received.get(1));
 				break;
 			case "orderPaymentMathod":
 				CreditCardController.recivedFromServerSuccessPayment((ArrayList<Object>)received.get(1));
