@@ -270,6 +270,12 @@ public class ParkEmployeeController implements Initializable {
 					/*** Enter ***/
 					// doesn't exists in the list -> entering the park
 					if (radVisitorStatusText.equals("Enter")) {
+						
+						if (orderDetails.getAmountArrived() != 0) {
+							alert.failedAlert("Failed", "Visitors to this order have already entered the park.");
+							clearAllFields();
+							return;
+						}
 						execEnter();
 						
 					/*** Exit ***/
@@ -300,8 +306,8 @@ public class ParkEmployeeController implements Initializable {
 				tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText()) -
 						Integer.parseInt(lblVisitorsNumber.getText());
 			// alert to ensure that the employee didn't get typing wrong
-			alert.ensureAlert("Ensure", "Are you sure you want to approve?");
-			if (alert.getAction().get() == ButtonType.OK) {
+			alert.ensureAlert("Ensure", "Are you sure you want to approve the purchase?");
+			if (alert.getResult().equals("OK")) {
 				if (checkFreePlacesInTheGateway()) {
 					// ArrayList<String> data
 					// 		  cell 0: orderNumber
@@ -384,7 +390,7 @@ public class ParkEmployeeController implements Initializable {
 		int freePlace = maxVisitors - currentVisitors;
 
 		// check if the amount of "visitorsEntered" greater than the invitation.
-		if (Integer.parseInt(txtRandomVisitorsAmount.getText()) > freePlace) {
+		if (visitorsAmount > freePlace) {
 			alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
 		} else {
 			// update current visitors
@@ -478,13 +484,23 @@ public class ParkEmployeeController implements Initializable {
 		String stringArrivelHour = splitStartTime[0];
 		int arrivelHour = Integer.parseInt(stringArrivelHour);
 
-		// currentHour = 08:00 | 12:00
-		// arrivelHour = 08:00 - 12:00 | 12:00 - 16:00
-		if ((currentHour >= arrivelHour && currentHour < 12) || (currentHour >= arrivelHour && currentHour < 23)) {
-			return true;
+		// currentHour = 08:00 | 12:00 | 16:00
+		// arrivelHour = 08:00 - 12:00 | 12:00 - 16:00 | 16:00 - 20:00
+		if (arrivelHour == 8) {
+			if (currentHour >= 8 && currentHour < 12) {
+				return true;
+			}
+		} else if (arrivelHour == 12) {
+			if (currentHour >= 12 && currentHour < 16) {
+				return true;
+			}
+		} else if (arrivelHour == 16) {
+			if (currentHour >= 16 && currentHour < 20) {
+				return true;
+			}
 		}
 
-		alert.failedAlert("Failed", "Invalid time.");
+		alert.failedAlert("Failed", "Arrival time doesn't match the time on order.");
 		return false;
 	}
 	
