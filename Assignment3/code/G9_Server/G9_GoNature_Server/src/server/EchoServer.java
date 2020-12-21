@@ -53,6 +53,8 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "orderPaymentMathod":
 			PaymentData.PaymentInsertData(recived, client);
+		case "updateOrder":
+			NewOrder.NewReservation(recived, client);
 			break;
 		default:
 			break;
