@@ -480,7 +480,11 @@ public class ParkEmployeeController implements Initializable {
 			// get the member details from the DB
 			sendToServer("memberByIdOrMemberId", 
 					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
-			
+			sendObjectToServer("randomDiscount", new ArrayList<Order>
+			(new Order(orderDetails.getOrderType(), 
+					parkDetails.getName(), 
+					orderDetails.getArrivedTime(), 
+					orderDetails.getAmountArrived())));
 		// case 1 or 3 -> single/family OR group
 		// AND they have order
 		/***** Order *****/
@@ -597,7 +601,7 @@ public class ParkEmployeeController implements Initializable {
 		}
 		return false;
 	}
-
+	
 	// String type, the case we dealing with
 	// ArrayList<String> dbColumns, sending to the server to get data
 	// input: cells, depending on the case
