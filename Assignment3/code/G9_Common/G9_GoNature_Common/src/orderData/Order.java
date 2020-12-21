@@ -18,6 +18,15 @@ public class Order implements Serializable {
 	int amountArrived;
 	int orderNumber;
 
+	// this constructor is only for ParkEmployeeController from method next -DO NOT USE
+		// IT!!!
+	public Order(OrderType orderType,String parkName,String arrivedTime, int amountArrived) {
+		this.orderType=orderType;
+		this.parkName=parkName;
+		this.arrivedTime=arrivedTime;
+		this.amountArrived=amountArrived;
+	}
+	
 	// this constructor is only for OrderConroller from method next -DO NOT USE
 	// IT!!!
 	public Order(int visitorsNumber, String orderEmail, String orderPhone, String parkName, String arrivedTime,
