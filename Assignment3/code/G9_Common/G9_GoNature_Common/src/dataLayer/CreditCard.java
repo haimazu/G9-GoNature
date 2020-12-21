@@ -1,7 +1,25 @@
 package dataLayer;
 
-public class CreditCard {
-	int cardNumber;
+import java.io.Serializable;
+
+public class CreditCard  implements Serializable{
+	/**
+	 * @param cardNumber
+	 * @param cardHolderName
+	 * @param expirationDate
+	 * @param cvc
+	 * @param orderNumber
+	 */
+	public CreditCard(String cardNumber, String cardHolderName, String expirationDate, int cvc, int orderNumber) {
+		super();
+		this.cardNumber = cardNumber;
+		this.cardHolderName = cardHolderName;
+		this.expirationDate = expirationDate;
+		this.cvc = cvc;
+		this.orderNumber = orderNumber;
+	}
+
+	String cardNumber;
 	String cardHolderName;
 	String expirationDate;
 	int cvc;
@@ -15,11 +33,11 @@ public class CreditCard {
 		this.orderNumber = orderNumber;
 	}
 
-	public int getCardNumber() {
+	public String getCardNumber() {
 		return cardNumber;
 	}
 
-	public void setCardNumber(int cardNumber) {
+	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 

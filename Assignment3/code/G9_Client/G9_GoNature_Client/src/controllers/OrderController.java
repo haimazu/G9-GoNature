@@ -64,7 +64,7 @@ public class OrderController implements Initializable {
 	private Button btnContinue;
 
 	@FXML
-	private Pane pnConfirmation;
+	public static Pane pnConfirmation;
 	@FXML
 	private Button btnHome;
 	@FXML
@@ -95,7 +95,7 @@ public class OrderController implements Initializable {
 	private Hyperlink btnHere;
 
 	@FXML
-	private Label txtOrderNum;
+	private static Label txtOrderNum;
 
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
@@ -110,7 +110,7 @@ public class OrderController implements Initializable {
 	private String memberId = null;
 	private String ID = null;
 	private AlertController alert = new AlertController();
-	private static Boolean paymentStatus =false;
+	//private static Boolean paymentStatus =false;
 	private int flag=1;
 
 	// private static PaymentController payStatus; // contriller for paymnt to check
@@ -120,13 +120,13 @@ public class OrderController implements Initializable {
 	 * payment screen:
 	 */
 
-	public static boolean getPaymentStatus() {
-		return paymentStatus;
-	}
-
-	public static void setPaymentStatus(boolean paymentStatus) {
-		OrderController.paymentStatus = paymentStatus;
-	}
+//	public static boolean getPaymentStatus() {
+//		return paymentStatus;
+//	}
+//
+//	public static void setPaymentStatus(boolean paymentStatus) {
+//		OrderController.paymentStatus = paymentStatus;
+//	}
 
 	@FXML
 	private JFXRadioButton radioCash;
@@ -213,7 +213,7 @@ public class OrderController implements Initializable {
 	@FXML
 	void next(ActionEvent event) throws IOException {
 		ArrayList<Object> msgNewOrderForServer = new ArrayList<>();
-		ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
+		//ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
 
 		// continue only if the fields are correct
 		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()
@@ -243,23 +243,30 @@ public class OrderController implements Initializable {
 					this.txtVisitoramountPrice.setText(String.valueOf(orderSuccess.getVisitorsNumber()));
 					pnPayment.toFront();
 					groupRadioButton();
-					msgEditPaymentForServer.add("orderPaymentMathod");
-					msgEditPaymentForServer.add(orderSuccess);
+					//msgEditPaymentForServer.add("orderPaymentMathod");
+					//msgEditPaymentForServer.add(orderSuccess);
 					// add send to server detail of payment add to db and object order
 				}
 			} else if (btnContinue == event.getSource()) {
 
 				if (checkNotEmptyFieldsPaymentScreen()) {
-					msgEditPaymentForServer.add(paymentChosen());
+					//msgEditPaymentForServer.add(paymentChosen());
 					if(paymentChosen().equals("CreditCard")) {
-						ClientUI.sentToChatClient(msgEditPaymentForServer);
+						//ClientUI.sentToChatClient(msgEditPaymentForServer);
 						this.flag=0;
+						//Node node = (Node) event.getSource();
+						Stage stage = (Stage) btnContinue.getScene().getWindow();
+						Pane root = FXMLLoader.load(getClass().getResource("/gui/CreditCard.fxml"));
+						stage.setScene(new Scene(root));	
 					}
-
-					if (this.paymentStatus || flag==1) {
-						this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
+					if (flag==1) {
+						//this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
+						updateOrderNum();
 						pnConfirmation.toFront();
 					}
+//					if(this.paymentStatus) {
+//
+//					}
 				}
 			}
 		} else {
@@ -268,6 +275,9 @@ public class OrderController implements Initializable {
 		}
 	}
 
+	public static void updateOrderNum() {
+		txtOrderNum.setText(String.valueOf(orderSuccess.getOrderNumber()));
+	}
 	public String paymentChosen() {
 		if (radioCash.isSelected())
 			return "Cash";
@@ -318,7 +328,6 @@ public class OrderController implements Initializable {
 	 * if success
 	 */
 	public static void recivedFromServer(Object newOrder) {
-		System.out.println("here " + newOrder);
 		if (newOrder instanceof String) {
 			String status = (String) newOrder;
 			setStatus(status);
@@ -334,9 +343,9 @@ public class OrderController implements Initializable {
 		setParksNames(parks);
 	}
 
-	public static void recivedFromServerSuccessPayment(ArrayList<Object> arrayList) {
-		setPaymentStatus((boolean)arrayList.get(0));
-	}
+//	public static void recivedFromServerSuccessPayment(ArrayList<Object> arrayList) {
+//		setPaymentStatus((boolean)arrayList.get(0));
+//	}
 
 	// check that the user fill all the fields
 	public boolean checkNotEmptyFields() {
