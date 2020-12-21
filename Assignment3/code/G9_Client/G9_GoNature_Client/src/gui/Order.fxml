@@ -226,8 +226,7 @@
                      </font>
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="invitingIcon" fill="#a1a1a1" glyphName="ENVELOPE" layoutX="306.0" layoutY="441.0" size="16" />
-                  <Label layoutX="74.0" layoutY="466.0" text="To select a date, click on the icon next to it." textFill="RED" />
-                  <Label layoutX="75.0" layoutY="488.0" text="* Required fields" textFill="RED" />
+                  <Label layoutX="74.0" layoutY="502.0" text="* Required fields" textFill="RED" />
                   <Button fx:id="btnNext" focusTraversable="false" layoutX="207.0" layoutY="525.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#next" prefHeight="40.0" prefWidth="82.0" styleClass="btnNext" text="Next" textAlignment="CENTER">
                      <font>
                         <Font name="Bauhaus 93" size="19.0" />
@@ -239,6 +238,14 @@
                      </font>
                   </Button>
                   <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="74.0" layoutY="407.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Inviting Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtPhoneNum" focusColor="#121920" labelFloat="true" layoutX="74.0" layoutY="455.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Phone Number " styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

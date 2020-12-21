@@ -97,6 +97,9 @@ public class OrderController implements Initializable {
 
 	@FXML
 	private Label txtOrderNum;
+	
+    @FXML
+    private JFXTextField txtPhoneNum;
 
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
