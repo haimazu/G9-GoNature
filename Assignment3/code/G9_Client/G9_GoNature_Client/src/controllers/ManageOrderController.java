@@ -181,9 +181,16 @@ public class ManageOrderController implements Initializable {
 	public static void updatedOrderFromServer(Object received) {
 		if (received instanceof Order) {
 			updated=true;
-			//delete the old order
+			cancelOrder();
 		}
 		return;
+	}
+	
+	public static void cancelOrder() {
+		ArrayList<Object> msgForServer = new ArrayList<>();
+		msgForServer.add("cancelOrder");
+		msgForServer.add(order);
+		ClientUI.sentToChatClient(msgForServer);
 	}
 
 	/*
@@ -222,6 +229,11 @@ public class ManageOrderController implements Initializable {
 //		Stage stage = (Stage)lnkSwitch.getScene().getWindow();
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
 //		stage.setScene(new Scene(root));
+	}
+	public static void canceledOrderFromServer(boolean b) {
+		// TODO Auto-generated method stub
+		if(b)
+			order=null;
 	}
 
 }
