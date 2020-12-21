@@ -25,7 +25,7 @@ public class NewOrder {
 
 		// check if the capacity of orders is full
 		if ((!a.checkForAvailableSpots(recived, client))) {
-			answer.add("Failed");
+			answer.add("Failed");//need to enter waiting list
 			EchoServer.sendToMyClient(answer, client);
 		}
 
@@ -41,7 +41,7 @@ public class NewOrder {
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("orders"); // table name
-			query.add(toStringForReservation(data)); // values in query format
+			query.add(data.toStringForDB()); // values in query format
 
 			if (MySQLConnection.insert(query)) {
 				answer.add(data);
@@ -97,18 +97,7 @@ public class NewOrder {
 		return ord;
 	}
 
-	// input: order
-	//
-	// output: to string for a query
-	public static String toStringForReservation(Order data) {
-
-		String afterDiscount = Double.toString(data.getTotalPrice());
-		String beforDiscount = Double.toString(data.getPrice());
-		return "'" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderPhone() + "','"
-				+ data.getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','"
-				+ data.getParkName() + "','" + data.getArrivedTime() + "','" + data.getMemberId() + "','" + data.getID()
-				+ "','" + data.getAmountArrived() + "','" + data.getOrderNumber() + "'";
-	}
+	
 
 	// input: order
 	//
@@ -212,3 +201,17 @@ public class NewOrder {
 	}
 
 }
+
+// for backup
+////input: order
+//	//
+//	// output: to string for a query
+//	public static String toStringForReservation(Order data) {
+//
+//		String afterDiscount = Double.toString(data.getTotalPrice());
+//		String beforDiscount = Double.toString(data.getPrice());
+//		return "'" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderPhone() + "','"
+//				+ data.getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','"
+//				+ data.getParkName() + "','" + data.getArrivedTime() + "','" + data.getMemberId() + "','" + data.getID()
+//				+ "','" + data.getAmountArrived() + "','" + data.getOrderNumber() + "'";
+//	}
