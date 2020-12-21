@@ -211,6 +211,9 @@ public class ParkEmployeeController implements Initializable {
 		btnApprove.setDisable(false);
 	}
 
+	// enter random mode
+	// input: random button has been pressed
+	// output: screen changes
 	@FXML
 	void randomVisitor(ActionEvent event) {
 		btnRandomVisitor.setVisible(false);
@@ -325,6 +328,9 @@ public class ParkEmployeeController implements Initializable {
 		btnApprove.setDisable(false);
 	}
 	
+	// exit control from the park
+	// input: none
+	// output: updating the current visitors in the park 
 	public void execExit() {
 		int updateCurrentVisitors = 0;
 		// update current visitors
@@ -349,6 +355,10 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	// checking the entrance and exit of the random visitor
+	// ArrayList<String> data, sending to the server to update the current visitors amount
+	// input: cell 0: parkName
+	//        cell 1: new current visitors (updated one)
+	// output: updating the current visitors in the park 
 	public void execRandomVisitor() {
 		int maxVisitors = parkDetails.getMaximumCapacityInPark();
 		int currentVisitors = parkDetails.getCurrentAmount();
@@ -364,12 +374,7 @@ public class ParkEmployeeController implements Initializable {
 			updateCurrentVisitors = Integer.parseInt(txtRandomVisitorsAmount.getText()) + currentVisitors;
 			lblCurrentVisitors.setText(String.valueOf(updateCurrentVisitors) + "/" + parkDetails.getMaximumCapacityInPark());
 		}
-		
-		// ArrayList<String> data, sending to the server to update the current visitors amount
-		// input: cell 0: parkName
-		//        cell 1: new current visitors (updated one)
-		// output: message with the result of the update: true if success
-		//                                                false, otherwise
+
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(getParkName());
 		data.add(String.valueOf(updateCurrentVisitors));
@@ -381,6 +386,9 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 
+	// prints order data
+	// input: order
+	// output: prints the order data 
 	public void printOrderDetails() {
 		// 2021-01-01 08:00:00
 		String DateAndTime = orderDetails.getArrivedTime();
@@ -414,6 +422,11 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 
+	// check for valid date in the order
+	// input: [0] 'today's date' 
+	//        [1] order date
+	// output: return true if that's today's date
+	//         otherwise false
 	public boolean checkDate() {
 		LocalDateTime arrivelDate = LocalDateTime.now();
 		// "dd-MM-yyyy"
@@ -429,6 +442,11 @@ public class ParkEmployeeController implements Initializable {
 		return false;
 	}
 
+	// check for correct visit time in the order
+	// input: [0] 'the time now' 
+	//        [1] order time range
+	// output: return true if the visitor arrived at the right hours
+	//         otherwise false
 	public boolean checkTime() {
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		// currentHour = hh
@@ -450,6 +468,11 @@ public class ParkEmployeeController implements Initializable {
 		return false;
 	}
 	
+	// checking to see if there are any available places in the park 
+	// for the amount of people who want to enter right now
+	// input: amount of visitors
+	// output: if there are available places return true
+	//         otherwise false
 	public boolean checkFreePlacesInTheGateway() {
 		int visitorsNumber = 0;
 		
@@ -472,6 +495,10 @@ public class ParkEmployeeController implements Initializable {
 		return false;
 	}
 
+	// checking the park for available places
+	// input: none
+	// output: if there are available places return true
+	//		   otherwise false
 	public boolean checkFreePlacesInThePark() {
 		if (parkDetails.getCurrentAmount() < parkDetails.getMaximumCapacityInPark()) {
 			return true;
@@ -479,6 +506,10 @@ public class ParkEmployeeController implements Initializable {
 		return false;
 	}
 
+	// String type, the case we dealing with
+	// ArrayList<String> dbColumns, sending to the server to get data
+	// input: cells, depending on the case
+	// output: none
 	public void sendToServer(String type, ArrayList<String> dbColumns) {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
@@ -519,6 +550,12 @@ public class ParkEmployeeController implements Initializable {
 		ParkEmployeeController.parkName = parkName;
 	}
 	
+	// getting information from the server
+	// input: if the order number exists in the system: 
+	// 		  		1. ArrayList<String> order with all the order data
+	//        otherwise 2. string of "No such order"
+	// output: for case 1. we create new order with all the received details
+	//         for case 2. we set the error message
 	public static void receivedFromServerOrderDetails(ArrayList<String> order) {
 		if (order.get(0).equals("No such order")) {
 			setError("No such order");
@@ -527,10 +564,16 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 
+	// getting information from the server
+	// input: ArrayList<String> park with all the park data
+	// output: new park
 	public static void receivedFromServerParkDetails(ArrayList<String> park) {
 		ParkEmployeeController.parkDetails = new Park(park);
 	}
 	
+	// getting information from the server
+	// input: boolean status
+	// output: set error message with the following return
 	public static void receivedFromServerCurrentVisitorsUpdateStatus(boolean status) {
 		if (status) {
 			setError("true");
@@ -539,6 +582,9 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
+	// getting information from the server
+	// input: boolean status
+	// output: set error message with the following return
 	public static void receivedFromServerAmountArrivedStatus(boolean status) {
 		if (status) {
 			setError("true");
@@ -547,6 +593,9 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 
+	// clear the screen fields
+	// input: none
+	// output: none
 	public void clearAllFields() {
 		txtOrderNumber.clear();
 		lblOrderNumber.setText("");

@@ -127,6 +127,9 @@ public class LoginController implements Initializable {
 	}
 
 	// received data from the server
+	// output: cell 0: the 'role' of the user
+	//		   cell 1: the first name of the user
+	//		   cell 2: name of the park where the employee works
 	public static void receivedFromServer(ArrayList<String> msgReceived) {
 		setStatus(msgReceived.get(0));
 		setFirstName(msgReceived.get(1));
@@ -153,11 +156,13 @@ public class LoginController implements Initializable {
 		LoginController.firstName = firstName;
 	}	
 
+	// get the 'parkName'
 	public static String getParkName() {
 		// return parkName;
 		return "jurasic";
 	}
 
+	// set the 'parkName'
 	public static void setParkName(String parkName) {
 		LoginController.parkName = parkName;
 	}
