@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXRadioButton;
@@ -25,18 +22,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import orderData.Order;
-import orderData.OrderType;
-import userData.Member;
 
 public class ParkEmployeeController implements Initializable {
 	/***** Top/Side Panels Details *****/
@@ -81,8 +73,6 @@ public class ParkEmployeeController implements Initializable {
 	private Label lblPrice;
 	@FXML
 	private Label lblDiscount;
-	@FXML
-	private Label lblPayment;
 	@FXML
 	private Label lblTotalPrice;
 
@@ -132,7 +122,6 @@ public class ParkEmployeeController implements Initializable {
 	private static Order orderDetails;
 	private static Order newOrderDetails;
 	private static Park parkDetails;
-	private static Member memberDetails;
 	private static String error = "";
 	// private Map<String, Integer> orderDocumentation = new HashMap<String,
 	// Integer>();
@@ -239,6 +228,15 @@ public class ParkEmployeeController implements Initializable {
 		txtRandomVisitorsAmount.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
 		radExit.setDisable(true);
+		
+		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
+		LocalDateTime arrivelTime = LocalDateTime.now();
+		lblRandomTime.setText(arrivelTime.format(time));
+
+		LocalDateTime arrivelDate = LocalDateTime.now();
+		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
+				+ "-" + arrivelDate.getMonthValue() 
+				+ "-" + arrivelDate.getYear());
 	}
 	
 	public void setRandomModeOff() {
@@ -473,23 +471,27 @@ public class ParkEmployeeController implements Initializable {
 	
 	
 	public void setDiscountPersent() {	
-		String discount = "";
-		double totalPrice = 0;
 		String id = "";
 		String memberId = "";
 		int managerDiscount = parkDetails.getMangerDiscount();
+		String dateAndTimeFormat = "";
+		
+		dateAndTimeFormat = String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		// format time
+		dateAndTimeFormat += roundingTime();
+		// after calling the function dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
 				
 		// case 2 or 4 -> single/family OR group
 		/***** Random *****/
 		if (!btnRandomVisitor.isVisible()) {
 			
-			if (txtRandomVisitorsAmount.getText().length() == 9) {
-				id = txtRandomVisitorsAmount.getText();
+			if (txtIdOrMemberId.getText().length() == 9) {
+				id = txtIdOrMemberId.getText();
 			} else {
-				memberId = txtRandomVisitorsAmount.getText();
+				memberId = txtIdOrMemberId.getText();
 			}
-			
-			Order o = new Order(getParkName(), "2021-01-02 10:00:00", memberId, id, 
+			//"2021-01-02 10:00:00"
+			Order o = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
 			// get the member details from the DB
 			// Query
@@ -506,28 +508,30 @@ public class ParkEmployeeController implements Initializable {
 //			sendToServer("memberByIdOrMemberId",
 //					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
 			
-			
+		}
 		// case 1 or 3 -> single/family OR group
 		// AND they have order
 		/***** Order *****/
-		} else {
-			// this is guide in case 3
-			if (orderDetails.getOrderType().equals(OrderType.GROUP)) {
-				totalPrice = parkDetails.getEnteryPrice() * 0.75;
-				discount = "25%";				
-				//TODO 12% payment ?
-			// this is single/family in case 1
-			} else {
-				totalPrice = parkDetails.getEnteryPrice() * 0.85;
-				discount = "15%";
-				if (orderDetails.getOrderType().equals(OrderType.MEMBER)) {
-					totalPrice = totalPrice * 0.80;
-					discount = "35%";
-				}
-			}
-		}
+		
 		
 		//TODO add manager discount if not 0
+	}
+	
+	public String roundingTime() {
+		LocalDateTime arrivelTime = LocalDateTime.now();
+		// currentHour = hh
+		int currentHour = arrivelTime.getHour();
+		
+		// currentHour = 08:00 | 12:00 | 16:00
+		if (currentHour >= 8 && currentHour < 12) {
+			return " 08:00:00";
+		} else if (currentHour >= 12 && currentHour < 16) {
+				return " 12:00:00";
+		} else if (currentHour >= 16 && currentHour < 20) {
+				return " 16:00:00";
+		}
+
+		return "";
 	}
 
 	// check for valid date in the order
@@ -695,11 +699,11 @@ public class ParkEmployeeController implements Initializable {
 	//        otherwise 2. string of "Not a member"
 	// output: for case 1. we create new member with all the received details
 	//         for case 2. we set the error message
-	public static void receivedFromServerMemberDetails(ArrayList<Object> order) {
-		if (!(boolean)order.get(1)) {
+	public static void receivedFromServerMemberDetails(Object order) {
+		if (order.equals("Failed")) {
 			setError("Failed");
 		} else {
-			ParkEmployeeController.newOrderDetails = (Order) order.get(1);
+			ParkEmployeeController.newOrderDetails = (Order) order;
 		}
 	}
 	
@@ -740,7 +744,6 @@ public class ParkEmployeeController implements Initializable {
 		lblEmail.setText("");
 		lblPrice.setText("");
 		lblDiscount.setText("");
-		lblPayment.setText("");
 		lblTotalPrice.setText("");
 		txtRandomVisitorsAmount.setText("");
 		lblDateTitle.setVisible(false);
@@ -761,15 +764,6 @@ public class ParkEmployeeController implements Initializable {
 		
 		//setParkName(LoginController.getParkName());
 		setParkName("jurasic");
-
-		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
-		LocalDateTime arrivelTime = LocalDateTime.now();
-		lblRandomTime.setText(arrivelTime.format(time));
-
-		LocalDateTime arrivelDate = LocalDateTime.now();
-		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
-				+ "-" + arrivelDate.getMonthValue() 
-				+ "-" + arrivelDate.getYear());
 
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
