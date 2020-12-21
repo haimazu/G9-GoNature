@@ -59,7 +59,10 @@ public class NewOrder {
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
 
 		int parkEnteryPrice = CurrentPriceInPark(ord);
-		ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());// full price
+		if (!occasional)
+			ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());// full price
+		else
+			ord.setPrice(parkEnteryPrice * ord.getAmountArrived());// full price
 
 		if (memb == null) {// if the order is not for a member
 			ord.setOrderType(OrderType.REGULAR);
@@ -94,8 +97,7 @@ public class NewOrder {
 				if (!occasional) {
 					groupAmount = Integer.parseInt(memb.getMemberAmount());
 					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
-				}
-				else {
+				} else {
 					groupAmount = ord.getAmountArrived();
 					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.90);
 				}
