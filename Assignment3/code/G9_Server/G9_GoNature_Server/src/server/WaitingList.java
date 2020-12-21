@@ -65,7 +65,7 @@ public class WaitingList {
 		query.add("select");
 		query.add("park");
 		if(order.isOccasional())
-			query.add("maxVisitorsAmount");
+			query.add("maxVisitorAmount");
 		else
 			query.add("maxOrderVisitorsAmount");
 		query.add("WHERE parkName = '" + parkName + "'");

@@ -73,7 +73,12 @@ public class ManageOrderController implements Initializable {
 	private JFXComboBox<String> cbxArriveTime;
 
 	private AlertController alert = new AlertController();
-
+	/*
+	 * input : received order object from server
+	 * Output : non
+	 * present : order details
+	 * 
+	 */
 	void presentOrderdetails(Order details) {
 		// 2021-01-01 08:00:00
 		String DateAndTime = details.getArrivedTime();
@@ -146,7 +151,9 @@ public class ManageOrderController implements Initializable {
 		}
 	}
 
-	// do not allow to reserve for passed hour today
+	/*
+	 * Do not allow to book a trip for a time that already passed today
+	 */
 	public boolean checkCurrentTime() {
 		LocalDate date = txtdate.getValue();
 		String[] arrSplit = cbxArriveTime.getValue().toString().split("-");
@@ -159,8 +166,10 @@ public class ManageOrderController implements Initializable {
 		}
 		return true;
 	}
-
-	// check that the user fill all the fields
+	/*
+	 * Check that the user didn't leave field empty
+	 */
+	
 	public boolean checkNotEmptyVisitorsField() {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		if (visitorsNumber.isEmpty()) {

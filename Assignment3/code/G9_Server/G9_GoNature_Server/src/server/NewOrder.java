@@ -63,6 +63,8 @@ public class NewOrder {
 
 		if (memb == null) {// if the order is not for a member
 			ord.setOrderType(OrderType.REGULAR);
+			ord.setID(null);
+			ord.setMemberId(null);
 			if (!occasional)
 				ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
 			else
