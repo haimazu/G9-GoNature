@@ -108,10 +108,10 @@ public class OrderController implements Initializable {
 	private static Order orderSuccess;
 	private Order order;
 	private static String status = "not";
+	private static boolean faildDB = true;
 	private String memberId = null;
 	private String ID = null;
 	private AlertController alert = new AlertController();
-
 
 	// private static PaymentController payStatus; // contriller for paymnt to check
 	// the fields
@@ -151,6 +151,14 @@ public class OrderController implements Initializable {
 
 	@FXML
 	private Label txtTotalPrice;
+
+	public static boolean isFaildDB() {
+		return faildDB;
+	}
+
+	public static void setFaildDB(boolean faildDB) {
+		OrderController.faildDB = faildDB;
+	}
 
 	/*
 	 * status to check if the order success
@@ -238,14 +246,17 @@ public class OrderController implements Initializable {
 			if (btnNext == event.getSource()) {
 
 				ClientUI.sentToChatClient(msgNewOrderForServer);
-				System.out.println(status);
-				if (this.status.equals("Failed")) {
+				if (status.equals("Failed")) {
 					Stage stage = new Stage();
 					Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
 					Scene scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
-				} else {
+				}
+				else if(!faildDB) {
+					alert.setAlert("something went wrong\nplease close the program and start again");
+				}
+				else {
 
 					this.txtprice.setText(String.valueOf(orderSuccess.getPrice()));
 					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()));
@@ -331,8 +342,12 @@ public class OrderController implements Initializable {
 	 */
 	public static void recivedFromServer(Object newOrder) {
 		if (newOrder instanceof String) {
+			System.out.println(newOrder + " order con 334");
 			String status = (String) newOrder;
 			setStatus(status);
+		} else if (newOrder instanceof Boolean) {
+			boolean flag = (boolean) newOrder;
+			setFaildDB(flag);
 		} else {
 			Order myOrder = (Order) newOrder;
 			setOrderSuccess(myOrder);

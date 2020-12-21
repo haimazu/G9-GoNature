@@ -8,9 +8,9 @@ public class Order implements Serializable {
 	int visitorsNumber;
 	String orderEmail;
 	String orderPhone;
-	OrderType orderType; 
-	double price; //before discount
-	double totalPrice; //after discount
+	OrderType orderType;
+	double price; // before discount
+	double totalPrice; // after discount
 	String parkName;
 	String arrivedTime;
 	String memberId;
@@ -18,19 +18,20 @@ public class Order implements Serializable {
 	int amountArrived;
 	int orderNumber;
 
-	// this constructor is only for ParkEmployeeController from method next -DO NOT USE
-		// IT!!!
-	//server side updates : check if member,calculate price
-	public Order(String parkName,String arrivedTime,String memberId,String ID, int amountArrived) {
-		this.parkName=parkName;
-		this.arrivedTime=arrivedTime;
-		this.amountArrived=amountArrived;
-		this.memberId=memberId;
-		this.ID=ID;
-		this.orderEmail=null;
-		this.orderPhone=null;
+	// this constructor is only for ParkEmployeeController from method next -DO NOT
+	// USE
+	// IT!!!
+	// server side updates : check if member,calculate price
+	public Order(String parkName, String arrivedTime, String memberId, String ID, int amountArrived) {
+		this.parkName = parkName;
+		this.arrivedTime = arrivedTime;
+		this.amountArrived = amountArrived;
+		this.memberId = memberId;
+		this.ID = ID;
+		this.orderEmail = null;
+		this.orderPhone = null;
 	}
-	
+
 	// this constructor is only for OrderConroller from method next -DO NOT USE
 	// IT!!!
 	public Order(int visitorsNumber, String orderEmail, String orderPhone, String parkName, String arrivedTime,
@@ -78,6 +79,24 @@ public class Order implements Serializable {
 		this.orderNumber = Integer.parseInt(orderFromDB.get(11));
 	}
 
+	// output: to string for a query to insert in DB
+	public String toStringForDB() {
+
+		String afterDiscount = Double.toString(getTotalPrice());
+		String beforDiscount = Double.toString(getPrice());
+		return "'" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone() + "','"
+				+ getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','" + getParkName()
+				+ "','" + getArrivedTime() + "','" + getMemberId() + "','" + getID() + "','" + getAmountArrived()
+				+ "','" + getOrderNumber() + "'";
+	}
+
+	// checks if the order is for occasional visitor
+	public boolean isOccasional() {
+		if (this.orderEmail == null && this.orderPhone == null)
+			return true;
+		return false;
+	}
+	
 	public int getAmountArrived() {
 		return amountArrived;
 	}
@@ -174,24 +193,5 @@ public class Order implements Serializable {
 		ID = iD;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [orderNumber=" + orderNumber + ", visitorsNumber=" + visitorsNumber + ", orderEmail=" + orderEmail
-				+ ", orderPhone=" + orderPhone + ", orderType=" + orderType + ", totalPrice=" + totalPrice + ", price="
-				+ price + ", parkName=" + parkName + ", arrivedTime=" + arrivedTime + ", memberId=" + memberId + ", ID="
-				+ ID + ", amountArrived=" + amountArrived + "]";
-	}
 
-	public String toStringForDB() {
-		return "'" + getOrderNumber() + "','" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone()
-				+ "','" + getOrderType().toString().toLowerCase() + "','" + getPrice() + "','" + getParkName() + "','"
-				+ getArrivedTime() + "','" + getMemberId() + "'" + getID() + "'";
-	}
-	
-	//checks if the order is for occasional visitor
-	public boolean isOccasional() {
-		if(this.orderEmail==null&& this.orderPhone==null)
-			return true;
-		return false;
-	}
 }
