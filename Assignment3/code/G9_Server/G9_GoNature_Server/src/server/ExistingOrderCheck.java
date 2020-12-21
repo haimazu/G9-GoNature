@@ -39,8 +39,6 @@ public class ExistingOrderCheck {
 		} else {
 			answer.add(new Order(queryData.get(0)));
 		}
-
 		EchoServer.sendToMyClient(answer, client);
 	}
-
 }
