@@ -25,7 +25,7 @@ public class NewOrder {
 
 		// check if the capacity of orders is full
 		if ((!a.checkForAvailableSpots(recived, client))) {
-			answer.add(false);
+			answer.add("Failed");
 			EchoServer.sendToMyClient(answer, client);
 		}
 
@@ -46,7 +46,7 @@ public class NewOrder {
 			if (MySQLConnection.insert(query)) {
 				answer.add(data);
 			} else
-				answer.add("Failed");
+				answer.add(false);
 
 			EchoServer.sendToMyClient(answer, client);
 		}
@@ -95,7 +95,6 @@ public class NewOrder {
 			}
 		}
 		return ord;
-
 	}
 
 	// input: order
