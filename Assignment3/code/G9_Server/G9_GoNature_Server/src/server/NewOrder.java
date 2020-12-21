@@ -171,6 +171,13 @@ public class NewOrder {
 
 	}
 
+	// updates the amountArrived in order table
+	// input: ArrayList<Object> 
+	//				cell [0]: parkName
+	// 				cell [1]: currentVisitoreAmount, ConnectionToClient
+	// output: ArrayList<Object>
+	// 				cell[0] the relevant case name
+	// 				cell[1] T/F if the update succeeded
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -183,15 +190,15 @@ public class NewOrder {
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("update"); // command
-		query.add("order"); // table name
-		query.add("arrivedTime = '" + data.get(1) + "'"); // columns to update
+		query.add("orders"); // table name
+		query.add("amountArrived = '" + data.get(1) + "'"); // columns to update
 		query.add("orderNumber"); // condition
 		query.add(data.get(0)); // parkName value
 
 		if (MySQLConnection.update(query))
-			answer.add(new ArrayList<String>(Arrays.asList("true")));
+			answer.add(true);
 		else
-			answer.add(new ArrayList<String>(Arrays.asList("false")));
+			answer.add(false);
 
 		EchoServer.sendToMyClient(answer, client);
 	}

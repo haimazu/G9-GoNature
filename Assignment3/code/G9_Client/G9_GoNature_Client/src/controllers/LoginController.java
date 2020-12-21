@@ -16,8 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Pane;
@@ -47,6 +45,7 @@ public class LoginController implements Initializable {
 	private static String status, firstName;
 	private static String parkName;
 	private boolean userStatus = false, passStatus = false;
+	private AlertController alert = new AlertController();
 
 	// Switch screens: Login -> Welcome
 	@FXML
@@ -83,7 +82,7 @@ public class LoginController implements Initializable {
 
 			// Username and password doesn't match
 			if (getStatus().equals("Failed")) {
-				Alert("Username or password doesn't match.");
+				alert.failedAlert("Failed", "Username or password doesn't match.");
 				return;
 			}
 
@@ -102,9 +101,9 @@ public class LoginController implements Initializable {
 		String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$";
 
 		if (username.isEmpty()) {
-			Alert("All fields required.");
+			alert.failedAlert("Failed", "All fields required.");
 		} else if (!username.matches(pattern)) {
-			Alert("Wrong pattern.\n"
+			alert.failedAlert("Failed", "Wrong pattern.\n"
 					+ "Username consists a letter, then letters or numbers.\n"
 					+ "[length of 4-20 characters]");
 		} 
@@ -117,26 +116,20 @@ public class LoginController implements Initializable {
 		String password = txtPassword.getText();
 
 		if (password.isEmpty()) {
-			Alert("All fields required.");
+			alert.failedAlert("Failed", "All fields required.");
 		} else if (password.length() < 8) {
-			Alert("Password too short.");
+			alert.failedAlert("Failed", "Password too short.");
 		} else if (password.length() > 30) {
-			Alert("Password too long.");
+			alert.failedAlert("Failed", "Password too long.");
 		} 
 		
 		return passStatus;
 	}
 
-	// showing alert message
-	public void Alert(String msg) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Failed");
-		alert.setHeaderText(null);
-		alert.setContentText(msg);
-		alert.showAndWait();
-	}
-
 	// received data from the server
+	// output: cell 0: the 'role' of the user
+	//		   cell 1: the first name of the user
+	//		   cell 2: name of the park where the employee works
 	public static void receivedFromServer(ArrayList<String> msgReceived) {
 		setStatus(msgReceived.get(0));
 		setFirstName(msgReceived.get(1));
@@ -163,10 +156,12 @@ public class LoginController implements Initializable {
 		LoginController.firstName = firstName;
 	}	
 
+	// get the 'parkName'
 	public static String getParkName() {
-		return "jurasic";
+		return parkName;
 	}
 
+	// set the 'parkName'
 	public static void setParkName(String parkName) {
 		LoginController.parkName = parkName;
 	}

@@ -7,7 +7,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
 public class AlertController {
-	private Optional<ButtonType> action;
+	private String result;
 	
 	// showing alert message
 	public void setAlert(String msg) {
@@ -43,13 +43,17 @@ public class AlertController {
 		alert.setHeaderText(null);
 		alert.setContentText(msg);
 		Optional<ButtonType> action = alert.showAndWait();
+		
+		if (action.get() == ButtonType.OK) {
+			setResult("OK");
+		}
 	}
 
-	public Optional<ButtonType> getAction() {
-		return action;
+	public String getResult() {
+		return result;
 	}
 
-	public void setAction(Optional<ButtonType> action) {
-		this.action = action;
+	public void setResult(String result) {
+		this.result = result;
 	}
 }
