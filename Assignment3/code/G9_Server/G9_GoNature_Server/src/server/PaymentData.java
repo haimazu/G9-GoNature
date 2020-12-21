@@ -12,7 +12,7 @@ public class PaymentData {
 	// input: ArrayList<Object>=> cell[0] function name
 	// cell[1] order object
 	// cell[2] payment type in string format
-	// cell[3] credit card object if payment type is credit card
+	// cell[3] credit card object
 	//
 	// output: ArrayList<Object>=> cell[0] function name
 	// cell[1] T\F if input to DB was success
