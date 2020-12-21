@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import orderData.Order;
 
 public class CreditCardController implements Initializable {
@@ -63,17 +64,19 @@ public class CreditCardController implements Initializable {
 					Integer.parseInt(txtCVV.getText()), myOrder.getOrderNumber());
 			msgEditPaymentForServer.add("orderPaymentMathod");
 			msgEditPaymentForServer.add(details);
+			
 			ClientUI.sentToChatClient(msgEditPaymentForServer);
 
 			if (this.getPaymentStatus()) {
-				OrderController.updateOrderNum();
-				OrderController.pnConfirmation.toFront();
+				System.out.println("here credit card 71");
+				Stage stage = (Stage) btnSave.getScene().getWindow();
+			    stage.close();
 			}
 		}
 	}
 
-	public static void recivedFromServerSuccessPayment(ArrayList<Object> arrayList) {
-		setPaymentStatus((boolean) arrayList.get(0));
+	public static void recivedFromServerSuccessPayment(boolean status) {
+		setPaymentStatus(status);
 	}
 
 	public static boolean getPaymentStatus() {
