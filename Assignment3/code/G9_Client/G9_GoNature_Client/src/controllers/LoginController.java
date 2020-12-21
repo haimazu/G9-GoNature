@@ -158,8 +158,7 @@ public class LoginController implements Initializable {
 
 	// get the 'parkName'
 	public static String getParkName() {
-		// return parkName;
-		return "jurasic";
+		return parkName;
 	}
 
 	// set the 'parkName'
