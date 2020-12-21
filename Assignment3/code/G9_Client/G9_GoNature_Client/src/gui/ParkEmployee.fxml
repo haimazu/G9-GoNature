@@ -198,7 +198,7 @@
                   <Separator layoutX="309.0" layoutY="41.0" orientation="VERTICAL" prefHeight="468.0" />
                   <Button fx:id="btnApprove" focusTraversable="false" layoutX="471.0" layoutY="467.0" mnemonicParsing="false" onAction="#approve" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Approve" />
                   <Button fx:id="btnShowDetails" focusTraversable="false" layoutX="93.0" layoutY="235.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Show Details" />
-                  <JFXTextField fx:id="txtOrderNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="170.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="Order Number" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtOrderNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="170.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*Order Number" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -215,7 +215,7 @@
                      </image>
                   </ImageView>
                   <Separator layoutX="30.0" layoutY="301.0" prefHeight="3.0" prefWidth="250.0" />
-                  <JFXTextField fx:id="txtVisitorsAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="160.0" layoutY="170.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtVisitorsAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="160.0" layoutY="170.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -256,7 +256,7 @@
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txtRandomVisitorsAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="160.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtRandomVisitorsAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="160.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -264,7 +264,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txtIdOrMemberId" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="ID / Member Num" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtIdOrMemberId" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*ID/Member Num" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

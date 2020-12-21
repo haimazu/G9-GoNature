@@ -430,6 +430,8 @@ public class ParkEmployeeController implements Initializable {
 		if (getError().equals("false")) {
 			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
 		}
+		
+		setDiscountPersent();
 	}
 
 	// prints order data
