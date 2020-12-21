@@ -171,6 +171,13 @@ public class NewOrder {
 
 	}
 
+	// updates the amountArrived in order table
+	// input: ArrayList<Object> 
+	//				cell [0]: parkName
+	// 				cell [1]: currentVisitoreAmount, ConnectionToClient
+	// output: ArrayList<Object>
+	// 				cell[0] the relevant case name
+	// 				cell[1] T/F if the update succeeded
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
