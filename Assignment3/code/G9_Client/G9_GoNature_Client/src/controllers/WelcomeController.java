@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import orderData.Order;
 
 public class WelcomeController implements Initializable {
 	@FXML
@@ -124,7 +125,7 @@ public class WelcomeController implements Initializable {
 		orderDetails = orderDetails1;
 	}
 
-	public static void recievedFromServerValidOrder(ArrayList<String> orderDetails) {
+	public static void recievedFromServerValidOrder(Order orderDetails) {
 		System.out.println("MADE IT ALIVE");
 		setOrderDetails(orderDetails);
 		//System.out.println(msg);
