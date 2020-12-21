@@ -34,6 +34,9 @@ public class WaitingListController {
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+		
+		Stage stage2 = (Stage) btnHere.getScene().getWindow();
+	    stage2.close();
     }
 
 }

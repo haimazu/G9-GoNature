@@ -68,7 +68,6 @@ public class CreditCardController implements Initializable {
 			ClientUI.sentToChatClient(msgEditPaymentForServer);
 
 			if (this.getPaymentStatus()) {
-				System.out.println("here credit card 71");
 				Stage stage = (Stage) btnSave.getScene().getWindow();
 			    stage.close();
 			}
