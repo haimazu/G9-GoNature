@@ -37,7 +37,7 @@ public class ExistingOrderCheck {
 		if (queryData.isEmpty()) {
 			answer.add(new ArrayList<String>(Arrays.asList("No such order")));
 		} else {
-			answer.add(queryData.get(0));
+			answer.add(new Order(queryData.get(0)));
 		}
 
 		EchoServer.sendToMyClient(answer, client);

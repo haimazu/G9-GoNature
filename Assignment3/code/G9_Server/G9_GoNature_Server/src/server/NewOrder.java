@@ -14,7 +14,7 @@ public class NewOrder {
 		// input: ArrayList<Object>,ConnectionToClient
 		// inserting a new reservation in order table in DB
 		// output: ArrayList<Object>=> cell[0] function name
-		// cell[1] T/F if insert succeeded
+		// cell[1] Order object with updated cells: price ,totalPrice
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList a = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -42,7 +42,6 @@ public class NewOrder {
 			query.add(toStringForReservation(data)); // values in query format
 
 			if (MySQLConnection.insert(query)) {
-				// answer.add(true);
 				answer.add(data);
 			} else
 				answer.add("Failed");
