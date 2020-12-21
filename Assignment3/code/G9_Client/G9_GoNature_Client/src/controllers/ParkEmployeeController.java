@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -389,7 +390,9 @@ public class ParkEmployeeController implements Initializable {
 			// update current visitors
 			alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
 			updateCurrentVisitors = visitorsAmount + currentVisitors;
-			lblCurrentVisitors.setText(String.valueOf(updateCurrentVisitors) + "/" + parkDetails.getMaximumCapacityInPark());
+			lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
+					+ String.valueOf(updateCurrentVisitors) + "/" 
+					+ parkDetails.getMaximumCapacityInPark());
 		}
 
 		ArrayList<String> data = new ArrayList<String>();
@@ -627,6 +630,7 @@ public class ParkEmployeeController implements Initializable {
 		lblDiscount.setText("");
 		lblPayment.setText("");
 		lblTotalPrice.setText("");
+		txtRandomVisitorsAmount.setText("");
 		lblDateTitle.setVisible(false);
 		lblRandomDate.setVisible(false);
 		lblTimeTitle.setVisible(false);
@@ -650,8 +654,9 @@ public class ParkEmployeeController implements Initializable {
 		//setParkName(LoginController.getParkName());
 		setParkName("jurasic");
 
+		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
-		lblRandomTime.setText(arrivelTime.getHour() + ":" + arrivelTime.getMinute());
+		lblRandomTime.setText(arrivelTime.format(time));
 
 		LocalDateTime arrivelDate = LocalDateTime.now();
 		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
