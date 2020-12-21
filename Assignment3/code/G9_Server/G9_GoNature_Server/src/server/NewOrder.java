@@ -190,7 +190,7 @@ public class NewOrder {
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("update"); // command
-		query.add("order"); // table name
+		query.add("orders"); // table name
 		query.add("arrivedTime = '" + data.get(1) + "'"); // columns to update
 		query.add("orderNumber"); // condition
 		query.add(data.get(0)); // parkName value
