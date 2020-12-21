@@ -59,10 +59,14 @@ public class NewOrder {
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
 
 		int parkEnteryPrice = CurrentPriceInPark(ord);
-		ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());
-		if (memb == null && !occasional) {// if the order is not for a member
+		ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());// full price
+
+		if (memb == null) {// if the order is not for a member
 			ord.setOrderType(OrderType.REGULAR);
-			ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
+			if (!occasional)
+				ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
+			else
+				ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
 		} else {// if the order is for members/group
 
 			switch (memb.getMemberOrderType()) {
@@ -81,13 +85,17 @@ public class NewOrder {
 			case GROUP:
 				ord.setOrderType(OrderType.GROUP);
 				int groupAmount = Integer.parseInt(memb.getMemberAmount());
-				ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
+				if (!occasional)
+					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
+				else
+					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.90);
 				break;
 			default:
 				break;
 			}
 		}
 		return ord;
+
 	}
 
 	// input: order
