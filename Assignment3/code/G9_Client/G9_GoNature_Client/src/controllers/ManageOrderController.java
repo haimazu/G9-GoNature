@@ -72,10 +72,12 @@ public class ManageOrderController implements Initializable {
 
 	@FXML
 	private JFXComboBox<String> cbxArriveTime;
+	
 
 	private AlertController alert = new AlertController();
 	private static Order order=null;
-	
+	private static boolean updated=false;
+	private OrderController oc = new OrderController();
 	public static Order getOrder() {
 		return order;
 	}
@@ -151,16 +153,37 @@ public class ManageOrderController implements Initializable {
 	void update(ActionEvent event) {
 		Order sentOrder = order; // maybe a pointer ???
 		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
-		if((txtVisitorsNumber.getText().equals(sentOrder.getVisitorsNumber()))
-				txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
-				+ getArrivalTime(cbxArrivelTime.getValue().toString())).equals(sentOrder.getArrivedTime())
-
-			 
-			
-			
-			ClientUI.sentToChatClient(msgForServer);
-
+			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + oc.getArrivalTime(cbxArriveTime.getValue().toString()));
+			String orderDateTime = sentOrder.getArrivedTime();
+			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
+			int orderVisitorsNumber = sentOrder.getVisitorsNumber();
+			if((!clientDateTime.equals(orderDateTime)) || (clientVisitorsNumber!=orderVisitorsNumber)) {
+				sentOrder.setArrivedTime(clientDateTime);
+				sentOrder.setVisitorsNumber(clientVisitorsNumber);
+				ArrayList<Object> msgForServer = new ArrayList<>();
+				msgForServer.add("updateOrder");
+				msgForServer.add(sentOrder);
+				ClientUI.sentToChatClient(msgForServer);
+				if(updated) {
+					//alert ok
+				}
+				else
+					//alertFailed
+					System.out.println("kuku");
+			}
+			else
+				//notify user
+				alert.setAlert("oh no!");
 		}
+		updated=false;
+	}
+	
+	public static void updatedOrderFromServer(Object received) {
+		if (received instanceof Order) {
+			updated=true;
+			//delete the old order
+		}
+		return;
 	}
 
 	/*
@@ -182,7 +205,7 @@ public class ManageOrderController implements Initializable {
 	 * Check that the user didn't leave field empty
 	 */
 
-	public boolean checkNotEmptyVisitorsField() {
+	public boolean checkNotEmptyVisitorsField() { //check not 0, chek not 999 etc.
 		String visitorsNumber = txtVisitorsNumber.getText();
 		if (visitorsNumber.isEmpty()) {
 			alert.setAlert("Cannot leave 'Visitors Amount' field empty");
