@@ -79,6 +79,24 @@ public class Order implements Serializable {
 		this.orderNumber = Integer.parseInt(orderFromDB.get(11));
 	}
 
+	// output: to string for a query to insert in DB
+	public String toStringForDB() {
+
+		String afterDiscount = Double.toString(getTotalPrice());
+		String beforDiscount = Double.toString(getPrice());
+		return "'" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone() + "','"
+				+ getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','" + getParkName()
+				+ "','" + getArrivedTime() + "','" + getMemberId() + "','" + getID() + "','" + getAmountArrived()
+				+ "','" + getOrderNumber() + "'";
+	}
+
+	// checks if the order is for occasional visitor
+	public boolean isOccasional() {
+		if (this.orderEmail == null && this.orderPhone == null)
+			return true;
+		return false;
+	}
+	
 	public int getAmountArrived() {
 		return amountArrived;
 	}
@@ -175,31 +193,5 @@ public class Order implements Serializable {
 		ID = iD;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [orderNumber=" + orderNumber + ", visitorsNumber=" + visitorsNumber + ", orderEmail=" + orderEmail
-				+ ", orderPhone=" + orderPhone + ", orderType=" + orderType + ", totalPrice=" + totalPrice + ", price="
-				+ price + ", parkName=" + parkName + ", arrivedTime=" + arrivedTime + ", memberId=" + memberId + ", ID="
-				+ ID + ", amountArrived=" + amountArrived + "]";
-	}
 
-	// input: order
-	//
-	// output: to string for a query
-	public String toStringForDB() {
-
-		String afterDiscount = Double.toString(getTotalPrice());
-		String beforDiscount = Double.toString(getPrice());
-		return "'" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone() + "','"
-				+ getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','" + getParkName()
-				+ "','" + getArrivedTime() + "','" + getMemberId() + "','" + getID() + "','" + getAmountArrived()
-				+ "','" + getOrderNumber() + "'";
-	}
-
-	// checks if the order is for occasional visitor
-	public boolean isOccasional() {
-		if (this.orderEmail == null && this.orderPhone == null)
-			return true;
-		return false;
-	}
 }
