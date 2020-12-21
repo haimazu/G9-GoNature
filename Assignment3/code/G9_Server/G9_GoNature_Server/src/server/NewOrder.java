@@ -10,7 +10,7 @@ import userData.Member;
 
 //executed by Nastya
 public class NewOrder {
-	
+
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList a = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -27,21 +27,20 @@ public class NewOrder {
 
 			data = totalPrice(data, memb);// updating the prices in the order
 			//////////////
-			/////Roi//////
+			///// Roi//////
 			//////////////
-			data.setOrderNumber(Counter.getCounter().orderNum()); //get an order number
+			data.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
 			//////////////
 			//////////////
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("orders"); // table name
 			query.add(toStringForReservation(data)); // values in query format
-			
+
 			if (MySQLConnection.insert(query)) {
-				//answer.add(true);
+				// answer.add(true);
 				answer.add(data);
-			}
-			else
+			} else
 				answer.add("Failed");
 
 			EchoServer.sendToMyClient(answer, client);
@@ -83,30 +82,22 @@ public class NewOrder {
 		return ord;
 	}
 
-	//input: order
+	// input: order
 	//
 	// output: to string for a query
 	public static String toStringForReservation(Order data) {
-		
-		String afterDiscount=Double. toString(data.getTotalPrice());
-		String beforDiscount=Double. toString(data.getPrice());
-		return "'" + data.getVisitorsNumber() + "','" 
-					+ data.getOrderEmail() + "','" 
-					+ data.getOrderPhone()+ "','"
-					+ data.getOrderType().toString() + "','" 
-					+ afterDiscount + "','"
-					+ beforDiscount + "','" 
-					+ data.getParkName() + "','" 
-					+ data.getArrivedTime() + "','" 
-					+ data.getMemberId() + "','"
-					+ data.getID() + "','"
-					+ data.getAmountArrived()+"','"
-					+ data.getOrderNumber() +"'";
+
+		String afterDiscount = Double.toString(data.getTotalPrice());
+		String beforDiscount = Double.toString(data.getPrice());
+		return "'" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderPhone() + "','"
+				+ data.getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','"
+				+ data.getParkName() + "','" + data.getArrivedTime() + "','" + data.getMemberId() + "','" + data.getID()
+				+ "','" + data.getAmountArrived() + "','" + data.getOrderNumber() + "'";
 	}
 
-	//input: order
+	// input: order
 	//
-	//output:  checks if u a member and return the member from DB
+	// output: checks if u a member and return the member from DB
 	public static Member MemerCheck(Order ord) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -128,27 +119,28 @@ public class NewOrder {
 
 	}
 
-	//input: order
+	// input: order
 	//
-	// output: returns the current price of entry in the park with manger discount calculated
-	//selected in the order
+	// output: returns the current price of entry in the park with manger discount
+	// calculated
+	// selected in the order
 	public static int CurrentPriceInPark(Order ord) {
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("park"); // table name
 		query.add("entryPrice,mangerDiscount"); // columns to select from
-		query.add("WHERE parkName='" + ord.getParkName() + "'"); // condition 
+		query.add("WHERE parkName='" + ord.getParkName() + "'"); // condition
 		query.add("2"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		//returns the price of entry to the park with a manager discount
-		return Integer.parseInt(queryData.get(0).get(0))*Integer.parseInt(queryData.get(0).get(1));
+		// returns the price of entry to the park with a manager discount
+		return Integer.parseInt(queryData.get(0).get(0)) * Integer.parseInt(queryData.get(0).get(1));
 	}
 
-	//input: ArrayList<Object>, ConnectionToClient
+	// input: ArrayList<Object>, ConnectionToClient
 	//
-	//output: returns to client side with a list of parks names from DB
+	// output: returns to client side with a list of parks names from DB
 	public static void ParksNames(ArrayList<Object> recived, ConnectionToClient client) {
 
 		// the returned values stored here
@@ -177,6 +169,31 @@ public class NewOrder {
 		}
 		EchoServer.sendToMyClient(answer, client);
 
+	}
+
+	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
+		// query
+		ArrayList<Object> answer = new ArrayList<Object>();
+		// the service name : updateAmountArrived
+		answer.add(recived.get(0));
+		// the data that sent from the client
+		// cell 0: orderNumber
+		// cell 1: amountArrived
+		ArrayList<String> data = (ArrayList<String>) recived.get(1);
+
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("update"); // command
+		query.add("order"); // table name
+		query.add("arrivedTime = '" + data.get(1) + "'"); // columns to update
+		query.add("orderNumber"); // condition
+		query.add(data.get(0)); // parkName value
+
+		if (MySQLConnection.update(query))
+			answer.add(new ArrayList<String>(Arrays.asList("true")));
+		else
+			answer.add(new ArrayList<String>(Arrays.asList("false")));
+
+		EchoServer.sendToMyClient(answer, client);
 	}
 
 }
