@@ -11,17 +11,18 @@ import userData.Member;
 //executed by Nastya
 public class NewOrder {
 
-		// input: ArrayList<Object>: cell[0] function name
-		//							 cell[1] order object ,ConnectionToClient
-		// inserting a new reservation in order table in DB
-		// output: ArrayList<Object>=> cell[0] function name
-		// cell[1] Order object with updated cells: price ,totalPrice
+	// input: ArrayList<Object>: cell[0] function name
+	// cell[1] order object ,ConnectionToClient
+	// inserting a new reservation in order table in DB
+	// output: ArrayList<Object>=> cell[0] function name
+	// cell[1] Order object with updated cells: price ,totalPrice
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList a = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
 		Member memb = MemerCheck(data); // to check the member type by order
+
 		// check if the capacity of orders is full
 		if ((!a.checkForAvailableSpots(recived, client))) {
 			answer.add(false);
@@ -30,7 +31,7 @@ public class NewOrder {
 
 		else {
 
-			data = totalPrice(data, memb);// updating the prices in the order
+			data = totalPrice(data, memb, data.isOccasional());// updating the prices in the order
 			//////////////
 			///// Roi//////
 			//////////////
@@ -55,14 +56,14 @@ public class NewOrder {
 	// input: Order with empty totalPrice & price & orderType, a Member
 	//
 	// output: Order with updated totalPrice and price and orderType
-	public static Order totalPrice(Order ord, Member memb) {
+	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
 
 		int parkEnteryPrice = CurrentPriceInPark(ord);
 		ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());
-		if (memb == null) {// if the order is not 4 a member
+		if (memb == null && !occasional) {// if the order is not for a member
 			ord.setOrderType(OrderType.REGULAR);
 			ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
-		} else {// if the order is for some members
+		} else {// if the order is for members/group
 
 			switch (memb.getMemberOrderType()) {
 			case MEMBER:
@@ -71,8 +72,11 @@ public class NewOrder {
 				int notFamilyMembers = ord.getVisitorsNumber() - familymembers;
 				if (notFamilyMembers < 0)
 					notFamilyMembers = 0;
-				ord.setTotalPrice(familymembers * parkEnteryPrice * 0.85);
-				ord.setTotalPrice(ord.getPrice() * 0.75 + notFamilyMembers * parkEnteryPrice * 0.85);
+				ord.setTotalPrice(familymembers * parkEnteryPrice * 0.80);
+				if (occasional)
+					ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice * 0.85);
+				else
+					ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice);
 				break;
 			case GROUP:
 				ord.setOrderType(OrderType.GROUP);
