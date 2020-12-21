@@ -501,7 +501,7 @@ public class ParkEmployeeController implements Initializable {
 			ClientUI.sentToChatClient(msg);
 			
 			System.out.println(newOrderDetails);
-//			sendToServer("memberByIdOrMemberId", 
+//			sendToServer("memberByIdOrMemberId",
 //					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
 			
 			
