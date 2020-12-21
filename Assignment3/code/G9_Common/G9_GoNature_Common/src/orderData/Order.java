@@ -189,4 +189,10 @@ public class Order implements Serializable {
 				+ "','" + getOrderType().toString().toLowerCase() + "','" + getPrice() + "','" + getParkName() + "','"
 				+ getArrivedTime() + "','" + getMemberId() + "'" + getID() + "'";
 	}
+	
+	public boolean isOccasional() {
+		if(this.orderEmail==null&& this.orderPhone==null)
+			return true;
+		return false;
+	}
 }

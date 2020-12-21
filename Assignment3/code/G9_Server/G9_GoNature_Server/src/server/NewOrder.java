@@ -11,7 +11,8 @@ import userData.Member;
 //executed by Nastya
 public class NewOrder {
 
-		// input: ArrayList<Object>,ConnectionToClient
+		// input: ArrayList<Object>: cell[0] function name
+		//							 cell[1] order object ,ConnectionToClient
 		// inserting a new reservation in order table in DB
 		// output: ArrayList<Object>=> cell[0] function name
 		// cell[1] Order object with updated cells: price ,totalPrice
