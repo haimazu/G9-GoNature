@@ -221,6 +221,12 @@ public class ManageOrderController implements Initializable {
 		return true;
 	}
 
+	public static void canceledOrderFromServer(boolean returned) {
+		// TODO Auto-generated method stub
+		if(returned)
+			order=null;
+	}
+	
 	@FXML
 	/*
 	 * NICE TO HAVE!!!!!!
@@ -230,10 +236,4 @@ public class ManageOrderController implements Initializable {
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
 //		stage.setScene(new Scene(root));
 	}
-	public static void canceledOrderFromServer(boolean b) {
-		// TODO Auto-generated method stub
-		if(b)
-			order=null;
-	}
-
 }
