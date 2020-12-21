@@ -75,7 +75,7 @@ public class ChatClient extends AbstractClient {
 				ParkEmployeeController.receivedFromServerAmountArrivedStatus((boolean)received.get(1));
 				break;
 			case "memberByIdOrMemberId":
-				ParkEmployeeController.receivedFromServerMemberDetails((Object)received.get(1));
+				ParkEmployeeController.receivedFromServerMemberDetails((ArrayList<Object>)received.get(1));
 				break;
 			case "order":
 				OrderController.recivedFromServer((Object)received.get(1));
@@ -87,6 +87,8 @@ public class ChatClient extends AbstractClient {
 				CreditCardController.recivedFromServerSuccessPayment((boolean)received.get(1));
 			case "updateOrder":
 				ManageOrderController.updatedOrderFromServer((Object)received.get(1));
+			case "cancelOrder":
+				ManageOrderController.canceledOrderFromServer((boolean)received.get(1));
 			default:
 			break;
 		}

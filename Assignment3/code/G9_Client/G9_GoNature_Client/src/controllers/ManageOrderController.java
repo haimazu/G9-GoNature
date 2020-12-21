@@ -77,7 +77,6 @@ public class ManageOrderController implements Initializable {
 	private AlertController alert = new AlertController();
 	private static Order order=null;
 	private static boolean updated=false;
-	private OrderController oc = new OrderController();
 	public static Order getOrder() {
 		return order;
 	}
@@ -153,7 +152,8 @@ public class ManageOrderController implements Initializable {
 	void update(ActionEvent event) {
 		Order sentOrder = order; // maybe a pointer ???
 		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
-			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + oc.getArrivalTime(cbxArriveTime.getValue().toString()));
+			String[] timeString = cbxArriveTime.getValue().toString().split("-");
+			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + timeString);
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
 			int orderVisitorsNumber = sentOrder.getVisitorsNumber();
