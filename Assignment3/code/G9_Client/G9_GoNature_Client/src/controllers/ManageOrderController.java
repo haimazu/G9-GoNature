@@ -66,7 +66,7 @@ public class ManageOrderController implements Initializable {
 
 	private AlertController alert = new AlertController();
 
-	private static ArrayList<String> orderDetailsMan;
+
 
 	private void setOrderdetails() {
 		// 2021-01-01 08:00:00
