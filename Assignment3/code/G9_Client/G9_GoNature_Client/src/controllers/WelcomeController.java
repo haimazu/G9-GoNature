@@ -97,20 +97,17 @@ public class WelcomeController implements Initializable {
 			}
 			System.out.println("after5");
 			
-			if (orderDetails.equals("No such order")) {
+			if (orderDetails.equals(null)) {
 				alert.setAlert("Failed, No such order.");
 				btnOrderNumber.setVisible(true);
 				btnGo.setVisible(false);
 				txtOrderNum.setVisible(false);
-				
 				return;
-
 			} else {
 				Stage stage = (Stage) btnGo.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
 				setOrderDetails(orderDetails);
 				stage.setScene(new Scene(root));
-				
 			}
 			WelcomeController.setOrderDetails(null);
 			System.out.println(orderDetails);
@@ -125,10 +122,12 @@ public class WelcomeController implements Initializable {
 		orderDetails = orderDetails2;
 	}
 
-	public static void recievedFromServerValidOrder(Order orderDetails) {
+	public static void recievedFromServerValidOrder(Object orderDetails) {
 		System.out.println("MADE IT ALIVE");
-		setOrderDetails(orderDetails);
-		
+		if (orderDetails instanceof Order)
+			setOrderDetails((Order)orderDetails);
+		else
+			setOrderDetails(null);
 		
 	}
 
@@ -147,6 +146,7 @@ public class WelcomeController implements Initializable {
 		parkNamesArr.add("orderParksNameList");
 		ClientUI.sentToChatClient(parkNamesArr);
 	}
+
 
 
 }

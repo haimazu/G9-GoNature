@@ -68,7 +68,7 @@ public class Order implements Serializable {
 		this.visitorsNumber = Integer.parseInt(orderFromDB.get(0));
 		this.orderEmail = orderFromDB.get(1);
 		this.orderPhone = orderFromDB.get(2);
-		this.orderType = OrderType.valueOf(orderFromDB.get(3));
+		this.orderType = OrderType.valueOf(orderFromDB.get(3).toUpperCase());
 		this.price = Double.parseDouble(orderFromDB.get(4));
 		this.totalPrice = Double.parseDouble(orderFromDB.get(5));
 		this.parkName = orderFromDB.get(6);
@@ -77,7 +77,6 @@ public class Order implements Serializable {
 		this.ID = orderFromDB.get(9);
 		this.amountArrived = Integer.parseInt(orderFromDB.get(10));
 		this.orderNumber = Integer.parseInt(orderFromDB.get(11));
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getAmountArrived() {
