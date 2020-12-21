@@ -1,7 +1,7 @@
 package userData;
 
-public class FamilyMember extends Member{
-	
+public class FamilyMember extends Member {
+
 	private int familyMembersAmount;
 
 	/**
@@ -14,17 +14,16 @@ public class FamilyMember extends Member{
 	 * @param memberPaymentType
 	 */
 	public FamilyMember(String memberID, String memberFirstNAme, String memberLastNAme, int memberNumber,
-			String memberPhoneNumber, String memberEmail, String memberPaymentType,int familyMembersAmount) {
-		super(memberID, memberFirstNAme, memberLastNAme, memberNumber, memberPhoneNumber, memberEmail, memberPaymentType);
-		
-		
-		this.familyMembersAmount=familyMembersAmount;
+			String memberPhoneNumber, String memberEmail, String memberPaymentType, String memberAmount,
+			int familyMembersAmount) {
+		super(memberID, memberFirstNAme, memberLastNAme, memberNumber, memberPhoneNumber, memberEmail,
+				memberPaymentType, memberAmount);
+
+		this.familyMembersAmount = familyMembersAmount;
 	}
 
 	/**
 	 * 
 	 */
 
-	
-	
 }

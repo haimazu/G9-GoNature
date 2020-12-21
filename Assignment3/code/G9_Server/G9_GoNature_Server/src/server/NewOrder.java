@@ -63,7 +63,7 @@ public class NewOrder {
 			switch (memb.getMemberOrderType()) {
 			case MEMBER:
 				ord.setOrderType(OrderType.MEMBER);
-				int familymembers = Integer.parseInt(memb.getAmount());
+				int familymembers = Integer.parseInt(memb.getMemberAmount());
 				int notFamilyMembers = ord.getVisitorsNumber() - familymembers;
 				if (notFamilyMembers < 0)
 					notFamilyMembers = 0;
@@ -72,7 +72,7 @@ public class NewOrder {
 				break;
 			case GROUP:
 				ord.setOrderType(OrderType.GROUP);
-				int groupAmount = Integer.parseInt(memb.getAmount());
+				int groupAmount = Integer.parseInt(memb.getMemberAmount());
 				ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
 				break;
 			default:

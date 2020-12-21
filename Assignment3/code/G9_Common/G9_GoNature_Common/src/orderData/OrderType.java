@@ -1,7 +1,7 @@
 package orderData;
 
 public enum OrderType {
-	REGULAR("random"), //no membership, not from a group
+	REGULAR("regular"), //no membership, not from a group
 	MEMBER("member"),//has a membership
 	GROUP("group"); //with a guide
 	

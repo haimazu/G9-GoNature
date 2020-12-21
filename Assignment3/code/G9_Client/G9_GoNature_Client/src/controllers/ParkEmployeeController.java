@@ -35,8 +35,11 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import orderData.Order;
+import orderData.OrderType;
+import userData.Member;
 
 public class ParkEmployeeController implements Initializable {
+	/***** Top/Side Panels Details *****/
 	@FXML
 	private Label lblFirstNameTitle;
 	@FXML
@@ -46,6 +49,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnSettings;
 
+	/***** Current Park Details *****/
 	@FXML
 	private Label lblTitle;
 	@FXML
@@ -56,6 +60,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Pane pnDashboard;
 
+	/***** Print Details *****/
 	@FXML
 	private Label lblOrderNumber;
 	@FXML
@@ -69,6 +74,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Label lblEmail;
 
+	/***** Payment Details *****/
 	@FXML
 	private Label lblVisitorsAmount;
 	@FXML
@@ -80,9 +86,11 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Label lblTotalPrice;
 
+	/***** BarcodeScan *****/
 	@FXML
 	private Button btnBarcodeScan;
 
+	/***** Show Details - Regular Entry *****/
 	@FXML
 	private JFXTextField txtOrderNumber;
 	@FXML
@@ -90,6 +98,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnShowDetails;
 
+	/***** Random Entry *****/
 	@FXML
 	private Button btnRandomVisitor;
 	@FXML
@@ -100,6 +109,8 @@ public class ParkEmployeeController implements Initializable {
 	private Label lblTimeTitle;
 	@FXML
 	private Label lblRandomTime;
+	@FXML
+	private JFXTextField txtIdOrMemberId;
 	@FXML
 	private JFXTextField txtRandomVisitorsAmount;
 
@@ -120,6 +131,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String parkName;
 	private static Order orderDetails;
 	private static Park parkDetails;
+	private static Member memberDetails;
 	private static String error = "";
 	// private Map<String, Integer> orderDocumentation = new HashMap<String,
 	// Integer>();
@@ -224,6 +236,7 @@ public class ParkEmployeeController implements Initializable {
 		lblTimeTitle.setVisible(true);
 		lblRandomTime.setVisible(true);
 		txtRandomVisitorsAmount.setVisible(true);
+		txtIdOrMemberId.setVisible(true);
 		radExit.setDisable(true);
 	}
 	
@@ -234,6 +247,7 @@ public class ParkEmployeeController implements Initializable {
 		lblTimeTitle.setVisible(false);
 		lblRandomTime.setVisible(false);
 		txtRandomVisitorsAmount.setVisible(false);
+		txtIdOrMemberId.setVisible(false);
 	}
 
 	// input: none
@@ -250,8 +264,8 @@ public class ParkEmployeeController implements Initializable {
 		if (checkFreePlacesInThePark()) {
 			// random mode
 			if (!btnRandomVisitor.isVisible()) {
-				if (txtRandomVisitorsAmount.getText().isEmpty()) {
-					alert.failedAlert("Failed", "You must enter visitor/s amount.");
+				if (txtIdOrMemberId.getText().isEmpty() || txtRandomVisitorsAmount.getText().isEmpty()) {
+					alert.failedAlert("Failed", "All fields required.");
 					return;
 				} else {
 					execRandomVisitor(Integer.parseInt(txtRandomVisitorsAmount.getText()));
@@ -271,11 +285,16 @@ public class ParkEmployeeController implements Initializable {
 					// doesn't exists in the list -> entering the park
 					if (radVisitorStatusText.equals("Enter")) {
 						
+						// if this order is already listed in "Used", asked to make a purchase for everyone 
 						if (orderDetails.getAmountArrived() != 0) {
-							alert.failedAlert("Failed", "Visitors to this order have already entered the park.");
-							clearAllFields();
-							return;
+							alert.ensureAlert("Ensure", "Visitors to this order have already entered the park.\n"
+									+ "Are you sure you want to approve the purchase for everyone?");
+							if (alert.getResult().equals("OK")) {
+								execRandomVisitor(Integer.parseInt(txtVisitorsAmount.getText()));
+								return;
+							}
 						}
+						
 						execEnter();
 						
 					/*** Exit ***/
@@ -299,7 +318,7 @@ public class ParkEmployeeController implements Initializable {
 	// output: updating the current visitors in the park 
 	public void execEnter() {
 		int tooManyVisitors = 0;
-		
+
 		// check if the amount of "visitorsEntered" greater than the invitation.
 		if (Integer.parseInt(txtVisitorsAmount.getText()) > 
 	    	Integer.parseInt(lblVisitorsNumber.getText())) {
@@ -391,7 +410,7 @@ public class ParkEmployeeController implements Initializable {
 
 		// check if the amount of "visitorsEntered" greater than the invitation.
 		if (visitorsAmount > freePlace) {
-			alert.failedAlert("Failed", "The amount of visitors doesn't match the invitation.");
+			alert.failedAlert("Failed", "The amount of visitors is greater than the available places in the park.");
 		} else {
 			// update current visitors
 			alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
@@ -440,12 +459,20 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			lblEmail.setText(orderDetails.getOrderEmail());
 
-			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
 			lblPrice.setText(orderDetails.getPrice() + "₪");
+			//lblDiscount.setText(orderDetails + "%");
+			lblTotalPrice.setText(orderDetails.getTotalPrice() + "₪");
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public void setDiscountPersent() {		
+		// case 1 and 3 -> single/family OR group
+		// AND they have order
+		
 	}
 
 	// check for valid date in the order
@@ -660,11 +687,7 @@ public class ParkEmployeeController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
-		lblDateTitle.setVisible(false);
-		lblRandomDate.setVisible(false);
-		lblTimeTitle.setVisible(false);
-		lblRandomTime.setVisible(false);
-		txtRandomVisitorsAmount.setVisible(false);
+		setRandomModeOff();
 		radVisitorStatusText = "Enter";
 		
 		//setParkName(LoginController.getParkName());
@@ -712,6 +735,17 @@ public class ParkEmployeeController implements Initializable {
 				// ^\\d -> everything that not a digit
 				txtRandomVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
 				lblVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+		});
+		
+		// force the field to be numeric only
+		txtIdOrMemberId.textProperty().addListener((obs, oldValue, newValue) -> {
+			btnApprove.setDisable(false);
+			// \\d -> only digits
+			// * -> escaped special characters
+			if (!newValue.matches("\\d")) {
+				// ^\\d -> everything that not a digit
+				txtIdOrMemberId.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
 
