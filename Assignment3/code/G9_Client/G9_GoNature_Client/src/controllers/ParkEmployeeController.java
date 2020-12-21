@@ -469,10 +469,39 @@ public class ParkEmployeeController implements Initializable {
 	}
 	
 	
-	public void setDiscountPersent() {		
-		// case 1 and 3 -> single/family OR group
+	public void setDiscountPersent() {	
+		String discount = "";
+		double totalPrice = 0;
+		int managerDiscount = parkDetails.getMangerDiscount();
+				
+		// case 2 or 4 -> single/family OR group
+		/***** Random *****/
+		if (!btnRandomVisitor.isVisible()) {
+			// get the member details from the DB
+			sendToServer("memberByIdOrMemberId", 
+					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
+			
+		// case 1 or 3 -> single/family OR group
 		// AND they have order
+		/***** Order *****/
+		} else {
+			// this is guide in case 3
+			if (orderDetails.getOrderType().equals(OrderType.GROUP)) {
+				totalPrice = parkDetails.getEnteryPrice() * 0.75;
+				discount = "25%";				
+				//TODO 12% payment ?
+			// this is single/family in case 1
+			} else {
+				totalPrice = parkDetails.getEnteryPrice() * 0.85;
+				discount = "15%";
+				if (orderDetails.getOrderType().equals(OrderType.MEMBER)) {
+					totalPrice = totalPrice * 0.80;
+					discount = "35%";
+				}
+			}
+		}
 		
+		//TODO add manager discount if not 0
 	}
 
 	// check for valid date in the order
@@ -632,6 +661,20 @@ public class ParkEmployeeController implements Initializable {
 	// output: new park
 	public static void receivedFromServerParkDetails(ArrayList<String> park) {
 		ParkEmployeeController.parkDetails = new Park(park);
+	}
+	
+	// getting information from the server
+	// input: if the member exists in the system: 
+	// 		  		1. ArrayList<String> member with all the member data
+	//        otherwise 2. string of "Not a member"
+	// output: for case 1. we create new member with all the received details
+	//         for case 2. we set the error message
+	public static void receivedFromServerMemberDetails(ArrayList<String> member) {
+		if (member.get(0).equals("Not a member")) {
+			setError("Not a member");
+		} else {
+			ParkEmployeeController.memberDetails = new Member(member);
+		}
 	}
 	
 	// getting information from the server
