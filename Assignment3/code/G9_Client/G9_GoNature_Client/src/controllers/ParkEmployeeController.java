@@ -130,6 +130,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String firstName;
 	private static String parkName;
 	private static Order orderDetails;
+	private static Order newOrderDetails;
 	private static Park parkDetails;
 	private static Member memberDetails;
 	private static String error = "";
@@ -472,14 +473,37 @@ public class ParkEmployeeController implements Initializable {
 	public void setDiscountPersent() {	
 		String discount = "";
 		double totalPrice = 0;
+		String id = "";
+		String memberId = "";
 		int managerDiscount = parkDetails.getMangerDiscount();
 				
 		// case 2 or 4 -> single/family OR group
 		/***** Random *****/
 		if (!btnRandomVisitor.isVisible()) {
+			
+			if (txtRandomVisitorsAmount.getText().length() == 9) {
+				id = txtRandomVisitorsAmount.getText();
+			} else {
+				memberId = txtRandomVisitorsAmount.getText();
+			}
+			
+			Order o = new Order(getParkName(), "2021-01-02 10:00:00", memberId, id, 
+					Integer.parseInt(txtRandomVisitorsAmount.getText()));
 			// get the member details from the DB
-			sendToServer("memberByIdOrMemberId", 
-					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
+			// Query
+			ArrayList<Object> msg = new ArrayList<Object>();
+			
+			msg.add("memberByIdOrMemberId");
+			// Data fields
+			msg.add(o);
+			
+			// set up all the order details and the payment method
+			ClientUI.sentToChatClient(msg);
+			
+			System.out.println(newOrderDetails);
+//			sendToServer("memberByIdOrMemberId",
+//					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
+			
 			
 		// case 1 or 3 -> single/family OR group
 		// AND they have order
@@ -597,7 +621,7 @@ public class ParkEmployeeController implements Initializable {
 		}
 		return false;
 	}
-
+	
 	// String type, the case we dealing with
 	// ArrayList<String> dbColumns, sending to the server to get data
 	// input: cells, depending on the case
@@ -669,11 +693,11 @@ public class ParkEmployeeController implements Initializable {
 	//        otherwise 2. string of "Not a member"
 	// output: for case 1. we create new member with all the received details
 	//         for case 2. we set the error message
-	public static void receivedFromServerMemberDetails(ArrayList<String> member) {
-		if (member.get(0).equals("Not a member")) {
-			setError("Not a member");
+	public static void receivedFromServerMemberDetails(ArrayList<Object> order) {
+		if (!(boolean)order.get(1)) {
+			setError("Failed");
 		} else {
-			ParkEmployeeController.memberDetails = new Member(member);
+			ParkEmployeeController.newOrderDetails = (Order) order.get(1);
 		}
 	}
 	

@@ -43,7 +43,7 @@ public class EchoServer extends AbstractServer {
 			NewOrder.updateOrderAmountArrived(recived, client);
 			break;
 		case "memberByIdOrMemberId":
-			ExistingRandomMemberCheck.getMemberByIdOrMemberId(recived, client);
+			NewOrder.NewReservation(recived, client);
 			break;
 		case "order":
 			NewOrder.NewReservation(recived, client);
