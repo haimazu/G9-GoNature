@@ -190,6 +190,7 @@ public class Order implements Serializable {
 				+ getArrivedTime() + "','" + getMemberId() + "'" + getID() + "'";
 	}
 	
+	//checks if the order is for occasional visitor
 	public boolean isOccasional() {
 		if(this.orderEmail==null&& this.orderPhone==null)
 			return true;
