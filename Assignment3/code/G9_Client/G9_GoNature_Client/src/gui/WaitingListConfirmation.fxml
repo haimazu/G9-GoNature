@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pnResetPassword" maxHeight="300.0" maxWidth="300.0" prefHeight="400.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ForgotPasswordController">
+<Pane fx:id="pnResetPassword" maxHeight="300.0" maxWidth="300.0" prefHeight="400.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WaitingListConfirmContoller">
    <children>
       <Label layoutX="24.0" layoutY="73.0" prefHeight="21.0" prefWidth="261.0" text="I would like to enter the waiting list for the date" />
-      <Button fx:id="btnListMe" focusTraversable="false" layoutX="63.0" layoutY="233.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="List me" />
+      <Button fx:id="btnListMe" focusTraversable="false" layoutX="63.0" layoutY="233.0" mnemonicParsing="false" onAction="#listMe" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="List me" />
       <Label focusTraversable="false" layoutX="116.0" layoutY="20.0" styleClass="labelBold" text="Confirmation" underline="true">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <JFXCheckBox focusTraversable="false" layoutX="119.0" layoutY="197.0" text="I agree">
+      <JFXCheckBox fx:id="agree" focusTraversable="false" layoutX="119.0" layoutY="197.0" text="I agree">
          <font>
             <Font name="Ebrima" size="12.0" />
          </font></JFXCheckBox>

@@ -1,9 +1,14 @@
 package controllers;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class WaitingListController {
 
@@ -23,8 +28,12 @@ public class WaitingListController {
     }
 
     @FXML
-    void here(ActionEvent event) {
-
+    void here(ActionEvent event) throws IOException {
+    	Stage stage = new Stage();
+		Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingListConfirmation.fxml"));
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
     }
 
 }

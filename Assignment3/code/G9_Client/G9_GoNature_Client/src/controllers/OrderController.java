@@ -327,6 +327,7 @@ public class OrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
+	//need to fix
 	@FXML
 	void here(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnHere.getScene().getWindow();
@@ -342,7 +343,6 @@ public class OrderController implements Initializable {
 	 */
 	public static void recivedFromServer(Object newOrder) {
 		if (newOrder instanceof String) {
-			System.out.println(newOrder + " order con 334");
 			String status = (String) newOrder;
 			setStatus(status);
 		} else if (newOrder instanceof Boolean) {
