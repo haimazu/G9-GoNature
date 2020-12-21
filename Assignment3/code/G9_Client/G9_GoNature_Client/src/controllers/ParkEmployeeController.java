@@ -531,16 +531,16 @@ public class ParkEmployeeController implements Initializable {
 		ParkEmployeeController.parkDetails = new Park(park);
 	}
 	
-	public static void receivedFromServerCurrentVisitorsUpdateStatus(ArrayList<String> status) {
-		if (status.get(0).equals("true")) {
+	public static void receivedFromServerCurrentVisitorsUpdateStatus(boolean status) {
+		if (status) {
 			setError("true");
 		} else {
 			setError("false");
 		}
 	}
 	
-	public static void receivedFromServerAmountArrivedStatus(ArrayList<String> status) {
-		if (status.get(0).equals("true")) {
+	public static void receivedFromServerAmountArrivedStatus(boolean status) {
+		if (status) {
 			setError("true");
 		} else {
 			setError("false");
