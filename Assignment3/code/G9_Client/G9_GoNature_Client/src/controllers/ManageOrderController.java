@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -73,28 +74,32 @@ public class ManageOrderController implements Initializable {
 	private JFXComboBox<String> cbxArriveTime;
 
 	private AlertController alert = new AlertController();
+	private static Order order=null;
+	
+	public static Order getOrder() {
+		return order;
+	}
+	public static void setOrder(Order order) {
+		ManageOrderController.order = order;
+	}
 	/*
-	 * input : received order object from server
-	 * Output : non
-	 * present : order details
+	 * input : received order object from server Output : non present : order
+	 * details
 	 * 
 	 */
 	void presentOrderdetails(Order details) {
-		// 2021-01-01 08:00:00
+
 		String DateAndTime = details.getArrivedTime();
 		String[] splitDateAndTime = DateAndTime.split(" ");
-		// 2021-01-01
+
 		String date = splitDateAndTime[0];
 
-		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
-		// iFormatter -> input format
 		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		// oFormatter -> output format
+
 		DateFormat oFormatter = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			String strDateTime = oFormatter.format(iFormatter.parse(date));
 
-			// 08:00:00 -> 08:00
 			String time = (String) splitDateAndTime[1].subSequence(0, 5);
 
 			lblOrderNum.setText(String.valueOf(details.getOrderNumber()));
@@ -107,20 +112,22 @@ public class ManageOrderController implements Initializable {
 			this.lblTotal.setText(String.valueOf(details.getTotalPrice()));
 			double discValue = (1 - (details.getTotalPrice() / details.getPrice())) * 100;
 			this.lblDiscount.setText(String.format("%.1f", discValue) + "%");
-		} catch (ParseException e) {
+		} 
+		catch (ParseException e) {
 			e.printStackTrace();
 		}
 
 	}
-
+/*
+ * 
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 		cbxArriveTime.getSelectionModel().selectFirst();
-		presentOrderdetails(WelcomeController.getOrderDetails());
+		setOrder(WelcomeController.getOrderDetails());
+		presentOrderdetails(order);
 
-		// initialize date value with today
-		// The user can pick a date only from today until this day next year
 		txtdate.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
@@ -142,11 +149,16 @@ public class ManageOrderController implements Initializable {
 
 	@FXML
 	void update(ActionEvent event) {
-		ArrayList<Object> msgForServer = new ArrayList<>();
+		Order sentOrder = order; // maybe a pointer ???
 		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
-			System.out.println("hihi");
+		if((txtVisitorsNumber.getText().equals(sentOrder.getVisitorsNumber()))
+				txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
+				+ getArrivalTime(cbxArrivelTime.getValue().toString())).equals(sentOrder.getArrivedTime())
 
-			// ClientUI.sentToChatClient(msgForServer);
+			 
+			
+			
+			ClientUI.sentToChatClient(msgForServer);
 
 		}
 	}
@@ -169,7 +181,7 @@ public class ManageOrderController implements Initializable {
 	/*
 	 * Check that the user didn't leave field empty
 	 */
-	
+
 	public boolean checkNotEmptyVisitorsField() {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		if (visitorsNumber.isEmpty()) {
