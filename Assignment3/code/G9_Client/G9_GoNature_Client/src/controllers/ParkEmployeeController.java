@@ -581,7 +581,7 @@ public class ParkEmployeeController implements Initializable {
 		txtRandomVisitorsAmount.setVisible(false);
 		radVisitorStatusText = "Enter";
 		
-		//setParkName(LoginController.getParkName());
+		setParkName(LoginController.getParkName());
 
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.getHour() + ":" + arrivelTime.getMinute());

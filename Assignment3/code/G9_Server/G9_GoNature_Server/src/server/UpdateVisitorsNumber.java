@@ -96,9 +96,9 @@ public class UpdateVisitorsNumber {
 		query.add(data.get(0)); // parkName value
 
 		if (MySQLConnection.update(query))
-			answer.add(new ArrayList<String>(Arrays.asList("true")));
+			answer.add("true");
 		else
-			answer.add(new ArrayList<String>(Arrays.asList("false")));
+			answer.add("false");
 		
 		EchoServer.sendToMyClient(answer, client);
 	}
