@@ -46,67 +46,78 @@ import orderData.Order;
  *  This controller include all three screen of success order
  */
 public class OrderController implements Initializable {
+	/*********Pane**************/
 	@FXML
 	private StackPane pnStackOrder;
-
 	@FXML
 	private Pane pnOrder;
+	@FXML
+	private Pane pnPayment;
+	@FXML
+	private Pane pnConfirmation;
+
+	/******** Button ********/
 	@FXML
 	private Button btnBack;
 	@FXML
 	private Button btnClear;
 	@FXML
 	private Button btnNext;
-
-	@FXML
-	private Pane pnPayment;
 	@FXML
 	private Button btnContinue;
-
-	@FXML
-	private Pane pnConfirmation;
-
 	@FXML
 	private Button btnHome;
+	@FXML
+	private Button information;
+
+	/********* Order screen************/
 	@FXML
 	private JFXDatePicker txtdate;
 	@FXML
 	private JFXComboBox<String> cbxArrivelTime;
 	@FXML
 	private JFXComboBox<String> cbxParkName;
-
 	@FXML
 	private JFXTextField txtVisitorsNumber;
 	@FXML
 	private JFXTextField txtInvitingEmail;
 	@FXML
 	private JFXTextField txtmemberID;
-
+	@FXML
+	private JFXTextField txtPhoneNum;
 	@FXML
 	private ImageView imgOrder;
 
-	@FXML
-	private Button information;
-
-	/*
-	 * confirmation screen:
-	 */
-
+	/***** confirmation screen ***/
 	@FXML
 	private Hyperlink btnHere;
-
 	@FXML
 	private Label txtOrderNum;
-	
-    @FXML
-    private JFXTextField txtPhoneNum;
+
+	/*************** payment screen ******************/
+
+	@FXML
+	private JFXRadioButton radioCash;
+	@FXML
+	private JFXRadioButton radioPayPal;
+	@FXML
+	private JFXRadioButton radioCreditCard;
+	@FXML
+	private JFXCheckBox CheckBoxAgreed;
+	@FXML
+	private Label txtprice;
+	@FXML
+	private Label txtVisitoramountPrice;
+	@FXML
+	private Label txtdDiscount;
+	@FXML
+	private Label txtTotalPrice;
+
+	/************* my values ***************/
 
 	private Image imgOrderEmpty = new Image("/gui/cart-removebg-80.png");
 	private Image imgOrderFull = new Image("/gui/cartfull-removebg-80.png");
 
-	/*
-	 * my values:
-	 */
 	private static ArrayList<String> ParksNames = new ArrayList<>();
 	private static Order orderSuccess;
 	private static Order order;
@@ -116,44 +127,7 @@ public class OrderController implements Initializable {
 	private String ID = null;
 	private AlertController alert = new AlertController();
 
-	// private static PaymentController payStatus; // contriller for paymnt to check
-	// the fields
-
-	/*
-	 * payment screen:
-	 */
-
-//	public static boolean getPaymentStatus() {
-//		return paymentStatus;
-//	}
-//
-//	public static void setPaymentStatus(boolean paymentStatus) {
-//		OrderController.paymentStatus = paymentStatus;
-//	}
-
-	@FXML
-	private JFXRadioButton radioCash;
-
-	@FXML
-	private JFXRadioButton radioPayPal;
-
-	@FXML
-	private JFXRadioButton radioCreditCard;
-
-	@FXML
-	private JFXCheckBox CheckBoxAgreed;
-
-	@FXML
-	private Label txtprice;
-
-	@FXML
-	private Label txtVisitoramountPrice;
-
-	@FXML
-	private Label txtdDiscount;
-
-	@FXML
-	private Label txtTotalPrice;
+	/***************** Getters and Setters for statics *****************/
 
 	public static Order getOrder() {
 		return order;
@@ -162,6 +136,7 @@ public class OrderController implements Initializable {
 	public static void setOrder(Order order) {
 		OrderController.order = order;
 	}
+
 	public static boolean isFaildDB() {
 		return faildDB;
 	}
@@ -170,21 +145,20 @@ public class OrderController implements Initializable {
 		OrderController.faildDB = faildDB;
 	}
 
-	/*
-	 * status to check if the order success
-	 */
+	// status to check if the order success
 	public static String getStatus() {
 		return status;
 	}
-
+	// status to check if the order success
 	public static void setStatus(String status) {
 		OrderController.status = status;
 	}
 
+	//order after server
 	public static Order getOrderSuccess() {
 		return orderSuccess;
 	}
-
+	//order after server
 	public static void setOrderSuccess(Order orderSuccess) {
 		OrderController.orderSuccess = orderSuccess;
 	}
@@ -192,7 +166,21 @@ public class OrderController implements Initializable {
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
 	}
-
+	
+	
+	
+	
+	/*************************************my Code*******************************************************/
+	
+	
+				/**************code for buttons - JAVAFX********************/
+	
+	
+	/**
+	 * button for forward to the screen before
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void back(ActionEvent event) throws IOException {
 		ObservableList<Node> stackPanels = this.pnStackOrder.getChildren();
@@ -200,26 +188,36 @@ public class OrderController implements Initializable {
 		if (stackPanels.size() > 1) {
 			Node topNode = stackPanels.get(stackPanels.size() - 1);
 
-			if (topNode.getId().equals("pnOrder")) {
+			if (topNode.getId().equals("pnOrder")) {//in order screen
 				Stage stage = (Stage) btnBack.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 				stage.setScene(new Scene(root));
-			} else if (topNode.getId().equals("pnPayment")) {
+			} else if (topNode.getId().equals("pnPayment")) {//in payment screen
 				imgOrder.setImage(imgOrderEmpty);
 				pnOrder.toFront();
-			} else if (topNode.getId().equals("pnConfirmation")) {
+			} else if (topNode.getId().equals("pnConfirmation")) {//in confirmation screen
 				pnPayment.toFront();
 			}
 		}
 	}
 
+	/**
+	 * clear all fields in order screen
+	 * @param event
+	 */
 	@FXML
 	void clear(ActionEvent event) {
 		txtVisitorsNumber.clear();
 		txtInvitingEmail.clear();
 		txtmemberID.clear();
+		txtPhoneNum.clear();
 	}
 
+	/**
+	 * radio button for open screen creditCard
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void crditCardClick(ActionEvent event) throws IOException {
 		Stage stage = new Stage();
@@ -229,44 +227,45 @@ public class OrderController implements Initializable {
 		stage.show();
 	}
 
-	/*
-	 * msgForServer is ArrayList of objects -> [0] -> name of the class [1] -> order
-	 * Object
+
+	/**
+	 * msgForServer is ArrayList of objects -> [0] -> name of the class "order" [1] -> order
+	 * Object / String / boolean
+	 * output from server : Object Order / String / boolean
 	 * 
-	 * By clicking button next the function will check it the values in the fields
+	 * By clicking button next the function will check if the values in the fields
 	 * are correct - if so, send them to server
-	 * 
-	 **/
+	 * Or if there is no place will open the waiting list screen
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void next(ActionEvent event) throws IOException {
 		ArrayList<Object> msgNewOrderForServer = new ArrayList<>();
 		// ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
-
 		// continue only if the fields are correct
-		if (checkNotEmptyFields() && checkCorrectEmail() && checkCorrectAmountVisitor() && checkCorrectMemberId()
-				&& checkCurrentTime() && checkCorrectPhone()) {
+		if (checkNotEmptyFields() && checkCorrectFields() && checkCurrentTime()) {
 			msgNewOrderForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
 					+ getArrivalTime(cbxArrivelTime.getValue().toString());
 			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
-					"0549991234", cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
+					txtPhoneNum.getText(), cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
 			msgNewOrderForServer.add(OrderController.order);
 			imgOrder.setImage(imgOrderFull);
 
 			if (btnNext == event.getSource()) {
 
 				ClientUI.sentToChatClient(msgNewOrderForServer);
-				if (status.equals("Failed")) {
+				
+				if (status.equals("Failed")) { //the user can't order 
 					Stage stage = new Stage();
 					Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
 					Scene scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
-				}
-				else if(!faildDB) {
+				} else if (!faildDB) { //the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
-				}
-				else {
+				} else { // Order success
 
 					this.txtprice.setText(String.valueOf(orderSuccess.getPrice()));
 					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()));
@@ -275,11 +274,9 @@ public class OrderController implements Initializable {
 					this.txtVisitoramountPrice.setText(String.valueOf(orderSuccess.getVisitorsNumber()));
 					pnPayment.toFront();
 					groupRadioButton();
-					// msgEditPaymentForServer.add("orderPaymentMathod");
-					// msgEditPaymentForServer.add(orderSuccess);
-					// add send to server detail of payment add to db and object order
+
 				}
-			} else if (btnContinue == event.getSource()) {
+			} else if (btnContinue == event.getSource()) { // in payment screen
 
 				if (checkNotEmptyFieldsPaymentScreen()) {
 
@@ -297,10 +294,28 @@ public class OrderController implements Initializable {
 		}
 	}
 
-//	public static void updateOrderNum() {
-//		txtOrderNum.setText(String.valueOf(orderSuccess.getOrderNumber()));
-//	}
+	@FXML
+	void home(ActionEvent event) throws IOException {
+		Stage stage = (Stage) btnHere.getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+		stage.setScene(new Scene(root));
+	}
+	
+	// need to fix
+	@FXML
+	void here(ActionEvent event) throws IOException {
+		Stage stage = (Stage) btnHere.getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
+		stage.setScene(new Scene(root));
 
+	}
+	
+	/*******************************Code for tests and additions****************************************/
+
+	/**
+	 * 
+	 * @return what the payment mathod the user choose
+	 */
 	public String paymentChosen() {
 		if (radioCash.isSelected())
 			return "Cash";
@@ -309,6 +324,9 @@ public class OrderController implements Initializable {
 		return "CreditCard";
 	}
 
+	/**
+	 * for Radio Button
+	 */
 	public void groupRadioButton() {
 		final ToggleGroup group = new ToggleGroup();
 		radioCash.setToggleGroup(group);
@@ -316,6 +334,10 @@ public class OrderController implements Initializable {
 		radioPayPal.setToggleGroup(group);
 	}
 
+	/**
+	 * 
+	 * @return true if the fields are not empty
+	 */
 	public boolean checkNotEmptyFieldsPaymentScreen() {
 
 		if (!(radioCash.isSelected() || radioCreditCard.isSelected() || radioPayPal.isSelected())) {
@@ -329,65 +351,29 @@ public class OrderController implements Initializable {
 		return true;
 	}
 
-	// home button
-	@FXML
-	void home(ActionEvent event) throws IOException {
-		Stage stage = (Stage) btnHere.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
-		stage.setScene(new Scene(root));
-	}
-
-	//need to fix
-	@FXML
-	void here(ActionEvent event) throws IOException {
-		Stage stage = (Stage) btnHere.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
-		stage.setScene(new Scene(root));
-
-		// ManageOrderController editOrder=new ManageOrderController();
-	}
-
-	/*
-	 * recived the answer if the reservation success string if it faild Order Object
-	 * if success
+	/**
+	 * 
+	 * @return true if the user fill all the fields
 	 */
-	public static void recivedFromServer(Object newOrder) {
-		if (newOrder instanceof String) {
-			String status = (String) newOrder;
-			setStatus(status);
-		} else if (newOrder instanceof Boolean) {
-			boolean flag = (boolean) newOrder;
-			setFaildDB(flag);
-		} else {
-			Order myOrder = (Order) newOrder;
-			setOrderSuccess(myOrder);
-			// payStatus = new PaymentController(orderSuccess);
-		}
-	}
-
-	// return list of all the parks names
-	public static void recivedFromServerParksNames(ArrayList<String> parks) {
-		setParksNames(parks);
-	}
-
-//	public static void recivedFromServerSuccessPayment(ArrayList<Object> arrayList) {
-//		setPaymentStatus((boolean)arrayList.get(0));
-//	}
-
-	// check that the user fill all the fields
 	public boolean checkNotEmptyFields() {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		String email = txtInvitingEmail.getText();
-		String parkNum = cbxParkName.getValue();
+		String parkName = cbxParkName.getValue().toString();
 		String memberId = txtmemberID.getText();
-		if (visitorsNumber.isEmpty() || email.isEmpty() || parkNum.isEmpty() || memberId.isEmpty()) {
+		String Phone = txtPhoneNum.getText();
+//		System.out.println(visitorsNumber + " " + email + " " + parkName + " " + memberId + " " + Phone);
+		if (visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || memberId.isEmpty()
+				|| Phone.isEmpty()) {
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 			return false;
 		}
 		return true;
 	}
-
-	// check only for reservation for today
+	
+	/**
+	 * check only for reservation for today
+	 * @return true if the reservation is in the correct time
+	 */
 	public boolean checkCurrentTime() {
 		LocalDate date = txtdate.getValue();
 		String[] arrSplit = cbxArrivelTime.getValue().toString().split("-");
@@ -404,57 +390,49 @@ public class OrderController implements Initializable {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * for create the string to the DB
+	 * @param time
+	 * @return The  start time of the reservation 
+	 */
 	public String getArrivalTime(String time) {
 		String[] array = cbxArrivelTime.getValue().toString().split("-");
 		return array[0];
 	}
 
-	// check correct email
-	public boolean checkCorrectEmail() {
-		String email = txtInvitingEmail.getText();
-		String nameMethod = "email";
-		if (!validInput(nameMethod, email)) {
+	/**
+	 * 
+	 * @return true if all the field are correct
+	 */
+	public boolean checkCorrectFields() {
+		if (!validInput("email", txtInvitingEmail.getText())) {
 			alert.setAlert("Invalid email address");
 			return false;
 		}
-		return true;
-	}
-
-	// check if the user put correct number
-	public boolean checkCorrectAmountVisitor() {
-		String AmountVisitor = txtVisitorsNumber.getText();
-		String nameMethod = "AmountVisitor";
-		if (!validInput(nameMethod, AmountVisitor) || AmountVisitor.equals("0")) {
+		if (!validInput("Phone", txtPhoneNum.getText())) {
+			alert.setAlert("Invalid phone number");
+			System.out.println(txtPhoneNum.getText());
+			return false;
+		}
+		if (!validInput("AmountVisitor", txtVisitorsNumber.getText()) || txtVisitorsNumber.getText().equals("0")) {
 			alert.setAlert("Invalid amount of visitors");
 			return false;
 		}
-
-		return true;
-	}
-
-	// start with letter except from g= member
-	// start with letter g = guid
-	// id - traveler / member
-	public boolean checkCorrectMemberId() {
-		String memberId = txtmemberID.getText();
-		String nameMethod = "memberId";
-		if (validInput(nameMethod, memberId)) {
-			this.memberId = memberId;
+		if (validInput("memberId", txtmemberID.getText())) {
+			this.memberId = txtmemberID.getText();
 			return true;
-		} else if (validInput("ID", memberId)) {
-			this.ID = memberId;
+		} else if (validInput("ID", txtmemberID.getText())) {
+			this.ID = txtmemberID.getText();
 			return true;
 		}
 		alert.setAlert("Invalid member-ID / ID ");
 		return false;
 	}
-
-	public boolean checkCorrectPhone() {
-		return true;
-	}
-
-	// pattern for check
+	
+	/**
+	 * patterns:
+	 */
 	public static final Pattern VALIDEMAIL = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDAmountVisito = Pattern.compile("^[0-9]{0,3}$", Pattern.CASE_INSENSITIVE);
@@ -462,7 +440,12 @@ public class OrderController implements Initializable {
 	public static final Pattern VALIDID = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDPhone = Pattern.compile("^[0-9]{3}[0-9]{7}$", Pattern.CASE_INSENSITIVE);
 
-	// check valid input
+	/**
+	 * 
+	 * @param nameMathod
+	 * @param txt
+	 * @return true if the pattern are cerrect
+	 */
 	public static boolean validInput(String nameMathod, String txt) {
 		Matcher matcher = null;
 		if (nameMathod.equals("email")) {
@@ -474,9 +457,41 @@ public class OrderController implements Initializable {
 		} else if (nameMathod.equals("ID")) {
 			matcher = VALIDID.matcher(txt);
 		} else if (nameMathod.equals("Phone"))
-			matcher = VALIDID.matcher(txt);
+			matcher = VALIDPhone.matcher(txt);
 		return matcher.find();
 	}
+	
+/**********************Methods that get answer from server *************************************/
+	/**
+	 * recived from server : Object Order / String / Boolean
+	 * @param newOrder
+	 */
+	public static void recivedFromServer(Object newOrder) {
+		if (newOrder instanceof String) {
+			String status = (String) newOrder;
+			setStatus(status);
+		} else if (newOrder instanceof Boolean) {
+			boolean flag = (boolean) newOrder;
+			setFaildDB(flag);
+		} else {
+			Order myOrder = (Order) newOrder;
+			setOrderSuccess(myOrder);
+		}
+	}
+
+	/**
+	 * return list of all the parks names
+	 * @param parks
+	 */
+	public static void recivedFromServerParksNames(ArrayList<String> parks) {
+		setParksNames(parks);
+	}
+
+
+/***************************************Done with the server**********************************************/
+
+
+/******************************initialize****************************************/
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -501,9 +516,21 @@ public class OrderController implements Initializable {
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
+		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
+
+		/*********** need to do this**** for save detail after fill **********/
+//		if(OrderController.order!=null) {
+//			txtmemberID.setText("order.gt");
+//			txtVisitorsNumber.setText("2");
+//			txtInvitingEmail.setText("bar@kaz.com");
+//			txtPhoneNum.setText("0541234567");
+//		}
+
+		/****************** for me ******************/
 		txtmemberID.setText("315818987");
 		txtVisitorsNumber.setText("2");
-		txtInvitingEmail.setText("bar@bark.ci");
+		txtInvitingEmail.setText("bar@kaz.com");
+		txtPhoneNum.setText("0541234567");
 
 	}
 
