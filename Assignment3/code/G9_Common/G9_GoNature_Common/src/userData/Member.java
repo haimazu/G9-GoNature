@@ -18,7 +18,6 @@ public class Member {
 
 	// constructor from DB
 	public Member(ArrayList<String> memberFromDB) {
-
 		this.memberID = memberFromDB.get(0);
 		this.memberFirstName = memberFromDB.get(1);
 		this.memberLastName = memberFromDB.get(2);

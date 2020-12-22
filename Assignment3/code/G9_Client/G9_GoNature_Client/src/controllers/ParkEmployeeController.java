@@ -488,7 +488,7 @@ public class ParkEmployeeController implements Initializable {
 				memberId = txtIdOrMemberId.getText();
 			}
 			//"2021-01-02 10:00:00"
-			Order o = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
+			Order o = new Order(getParkName(), "2021-01-02 10:00:00", memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
 			// get the member details from the DB
 			// Query
