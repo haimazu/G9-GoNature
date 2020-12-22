@@ -77,25 +77,35 @@ public class NewOrder {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: object credit card
+	// input: order
 	//
-	// output: T\F if success
-	public static Boolean creditCardSave(CreditCard cc) {
-
+	// output: checks if u a member and return the member from DB
+	public static Member MemerCheck(Order ord) {
 		ArrayList<String> query = new ArrayList<String>();
-		query.add("insert"); // command
-		query.add("creditcard"); // table name
-		query.add(toStringForCreditCardSave(cc)); // values in query format
+		System.out.println("memberCheck start");
+		query.add("select"); // command
+		query.add("member"); // table name
+		query.add("*"); // columns to select from
 
-		return MySQLConnection.insert(query); // returns T\F
+		if (ord.getID() != null) {
+			query.add("WHERE ID='" + ord.getID() + "'");
+		} else if (ord.getMemberId() != null) {
+			query.add("WHERE memberNumber='" + ord.getMemberId() + "'");
+		}
+
+		query.add("9"); // how many columns returned
+
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+		if (queryData.isEmpty())
+			return null;
+		else {
+			Member m = new Member(queryData.get(0));
+			return m;
+		}
+
 	}
 
-	// in use for CreditCardSave query
-	public static String toStringForCreditCardSave(CreditCard data) {
-		return "'" + data.getCardNumber() + "','" + data.getCardHolderName() + "','" + data.getExpirationDate() + "','"
-				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
-	}
-
+	///////////// ************************* price *****************************
 	// input: Order with empty totalPrice & price & orderType, a Member
 	//
 	// output: Order with updated totalPrice and price and orderType
@@ -110,6 +120,8 @@ public class NewOrder {
 				ord.setOrderType(OrderType.REGULAR);
 				ord.setTotalPrice(ord.getPrice());
 			} else { // if the order is for occasional member
+				ord.setMemberId(memb.getMemberNumber());
+				ord.setID(memb.getMemberID());
 				switch (memb.getMemberOrderType()) {
 				case MEMBER:
 					ord.setOrderType(OrderType.MEMBER);
@@ -135,6 +147,8 @@ public class NewOrder {
 				ord.setOrderType(OrderType.REGULAR);
 				ord.setTotalPrice(ord.getPrice() * 0.85);
 			} else {// if the order is for non-occasional member
+				ord.setMemberId(memb.getMemberNumber());
+				ord.setID(memb.getMemberID());
 				switch (memb.getMemberOrderType()) {
 				case MEMBER:
 					ord.setOrderType(OrderType.MEMBER);
@@ -163,35 +177,6 @@ public class NewOrder {
 
 	// input: order
 	//
-	// output: checks if u a member and return the member from DB
-	public static Member MemerCheck(Order ord) {
-		ArrayList<String> query = new ArrayList<String>();
-		System.out.println("memberCheck start");
-		query.add("select"); // command
-		query.add("member"); // table name
-		query.add("*"); // columns to select from
-
-		if (ord.getID() != null) {
-			query.add("WHERE ID='" + ord.getID() + "'");
-		} else if (ord.getMemberId() != null) {
-			query.add("WHERE memberNumber='" + ord.getMemberId() + "'");
-		}
-
-		query.add("9"); // how many columns returned
-
-		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.isEmpty())
-			return null;
-		else {
-			Member m = new Member(queryData.get(0));
-			System.out.println("member");
-			return m;
-		}
-
-	}
-
-	// input: order
-	//
 	// output: returns the current price of entry in the park with manger discount
 	// calculated
 	// selected in the order
@@ -209,6 +194,7 @@ public class NewOrder {
 		return Integer.parseInt(queryData.get(0).get(0)) * Integer.parseInt(queryData.get(0).get(1));
 	}
 
+	////////////// ********************* Park **************************************
 	// input: ArrayList<Object>, ConnectionToClient
 	//
 	// output: returns to client side with a list of parks names from DB
@@ -265,6 +251,26 @@ public class NewOrder {
 			answer.add(false);
 
 		EchoServer.sendToMyClient(answer, client);
+	}
+
+	////// ************credit card****************************************
+	// input: object credit card
+	//
+	// output: T\F if success
+	public static Boolean creditCardSave(CreditCard cc) {
+
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("insert"); // command
+		query.add("creditcard"); // table name
+		query.add(toStringForCreditCardSave(cc)); // values in query format
+
+		return MySQLConnection.insert(query); // returns T\F
+	}
+
+	// in use for CreditCardSave query
+	public static String toStringForCreditCardSave(CreditCard data) {
+		return "'" + data.getCardNumber() + "','" + data.getCardHolderName() + "','" + data.getExpirationDate() + "','"
+				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
 	}
 
 }
