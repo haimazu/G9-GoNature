@@ -154,7 +154,7 @@ public class NewOrder {
 					if (nonFamily > 0) {
 						ord.setTotalPrice(ord.getPrice() * 0.85);
 						ord.setTotalPrice(ord.getTotalPrice()
-								- (ord.getTotalPrice() / numberOfPeople) * memb.getMemberNumber() * 0.2);
+								- (ord.getTotalPrice() / numberOfPeople) * Integer.parseInt(memb.getMemberAmount())* 0.2);
 					} else {
 						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.85);
 						ord.setTotalPrice(ord.getTotalPrice() * 0.8);
