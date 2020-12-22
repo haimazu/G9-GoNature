@@ -126,9 +126,9 @@ public class NewOrder {
 				switch (memb.getMemberOrderType()) {
 				case MEMBER:
 					ord.setOrderType(OrderType.MEMBER);
-					int nonFamily = numberOfPeople - memb.getMemberNumber();
+					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0)
-						ord.setTotalPrice(nonFamily * parkEnteryPrice + memb.getMemberNumber() * parkEnteryPrice * 0.8);
+						ord.setTotalPrice(nonFamily * parkEnteryPrice + Integer.parseInt(memb.getMemberAmount())* parkEnteryPrice * 0.8);
 					else
 						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8);
 					break;
@@ -150,7 +150,7 @@ public class NewOrder {
 				switch (memb.getMemberOrderType()) {
 				case MEMBER:
 					ord.setOrderType(OrderType.MEMBER);
-					int nonFamily = numberOfPeople - memb.getMemberNumber();
+					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
 						ord.setTotalPrice(ord.getPrice() * 0.85);
 						ord.setTotalPrice(ord.getTotalPrice()
