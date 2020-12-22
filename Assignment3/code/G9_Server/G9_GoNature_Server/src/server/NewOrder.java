@@ -59,7 +59,7 @@ public class NewOrder {
 	// output:
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		if (recived.get(2) != null)
-			creditCardSave((CreditCard)recived.get(2));
+			creditCardSave((CreditCard) recived.get(2));
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
@@ -68,7 +68,7 @@ public class NewOrder {
 		query.add("orders"); // table name
 		query.add(data.toStringForDB()); // values in query format
 		if (MySQLConnection.insert(query)) {
-			answer.add(data);
+			answer.add(true);
 		} else
 			answer.add(false);
 
@@ -181,9 +181,10 @@ public class NewOrder {
 		if (queryData.isEmpty())
 			return null;
 		else {
-			Member m = new Member(queryData.get(0));
+			Member m=new Member(queryData.get(0));
 			return m;
 		}
+
 	}
 
 	// input: order
