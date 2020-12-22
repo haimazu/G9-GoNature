@@ -579,7 +579,7 @@ public class ParkEmployeeController implements Initializable {
 				return true;
 			}
 		} else if (arrivelHour == 16) {
-			if (currentHour >= 16 && currentHour < 22) {
+			if (currentHour >= 16 && currentHour < 20) {
 				return true;
 			}
 		}
