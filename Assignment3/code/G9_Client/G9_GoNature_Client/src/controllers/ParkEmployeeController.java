@@ -428,7 +428,7 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 		
-		setDiscountPersent();
+		setPrice();
 	}
 
 	// prints order data
@@ -460,6 +460,7 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			lblEmail.setText(orderDetails.getOrderEmail());
 
+			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
 			lblPrice.setText(orderDetails.getPrice() + "₪");
 			discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
 			lblDiscount.setText(String.format("%.1f", discount) + "%");
@@ -471,7 +472,7 @@ public class ParkEmployeeController implements Initializable {
 	}
 	
 	
-	public void setDiscountPersent() {	
+	public void setPrice() {	
 		String id = "";
 		String memberId = "";
 		double discount;
@@ -493,21 +494,16 @@ public class ParkEmployeeController implements Initializable {
 
 			Order o = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
-			// get the member details from the DB
+			// check the random visitor type and calculate the price
 			// Query
-			ArrayList<Object> msg = new ArrayList<Object>();
-			
-			msg.add("memberByIdOrMemberId");
+			ArrayList<Object> msg = new ArrayList<Object>();	
+			msg.add("randomVisitorFakeOrder");
 			// Data fields
-			msg.add(o);
-			
+			msg.add(o);	
 			// set up all the order details and the payment method
 			ClientUI.sentToChatClient(msg);
 			
 			System.out.println(randomVisitorFakeOrderDetails);
-//			sendToServer("memberByIdOrMemberId",
-//					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
-			
 		} 
 			
 		//TODO add manager discount if not 0
@@ -633,22 +629,6 @@ public class ParkEmployeeController implements Initializable {
 									+ String.valueOf(parkDetails.getCurrentAmount()) + "/" 
 									+ parkDetails.getMaximumCapacityInPark());
 	}
-	
-	// String type, the case we dealing with
-	// ArrayList<String> dbColumns, sending to the server to get data
-	// input: cells, depending on the case
-	// output: none
-	public void sendToServer(String type, ArrayList<String> dbColumns) {
-		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();
-		
-		msg.add(type);
-		// Data fields
-		msg.add(dbColumns);
-		
-		// set up all the order details and the payment method
-		ClientUI.sentToChatClient(msg);
-	}
 
 	public static String getFirstName() {
 		return firstName;
@@ -678,6 +658,22 @@ public class ParkEmployeeController implements Initializable {
 		ParkEmployeeController.parkName = parkName;
 	}
 	
+	// String type, the case we dealing with
+	// ArrayList<String> dbColumns, sending to the server to get data
+	// input: cells, depending on the case
+	// output: none
+	public void sendToServer(String type, ArrayList<String> dbColumns) {
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+		
+		msg.add(type);
+		// Data fields
+		msg.add(dbColumns);
+		
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
+	}
+	
 	// getting information from the server
 	// input: if the order number exists in the system: 
 	// 		  		1. ArrayList<String> order with all the order data
@@ -705,7 +701,7 @@ public class ParkEmployeeController implements Initializable {
 	//        otherwise 2. string of "Not a member"
 	// output: for case 1. we create new member with all the received details
 	//         for case 2. we set the error message
-	public static void receivedFromServerMemberDetails(Object order) {
+	public static void receivedFromServerVisitorsPrice(Object order) {
 		if (order instanceof Order) {
 			ParkEmployeeController.randomVisitorFakeOrderDetails = (Order) order;
 		} else {
@@ -772,6 +768,7 @@ public class ParkEmployeeController implements Initializable {
 		//setParkName(LoginController.getParkName());
 		setParkName("jurasic");
 		
+		/***** Random *****/
 		LocalDateTime arrivelDate = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		dateAndTimeFormat = arrivelDate.format(formatter);
@@ -780,6 +777,7 @@ public class ParkEmployeeController implements Initializable {
 				+ "-" + arrivelDate.getMonthValue() 
 				+ "-" + arrivelDate.getYear());
 
+		/***** Barcode / Regular *****/
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
@@ -794,7 +792,11 @@ public class ParkEmployeeController implements Initializable {
 		// force the field to be numeric only
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
-			lblVisitorsAmount.setText(newValue);
+			
+			if (Integer.parseInt(txtVisitorsAmount.getText()) > Integer.parseInt(lblVisitorsNumber.getText())) {
+				int difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
+				execRandomVisitor(difference);
+			}
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.matches("\\d")) {
@@ -804,6 +806,7 @@ public class ParkEmployeeController implements Initializable {
 			}
 		});
 
+		/***** Random *****/
 		// force the field to be numeric only
 		txtRandomVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
@@ -828,6 +831,7 @@ public class ParkEmployeeController implements Initializable {
 			}
 		});
 
+		/***** Approve *****/
 		// listen to changes in selected toggle
 		radGroupStatus.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
 			if (newToggle == radEnter) {
