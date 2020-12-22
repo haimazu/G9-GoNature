@@ -2,6 +2,8 @@ package server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 import orderData.OrderType;
@@ -51,8 +53,13 @@ public class NewOrder {
 	}
 
 	// input: ArrayList<Object>: cell[0] function name
-	// cell[1] order object ,ConnectionToClient
+	// cell[1] order object
+	// cell[2] credit card object/null
+	// ConnectionToClient
+	// output:
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
+		if (recived.get(2) != null)
+			creditCardSave((CreditCard)recived.get(2));
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
@@ -66,6 +73,25 @@ public class NewOrder {
 			answer.add(false);
 
 		EchoServer.sendToMyClient(answer, client);
+	}
+
+	// input: object credit card
+	//
+	// output: T\F if success
+	public static Boolean creditCardSave(CreditCard cc) {
+
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("insert"); // command
+		query.add("creditcard"); // table name
+		query.add(toStringForCreditCardSave(cc)); // values in query format
+
+		return MySQLConnection.insert(query); // returns T\F
+	}
+
+	// in use for CreditCardSave query
+	public static String toStringForCreditCardSave(CreditCard data) {
+		return "'" + data.getCardNumber() + "','" + data.getCardHolderName() + "','" + data.getExpirationDate() + "','"
+				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
 	}
 
 	// input: Order with empty totalPrice & price & orderType, a Member
