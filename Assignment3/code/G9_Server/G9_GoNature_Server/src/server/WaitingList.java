@@ -25,8 +25,10 @@ public class WaitingList {
 		Order data = (Order) recived.get(1); // credit card object received
 		ArrayList<String> query = new ArrayList<String>();
 		Member mem = NewOrder.MemerCheck(data);
+
 		if (mem!=null)
 			data.setMemberId(mem.getMemberID());
+
 		data = NewOrder.totalPrice(data, mem, false);
 		data.setOrderNumber(Counter.getCounter().orderNum());
 		query.add("select"); // command
@@ -40,9 +42,11 @@ public class WaitingList {
 			query.add("waitingList"); // table name
 			query.add(data.toStringForDB()); // values in query format
 			answer.add(MySQLConnection.insert(query)); //true if ok false if not
+
 		}
 		else
 			answer.add("alreadyExist"); //alreadyExist if already in the list
+
 		EchoServer.sendToMyClient(answer, client);
 	}
 
