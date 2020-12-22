@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import dataLayer.Park;
 import ocsf.server.ConnectionToClient;
+import orderData.Order;
 
 public class UpdateVisitorsNumber {
 
@@ -98,7 +99,8 @@ public class UpdateVisitorsNumber {
 		query.add("6"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		answer.add(queryData.get(0));
+		Park park = new Park(queryData.get(0));
+		answer.add(park);
 
 		EchoServer.sendToMyClient(answer, client);
 	}

@@ -85,10 +85,13 @@ public class ChatClient extends AbstractClient {
 				break;
 			case "orderPaymentMathod":
 				CreditCardController.recivedFromServerSuccessPayment((boolean)received.get(1));
+				break;
 			case "updateOrder":
 				ManageOrderController.updatedOrderFromServer((Object)received.get(1));
+				break;
 			case "cancelOrder":
 				ManageOrderController.canceledOrderFromServer((boolean)received.get(1));
+				break;
 			default:
 			break;
 		}
