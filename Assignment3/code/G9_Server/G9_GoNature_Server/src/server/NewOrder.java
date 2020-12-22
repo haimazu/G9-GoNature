@@ -158,8 +158,6 @@ public class NewOrder {
 			Member m = new Member(queryData.get(0));
 			return m;
 		}
-			//return new Member(queryData.get(0));
-
 	}
 
 	// input: order
