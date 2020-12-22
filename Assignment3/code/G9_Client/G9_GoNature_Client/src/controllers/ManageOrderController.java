@@ -84,8 +84,9 @@ public class ManageOrderController implements Initializable {
 		ManageOrderController.order = order;
 	}
 	/*
-	 * input : received order object from server Output : non present : order
-	 * details
+	 * input : received order object from server 
+	 * Output : non 
+	 * present on screen: order details
 	 * 
 	 */
 	void presentOrderdetails(Order details) {

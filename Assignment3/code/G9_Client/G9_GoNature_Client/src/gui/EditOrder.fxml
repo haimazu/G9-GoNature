@@ -92,7 +92,7 @@
                   <Font name="Tahoma Bold" size="24.0" />
                </font>
             </Label>
-            <Label focusTraversable="false" layoutX="81.0" layoutY="435.0" prefHeight="104.0" prefWidth="253.0" style="-fx-border-color: deceb8;">
+            <Label focusTraversable="false" layoutX="79.0" layoutY="435.0" prefHeight="84.0" prefWidth="210.0" style="-fx-border-color: deceb8;">
                <font>
                   <Font size="11.0" />
                </font>
@@ -107,12 +107,7 @@
                   <Font name="Ebrima Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="86.0" layoutY="514.0" styleClass="labelBold" text="Total Price:">
-               <font>
-                  <Font name="Ebrima Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="86.0" layoutY="489.0" styleClass="labelBold" text="Payment Method:">
+            <Label layoutX="81.0" layoutY="490.0" styleClass="labelBold" text="Total Price:">
                <font>
                   <Font name="Ebrima Bold" size="14.0" />
                </font>
@@ -132,7 +127,7 @@
                   <Font name="Ebrima" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblTotal" layoutX="168.0" layoutY="513.0" prefHeight="21.0" prefWidth="36.0">
+            <Label fx:id="lblTotal" layoutX="158.0" layoutY="489.0" prefHeight="21.0" prefWidth="36.0">
                <font>
                   <Font name="Ebrima" size="14.0" />
                </font>
