@@ -256,6 +256,8 @@ public class OrderController implements Initializable {
 			if (btnNext == event.getSource()) {
 
 				ClientUI.sentToChatClient(msgNewOrderForServer);
+				this.memberId=null; 
+				this.ID=null;
 				
 				if (status.equals("Failed")) { //the user can't order 
 					Stage stage = new Stage();
