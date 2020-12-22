@@ -27,9 +27,9 @@ public class WaitingListConfirmContoller {
 	@FXML
 	private JFXCheckBox agree;
 
-	private AlertController alert= new AlertController();
+	private AlertController alert = new AlertController();
 
-	private static boolean status;
+	private static boolean status= false;
 
 	public static boolean isStatus() {
 		return status;
@@ -47,18 +47,20 @@ public class WaitingListConfirmContoller {
 		if (checkAgreeRadioBtn()) {
 			ClientUI.sentToChatClient(msgWaitList);
 
-			if (WaitingListConfirmContoller.status)
-				alert.ensureAlert("Listed",
-						"You enter to the waiting lise\n you will get notify when you will have available spot");
-			else
-				alert.failedAlert("Faild", "The waiting list is full\nPlease try another date ");
+			if (WaitingListConfirmContoller.status) {
+				WaitingListConfirmContoller.status=false;
+				alert.ensureAlert("Success!",
+						"you are in our wait list we will send you an Email and SMS notification as soon as a spot is available."
+								+ "\nbe sure to answer within one hour or you will lose your spot in the line.");
+			}else
+				alert.failedAlert("Failed!",
+						"something went wrong, our code monkey has been notified and will work on the error, please try again shortly. ");
 			Stage stage = (Stage) btnListMe.getScene().getWindow();
-    	    stage.close();
-    		Stage stage2 = (Stage) btnListMe.getScene().getWindow();
-    		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
-    		stage2.setScene(new Scene(root));
+			stage.close();
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+			stage.setScene(new Scene(root));
 		}
-		
+
 	}
 
 	public static void recivedfromWaitListServer(boolean status) {
