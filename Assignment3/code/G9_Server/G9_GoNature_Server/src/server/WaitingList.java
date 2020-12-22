@@ -18,7 +18,7 @@ public class WaitingList {
 	// in cell 1: boolean ->
 	// true if entry sucsseful
 	// false if not
-	public void enterTheWaitList(ArrayList<Object> recived, ConnectionToClient client) {
+	public static void enterTheWaitList(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // credit card object received
