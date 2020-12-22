@@ -11,15 +11,19 @@ import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
 import dataLayer.CreditCard;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import orderData.Order;
+
 
 public class CreditCardController implements Initializable {
 
@@ -46,7 +50,9 @@ public class CreditCardController implements Initializable {
 
 	private String dateCC;
 
-	private CreditCard details;
+	private static CreditCard  details;
+
+
 
 	private Order myOrder = OrderController.getOrderSuccess();
 
@@ -62,30 +68,45 @@ public class CreditCardController implements Initializable {
 
 			details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
 					Integer.parseInt(txtCVV.getText()), myOrder.getOrderNumber());
-			msgEditPaymentForServer.add("orderPaymentMathod");
-			msgEditPaymentForServer.add(details);
 			
-			ClientUI.sentToChatClient(msgEditPaymentForServer);
+//			msgEditPaymentForServer.add("orderPaymentMathod");
+//			msgEditPaymentForServer.add(details);
+			
+//			ClientUI.sentToChatClient(msgEditPaymentForServer);
 
-			if (this.getPaymentStatus()) {
+//			if (this.getPaymentStatus()) {
 				Stage stage = (Stage) btnSave.getScene().getWindow();
 			    stage.close();
-			}
+//			}
+//			    Stage primaryStage = new Stage();
+//				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//					@Override
+//					public void handle(WindowEvent t) {
+//						
+//					}
+//				});
 		}
 	}
 
-	public static void recivedFromServerSuccessPayment(boolean status) {
-		setPaymentStatus(status);
+//	public static void recivedFromServerSuccessPayment(boolean status) {
+//		setPaymentStatus(status);
+//	}
+//
+//	public static boolean getPaymentStatus() {
+//		return paymentStatus;
+//	}
+//
+//	public static void setPaymentStatus(boolean paymentStatus) {
+//		CreditCardController.paymentStatus = paymentStatus;
+//	}
+
+	public static CreditCard getDetails() {
+		return details;
 	}
 
-	public static boolean getPaymentStatus() {
-		return paymentStatus;
+	public static void setDetails(CreditCard details) {
+		CreditCardController.details = details;
 	}
-
-	public static void setPaymentStatus(boolean paymentStatus) {
-		CreditCardController.paymentStatus = paymentStatus;
-	}
-
 	public static final Pattern VALIDCVV = Pattern.compile("^[0-9]{3}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDCardNumber = Pattern.compile("^[0-9]{16}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDName = Pattern.compile("^[A-Za-z]{1,10}+ [A-Za-z]{1,10}$",
