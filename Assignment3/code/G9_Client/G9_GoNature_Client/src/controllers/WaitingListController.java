@@ -32,6 +32,7 @@ public class WaitingListController {
     	Stage stage = new Stage();
 		Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingListConfirmation.fxml"));
 		Scene scene = new Scene(root);
+		stage.setResizable(false);
 		stage.setScene(scene);
 		stage.show();
 		

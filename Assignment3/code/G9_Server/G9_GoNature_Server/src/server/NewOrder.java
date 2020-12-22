@@ -58,6 +58,7 @@ public class NewOrder {
 	// ConnectionToClient
 	// output:
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
+		System.out.println("queInsert start");
 		if (recived.get(2) != null)
 			creditCardSave((CreditCard) recived.get(2));
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -72,6 +73,7 @@ public class NewOrder {
 		} else
 			answer.add(false);
 
+		System.out.println("queInsert end");
 		EchoServer.sendToMyClient(answer, client);
 	}
 
@@ -181,7 +183,8 @@ public class NewOrder {
 		if (queryData.isEmpty())
 			return null;
 		else {
-			Member m=new Member(queryData.get(0));
+			Member m = new Member(queryData.get(0));
+			System.out.println("member");
 			return m;
 		}
 

@@ -51,8 +51,8 @@ public class EchoServer extends AbstractServer {
 		case "checkValidOrderNum":
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 			break;
-		case "orderPaymentMathod":
-			PaymentData.PaymentInsertData(recived, client);
+		case "confirmOrder":
+			NewOrder.queInsert(recived, client);
 			break;
 		case "updateOrder":
 			NewOrder.NewReservation(recived, client);

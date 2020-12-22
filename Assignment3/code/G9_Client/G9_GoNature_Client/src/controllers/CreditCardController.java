@@ -78,13 +78,7 @@ public class CreditCardController implements Initializable {
 				Stage stage = (Stage) btnSave.getScene().getWindow();
 			    stage.close();
 //			}
-//			    Stage primaryStage = new Stage();
-//				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//					@Override
-//					public void handle(WindowEvent t) {
-//						
-//					}
-//				});
+
 		}
 	}
 

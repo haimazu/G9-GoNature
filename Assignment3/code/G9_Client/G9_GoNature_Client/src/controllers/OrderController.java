@@ -125,12 +125,21 @@ public class OrderController implements Initializable {
 	private static Order order;
 	private static String status = "not";
 	private static boolean faildDB = true;
+	private static boolean confirmOrder = false;
 	private String memberId = null;
 	private String ID = null;
 	private AlertController alert = new AlertController();
 
 	/***************** Getters and Setters for statics *****************/
 
+	public static boolean isConfirmOrder() {
+		return confirmOrder;
+	}
+
+	public static void setConfirmOrder(boolean confirmOrder) {
+		OrderController.confirmOrder = confirmOrder;
+	}
+	
 	public static Order getOrder() {
 		return order;
 	}
@@ -226,6 +235,7 @@ public class OrderController implements Initializable {
 		Pane root = FXMLLoader.load(getClass().getResource("/gui/CreditCard.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
+		stage.setResizable(false);
 		stage.show();
 		
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -251,12 +261,12 @@ public class OrderController implements Initializable {
 	@FXML
 	void next(ActionEvent event) throws IOException {
 		ArrayList<Object> msgNewOrderForServer = new ArrayList<>();
-		// ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
+		 ArrayList<Object> msgConfirmForServer = new ArrayList<>();
 		// continue only if the fields are correct
 		if (checkNotEmptyFields() && checkCorrectFields() && checkCurrentTime()) {
 			msgNewOrderForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
-					+ getArrivalTime(cbxArrivelTime.getValue().toString());
+					+ getArrivalTime();
 			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					txtPhoneNum.getText(), cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
 			msgNewOrderForServer.add(OrderController.order);
@@ -273,6 +283,7 @@ public class OrderController implements Initializable {
 					Stage stage = new Stage();
 					Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
 					Scene scene = new Scene(root);
+					stage.setResizable(false);
 					stage.setScene(scene);
 					stage.show();
 				} else if (!faildDB) { //the Order details didnt enter to DB
@@ -289,11 +300,23 @@ public class OrderController implements Initializable {
 
 				}
 			} else if (btnContinue == event.getSource()) { // in payment screen
-
+				msgConfirmForServer.add("confirmOrder");
+				msgConfirmForServer.add(OrderController.orderSuccess);
+				msgConfirmForServer.add(CreditCardController.getDetails());
+				
 				if (checkNotEmptyFieldsPaymentScreen()) {
-
-					this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
-					pnConfirmation.toFront();
+					ClientUI.sentToChatClient(msgConfirmForServer);
+					
+				//	System.out.println("order con line 310");
+					
+					if(OrderController.confirmOrder) {
+						OrderController.confirmOrder=false;
+						this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
+						pnConfirmation.toFront();
+					}
+				}
+				else {
+					alert.setAlert("something went wrong\\nplease close the program and start again");
 				}
 
 			}
@@ -408,7 +431,7 @@ public class OrderController implements Initializable {
 	 * @param time
 	 * @return The  start time of the reservation 
 	 */
-	public String getArrivalTime(String time) {
+	public String getArrivalTime() {
 		String[] array = cbxArrivelTime.getValue().toString().split("-");
 		return array[0];
 	}
@@ -497,6 +520,14 @@ public class OrderController implements Initializable {
 	 */
 	public static void recivedFromServerParksNames(ArrayList<String> parks) {
 		setParksNames(parks);
+	}
+	
+	/**
+	 * return true if the user is confirm the order and the server success to enter the db
+	 * @param msg
+	 */
+	public static void recivedFromServerConfirmOrder(boolean msg) {
+		setConfirmOrder(msg);
 	}
 
 

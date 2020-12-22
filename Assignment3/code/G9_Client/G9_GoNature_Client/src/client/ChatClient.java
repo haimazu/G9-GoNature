@@ -83,9 +83,9 @@ public class ChatClient extends AbstractClient {
 			case "checkValidOrderNum":
 				WelcomeController.recievedFromServerValidOrder((Object)received.get(1));
 				break;
-//			case "orderPaymentMathod":
-//				CreditCardController.recivedFromServerSuccessPayment((boolean)received.get(1));
-//				break;
+			case "confirmOrder":
+				OrderController.recivedFromServerConfirmOrder((boolean)received.get(1));
+				break;
 			case "updateOrder":
 				ManageOrderController.updatedOrderFromServer((Object)received.get(1));
 				break;
@@ -93,7 +93,8 @@ public class ChatClient extends AbstractClient {
 				ManageOrderController.canceledOrderFromServer((boolean)received.get(1));
 				break;
 			case "enterTheWaitList":
-				WaitingListConfirmContoller.recivedfromWaitListServer((boolean)received.get(1));
+				System.out.println("im here chetclient 96");
+				WaitingListConfirmContoller.recivedfromWaitListServer((Object)received.get(1));
 				break;
 			default:
 			break;
