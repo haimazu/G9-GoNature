@@ -126,6 +126,7 @@ public class ManageOrderController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
+		txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
 		cbxArriveTime.getSelectionModel().selectFirst();
 		setOrder(WelcomeController.getOrderDetails());
 		presentOrderdetails(order);
@@ -149,11 +150,15 @@ public class ManageOrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
+	//String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
+		//	+ getArrivalTime(cbxArrivelTime.getValue().toString());
+	
 	@FXML
 	void update(ActionEvent event) {
 		Order sentOrder = order; // maybe a pointer ???
 		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
+			System.out.println(timeString);
 			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + timeString);
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
@@ -166,7 +171,7 @@ public class ManageOrderController implements Initializable {
 				msgForServer.add(sentOrder);
 				ClientUI.sentToChatClient(msgForServer);
 				if(updated) {
-					//alert ok
+					alert.setAlert("Updated succesful");
 				}
 				else
 					//alertFailed
