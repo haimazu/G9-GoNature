@@ -293,6 +293,7 @@ public class ParkEmployeeController implements Initializable {
 			}
 		} else {
 			alert.failedAlert("Failed", "We're sorry, the park is full.\nPlease try again later.");
+			return;
 		}
 		informationExists = false;
 		clearAllFields();
