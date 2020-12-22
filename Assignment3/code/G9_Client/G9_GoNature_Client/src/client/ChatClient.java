@@ -92,6 +92,9 @@ public class ChatClient extends AbstractClient {
 			case "cancelOrder":
 				ManageOrderController.canceledOrderFromServer((boolean)received.get(1));
 				break;
+			case "enterTheWaitList":
+				WaitingListConfirmContoller.recivedfromWaitListServer((boolean)received.get(1));
+				break;
 			default:
 			break;
 		}
