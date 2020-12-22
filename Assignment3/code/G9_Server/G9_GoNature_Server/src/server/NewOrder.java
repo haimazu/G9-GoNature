@@ -50,7 +50,8 @@ public class NewOrder {
 
 	}
 
-	
+	// input: ArrayList<Object>: cell[0] function name
+	// cell[1] order object ,ConnectionToClient
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
