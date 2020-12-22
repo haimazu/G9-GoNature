@@ -167,7 +167,7 @@ public class ParkEmployeeController implements Initializable {
 		// Random rand = new Random();
 		// generate random integers in range 0 to 3
 		// return rand.nextInt(4);
-		return 8;
+		return 2;
 	}
 
 	private int getVisitorsEnteredFromBarcode() {
@@ -245,8 +245,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 	
-		//updateParkStatus();
-		receivedFromServerParkDetails(null);
+		updateParkStatus();
 		
 		// checking for places in the park
 		if (checkFreePlacesInThePark()) {
@@ -432,6 +431,7 @@ public class ParkEmployeeController implements Initializable {
 	// output: prints the order data 
 	public void printOrderDetails() {
 		// 2021-01-01 08:00:00
+		double discount;
 		String DateAndTime = orderDetails.getArrivedTime();
 		String[] splitDateAndTime = DateAndTime.split(" ");
 		// 2021-01-01
@@ -456,7 +456,8 @@ public class ParkEmployeeController implements Initializable {
 			lblEmail.setText(orderDetails.getOrderEmail());
 
 			lblPrice.setText(orderDetails.getPrice() + "₪");
-			//lblDiscount.setText(orderDetails + "%");
+			discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+			lblDiscount.setText(String.format("%.1f", discount) + "%");
 			lblTotalPrice.setText(orderDetails.getTotalPrice() + "₪");
 
 		} catch (ParseException e) {
@@ -468,6 +469,7 @@ public class ParkEmployeeController implements Initializable {
 	public void setDiscountPersent() {	
 		String id = "";
 		String memberId = "";
+		double discount;
 		int managerDiscount = parkDetails.getMangerDiscount();
 		String dateAndTimeFormat = "";
 		
@@ -510,6 +512,8 @@ public class ParkEmployeeController implements Initializable {
 		
 		
 		//TODO add manager discount if not 0
+		discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+		lblDiscount.setText(String.format("%.1f", discount) + "%");
 	}
 	
 	public String roundingTime() {
@@ -693,15 +697,7 @@ public class ParkEmployeeController implements Initializable {
 	// input: ArrayList<String> park with all the park data
 	// output: new park
 	public static void receivedFromServerParkDetails(Object park) {
-		ArrayList<String> parkFromDB = new ArrayList<String>();
-		parkFromDB.add("");
-		parkFromDB.add(String.valueOf(1));
-		parkFromDB.add(String.valueOf(100));
-		parkFromDB.add(String.valueOf(50));
-		parkFromDB.add(String.valueOf(100));
-		parkFromDB.add(String.valueOf(1));
-		ParkEmployeeController.parkDetails = new Park(parkFromDB);
-		//ParkEmployeeController.parkDetails = (Park) park;
+		ParkEmployeeController.parkDetails = (Park) park;
 	}
 	
 	// getting information from the server
