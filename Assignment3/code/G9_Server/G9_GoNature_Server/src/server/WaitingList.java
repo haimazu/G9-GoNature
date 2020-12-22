@@ -23,21 +23,28 @@ public class WaitingList {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // credit card object received
-
 		ArrayList<String> query = new ArrayList<String>();
-		query.add("insert"); // command
-		query.add("waitingList"); // table name
+
 		Member mem = NewOrder.MemerCheck(data);
 		if (mem!=null)
 			data.setMemberId(mem.getMemberID());
 		data = NewOrder.totalPrice(data, mem, false);
 		data.setOrderNumber(Counter.getCounter().orderNum());
-		query.add(data.toStringForDB()); // values in query format
-
-		if (MySQLConnection.insert(query))
-			answer.add(true);
+		
+		query.add("select"); // command
+		query.add("waitingList"); // table name
+		query.add("*");
+		query.add("WHERE ID='" + data.getID() + "' AND arrivedTime='" + data.getArrivedTime() + "' And parkName='" + data.getParkName() + "'");
+		ArrayList<ArrayList<String>> exist = MySQLConnection.select(query);
+		if (exist.get(0).isEmpty()) { //if there is no another matching in the wait list
+			query.clear();
+			query.add("insert"); // command
+			query.add("waitingList"); // table name
+			query.add(data.toStringForDB()); // values in query format
+			answer.add(MySQLConnection.insert(query)); //true if ok false if not
+		}
 		else
-			answer.add(false);
+			answer.add("alreadyExist"); //alreadyExist if already in the list
 
 		EchoServer.sendToMyClient(answer, client);
 	}
