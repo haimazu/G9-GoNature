@@ -18,7 +18,7 @@ public class Member {
 
 	// constructor from DB
 	public Member(ArrayList<String> memberFromDB) {
-		
+
 		this.memberID = memberFromDB.get(0);
 		System.out.println("ID");
 		this.memberFirstName = memberFromDB.get(1);
@@ -38,8 +38,6 @@ public class Member {
 		this.memberAmount = memberFromDB.get(8);
 		System.out.println(123);
 	}
-	
-	
 
 	@Override
 	public String toString() {
@@ -48,8 +46,6 @@ public class Member {
 				+ ", memberEmail=" + memberEmail + ", memberPaymentType=" + memberPaymentType + ", memberOrderType="
 				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
 	}
-
-
 
 	public String getMemberFirstName() {
 		return memberFirstName;
@@ -83,7 +79,7 @@ public class Member {
 		this.memberAmount = memberAmount;
 	}
 
-	public Member(String memberID, String memberFirstNAme, String memberLastNAme, int memberNumber,
+	public Member(String memberID, String memberFirstNAme, String memberLastNAme, String memberNumber,
 			String memberPhoneNumber, String memberEmail, String memberPaymentType, String memberAmount) {
 		super();
 		this.memberID = memberID;
@@ -120,11 +116,11 @@ public class Member {
 		this.memberLastName = memberLastNAme;
 	}
 
-	public int getMemberNumber() {
+	public String getMemberNumber() {
 		return memberNumber;
 	}
 
-	public void setMemberNumber(int memberNumber) {
+	public void setMemberNumber(String memberNumber) {
 		this.memberNumber = memberNumber;
 	}
 
