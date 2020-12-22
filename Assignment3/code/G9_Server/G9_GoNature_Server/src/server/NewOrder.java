@@ -38,19 +38,33 @@ public class NewOrder {
 			data.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
 			//////////////
 			//////////////
-			ArrayList<String> query = new ArrayList<String>();
-			query.add("insert"); // command
-			query.add("orders"); // table name
-			query.add(data.toStringForDB()); // values in query format
+//			ArrayList<String> query = new ArrayList<String>();
+//			query.add("insert"); // command
+//			query.add("orders"); // table name
+//			query.add(data.toStringForDB()); // values in query format
 
-			if (MySQLConnection.insert(query)) {
-				answer.add(data);
-			} else
-				answer.add(false);
+			answer.add(data);
 
 			EchoServer.sendToMyClient(answer, client);
 		}
 
+	}
+
+	
+	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
+		ArrayList<Object> answer = new ArrayList<Object>();
+		answer.add(recived.get(0));
+		Order data = (Order) recived.get(1); // order object received
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("insert"); // command
+		query.add("orders"); // table name
+		query.add(data.toStringForDB()); // values in query format
+		if (MySQLConnection.insert(query)) {
+			answer.add(data);
+		} else
+			answer.add(false);
+
+		EchoServer.sendToMyClient(answer, client);
 	}
 
 	// input: Order with empty totalPrice & price & orderType, a Member
