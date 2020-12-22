@@ -53,8 +53,6 @@ public class NewOrder {
 
 	}
 
-
-
 	// input: Order with empty totalPrice & price & orderType, a Member
 	//
 	// output: Order with updated totalPrice and price and orderType
@@ -131,26 +129,18 @@ public class NewOrder {
 		query.add("*"); // columns to select from
 
 		if (ord.getID() != null) {
-			System.out.println("memecheck2");
 			query.add("WHERE ID='" + ord.getID() + "'");
-		}
-		else if (ord.getMemberId() != null) {
-			System.out.println("memecheck3");
+		} else if (ord.getMemberId() != null) {
 			query.add("WHERE memberNumber='" + ord.getMemberId() + "'");
 		}
-		
+
 		query.add("9"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.isEmpty()) {
-			
-			System.out.println("memberCheck finish null");
+		if (queryData.isEmpty())
 			return null;
-		}
-		else {
-			System.out.println("memberCheck finish member");
+		else
 			return new Member(queryData.get(0));
-		}
 
 	}
 
