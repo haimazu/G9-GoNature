@@ -204,10 +204,6 @@ public class ParkEmployeeController implements Initializable {
 		}
 
 		//TODO /****** calculate discount ******/
-		// float price = Float.parseFloat(orderDetails.get(5));
-		// float discount = Float.parseFloat(orderDetails.get(6));
-
-		// lblTotalPrice.setText(String.valueOf(totalPrice) + "₪");
 
 		printOrderDetails();
 
@@ -232,11 +228,6 @@ public class ParkEmployeeController implements Initializable {
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.format(time));
-
-		LocalDateTime arrivelDate = LocalDateTime.now();
-		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
-				+ "-" + arrivelDate.getMonthValue() 
-				+ "-" + arrivelDate.getYear());
 	}
 	
 	public void setRandomModeOff() {
@@ -254,11 +245,8 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 	
-		sendToServer("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName())));
-
-		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
-									+ String.valueOf(parkDetails.getCurrentAmount()) + "/" 
-									+ parkDetails.getMaximumCapacityInPark());
+		updateParkStatus();
+		
 		// checking for places in the park
 		if (checkFreePlacesInThePark()) {
 			// random mode
@@ -628,6 +616,14 @@ public class ParkEmployeeController implements Initializable {
 		return false;
 	}
 	
+	public void updateParkStatus() {
+		sendToServer("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName())));
+
+		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
+									+ String.valueOf(parkDetails.getCurrentAmount()) + "/" 
+									+ parkDetails.getMaximumCapacityInPark());
+	}
+	
 	// String type, the case we dealing with
 	// ArrayList<String> dbColumns, sending to the server to get data
 	// input: cells, depending on the case
@@ -689,8 +685,8 @@ public class ParkEmployeeController implements Initializable {
 	// getting information from the server
 	// input: ArrayList<String> park with all the park data
 	// output: new park
-	public static void receivedFromServerParkDetails(Object park) {
-		ParkEmployeeController.parkDetails = (Park) park;
+	public static void receivedFromServerParkDetails(ArrayList<String> park) {
+		ParkEmployeeController.parkDetails = new Park(park);
 	}
 	
 	// getting information from the server
@@ -764,6 +760,11 @@ public class ParkEmployeeController implements Initializable {
 		
 		//setParkName(LoginController.getParkName());
 		setParkName("jurasic");
+		
+		LocalDateTime arrivelDate = LocalDateTime.now();
+		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
+				+ "-" + arrivelDate.getMonthValue() 
+				+ "-" + arrivelDate.getYear());
 
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {

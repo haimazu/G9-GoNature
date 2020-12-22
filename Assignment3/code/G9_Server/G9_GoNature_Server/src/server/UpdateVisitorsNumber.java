@@ -99,8 +99,8 @@ public class UpdateVisitorsNumber {
 		query.add("6"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		Park park = new Park(queryData.get(0));
-		answer.add(park);
+		//Park park = new Park(queryData.get(0));
+		answer.add(queryData.get(0));
 
 		EchoServer.sendToMyClient(answer, client);
 	}

@@ -31,6 +31,7 @@ public class Park {
 		this.currentAmount = Integer.parseInt(parkFromDB.get(1));
 		this.maximumCapacityInPark = Integer.parseInt(parkFromDB.get(2));
 		this.maxAmountOrders = Integer.parseInt(parkFromDB.get(3));
+		this.enteryPrice = Integer.parseInt(parkFromDB.get(4));
 		this.mangerDiscount = Integer.parseInt(parkFromDB.get(5));
 	}
 	
