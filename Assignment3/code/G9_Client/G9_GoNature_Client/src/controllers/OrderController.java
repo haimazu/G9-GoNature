@@ -109,7 +109,7 @@ public class OrderController implements Initializable {
 	 */
 	private static ArrayList<String> ParksNames = new ArrayList<>();
 	private static Order orderSuccess;
-	private Order order;
+	private static Order order;
 	private static String status = "not";
 	private static boolean faildDB = true;
 	private String memberId = null;
@@ -155,6 +155,13 @@ public class OrderController implements Initializable {
 	@FXML
 	private Label txtTotalPrice;
 
+	public static Order getOrder() {
+		return order;
+	}
+
+	public static void setOrder(Order order) {
+		OrderController.order = order;
+	}
 	public static boolean isFaildDB() {
 		return faildDB;
 	}
@@ -241,9 +248,9 @@ public class OrderController implements Initializable {
 			msgNewOrderForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
 					+ getArrivalTime(cbxArrivelTime.getValue().toString());
-			this.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
+			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					"0549991234", cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
-			msgNewOrderForServer.add(this.order);
+			msgNewOrderForServer.add(OrderController.order);
 			imgOrder.setImage(imgOrderFull);
 
 			if (btnNext == event.getSource()) {
