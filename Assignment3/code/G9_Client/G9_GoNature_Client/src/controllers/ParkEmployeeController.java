@@ -117,6 +117,7 @@ public class ParkEmployeeController implements Initializable {
 	private AlertController alert = new AlertController();
 	private boolean informationExists = false;
 	private String radVisitorStatusText;
+	private String dateAndTimeFormat = "";
 	private static String firstName;
 	private static String parkName;
 	private static Order orderDetails;
@@ -283,6 +284,7 @@ public class ParkEmployeeController implements Initializable {
 									+ "Are you sure you want to approve the purchase for everyone?");
 							if (alert.getResult().equals("OK")) {
 								execRandomVisitor(Integer.parseInt(txtVisitorsAmount.getText()));
+								clearAllFields();
 								return;
 							}
 						}
@@ -331,15 +333,15 @@ public class ParkEmployeeController implements Initializable {
 					// check if the update failed and showing alert
 					if (getError().equals("false")) {
 						alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+						return;
 					}
-					
-					// TODO discount
 					
 					// make an automatic purchase for the additional visitors
 					execRandomVisitor(tooManyVisitors);
 					
 				} else {
 					alert.failedAlert("Failed", "We're sorry, the park doesn't have enough places.");
+					return;
 				}
 			}
 		// amount of visitors is less than or equal to what is on the order
@@ -356,6 +358,7 @@ public class ParkEmployeeController implements Initializable {
 				// check if the update failed and showing alert
 				if (getError().equals("false")) {
 					alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+					return;
 				}
 				
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
@@ -386,6 +389,7 @@ public class ParkEmployeeController implements Initializable {
 		// check if the update failed and showing alert
 		if (getError().equals("false")) {
 			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+			return;
 		}
 	}
 
@@ -421,6 +425,7 @@ public class ParkEmployeeController implements Initializable {
 		// check if the update failed and showing alert
 		if (getError().equals("false")) {
 			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+			return;
 		}
 		
 		setDiscountPersent();
@@ -470,10 +475,8 @@ public class ParkEmployeeController implements Initializable {
 		String id = "";
 		String memberId = "";
 		double discount;
-		int managerDiscount = parkDetails.getMangerDiscount();
-		String dateAndTimeFormat = "";
-		
-		dateAndTimeFormat = String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		int managerDiscount = parkDetails.getMangerDiscount();	
+
 		// format time
 		dateAndTimeFormat += roundingTime();
 		// after calling the function dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
@@ -487,7 +490,7 @@ public class ParkEmployeeController implements Initializable {
 			} else {
 				memberId = txtIdOrMemberId.getText();
 			}
-			//"2021-01-02 10:00:00"
+
 			Order o = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
 			// get the member details from the DB
@@ -505,14 +508,10 @@ public class ParkEmployeeController implements Initializable {
 //			sendToServer("memberByIdOrMemberId",
 //					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
 			
-		}
-		// case 1 or 3 -> single/family OR group
-		// AND they have order
-		/***** Order *****/
-		
-		
+		} 
+			
 		//TODO add manager discount if not 0
-		discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+		discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
 		lblDiscount.setText(String.format("%.1f", discount) + "%");
 	}
 	
@@ -774,6 +773,9 @@ public class ParkEmployeeController implements Initializable {
 		setParkName("jurasic");
 		
 		LocalDateTime arrivelDate = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		dateAndTimeFormat = arrivelDate.format(formatter);
+		
 		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
 				+ "-" + arrivelDate.getMonthValue() 
 				+ "-" + arrivelDate.getYear());

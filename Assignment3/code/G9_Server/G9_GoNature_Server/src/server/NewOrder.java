@@ -180,9 +180,10 @@ public class NewOrder {
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty())
 			return null;
-		else
-			return new Member(queryData.get(0));
-
+		else {
+			Member m = new Member(queryData.get(0));
+			return m;
+		}
 	}
 
 	// input: order

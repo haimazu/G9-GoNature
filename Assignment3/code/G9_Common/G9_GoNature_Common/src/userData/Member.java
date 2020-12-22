@@ -18,25 +18,15 @@ public class Member {
 
 	// constructor from DB
 	public Member(ArrayList<String> memberFromDB) {
-
 		this.memberID = memberFromDB.get(0);
-		System.out.println("ID");
 		this.memberFirstName = memberFromDB.get(1);
-		System.out.println("FN");
 		this.memberLastName = memberFromDB.get(2);
-		System.out.println("LN");
 		this.memberNumber = memberFromDB.get(3);
-		System.out.println("mem num");
 		this.memberPhoneNumber = memberFromDB.get(4);
-		System.out.println("phone");
 		this.memberEmail = memberFromDB.get(5);
-		System.out.println("email");
 		this.memberPaymentType = memberFromDB.get(6);
-		System.out.println("membb");
 		this.memberOrderType = OrderType.valueOf(memberFromDB.get(7).toUpperCase());
-		System.out.println("membaf");
 		this.memberAmount = memberFromDB.get(8);
-		System.out.println(123);
 	}
 
 	@Override
