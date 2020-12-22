@@ -412,7 +412,6 @@ public class OrderController implements Initializable {
 		}
 		if (!validInput("Phone", txtPhoneNum.getText())) {
 			alert.setAlert("Invalid phone number");
-			System.out.println(txtPhoneNum.getText());
 			return false;
 		}
 		if (!validInput("AmountVisitor", txtVisitorsNumber.getText()) || txtVisitorsNumber.getText().equals("0")) {
@@ -424,6 +423,7 @@ public class OrderController implements Initializable {
 			return true;
 		} else if (validInput("ID", txtmemberID.getText())) {
 			this.ID = txtmemberID.getText();
+
 			return true;
 		}
 		alert.setAlert("Invalid member-ID / ID ");
@@ -517,6 +517,8 @@ public class OrderController implements Initializable {
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
 		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
+		
+		
 
 		/*********** need to do this**** for save detail after fill **********/
 //		if(OrderController.order!=null) {
