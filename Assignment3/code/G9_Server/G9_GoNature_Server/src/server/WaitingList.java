@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
+import userData.Member;
 
 public class WaitingList {
 	private static ArrayList<String> confirmed = new ArrayList<String>();
@@ -18,7 +19,7 @@ public class WaitingList {
 	// in cell 1: boolean ->
 	// true if entry sucsseful
 	// false if not
-	public void enterTheWaitList(ArrayList<Object> recived, ConnectionToClient client) {
+	public static void enterTheWaitList(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // credit card object received
@@ -26,6 +27,11 @@ public class WaitingList {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("insert"); // command
 		query.add("waitingList"); // table name
+		Member mem = NewOrder.MemerCheck(data);
+		if (mem!=null)
+			data.setMemberId(mem.getMemberID());
+		data = NewOrder.totalPrice(data, mem, false);
+		data.setOrderNumber(Counter.getCounter().orderNum());
 		query.add(data.toStringForDB()); // values in query format
 
 		if (MySQLConnection.insert(query))

@@ -23,12 +23,12 @@ DROP TABLE IF EXISTS `creditcard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `creditcard` (
-  `cardNumber` int NOT NULL,
-  `cardHolderName` varchar(45) DEFAULT NULL,
-  `expiredDate` date DEFAULT NULL,
-  `cvc` int DEFAULT NULL,
-  `orderID` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`cardNumber`)
+  `cardNumber` varchar(45) NOT NULL,
+  `cardHolderName` varchar(45) NOT NULL,
+  `expiredDate` date NOT NULL,
+  `cvc` int NOT NULL,
+  `orderID` varchar(45) NOT NULL,
+  PRIMARY KEY (`orderID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -98,7 +98,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (123456,'rinat','students','1','972867648374','rinatbeeretz@haenglish.com','paypal','family',3),(654321,'rinat','gabai','2','999777888','rinatGab@test.com','cash','single',1);
+INSERT INTO `member` VALUES (111111111,'rinat','students','1','972867648374','rinatbeeretz@haenglish.com','paypal','family',3),(222222222,'rinat','gabai','2','999777888','rinatGab@test.com','cash','single',1);
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +132,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES ('10','a@b.c','123123123','guide',400,100,'jurasic','2021-01-02 10:00:00','1','123456','0',1111),('5','d@e.f','12312313','single',100,200,'disney','2020-12-19 10:00:00','2','987656432','0',2222),('2','bar@bar.ci','0549991234','random',200,170,'disney','2020-12-22 08:00:00','null','315818567','0',5555);
+INSERT INTO `orders` VALUES ('10','a@b.c','123123123','group',400,100,'jurasic','2021-01-02 10:00:00','1','123456','0',1111),('5','d@e.f','12312313','single',100,200,'disney','2020-12-19 10:00:00','2','987656432','0',2222),('2','bar@bark.ci','0549991234','random',200,170,'disney','2020-12-20 08:00:00','null','315818987','0',5465),('2','bar@bar.ci','0549991234','random',200,170,'disney','2020-12-22 08:00:00','5','315818567','0',5555),('3','bar@bark.ci','0549991234','random',300,255,'jurasic','2020-12-21 08:00:00','null','222111333','0',5556),('5','bar@bark.ci','0549991234','random',500,425,'disney','2020-12-24 08:00:00','null','111222333','0',5557),('50','bar@bark.ci','0549991234','random',5000,4250,'universal','2020-12-28 12:00:00','null','333222111','0',5558),('50','a@v.com','0549991234','random',5000,4250,'disney','2020-12-20 08:00:00','null','111111111','0',5559),('5','bar@bark.ci','0549991234','random',500,425,'disney','2020-12-20 08:00:00','null','315818987','0',5560),('2','bar@bark.ci','0549991234','random',200,170,'jurasic','2020-12-20 16:00:00','null','888888888','0',5561),('2','bar@bark.ci','0549991234','random',170,200,'jurasic','2020-12-29 08:00:00','null','444444444','0',5562),('20','bar@bark.ci','0549991234','random',1700,2000,'jurasic','2020-12-29 12:00:00','null','555555555','0',5563),('2','bar@bark.ci','0549991234','random',170,200,'jurasic','2021-01-02 12:00:00','null','111111111','0',5564),('2','bar@bark.ci','0549991234','random',170,200,'disney','2020-12-28 08:00:00','null','315818987','0',5565),('2','bar@bark.ci','0549991234','random',170,200,'disney','2021-03-17 08:00:00','null','315818987','0',5566),('50','bar@kaz.com','0541234567','regular',4250,5000,'disney','2020-12-23 08:00:00','null','null','0',5567),('1','bar@kaz.com','0541234567','regular',85,100,'disney','2020-12-23 08:00:00','null','null','0',5568),('40','bar@kaz.com','0541234567','regular',3400,4000,'disney','2020-12-23 08:00:00','null','null','0',5569),('2','bar@kaz.com','0541234567','regular',170,200,'disney','2020-12-24 12:00:00','null','315818987','0',5570);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,16 +201,18 @@ DROP TABLE IF EXISTS `waitinglist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `waitinglist` (
-  `waitlistID` varchar(45) NOT NULL,
   `visitorsNumber` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
-  `phone` varchar(45) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
   `orderType` varchar(45) DEFAULT NULL,
-  `price` varchar(45) DEFAULT NULL,
+  `beforeDiscountPrice` double DEFAULT NULL,
+  `afterDiscountPrice` double DEFAULT NULL,
   `parkName` varchar(45) DEFAULT NULL,
   `arrivedTime` datetime DEFAULT NULL,
   `memberID` varchar(45) DEFAULT NULL,
   `ID` varchar(45) DEFAULT NULL,
+  `amountArrived` varchar(45) DEFAULT '0',
+  `waitlistID` int NOT NULL,
   PRIMARY KEY (`waitlistID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -221,7 +223,7 @@ CREATE TABLE `waitinglist` (
 
 LOCK TABLES `waitinglist` WRITE;
 /*!40000 ALTER TABLE `waitinglist` DISABLE KEYS */;
-INSERT INTO `waitinglist` VALUES ('01101','5','t@t.t','0546290290','group','500','jurasic','2020-12-17 10:00:00','1','333555444');
+INSERT INTO `waitinglist` VALUES ('5','t@t.t','0546290290','group',500,400,'jurasic','2020-12-17 10:00:00','1','333555444','0',1101);
 /*!40000 ALTER TABLE `waitinglist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -234,4 +236,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-19 19:49:11
+-- Dump completed on 2020-12-22 16:53:30

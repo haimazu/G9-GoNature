@@ -84,10 +84,18 @@ public class Order implements Serializable {
 
 		String afterDiscount = Double.toString(getTotalPrice());
 		String beforDiscount = Double.toString(getPrice());
-		return "'" + getVisitorsNumber() + "','" + getOrderEmail() + "','" + getOrderPhone() + "','"
-				+ getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','" + getParkName()
-				+ "','" + getArrivedTime() + "','" + getMemberId() + "','" + getID() + "','" + getAmountArrived()
-				+ "','" + getOrderNumber() + "'";
+		return 	("'" + getVisitorsNumber() + "','"
+					+ getOrderEmail() + "','"
+					+ getOrderPhone() + "','"
+					+ getOrderType().toString() + "','"
+					+ afterDiscount + "','"
+					+ beforDiscount + "','"
+					+ getParkName() + "','"
+					+ getArrivedTime() + "','"
+					+ getMemberId() + "','"
+					+ getID() + "','"
+					+ getAmountArrived() + "','"
+					+ getOrderNumber() + "'");
 	}
 
 	// checks if the order is for occasional visitor

@@ -57,6 +57,9 @@ public class EchoServer extends AbstractServer {
 		case "updateOrder":
 			NewOrder.NewReservation(recived, client);
 			break;
+		case "enterTheWaitList":
+			WaitingList.enterTheWaitList(recived, client);
+			break;
 		default:
 			break;
 		}

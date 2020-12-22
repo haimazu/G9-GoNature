@@ -110,7 +110,6 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
-  `orderNumber` int NOT NULL,
   `visitorsNumber` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `phoneNumber` varchar(45) DEFAULT NULL,
@@ -122,6 +121,7 @@ CREATE TABLE `orders` (
   `memberID` varchar(45) DEFAULT NULL,
   `ID` varchar(45) DEFAULT NULL,
   `amountArrived` varchar(45) DEFAULT '0',
+  `orderNumber` int NOT NULL,
   PRIMARY KEY (`orderNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -132,7 +132,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1111,'10','a@b.c',NULL,'guide',400,NULL,'jurasic','2021-01-02 10:00:00','1','123456','0'),(2222,'5','d@e.f',NULL,'single',100,NULL,'disney','2020-12-16 10:00:00','','987656432','0');
+INSERT INTO `orders` VALUES ('10','a@b.c','123123123','guide',400,100,'jurasic','2021-01-02 10:00:00','1','123456','0',1111),('5','d@e.f','12312313','single',100,200,'disney','2020-12-19 10:00:00','2','987656432','0',2222),('2','bar@bar.ci','0549991234','random',200,170,'disney','2020-12-22 08:00:00','null','315818567','0',5555);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +160,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('disney','0','150',NULL,'100',NULL),('jurasic','0','100',NULL,'100',NULL),('universal','0','250',NULL,'100',NULL);
+INSERT INTO `park` VALUES ('disney','0','150','100','100','1'),('jurasic','0','100','90','100','1'),('universal','0','250','150','100','1');
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,4 +234,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-19 13:07:31
+-- Dump completed on 2020-12-19 19:49:11
