@@ -307,6 +307,8 @@ public class OrderController implements Initializable {
 				if (checkNotEmptyFieldsPaymentScreen()) {
 					ClientUI.sentToChatClient(msgConfirmForServer);
 					
+				//	System.out.println("order con line 310");
+					
 					if(OrderController.confirmOrder) {
 						OrderController.confirmOrder=false;
 						this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
