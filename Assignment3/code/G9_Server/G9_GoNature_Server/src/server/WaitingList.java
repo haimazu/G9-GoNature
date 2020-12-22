@@ -31,6 +31,7 @@ public class WaitingList {
 		if (mem!=null)
 			data.setMemberId(mem.getMemberID());
 		data = NewOrder.totalPrice(data, mem, false);
+		data.setOrderNumber(Counter.getCounter().orderNum());
 		query.add(data.toStringForDB()); // values in query format
 
 		if (MySQLConnection.insert(query))
