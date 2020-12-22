@@ -56,56 +56,119 @@ public class NewOrder {
 	// input: Order with empty totalPrice & price & orderType, a Member
 	//
 	// output: Order with updated totalPrice and price and orderType
+//	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
+//
+//		int parkEnteryPrice = CurrentPriceInPark(ord);
+//		if (!occasional)
+//			ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());// full price
+//		else
+//			ord.setPrice(parkEnteryPrice * ord.getAmountArrived());// full price
+//
+//		if (memb == null) {// if the order is not for a member
+//			ord.setOrderType(OrderType.REGULAR);
+//			ord.setID(null);
+//			ord.setMemberId(null);
+//			if (!occasional)
+//				ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
+//			else
+//				ord.setTotalPrice(parkEnteryPrice * ord.getAmountArrived() * 0.85);
+//		} else {// if the order is for members/group
+//
+//			switch (memb.getMemberOrderType()) {
+//			case MEMBER:
+//				ord.setOrderType(OrderType.MEMBER);
+//				int familymembers = Integer.parseInt(memb.getMemberAmount());
+//				int notFamilyMembers;
+//				if (occasional)
+//					notFamilyMembers = ord.getAmountArrived() - familymembers;
+//				else
+//					notFamilyMembers = ord.getVisitorsNumber() - familymembers;
+//				if (notFamilyMembers < 0)
+//					notFamilyMembers = 0;
+//				ord.setTotalPrice(familymembers * parkEnteryPrice * 0.80);
+//				if (occasional)
+//					ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice * 0.85);
+//				else
+//					ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice);
+//				break;
+//			case GROUP:
+//				ord.setOrderType(OrderType.GROUP);
+//				int groupAmount = Integer.parseInt(memb.getMemberAmount());
+//				if (!occasional) {
+//					groupAmount = Integer.parseInt(memb.getMemberAmount());
+//					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
+//				} else {
+//					groupAmount = ord.getAmountArrived();
+//					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.90);
+//				}
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//		return ord;
+//	}
+
+	// input: Order with empty totalPrice & price & orderType, a Member
+	//
+	// output: Order with updated totalPrice and price and orderType
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
-
 		int parkEnteryPrice = CurrentPriceInPark(ord);
-		if (!occasional)
-			ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());// full price
-		else
-			ord.setPrice(parkEnteryPrice * ord.getAmountArrived());// full price
+		int numberOfPeople;
+		if (occasional) {
+			numberOfPeople = ord.getAmountArrived();
+			ord.setPrice(parkEnteryPrice * numberOfPeople);// full price for all
 
-		if (memb == null) {// if the order is not for a member
-			ord.setOrderType(OrderType.REGULAR);
-			ord.setID(null);
-			ord.setMemberId(null);
-			if (!occasional)
-				ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
-			else
-				ord.setTotalPrice(parkEnteryPrice * ord.getAmountArrived() * 0.85);
-		} else {// if the order is for members/group
-
-			switch (memb.getMemberOrderType()) {
-			case MEMBER:
-				ord.setOrderType(OrderType.MEMBER);
-				int familymembers = Integer.parseInt(memb.getMemberAmount());
-				int notFamilyMembers;
-				if (occasional)
-					notFamilyMembers = ord.getAmountArrived() - familymembers;
-				else
-					notFamilyMembers = ord.getVisitorsNumber() - familymembers;
-				if (notFamilyMembers < 0)
-					notFamilyMembers = 0;
-				ord.setTotalPrice(familymembers * parkEnteryPrice * 0.80);
-				if (occasional)
-					ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice * 0.85);
-				else
-					ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice);
-				break;
-			case GROUP:
-				ord.setOrderType(OrderType.GROUP);
-				int groupAmount = Integer.parseInt(memb.getMemberAmount());
-				if (!occasional) {
-					groupAmount = Integer.parseInt(memb.getMemberAmount());
-					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
-				} else {
-					groupAmount = ord.getAmountArrived();
-					ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.90);
+			if (memb == null) { // if the order is not for a member
+				ord.setOrderType(OrderType.REGULAR);
+				ord.setTotalPrice(ord.getPrice());
+			} else { // if the order is for occasional member
+				switch (memb.getMemberOrderType()) {
+				case MEMBER:
+					ord.setOrderType(OrderType.MEMBER);
+					int nonFamily = numberOfPeople - memb.getMemberNumber();
+					if (nonFamily > 0)
+						ord.setTotalPrice(nonFamily * parkEnteryPrice + memb.getMemberNumber() * parkEnteryPrice * 0.8);
+					else
+						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8);
+					break;
+				case GROUP:
+					ord.setOrderType(OrderType.GROUP);
+					ord.setTotalPrice(ord.getPrice() * 0.9);
+					break;
+				default:
+					break;
 				}
-				break;
-			default:
-				break;
+			}
+		} else { // pre-order
+			numberOfPeople = ord.getVisitorsNumber();
+			ord.setPrice(parkEnteryPrice * numberOfPeople);// full price for all
+			if (memb == null) { // if the order is not for a member
+				ord.setOrderType(OrderType.REGULAR);
+				ord.setTotalPrice(ord.getPrice() * 0.85);
+			} else {// if the order is for non-occasional member
+				switch (memb.getMemberOrderType()) {
+				case MEMBER:
+					ord.setOrderType(OrderType.MEMBER);
+					int nonFamily = numberOfPeople - memb.getMemberNumber();
+					if (nonFamily > 0) {
+						ord.setTotalPrice(ord.getPrice() * 0.85);
+						ord.setTotalPrice(ord.getTotalPrice()
+								- (ord.getTotalPrice() / numberOfPeople) * memb.getMemberNumber() * 0.2);
+					} else {
+						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.85);
+						ord.setTotalPrice(ord.getTotalPrice() * 0.8);
+					}
+					break;
+				case GROUP:
+					ord.setTotalPrice(ord.getPrice()*0.75);
+					break;
+				default:
+					break;
+				}
 			}
 		}
+
 		return ord;
 	}
 
