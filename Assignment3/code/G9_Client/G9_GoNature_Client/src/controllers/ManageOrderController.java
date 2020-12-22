@@ -158,8 +158,8 @@ public class ManageOrderController implements Initializable {
 		Order sentOrder = order; // maybe a pointer ???
 		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
-			System.out.println(timeString);
-			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + timeString);
+			System.out.println(timeString[0]);
+			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + timeString[0]);
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
 			int orderVisitorsNumber = sentOrder.getVisitorsNumber();

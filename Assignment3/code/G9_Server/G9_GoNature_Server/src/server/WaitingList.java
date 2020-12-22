@@ -35,8 +35,9 @@ public class WaitingList {
 		query.add("waitingList"); // table name
 		query.add("*");
 		query.add("WHERE ID='" + data.getID() + "' AND arrivedTime='" + data.getArrivedTime() + "' And parkName='" + data.getParkName() + "'");
+		query.add("12");
 		ArrayList<ArrayList<String>> exist = MySQLConnection.select(query);
-		if (exist.get(0).isEmpty()) { //if there is no another matching in the wait list
+		if (exist.isEmpty()) { //if there is no another matching in the wait list
 			query.clear();
 			query.add("insert"); // command
 			query.add("waitingList"); // table name

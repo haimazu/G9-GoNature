@@ -87,15 +87,15 @@ public class WelcomeController implements Initializable {
 			msg.add(data);
 			ClientUI.sentToChatClient(msg);
 			
-//			for (int i=0;i<5;i++) {
-//				try {
-//					TimeUnit.SECONDS.sleep(1);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//			System.out.println("after5");
+			for (int i=0;i<5;i++) {
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("after2");
 			
 			if (orderDetails == null) {
 				alert.setAlert("Failed, No such order.");
