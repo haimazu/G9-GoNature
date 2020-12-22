@@ -167,7 +167,7 @@ public class ParkEmployeeController implements Initializable {
 		// Random rand = new Random();
 		// generate random integers in range 0 to 3
 		// return rand.nextInt(4);
-		return 2;
+		return 8;
 	}
 
 	private int getVisitorsEnteredFromBarcode() {
@@ -190,7 +190,7 @@ public class ParkEmployeeController implements Initializable {
 		if (!informationExists) {
 			sendToServer("ordersByOrderNumber", new ArrayList<String>(Arrays.asList(txtOrderNumber.getText())));
 
-			if (error.equals("No such order")) {
+			if (getError().equals("No such order")) {
 				alert.failedAlert("Failed", "No such order.");
 				clearAllFields();
 				return;
@@ -245,7 +245,8 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 	
-		updateParkStatus();
+		//updateParkStatus();
+		receivedFromServerParkDetails(null);
 		
 		// checking for places in the park
 		if (checkFreePlacesInThePark()) {
@@ -676,8 +677,8 @@ public class ParkEmployeeController implements Initializable {
 	// output: for case 1. we create new order with all the received details
 	//         for case 2. we set the error message
 	public static void receivedFromServerOrderDetails(Object order) {
-		if (order.equals("No such order")) {
-			setError("No such order");
+		if (((String) order).equals("No such order")) {
+			setError((String) order);
 		} else {
 			ParkEmployeeController.orderDetails = (Order) order;
 		}
@@ -686,8 +687,16 @@ public class ParkEmployeeController implements Initializable {
 	// getting information from the server
 	// input: ArrayList<String> park with all the park data
 	// output: new park
-	public static void receivedFromServerParkDetails(ArrayList<String> park) {
-		ParkEmployeeController.parkDetails = new Park(park);
+	public static void receivedFromServerParkDetails(Object park) {
+		ArrayList<String> parkFromDB = new ArrayList<String>();
+		parkFromDB.add("");
+		parkFromDB.add(String.valueOf(1));
+		parkFromDB.add(String.valueOf(100));
+		parkFromDB.add(String.valueOf(50));
+		parkFromDB.add(String.valueOf(100));
+		parkFromDB.add(String.valueOf(1));
+		ParkEmployeeController.parkDetails = new Park(parkFromDB);
+		//ParkEmployeeController.parkDetails = (Park) park;
 	}
 	
 	// getting information from the server

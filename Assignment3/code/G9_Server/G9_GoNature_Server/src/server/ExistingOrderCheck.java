@@ -35,7 +35,7 @@ public class ExistingOrderCheck {
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty()) {
-			answer.add(new ArrayList<String>(Arrays.asList("No such order")));
+			answer.add("No such order");
 		} else {
 			Order kuku = new Order(queryData.get(0));
 			answer.add(kuku);
