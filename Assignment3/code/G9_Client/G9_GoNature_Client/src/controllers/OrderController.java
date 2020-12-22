@@ -260,6 +260,7 @@ public class OrderController implements Initializable {
 				this.ID=null;
 				
 				if (status.equals("Failed")) { //the user can't order 
+					OrderController.status="not";
 					Stage stage = new Stage();
 					Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
 					Scene scene = new Scene(root);
