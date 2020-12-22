@@ -266,7 +266,7 @@ public class OrderController implements Initializable {
 		if (checkNotEmptyFields() && checkCorrectFields() && checkCurrentTime()) {
 			msgNewOrderForServer.add("order");
 			String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
-					+ getArrivalTime(cbxArrivelTime.getValue().toString());
+					+ getArrivalTime();
 			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					txtPhoneNum.getText(), cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
 			msgNewOrderForServer.add(OrderController.order);
@@ -431,7 +431,7 @@ public class OrderController implements Initializable {
 	 * @param time
 	 * @return The  start time of the reservation 
 	 */
-	public String getArrivalTime(String time) {
+	public String getArrivalTime() {
 		String[] array = cbxArrivelTime.getValue().toString().split("-");
 		return array[0];
 	}
