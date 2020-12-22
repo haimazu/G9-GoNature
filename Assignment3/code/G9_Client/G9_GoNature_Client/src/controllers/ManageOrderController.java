@@ -150,8 +150,7 @@ public class ManageOrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	//String strDateTime = txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
-		//	+ getArrivalTime(cbxArrivelTime.getValue().toString());
+	
 	
 	@FXML
 	void update(ActionEvent event) {
@@ -187,7 +186,6 @@ public class ManageOrderController implements Initializable {
 	public static void updatedOrderFromServer(Object received) {
 		if (received instanceof Order) {
 			updated=true;
-			cancelOrder();
 		}
 		return;
 	}
