@@ -190,12 +190,21 @@
             </Pane>
             <Pane fx:id="pnOrder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
+                  <JFXComboBox fx:id="cbxParkName" focusColor="SEAGREEN" focusTraversable="false" layoutX="75.0" layoutY="211.0" prefHeight="50.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3" />
+                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="375.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Inviting Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </JFXTextField>
                   <ImageView fitHeight="112.0" fitWidth="189.0" layoutX="109.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@שקופית52-removebg-preview.png" />
                      </image>
                   </ImageView>
-                  <JFXTextField fx:id="txtmemberID" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtmemberID" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="171.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Id / Member Id" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -203,12 +212,11 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="201.0" size="16" />
-                  <Button fx:id="information" layoutX="331.0" layoutY="183.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
-                  <JFXComboBox fx:id="cbxParkName" focusColor="SEAGREEN" focusTraversable="false" layoutX="74.0" layoutY="216.0" prefHeight="50.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3" />
-                  <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="76.0" layoutY="297.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
-                  <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="189.0" layoutY="277.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
-                  <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="346.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="206.0" size="16" />
+                  <Button fx:id="information" layoutX="331.0" layoutY="188.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btnIWithImg" />
+                  <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="75.0" layoutY="289.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" styleClass="datePicker" />
+                  <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="189.0" layoutY="269.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
+                  <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="327.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -216,7 +224,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <FontAwesomeIconView fx:id="visitorsIcon" fill="#a1a1a1" glyphName="USERS" layoutX="306.0" layoutY="381.0" size="16" />
+                  <FontAwesomeIconView fx:id="visitorsIcon" fill="#a1a1a1" glyphName="USERS" layoutX="306.0" layoutY="362.0" size="16" />
                   <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="406.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Email" styleClass="txtField" unFocusColor="#a3a3a3" visible="false">
                      <opaqueInsets>
                         <Insets />
@@ -225,19 +233,19 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <FontAwesomeIconView fx:id="invitingIcon" fill="#a1a1a1" glyphName="ENVELOPE" layoutX="306.0" layoutY="441.0" size="16" />
-                  <Label layoutX="74.0" layoutY="502.0" text="* Required fields" textFill="RED" />
-                  <Button fx:id="btnNext" focusTraversable="false" layoutX="207.0" layoutY="525.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#next" prefHeight="40.0" prefWidth="82.0" styleClass="btnNext" text="Next" textAlignment="CENTER">
+                  <FontAwesomeIconView fx:id="invitingIcon" fill="#a1a1a1" glyphName="ENVELOPE" layoutX="306.0" layoutY="410.0" size="16" />
+                  <Label layoutX="74.0" layoutY="482.0" text="* Required fields" textFill="RED" />
+                  <Button fx:id="btnNext" focusTraversable="false" layoutX="203.0" layoutY="512.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#next" prefHeight="40.0" prefWidth="82.0" styleClass="btnNext" text="Next" textAlignment="CENTER">
                      <font>
                         <Font name="Bauhaus 93" size="19.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnClear" focusTraversable="false" layoutX="80.0" layoutY="525.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clear" prefHeight="40.0" prefWidth="82.0" styleClass="btnClear" text="Clear" textAlignment="CENTER">
+                  <Button fx:id="btnClear" focusTraversable="false" layoutX="73.0" layoutY="512.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clear" prefHeight="40.0" prefWidth="82.0" styleClass="btnClear" text="Clear" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <JFXTextField fx:id="txtInvitingEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="74.0" layoutY="407.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Inviting Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtPhoneNum" focusColor="#121920" labelFloat="true" layoutX="75.0" layoutY="423.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Phone Number " styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -245,14 +253,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txtPhoneNum" focusColor="#121920" labelFloat="true" layoutX="74.0" layoutY="455.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Phone Number " styleClass="txtField" unFocusColor="#a3a3a3">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </JFXTextField>
+                  <FontAwesomeIconView fx:id="phoneIcon" fill="#a1a1a1" glyphName="PHONE" layoutX="307.0" layoutY="458.0" size="16" />
                </children>
             </Pane>
          </children>
