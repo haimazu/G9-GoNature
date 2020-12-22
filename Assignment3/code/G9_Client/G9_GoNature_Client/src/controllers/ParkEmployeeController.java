@@ -678,19 +678,19 @@ public class ParkEmployeeController implements Initializable {
 	//        otherwise 2. string of "No such order"
 	// output: for case 1. we create new order with all the received details
 	//         for case 2. we set the error message
-	public static void receivedFromServerOrderDetails(ArrayList<String> order) {
-		if (order.get(0).equals("No such order")) {
+	public static void receivedFromServerOrderDetails(Object order) {
+		if (order.equals("No such order")) {
 			setError("No such order");
 		} else {
-			ParkEmployeeController.orderDetails = new Order(order);
+			ParkEmployeeController.orderDetails = (Order) order;
 		}
 	}
 
 	// getting information from the server
 	// input: ArrayList<String> park with all the park data
 	// output: new park
-	public static void receivedFromServerParkDetails(ArrayList<String> park) {
-		ParkEmployeeController.parkDetails = new Park(park);
+	public static void receivedFromServerParkDetails(Object park) {
+		ParkEmployeeController.parkDetails = (Park) park;
 	}
 	
 	// getting information from the server
