@@ -120,7 +120,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String firstName;
 	private static String parkName;
 	private static Order orderDetails;
-	private static Order newOrderDetails;
+	private static Order randomVisitorFakeOrderDetails;
 	private static Park parkDetails;
 	private static String error = "";
 	// private Map<String, Integer> orderDocumentation = new HashMap<String,
@@ -167,7 +167,7 @@ public class ParkEmployeeController implements Initializable {
 		// Random rand = new Random();
 		// generate random integers in range 0 to 3
 		// return rand.nextInt(4);
-		return 2;
+		return 8;
 	}
 
 	private int getVisitorsEnteredFromBarcode() {
@@ -190,7 +190,7 @@ public class ParkEmployeeController implements Initializable {
 		if (!informationExists) {
 			sendToServer("ordersByOrderNumber", new ArrayList<String>(Arrays.asList(txtOrderNumber.getText())));
 
-			if (error.equals("No such order")) {
+			if (getError().equals("No such order")) {
 				alert.failedAlert("Failed", "No such order.");
 				clearAllFields();
 				return;
@@ -245,7 +245,8 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 	
-		updateParkStatus();
+		//updateParkStatus();
+		receivedFromServerParkDetails(null);
 		
 		// checking for places in the park
 		if (checkFreePlacesInThePark()) {
@@ -258,7 +259,12 @@ public class ParkEmployeeController implements Initializable {
 					execRandomVisitor(Integer.parseInt(txtRandomVisitorsAmount.getText()));
 				}
 			// barcode / regular entry
-			} else {				
+			} else {
+				if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
+					alert.failedAlert("Failed", "All fields required.");
+					return;
+				}
+				
 				// if the order is for another park
 				if (!orderDetails.getParkName().equals(getParkName())) {
 					alert.failedAlert("Failed", "The order is for the park " + orderDetails.getParkName() + ".");
@@ -295,10 +301,9 @@ public class ParkEmployeeController implements Initializable {
 			alert.failedAlert("Failed", "We're sorry, the park is full.\nPlease try again later.");
 			return;
 		}
+		
 		informationExists = false;
 		clearAllFields();
-
-		btnApprove.setDisable(false);
 	}
 	
 	// enter control to the park
@@ -399,14 +404,15 @@ public class ParkEmployeeController implements Initializable {
 		// check if the amount of "visitorsEntered" greater than the invitation.
 		if (visitorsAmount > freePlace) {
 			alert.failedAlert("Failed", "The amount of visitors is greater than the available places in the park.");
-		} else {
-			// update current visitors
-			alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
-			updateCurrentVisitors = visitorsAmount + currentVisitors;
-			lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
-					+ String.valueOf(updateCurrentVisitors) + "/" 
-					+ parkDetails.getMaximumCapacityInPark());
-		}
+			return;
+		} 
+		
+		// update current visitors
+		alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
+		updateCurrentVisitors = visitorsAmount + currentVisitors;
+		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
+				+ String.valueOf(updateCurrentVisitors) + "/" 
+				+ parkDetails.getMaximumCapacityInPark());
 
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(getParkName());
@@ -493,7 +499,7 @@ public class ParkEmployeeController implements Initializable {
 			// set up all the order details and the payment method
 			ClientUI.sentToChatClient(msg);
 			
-			System.out.println(newOrderDetails);
+			System.out.println(randomVisitorFakeOrderDetails);
 //			sendToServer("memberByIdOrMemberId",
 //					new ArrayList<String>(Arrays.asList(String.valueOf(txtIdOrMemberId.getText()))));
 			
@@ -676,18 +682,26 @@ public class ParkEmployeeController implements Initializable {
 	// output: for case 1. we create new order with all the received details
 	//         for case 2. we set the error message
 	public static void receivedFromServerOrderDetails(Object order) {
-		if (order.equals("No such order")) {
-			setError("No such order");
-		} else {
+		if (order instanceof Order) {
 			ParkEmployeeController.orderDetails = (Order) order;
+		} else {
+			setError((String) order);
 		}
 	}
 
 	// getting information from the server
 	// input: ArrayList<String> park with all the park data
 	// output: new park
-	public static void receivedFromServerParkDetails(ArrayList<String> park) {
-		ParkEmployeeController.parkDetails = new Park(park);
+	public static void receivedFromServerParkDetails(Object park) {
+		ArrayList<String> parkFromDB = new ArrayList<String>();
+		parkFromDB.add("");
+		parkFromDB.add(String.valueOf(1));
+		parkFromDB.add(String.valueOf(100));
+		parkFromDB.add(String.valueOf(50));
+		parkFromDB.add(String.valueOf(100));
+		parkFromDB.add(String.valueOf(1));
+		ParkEmployeeController.parkDetails = new Park(parkFromDB);
+		//ParkEmployeeController.parkDetails = (Park) park;
 	}
 	
 	// getting information from the server
@@ -697,10 +711,10 @@ public class ParkEmployeeController implements Initializable {
 	// output: for case 1. we create new member with all the received details
 	//         for case 2. we set the error message
 	public static void receivedFromServerMemberDetails(Object order) {
-		if (order.equals("Failed")) {
-			setError("Failed");
+		if (order instanceof Order) {
+			ParkEmployeeController.randomVisitorFakeOrderDetails = (Order) order;
 		} else {
-			ParkEmployeeController.newOrderDetails = (Order) order;
+			setError("Failed");
 		}
 	}
 	
@@ -730,6 +744,7 @@ public class ParkEmployeeController implements Initializable {
 	// input: none
 	// output: none
 	public void clearAllFields() {
+		setError("");
 		txtOrderNumber.clear();
 		lblOrderNumber.setText("");
 		txtVisitorsAmount.clear();
@@ -748,7 +763,7 @@ public class ParkEmployeeController implements Initializable {
 		lblTimeTitle.setVisible(false);
 		lblRandomTime.setVisible(false);
 		txtRandomVisitorsAmount.setVisible(false);
-		btnApprove.setDisable(false);
+		btnApprove.setDisable(true);
 		btnRandomVisitor.setVisible(true);
 	}
 
@@ -769,7 +784,7 @@ public class ParkEmployeeController implements Initializable {
 
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
-
+			btnApprove.setDisable(false);
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.matches("\\d")) {
@@ -780,6 +795,7 @@ public class ParkEmployeeController implements Initializable {
 
 		// force the field to be numeric only
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
+			btnApprove.setDisable(false);
 			lblVisitorsAmount.setText(newValue);
 			// \\d -> only digits
 			// * -> escaped special characters

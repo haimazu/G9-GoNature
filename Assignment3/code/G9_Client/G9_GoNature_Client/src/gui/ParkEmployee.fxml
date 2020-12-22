@@ -82,6 +82,32 @@
             </Pane>
             <Pane fx:id="pnDashboard" layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight">
                <children>
+                  <Label fx:id="lblDateTitle" layoutX="30.0" layoutY="426.0" styleClass="labelBold" text="Date:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTimeTitle" layoutX="178.0" layoutY="426.0" styleClass="labelBold" text="Time:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="txtRandomVisitorsAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="160.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtIdOrMemberId" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*ID/Member Num" styleClass="txtField" unFocusColor="#a3a3a3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </JFXTextField>
                   <Label layoutX="30.0" styleClass="labelBold" text="Visitors in the park">
                      <font>
                         <Font size="16.0" />
@@ -236,19 +262,9 @@
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </JFXRadioButton>
-                  <Label fx:id="lblDateTitle" layoutX="30.0" layoutY="426.0" styleClass="labelBold" text="Date:">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
                   <Label fx:id="lblRandomDate" layoutX="74.0" layoutY="424.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblTimeTitle" layoutX="178.0" layoutY="426.0" styleClass="labelBold" text="Time:">
-                     <font>
-                        <Font size="16.0" />
                      </font>
                   </Label>
                   <Label fx:id="lblRandomTime" layoutX="225.0" layoutY="424.0">
@@ -256,22 +272,6 @@
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txtRandomVisitorsAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="160.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </JFXTextField>
-                  <JFXTextField fx:id="txtIdOrMemberId" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="30.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="118.0" promptText="*ID/Member Num" styleClass="txtField" unFocusColor="#a3a3a3">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </JFXTextField>
                </children>
             </Pane>
          </children>
