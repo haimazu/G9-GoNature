@@ -38,22 +38,35 @@ public class NewOrder {
 			data.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
 			//////////////
 			//////////////
-			ArrayList<String> query = new ArrayList<String>();
-			query.add("insert"); // command
-			query.add("orders"); // table name
-			query.add(data.toStringForDB()); // values in query format
+//			ArrayList<String> query = new ArrayList<String>();
+//			query.add("insert"); // command
+//			query.add("orders"); // table name
+//			query.add(data.toStringForDB()); // values in query format
 
-			if (MySQLConnection.insert(query)) {
-				answer.add(data);
-			} else
-				answer.add(false);
+			answer.add(data);
 
 			EchoServer.sendToMyClient(answer, client);
 		}
 
 	}
 
+	// input: ArrayList<Object>: cell[0] function name
+	// cell[1] order object ,ConnectionToClient
+	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
+		ArrayList<Object> answer = new ArrayList<Object>();
+		answer.add(recived.get(0));
+		Order data = (Order) recived.get(1); // order object received
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("insert"); // command
+		query.add("orders"); // table name
+		query.add(data.toStringForDB()); // values in query format
+		if (MySQLConnection.insert(query)) {
+			answer.add(data);
+		} else
+			answer.add(false);
 
+		EchoServer.sendToMyClient(answer, client);
+	}
 
 	// input: Order with empty totalPrice & price & orderType, a Member
 	//
@@ -131,26 +144,18 @@ public class NewOrder {
 		query.add("*"); // columns to select from
 
 		if (ord.getID() != null) {
-			System.out.println("memecheck2");
 			query.add("WHERE ID='" + ord.getID() + "'");
-		}
-		else if (ord.getMemberId() != null) {
-			System.out.println("memecheck3");
+		} else if (ord.getMemberId() != null) {
 			query.add("WHERE memberNumber='" + ord.getMemberId() + "'");
 		}
-		
+
 		query.add("9"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.isEmpty()) {
-			
-			System.out.println("memberCheck finish null");
+		if (queryData.isEmpty())
 			return null;
-		}
-		else {
-			System.out.println("memberCheck finish member");
+		else
 			return new Member(queryData.get(0));
-		}
 
 	}
 

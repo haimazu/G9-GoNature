@@ -1,8 +1,9 @@
 package dataLayer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Park {
+public class Park implements Serializable {
 
 	private String name;
 	private int maximumCapacityInPark = 0;
