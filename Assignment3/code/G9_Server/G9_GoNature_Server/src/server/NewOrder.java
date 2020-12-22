@@ -128,7 +128,8 @@ public class NewOrder {
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0)
-						ord.setTotalPrice(nonFamily * parkEnteryPrice + Integer.parseInt(memb.getMemberAmount())* parkEnteryPrice * 0.8);
+						ord.setTotalPrice(nonFamily * parkEnteryPrice
+								+ Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice * 0.8);
 					else
 						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8);
 					break;
@@ -153,15 +154,16 @@ public class NewOrder {
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
 						ord.setTotalPrice(ord.getPrice() * 0.85);
-						ord.setTotalPrice(ord.getTotalPrice()
-								- (ord.getTotalPrice() / numberOfPeople) * Integer.parseInt(memb.getMemberAmount())* 0.2);
+						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)
+								* Integer.parseInt(memb.getMemberAmount()) * 0.2);
 					} else {
 						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.85);
 						ord.setTotalPrice(ord.getTotalPrice() * 0.8);
 					}
 					break;
 				case GROUP:
-					ord.setTotalPrice(ord.getPrice()*0.75);
+					ord.setOrderType(OrderType.GROUP);
+					ord.setTotalPrice(ord.getPrice() * 0.75);
 					break;
 				default:
 					break;
@@ -177,22 +179,37 @@ public class NewOrder {
 	// output: checks if u a member and return the member from DB
 	public static Member MemerCheck(Order ord) {
 		ArrayList<String> query = new ArrayList<String>();
+		System.out.println("memberCheck start");
 		query.add("select"); // command
 		query.add("member"); // table name
 		query.add("*"); // columns to select from
-//		if (ord.getMemberId() != null && ord.getID() != null)
-//			query.add("WHERE memberNumber='" + ord.getMemberId() + "'" + " OR ID='=" + ord.getID() + "'");
-		if (ord.getMemberId() != null)
-			query.add("WHERE memberNumber='" + ord.getMemberId() + "'");
-		else if (ord.getID() != null)
+
+//		query.add("WHERE memberNumber='" + ord.getMemberId() + "' OR ID='" + ord.getID() + "'");
+//		System.out.println("memecheck1");
+
+		if (ord.getID() != null) {
+			System.out.println("memecheck2");
 			query.add("WHERE ID='" + ord.getID() + "'");
+		}
+		else if (ord.getMemberId() != null) {
+			System.out.println("memecheck3");
+			query.add("WHERE memberNumber='" + ord.getMemberId() + "'");
+		}
+		
 		query.add("9"); // how many columns returned
 
+		
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.isEmpty())
+		if (queryData.isEmpty()) {
+			
+			System.out.println("memberCheck finish null");
 			return null;
-		else
+		}
+		else {
+			System.out.println("memberCheck finish member");
+			//System.out.println(queryData.get(0).toString());
 			return new Member(queryData.get(0));
+		}
 
 	}
 
