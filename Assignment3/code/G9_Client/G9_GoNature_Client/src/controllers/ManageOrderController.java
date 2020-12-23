@@ -196,13 +196,18 @@ public class ManageOrderController implements Initializable {
 	}
 
 	@FXML
-    void cancelOrder(ActionEvent event) {
+    void cancelOrder(ActionEvent event) throws IOException {
 		ArrayList<Object> msgForServer = new ArrayList<>();
 		msgForServer.add("cancelOrder");
 		msgForServer.add(order);
 		ClientUI.sentToChatClient(msgForServer);
-		if (canceled)
+		if (canceled){
+			
 			alert.setAlert("Canceled succesful");
+			Stage stage = (Stage) btnBack.getScene().getWindow();
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+			stage.setScene(new Scene(root));
+		}
 		else
 			alert.setAlert("Failed to cancel Order");
 	}
