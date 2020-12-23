@@ -54,7 +54,7 @@ public class EchoServer extends AbstractServer {
 		case "confirmOrder":
 			NewOrder.queInsert(recived, client);
 			break;
-		case "EditOrder":
+		case "editOrder":
 			EditOrder.edit(recived, client);
 			break;
 		case "enterTheWaitList":
