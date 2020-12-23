@@ -7,7 +7,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
 public class AlertController {
-	private String result;
+	private String result = "";
 	
 	// showing alert message
 	public void setAlert(String msg) {
