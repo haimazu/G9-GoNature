@@ -151,7 +151,11 @@ public class ManageOrderController implements Initializable {
 	}
 
 	
-	
+	/*
+	 * input : non 
+	 * output : non 
+	 * send to server : Array list of objects : [0]->  string for server : editOrder , [1]-> updated order object , [2]-> old order object
+	 */
 	@FXML
 	void update(ActionEvent event) {
 		Order sentOrder = order; // maybe a pointer ???
@@ -168,6 +172,7 @@ public class ManageOrderController implements Initializable {
 				ArrayList<Object> msgForServer = new ArrayList<>();
 				msgForServer.add("editOrder");
 				msgForServer.add(sentOrder);
+				msgForServer.add(order);
 				ClientUI.sentToChatClient(msgForServer);
 				if(updated) {
 					alert.setAlert("Updated succesful");
