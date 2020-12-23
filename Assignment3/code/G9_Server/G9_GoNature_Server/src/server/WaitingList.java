@@ -30,7 +30,7 @@ public class WaitingList {
 			data.setMemberId(mem.getMemberID());
 
 		data = NewOrder.totalPrice(data, mem, false);
-		data.setOrderNumber(Counter.getCounter().orderNum());
+		data.setOrderNumber(Counter.getCounter().waitlistNum());
 		query.add("select"); // command
 		query.add("waitingList"); // table name
 		query.add("*");

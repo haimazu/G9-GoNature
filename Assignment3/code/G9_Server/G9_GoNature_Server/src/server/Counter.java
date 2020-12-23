@@ -28,11 +28,11 @@ class Counter {
 		return count++;
 	}
 	
-	private int memberNum() {
+	public int memberNum() {
 		return memCount++;
 	}
 	
-	private int waitlistNum() {
+	public int waitlistNum() {
 		return waitlistNum++;
 	}
 	
