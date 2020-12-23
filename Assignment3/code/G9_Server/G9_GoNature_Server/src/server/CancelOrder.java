@@ -18,7 +18,7 @@ import orderData.Order;
 // false if not
 // NOTE: this function calls to the waitlist to check if someone is waiting for the new spots avilable after the cancelation.
 public class CancelOrder {
-	public void cancel(ArrayList<Object> recived, ConnectionToClient client) {
+	public static void cancel(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList waitlist = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
