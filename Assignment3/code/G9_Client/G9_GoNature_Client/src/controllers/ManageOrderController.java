@@ -77,7 +77,7 @@ public class ManageOrderController implements Initializable {
 	private AlertController alert = new AlertController();
 	private static Order order = null;
 	private static boolean updated = false;
-
+	private static boolean canceled = false;
 	public static Order getOrder() {
 		return order;
 	}
@@ -201,6 +201,9 @@ public class ManageOrderController implements Initializable {
 		msgForServer.add("cancelOrder");
 		msgForServer.add(order);
 		ClientUI.sentToChatClient(msgForServer);
+		if (canceled)
+			alert.setAlert("Canceled succesful");
+		alert.setAlert("Alert was not canceled");
 	}
 
 	/*
@@ -232,9 +235,11 @@ public class ManageOrderController implements Initializable {
 	}
 
 	public static void canceledOrderFromServer(boolean returned) {
-		// TODO Auto-generated method stub
-		if (returned)
+		if (returned) {
 			order = null;
+			canceled=true;
+		}
+		canceled =false;
 	}
 
 	@FXML
