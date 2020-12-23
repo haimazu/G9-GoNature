@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ocsf.server.ConnectionToClient;
 import userData.Member;
+
 //executed by Nastya
 public class NewMember {
 
@@ -15,15 +16,16 @@ public class NewMember {
 	public static void NewMemberInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		Member memb=(Member)recived.get(1);
-		//if member is already exists in DB
-		if(MemerCheck(memb.getMemberID())) {
-			answer.add(false); 
+		Member memb = (Member) recived.get(1);
+		// if member is already exists in DB
+		if (MemerCheck(memb.getMemberID())) {
+			answer.add(false);
 			EchoServer.sendToMyClient(answer, client);
 			return;
-		}
-		else {
-			//adding a member to DB
+		} else {
+			// adding a member to DB
+			String s = "" + Counter.getCounter().memberNum();
+			memb.setMemberNumber(s);
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("member"); // table name
@@ -34,7 +36,7 @@ public class NewMember {
 	}
 
 	// input: memberID
-	//checks if the member exists in DB with his ID 
+	// checks if the member exists in DB with his ID
 	// output: T/F
 	public static Boolean MemerCheck(String memberID) {
 		ArrayList<String> query = new ArrayList<String>();
@@ -51,18 +53,13 @@ public class NewMember {
 		else
 			return true;
 	}
-	
-	//input: Member object
-	//output: ToString For DB query
+
+	// input: Member object
+	// output: ToString For DB query
 	public static String queryToString(Member memb) {
-		return "'" + memb.getMemberID() + "','" 
-				+ memb.getMemberFirstName() + "','"
-				+ memb.getMemberLastName() + "','" 
-				+ memb.getMemberNumber() + "','" 
-				+ memb.getMemberPhoneNumber()+ "','" 
-				+ memb.getMemberEmail() + "','" 
-				+ memb.getMemberPaymentType() + "','"
-				+ memb.getMemberOrderType() + "','" 
-				+ memb.getMemberAmount() + "'";
+		return "'" + memb.getMemberID() + "','" + memb.getMemberFirstName() + "','" + memb.getMemberLastName() + "','"
+				+ memb.getMemberNumber() + "','" + memb.getMemberPhoneNumber() + "','" + memb.getMemberEmail() + "','"
+				+ memb.getMemberPaymentType() + "','" + memb.getMemberOrderType() + "','" + memb.getMemberAmount()
+				+ "'";
 	}
 }
