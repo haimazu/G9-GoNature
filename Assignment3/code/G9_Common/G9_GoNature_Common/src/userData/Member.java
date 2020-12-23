@@ -37,37 +37,6 @@ public class Member {
 				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
 	}
 
-	public String getMemberFirstName() {
-		return memberFirstName;
-	}
-
-	public void setMemberFirstName(String memberFirstName) {
-		this.memberFirstName = memberFirstName;
-	}
-
-	public String getMemberLastName() {
-		return memberLastName;
-	}
-
-	public void setMemberLastName(String memberLastName) {
-		this.memberLastName = memberLastName;
-	}
-
-	public OrderType getMemberOrderType() {
-		return memberOrderType;
-	}
-
-	public void setMemberOrderType(OrderType memberOrderType) {
-		this.memberOrderType = memberOrderType;
-	}
-
-	public String getMemberAmount() {
-		return memberAmount;
-	}
-
-	public void setMemberAmount(String memberAmount) {
-		this.memberAmount = memberAmount;
-	}
 
 	public Member(String memberID, String memberFirstNAme, String memberLastNAme, String memberNumber,
 			String memberPhoneNumber, String memberEmail, String memberPaymentType, String memberAmount) {
@@ -90,20 +59,20 @@ public class Member {
 		this.memberID = memberID;
 	}
 
-	public String getMemberFirstNAme() {
+	public String getMemberFirstName() {
 		return memberFirstName;
 	}
 
-	public void setMemberFirstNAme(String memberFirstNAme) {
-		this.memberFirstName = memberFirstNAme;
+	public void setMemberFirstName(String memberFirstName) {
+		this.memberFirstName = memberFirstName;
 	}
 
-	public String getMemberLastNAme() {
+	public String getMemberLastName() {
 		return memberLastName;
 	}
 
-	public void setMemberLastNAme(String memberLastNAme) {
-		this.memberLastName = memberLastNAme;
+	public void setMemberLastName(String memberLastName) {
+		this.memberLastName = memberLastName;
 	}
 
 	public String getMemberNumber() {
@@ -138,4 +107,21 @@ public class Member {
 		this.memberPaymentType = memberPaymentType;
 	}
 
+	public OrderType getMemberOrderType() {
+		return memberOrderType;
+	}
+
+	public void setMemberOrderType(OrderType memberOrderType) {
+		this.memberOrderType = memberOrderType;
+	}
+
+	public String getMemberAmount() {
+		return memberAmount;
+	}
+
+	public void setMemberAmount(String memberAmount) {
+		this.memberAmount = memberAmount;
+	}
+
+	
 }
