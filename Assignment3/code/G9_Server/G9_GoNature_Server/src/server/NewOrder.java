@@ -34,17 +34,8 @@ public class NewOrder {
 		else {
 
 			data = totalPrice(data, memb, data.isOccasional());// updating the prices in the order
-			//////////////
 			///// Roi//////
-			//////////////
 			data.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
-			//////////////
-			//////////////
-//			ArrayList<String> query = new ArrayList<String>();
-//			query.add("insert"); // command
-//			query.add("orders"); // table name
-//			query.add(data.toStringForDB()); // values in query format
-
 			answer.add(data);
 
 			EchoServer.sendToMyClient(answer, client);
@@ -56,7 +47,7 @@ public class NewOrder {
 	// cell[1] order object
 	// cell[2] credit card object/null
 	// ConnectionToClient
-	// output:
+	// output:T/F
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		System.out.println("queInsert start");
 		if (recived.get(2) != null)
@@ -72,8 +63,6 @@ public class NewOrder {
 			answer.add(true);
 		} else
 			answer.add(false);
-
-		System.out.println("queInsert end");
 		EchoServer.sendToMyClient(answer, client);
 	}
 
@@ -82,7 +71,6 @@ public class NewOrder {
 	// output: checks if u a member and return the member from DB
 	public static Member MemerCheck(Order ord) {
 		ArrayList<String> query = new ArrayList<String>();
-		System.out.println("memberCheck start");
 		query.add("select"); // command
 		query.add("member"); // table name
 		query.add("*"); // columns to select from
@@ -198,7 +186,7 @@ public class NewOrder {
 	// input: ArrayList<Object>, ConnectionToClient
 	//
 	// output: returns to client side with a list of parks names from DB
-	public static void ParksNames(ArrayList<Object> recived, ConnectionToClient client) {
+	public static void parksNames(ArrayList<Object> recived, ConnectionToClient client) {
 
 		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();

@@ -53,6 +53,8 @@ public class NewMember {
 			return true;
 	}
 	
+	//input: Member object
+	//output: ToString For DB query
 	public static String queryToString(Member memb) {
 		return "'" + memb.getMemberID() + "','" 
 				+ memb.getMemberFirstName() + "','"

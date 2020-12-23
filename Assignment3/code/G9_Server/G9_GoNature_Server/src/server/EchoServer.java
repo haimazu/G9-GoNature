@@ -25,7 +25,7 @@ public class EchoServer extends AbstractServer {
 			Login.login(recived, client);
 			break;
 		case "orderParksNameList":
-			NewOrder.ParksNames(recived, client);
+			NewOrder.parksNames(recived, client);
 			break;
 		case "ordersByIdOrMemberId":	
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
