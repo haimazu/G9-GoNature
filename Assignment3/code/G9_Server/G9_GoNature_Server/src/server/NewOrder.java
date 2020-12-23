@@ -7,7 +7,7 @@ import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 import orderData.OrderType;
-import server.WaitingList;
+//import server.WaitingList;
 import userData.Member;
 
 //executed by Nastya
@@ -209,6 +209,7 @@ public class NewOrder {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();

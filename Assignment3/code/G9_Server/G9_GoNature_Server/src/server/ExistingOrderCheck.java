@@ -68,6 +68,7 @@ public class ExistingOrderCheck {
 	//		table name as string
 	//		col name as string
 	//output: ArrayList<ArrayList<String>> containing the order deatils, empty if no details
+	@SuppressWarnings("unchecked")
 	public static ArrayList<ArrayList<String>> fechOrder(ArrayList<Object> recived, String tableName, String colName) {
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
 		ArrayList<String> query = new ArrayList<String>();

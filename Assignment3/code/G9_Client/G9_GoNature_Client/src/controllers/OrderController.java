@@ -313,7 +313,7 @@ public class OrderController implements Initializable {
 
 					if (OrderController.confirmOrder) {
 						OrderController.confirmOrder = false;
-						this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
+						this.txtOrderNum.setText(String.valueOf(OrderController.orderSuccess.getOrderNumber()));
 						pnConfirmation.toFront();
 					} else
 						alert.setAlert("something went wrong\nplease close the program and start again");

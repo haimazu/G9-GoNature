@@ -1,6 +1,6 @@
 package server;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -19,6 +19,7 @@ import ocsf.server.ConnectionToClient;
 //									{if failed:} in cell 0: the string "failed"
 //									{if success:} in cell 0: the employee role as string
 public class Login {
+	@SuppressWarnings("unchecked")
 	public static void login(ArrayList<Object> recived, ConnectionToClient client) {
 		//add if db up later
 		ArrayList<Object> answer = new ArrayList<Object>();

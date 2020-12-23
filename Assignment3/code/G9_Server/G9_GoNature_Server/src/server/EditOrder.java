@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
-import userData.Member;
+//import userData.Member;
 
 //input: arraylist of objects that contains:
 //			[0] -> String "editOrder"

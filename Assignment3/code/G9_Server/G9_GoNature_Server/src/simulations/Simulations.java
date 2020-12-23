@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import com.mysql.cj.protocol.Message;
+//import com.mysql.cj.protocol.Message;
 
-import orderData.Order;
+//import orderData.Order;
 
 public class Simulations {
 	private static ArrayList<MessageSimulation> recivedMails = new ArrayList<MessageSimulation>();

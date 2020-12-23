@@ -57,6 +57,7 @@ public class UpdateVisitorsNumber {
 	// updates the ParkCurrentVisitors in Park table
 	// output: ArrayList<Object>=> cell[0] function name
 	// cell[1] T/F if update succeeded
+	@SuppressWarnings("unchecked")
 	public static void updateParkCurrentVisitors(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -80,6 +81,7 @@ public class UpdateVisitorsNumber {
 	// output: ArrayList<Object>=> cell[0] function name
 	// 							   cell[1] ArrayList<String> [0] parkName																
 	//												         [1] number of visitors to add
+	@SuppressWarnings("unchecked")
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
