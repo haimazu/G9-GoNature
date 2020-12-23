@@ -60,6 +60,8 @@ public class EchoServer extends AbstractServer {
 		case "enterTheWaitList":
 			WaitingList.enterTheWaitList(recived, client);
 			break;
+		case "cancelOrder":
+			CancelOrder.cancel(recived, client);
 		default:
 			break;
 		}
