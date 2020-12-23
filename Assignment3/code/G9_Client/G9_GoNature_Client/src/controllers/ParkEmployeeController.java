@@ -214,7 +214,7 @@ public class ParkEmployeeController implements Initializable {
 	void approve(ActionEvent event) {
 		
 		// checking for places in the park
-		if (checkFreePlacesInThePark()) {
+		if (!getError().equals("Full")) {
 			// random mode
 			if (!btnRandomVisitor.isVisible()) {
 				if (txtIdOrMemberId.getText().isEmpty() || txtRandomVisitorsAmount.getText().isEmpty()) {
@@ -275,6 +275,12 @@ public class ParkEmployeeController implements Initializable {
 		
 		// update park status
 		updateParkStatus();
+		
+		if (parkDetails.getCurrentAmount() == parkDetails.getMaximumCapacityInPark()) {
+			lblCurrentVisitors.setText("[" + getParkName() + "]: is full right now ");
+			theParkIsOff();
+		}
+		
 		clearAllFields();
 	}
 	
@@ -284,6 +290,7 @@ public class ParkEmployeeController implements Initializable {
 	public void execEnter() {
 		int tooManyVisitors = 0;
 		
+		// get the current status in the park (about the visitors)
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(getParkName());
 		data.add("2");
@@ -294,31 +301,37 @@ public class ParkEmployeeController implements Initializable {
 	    	Integer.parseInt(lblVisitorsNumber.getText())) {
 				tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText()) -
 						Integer.parseInt(lblVisitorsNumber.getText());
-
+//TODO update amount
 			// alert to ensure that the employee didn't get typing wrong
 			alert.ensureAlert("Ensure", "Are you sure you want to approve the purchase?");
 			if (alert.getResult().equals("OK")) {
-				if (checkFreePlacesInTheGateway()) {
+				if (!getError().equals("Full")) {
 					// updates the number of visitors who came for a specific order
 					updateAmountArrived();
 					// make an automatic purchase for the additional visitors
 					execRandomVisitor(tooManyVisitors);
 					
 				} else {
-					alert.failedAlert("Failed", "We're sorry, the park doesn't have enough places.");
+					alert.failedAlert("Failed", "We're sorry, the park doesn't have enough places.\n"
+							+ "Please come back later.");
 					return;
 				}
 			}
+			//TODO update amount
 		// amount of visitors is less than or equal to what is on the order
 		} else {
-			if (checkFreePlacesInTheGateway()) {
+			if (!getError().equals("Full")) {
 				// updates the number of visitors who came for a specific order
 				updateAmountArrived();		
 				// update current visitors
 				updateCurrentVisitors(Integer.parseInt(txtVisitorsAmount.getText()));
 				
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
-			} 
+			} else {
+				alert.failedAlert("Failed", "We're sorry, the park doesn't have enough places.\n"
+						+ "Please come back later.");
+				return;
+			}
 		}
 	}
 	
@@ -425,7 +438,6 @@ public class ParkEmployeeController implements Initializable {
 		String memberId = "";
 		double discount = 0;
 		double difference = 0;
-		double managerDiscount = parkDetails.getMangerDiscount();	
 
 		// format time
 		dateAndTimeFormat += roundingTime();
@@ -442,7 +454,6 @@ public class ParkEmployeeController implements Initializable {
 		
 			fakeOrder = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
-			// check the random visitor type and calculate the price
 			// Query
 			ArrayList<Object> msg = new ArrayList<Object>();	
 			msg.add("randomVisitorFakeOrder");
@@ -451,7 +462,6 @@ public class ParkEmployeeController implements Initializable {
 			// set up all the order details and the payment method
 			ClientUI.sentToChatClient(msg);
 			
-			//TODO add manager discount if not 0
 			discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
 			lblDiscount.setText(String.format("%.1f", discount) + "%");	
 			System.out.println(randomVisitorFakeOrderDetails);
@@ -586,47 +596,52 @@ public class ParkEmployeeController implements Initializable {
 	// input: amount of visitors
 	// output: if there are available places return true
 	//         otherwise false
-	public boolean checkFreePlacesInTheGateway() {
-		int visitorsNumber = 0;
-		
-		// random mode
-		if (!btnRandomVisitor.isVisible()) {
-			visitorsNumber = parkDetails.getCurrentAmount() + 
-					Integer.parseInt(txtRandomVisitorsAmount.getText());
-			if (visitorsNumber <= parkDetails.getMaximumCapacityInPark()) {
-				return true;
-			}
-		// barcode / regular
-		} else {
-			visitorsNumber = parkDetails.getCurrentAmount() + 
-					Integer.parseInt(txtVisitorsAmount.getText());
-			if (visitorsNumber <= parkDetails.getMaximumCapacityInPark()) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
+//	public boolean checkFreePlacesInTheGateway() {
+//		int visitorsNumber = 0;
+//		
+//		// random mode
+//		if (!btnRandomVisitor.isVisible()) {
+//			visitorsNumber = parkDetails.getCurrentAmount() + 
+//					Integer.parseInt(txtRandomVisitorsAmount.getText());
+//			if (visitorsNumber <= parkDetails.getMaximumCapacityInPark()) {
+//				return true;
+//			}
+//		// barcode / regular
+//		} else {
+//			visitorsNumber = parkDetails.getCurrentAmount() + 
+//					Integer.parseInt(txtVisitorsAmount.getText());
+//			if (visitorsNumber <= parkDetails.getMaximumCapacityInPark()) {
+//				return true;
+//			}
+//		}
+//		
+//		return false;
+//	}
 
 	// checking the park for available places
 	// input: none
 	// output: if there are available places return true
 	//		   otherwise false
-	public boolean checkFreePlacesInThePark() {
-		if (parkDetails.getCurrentAmount() < parkDetails.getMaximumCapacityInPark()) {
-			return true;
-		}
-		return false;
-	}
+//	public boolean checkFreePlacesInThePark() {
+//		if (parkDetails.getCurrentAmount() < parkDetails.getMaximumCapacityInPark()) {
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	// input: none
 	// output: update the park title with the current visitors
 	public void updateParkStatus() {
-		sendToServer("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName())));
+		sendToServer("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName(), "0")));
 
-		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
+		if (!getError().equals("Full")) {
+			lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
 									+ String.valueOf(parkDetails.getCurrentAmount()) + "/" 
 									+ parkDetails.getMaximumCapacityInPark());
+		} else {
+			lblCurrentVisitors.setText("[" + getParkName() + "]: is full right now ");
+			theParkIsOff();
+		}
 	}
 	
 	// String type, the case we dealing with
@@ -750,6 +765,15 @@ public class ParkEmployeeController implements Initializable {
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.format(time));
+	}
+	
+	// turns off random mode
+	// input: none
+	// output: screen changes
+	public void theParkIsOff() {
+		btnApprove.setDisable(true);
+		radExit.setSelected(true);
+		radEnter.setDisable(true);
 	}
 	
 	// turns off random mode
