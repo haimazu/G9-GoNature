@@ -202,7 +202,7 @@
                   </JFXTextField>
                   <JFXComboBox focusColor="SEAGREEN" focusTraversable="false" layoutX="310.0" layoutY="89.0" prefHeight="25.0" prefWidth="250.0" promptText="Payment" unFocusColor="#a3a3a3" />
                   <JFXCheckBox fx:id="cbGuideMember" layoutX="309.0" layoutY="148.0" text="Tour Guide Access" />
-                  <JFXTextField fx:id="txtGroupMembersAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="310.0" layoutY="174.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Group Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtGroupMembersAmount" disable="true" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="310.0" layoutY="174.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Group Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
