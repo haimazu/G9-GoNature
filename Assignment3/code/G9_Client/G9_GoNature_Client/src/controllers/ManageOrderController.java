@@ -166,7 +166,7 @@ public class ManageOrderController implements Initializable {
 				sentOrder.setArrivedTime(clientDateTime);
 				sentOrder.setVisitorsNumber(clientVisitorsNumber);
 				ArrayList<Object> msgForServer = new ArrayList<>();
-				msgForServer.add("updateOrder");
+				msgForServer.add("editOrder");
 				msgForServer.add(sentOrder);
 				ClientUI.sentToChatClient(msgForServer);
 				if(updated) {

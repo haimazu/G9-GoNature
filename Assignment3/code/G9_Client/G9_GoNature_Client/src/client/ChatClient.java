@@ -86,7 +86,7 @@ public class ChatClient extends AbstractClient {
 			case "confirmOrder":
 				OrderController.recivedFromServerConfirmOrder((boolean)received.get(1));
 				break;
-			case "updateOrder":
+			case "editOrder":
 				ManageOrderController.updatedOrderFromServer((Object)received.get(1));
 				break;
 			case "cancelOrder":
