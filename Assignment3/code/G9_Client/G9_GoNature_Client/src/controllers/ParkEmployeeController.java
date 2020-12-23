@@ -312,8 +312,7 @@ public class ParkEmployeeController implements Initializable {
 					execRandomVisitor(tooManyVisitors);
 					
 				} else {
-					alert.failedAlert("Failed", "We're sorry, the park doesn't have enough places.\n"
-							+ "Please come back later.");
+					alert.failedAlert("Failed", "The amount of visitors is greater than the available places in the park.");
 					return;
 				}
 			}
@@ -328,8 +327,7 @@ public class ParkEmployeeController implements Initializable {
 				
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 			} else {
-				alert.failedAlert("Failed", "We're sorry, the park doesn't have enough places.\n"
-						+ "Please come back later.");
+				alert.failedAlert("Failed", "The amount of visitors is greater than the available places in the park.");
 				return;
 			}
 		}
@@ -359,6 +357,7 @@ public class ParkEmployeeController implements Initializable {
 	//        cell 1: new current visitors (updated one)
 	// output: updating the current visitors in the park 
 	public void execRandomVisitor(int visitorsAmount) {
+		//TODO update park visitors amount
 		int maxVisitors = parkDetails.getMaximumCapacityInPark();
 		int currentVisitors = parkDetails.getCurrentAmount();
 		int updateCurrentVisitors = 0;
