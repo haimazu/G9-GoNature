@@ -8,7 +8,7 @@ import orderData.Order;
 import userData.Member;
 
 //input: arraylist of objects that contains:
-//			[0] -> String "EditOrder"
+//			[0] -> String "editOrder"
 //			[1] -> Order with changes
 //			[2] -> original Order
 //NOTE: changes can be made only for ArivelTime and VisitorsNumber parameters
