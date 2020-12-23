@@ -63,7 +63,8 @@ public class ManageOrderController implements Initializable {
 	private Button btnBack;
 	@FXML
 	private Button btnUpdate;
-
+	@FXML
+	private Button btnCancel;
 	@FXML
 	private JFXTextField txtVisitorsNumber;
 
@@ -72,21 +73,22 @@ public class ManageOrderController implements Initializable {
 
 	@FXML
 	private JFXComboBox<String> cbxArriveTime;
-	
 
 	private AlertController alert = new AlertController();
-	private static Order order=null;
-	private static boolean updated=false;
+	private static Order order = null;
+	private static boolean updated = false;
+
 	public static Order getOrder() {
 		return order;
 	}
+
 	public static void setOrder(Order order) {
 		ManageOrderController.order = order;
 	}
+
 	/*
-	 * input : received order object from server 
-	 * Output : non 
-	 * present on screen: order details
+	 * input : received order object from server Output : non present on screen:
+	 * order details
 	 * 
 	 */
 	void presentOrderdetails(Order details) {
@@ -114,15 +116,15 @@ public class ManageOrderController implements Initializable {
 			this.lblTotal.setText(String.valueOf(details.getTotalPrice()));
 			double discValue = (1 - (details.getTotalPrice() / details.getPrice())) * 100;
 			this.lblDiscount.setText(String.format("%.1f", discValue) + "%");
-		} 
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
 	}
-/*
- * 
- */
+
+	/*
+	 * 
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
@@ -150,11 +152,10 @@ public class ManageOrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	
 	/*
-	 * input : non 
-	 * output : non 
-	 * send to server : Array list of objects : [0]->  string for server : editOrder , [1]-> updated order object , [2]-> old order object
+	 * input : non output : non send to server : Array list of objects : [0]->
+	 * string for server : editOrder , [1]-> updated order object , [2]-> old order
+	 * object
 	 */
 	@FXML
 	void update(ActionEvent event) {
@@ -162,11 +163,12 @@ public class ManageOrderController implements Initializable {
 		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
 			System.out.println(timeString[0]);
-			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + timeString[0]);
+			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
+					+ timeString[0]);
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
 			int orderVisitorsNumber = sentOrder.getVisitorsNumber();
-			if((!clientDateTime.equals(orderDateTime)) || (clientVisitorsNumber!=orderVisitorsNumber)) {
+			if ((!clientDateTime.equals(orderDateTime)) || (clientVisitorsNumber != orderVisitorsNumber)) {
 				sentOrder.setArrivedTime(clientDateTime);
 				sentOrder.setVisitorsNumber(clientVisitorsNumber);
 				ArrayList<Object> msgForServer = new ArrayList<>();
@@ -174,28 +176,27 @@ public class ManageOrderController implements Initializable {
 				msgForServer.add(sentOrder);
 				msgForServer.add(order);
 				ClientUI.sentToChatClient(msgForServer);
-				if(updated) {
+				if (updated) {
 					alert.setAlert("Updated succesful");
-				}
-				else
-					//alertFailed
+				} else
+					// alertFailed
 					alert.setAlert("Updated failed");
-			}
-			else
-				//notify user
+			} else
+				// notify user
 				alert.setAlert("no chages made! Please try again");
 		}
-		updated=false;
+		updated = false;
 	}
-	
+
 	public static void updatedOrderFromServer(Object received) {
 		if (received instanceof Order) {
-			updated=true;
+			updated = true;
 		}
 		return;
 	}
-	
-	public static void cancelOrder() {
+
+	@FXML
+    void cancelOrder(ActionEvent event) {
 		ArrayList<Object> msgForServer = new ArrayList<>();
 		msgForServer.add("cancelOrder");
 		msgForServer.add(order);
@@ -221,7 +222,7 @@ public class ManageOrderController implements Initializable {
 	 * Check that the user didn't leave field empty
 	 */
 
-	public boolean checkNotEmptyVisitorsField() { //check not 0, chek not 999 etc.
+	public boolean checkNotEmptyVisitorsField() { // check not 0, chek not 999 etc.
 		String visitorsNumber = txtVisitorsNumber.getText();
 		if (visitorsNumber.isEmpty()) {
 			alert.setAlert("Cannot leave 'Visitors Amount' field empty");
@@ -232,10 +233,10 @@ public class ManageOrderController implements Initializable {
 
 	public static void canceledOrderFromServer(boolean returned) {
 		// TODO Auto-generated method stub
-		if(returned)
-			order=null;
+		if (returned)
+			order = null;
 	}
-	
+
 	@FXML
 	/*
 	 * NICE TO HAVE!!!!!!

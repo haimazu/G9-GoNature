@@ -137,7 +137,7 @@
       <Pane layoutX="400.0" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight">
          <children>
             <Button fx:id="btnUpdate" focusTraversable="false" layoutX="129.0" layoutY="437.0" mnemonicParsing="false" onAction="#update" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Update" />
-            <Button focusTraversable="false" layoutX="140.0" layoutY="538.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
+            <Button fx:id="btnCancel" focusTraversable="false" layoutX="140.0" layoutY="538.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
             <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="130.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                <opaqueInsets>
                   <Insets />
