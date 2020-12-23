@@ -62,6 +62,7 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "cancelOrder":
 			CancelOrder.cancel(recived, client);
+			break;
 		default:
 			break;
 		}
