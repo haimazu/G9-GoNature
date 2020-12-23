@@ -182,5 +182,4 @@ public class WaitingList {
 		//TODO: send sms
 		return true;
 	}
-
 }

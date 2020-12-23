@@ -34,7 +34,7 @@ public class EditOrder {
 				updateVisitorsNumber(originalOrder.getOrderNumber(),newOrder.getVisitorsNumber());
 				stubOrder.setVisitorsNumber(originalOrder.getVisitorsNumber()-newOrder.getVisitorsNumber()); //will stay positive cause of the if
 				objectArrayStub.add(stubOrder);
-				WaitingList.enterTheWaitList(objectArrayStub, client);
+				waitlist.pullFromWaitList(recived, client); ////fix the wait list
 			} else { //if more than original
 				stubOrder.setVisitorsNumber(newOrder.getVisitorsNumber()-originalOrder.getVisitorsNumber()); //will stay positive cause of the if
 				stubForAvilableSpots.add(stubOrder);
@@ -91,7 +91,7 @@ public class EditOrder {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("update"); // command
 		query.add("orders"); // table name
-		query.add("beforeDiscountPrice='"+ order.getPrice() + "AfterDiscountPrice='"+ order.getTotalPrice() + "'"); // values
+		query.add("beforeDiscountPrice='"+ order.getPrice() + "' AfterDiscountPrice='"+ order.getTotalPrice() + "'"); // values
 		query.add("orderNumber"); // primaryKey
 		query.add(""+order.getOrderNumber()); // pkValue
 		return MySQLConnection.update(query);

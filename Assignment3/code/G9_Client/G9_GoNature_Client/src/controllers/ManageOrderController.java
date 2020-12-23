@@ -160,12 +160,12 @@ public class ManageOrderController implements Initializable {
 	 */
 	@FXML
 	void update(ActionEvent event) {
-		Order sentOrder = order; // maybe a pointer ???
+		Order sentOrder = new Order(order); // maybe a pointer ???
 		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
-			System.out.println(timeString[0]);
-			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
-					+ timeString[0]);
+			//System.out.println(timeString[0]);
+			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " 0"
+					+ timeString[0])+":00"; //need to be same format!!!/////////////////////////////////////////////////
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
 			int orderVisitorsNumber = sentOrder.getVisitorsNumber();
