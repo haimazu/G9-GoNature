@@ -179,11 +179,11 @@ public class ManageOrderController implements Initializable {
 				}
 				else
 					//alertFailed
-					System.out.println("kuku");
+					alert.setAlert("Updated failed");
 			}
 			else
 				//notify user
-				alert.setAlert("oh no!");
+				alert.setAlert("no chages made! Please try again");
 		}
 		updated=false;
 	}
