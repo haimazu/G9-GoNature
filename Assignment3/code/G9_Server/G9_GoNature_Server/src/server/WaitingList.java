@@ -103,8 +103,8 @@ public class WaitingList {
 		query.add("select");
 		query.add("waitingList");
 		query.add("*");
-		query.add("WHERE parkName = '" + parkName + "' AND arrivedTime ='" + arrivedTime + "' SORT BY orderNumber");
-		query.add("1");//fix
+		query.add("WHERE parkName='" + parkName + "' AND arrivedTime='" + arrivedTime + "' ORDER BY waitlistID");
+		query.add("12");//fix
 		ArrayList<ArrayList<String>> waitingInLineArr = MySQLConnection.select(query);
 		if (waitingInLineArr.get(0).isEmpty())
 			return true; // no one in line

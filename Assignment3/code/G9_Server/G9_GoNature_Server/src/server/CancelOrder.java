@@ -35,6 +35,6 @@ public class CancelOrder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		waitlist.pullFromWaitList(recived, client);
+		waitlist.pullFromWaitList(recived, client);
 	}
 }

@@ -12,7 +12,7 @@ class Counter {
 	private Counter() {
 		count = getLastNumber("orders","orderNumber")+1;
 		memCount = getLastNumber("member","memberNumber")+1;
-		waitlistNum = getLastNumber("waitlist","waitlistID")+1;
+		waitlistNum = getLastNumber("waitinglist","waitlistID")+1;
 	}
 
 	public static Counter getCounter() {
