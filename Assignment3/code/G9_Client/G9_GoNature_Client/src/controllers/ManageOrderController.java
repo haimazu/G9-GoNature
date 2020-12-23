@@ -123,7 +123,8 @@ public class ManageOrderController implements Initializable {
 	}
 
 	/*
-	 * 
+	 * input :
+	 * output : 
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
