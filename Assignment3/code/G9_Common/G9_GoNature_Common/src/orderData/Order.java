@@ -78,6 +78,21 @@ public class Order implements Serializable {
 		this.amountArrived = Integer.parseInt(orderFromDB.get(10));
 		this.orderNumber = Integer.parseInt(orderFromDB.get(11));
 	}
+	
+	public Order(Order ord) {
+		this.visitorsNumber = ord.getVisitorsNumber();
+		this.orderEmail = ord.getOrderEmail();
+		this.orderPhone = ord.getOrderPhone();
+		this.orderType = ord.getOrderType();
+		this.price = ord.getPrice();
+		this.totalPrice = ord.getTotalPrice();
+		this.parkName = ord.getParkName();
+		this.arrivedTime = ord.getArrivedTime();
+		this.memberId = ord.getMemberId();
+		this.ID = ord.getID();
+		this.amountArrived = ord.getAmountArrived();
+		this.orderNumber = ord.getOrderNumber();
+	}
 
 	// output: to string for a query to insert in DB
 	public String toStringForDB() {

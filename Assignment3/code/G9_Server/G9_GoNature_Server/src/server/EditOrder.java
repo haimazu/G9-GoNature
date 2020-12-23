@@ -14,6 +14,7 @@ import orderData.Order;
 //send to client:
 public class EditOrder {
 	public static void edit(ArrayList<Object> recived, ConnectionToClient client) {
+		WaitingList waitlist = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order newOrder = (Order)recived.get(1);
@@ -21,10 +22,22 @@ public class EditOrder {
 		if (newOrder.getArrivedTime().equals(originalOrder.getArrivedTime())){
 			if (newOrder.getVisitorsNumber()<originalOrder.getVisitorsNumber()) {
 				//only update and start the waitlist with no delete
+				updateVisitorsNumber(originalOrder.getOrderNumber(),newOrder.getVisitorsNumber());
 			} else {
-				//only update and start the waitlist with no delete
-				//check if have avilable spots only for the hefresh
+				Order stubOrder = new Order(newOrder);
+				stubOrder.setVisitorsNumber(newOrder.getVisitorsNumber()-originalOrder.getVisitorsNumber()); //will stay positive cause of the if
+				ArrayList<Object> stubForAvilableSpots = new ArrayList<Object>();
+				stubForAvilableSpots.add("");
+				stubForAvilableSpots.add(stubOrder);
+				if (waitlist.checkForAvailableSpots(stubForAvilableSpots,client)) {
+					updateVisitorsNumber(originalOrder.getOrderNumber(),newOrder.getVisitorsNumber());
+					
+				} else { //nospots to expand
+					//nofity the user
+					return;
+				}
 			}
+			//only update and start the waitlist with no delete
 			//update price
 		} else {
 			//checkForAvailableSpots for new order
@@ -34,5 +47,18 @@ public class EditOrder {
 			//use CancelOrder to cancel old order
 		}
 		//send to client answer what you did
+	}
+	
+	//input: int order number, int visitors number
+	//output: NONE
+	//send to DB: update the visitors number in that given order
+	private static boolean updateVisitorsNumber(int orderNum, int visitorsNum) {
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("update"); // command
+		query.add("orders"); // table name
+		query.add("visitorsNumber='"+ visitorsNum + "'"); // values
+		query.add("orderNumber"); // primaryKey
+		query.add(""+orderNum); // pkValue
+		return MySQLConnection.update(query);
 	}
 }
