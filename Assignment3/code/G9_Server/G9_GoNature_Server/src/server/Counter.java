@@ -6,9 +6,13 @@ import java.util.ArrayList;
 class Counter {
 	private static Counter obj;
 	private static int count;
+	private static int memCount;
+	private static int waitlistNum;
 	
 	private Counter() {
-		count = getLastNumber()+1;
+		count = getLastNumber("orders","orderNumber")+1;
+		memCount = getLastNumber("member","memberNumber")+1;
+		waitlistNum = getLastNumber("waitlist","waitlistID")+1;
 	}
 
 	public static Counter getCounter() {
@@ -24,12 +28,20 @@ class Counter {
 		return count++;
 	}
 	
-	private int getLastNumber() {
+	private int memberNum() {
+		return memCount++;
+	}
+	
+	private int waitlistNum() {
+		return waitlistNum++;
+	}
+	
+	private int getLastNumber(String tableName, String Col) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
 		query.add("orders");
-		query.add("orderNumber");
-		query.add("ORDER BY orderNumber DESC LIMIT 1");
+		query.add(tableName);
+		query.add("ORDER BY " + Col +" DESC LIMIT 1");
 		query.add("1");
 		ArrayList<ArrayList<String>> lastNum = MySQLConnection.select(query);
 		return Integer.parseInt(lastNum.get(0).get(0));
