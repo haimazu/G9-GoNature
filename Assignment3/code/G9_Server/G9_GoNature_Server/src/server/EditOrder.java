@@ -13,7 +13,9 @@ import userData.Member;
 //			[2] -> original Order
 //NOTE: changes can be made only for ArivelTime and VisitorsNumber parameters
 //output:NONE
-//send to client:
+//send to client: arraylist of objects that contains:
+//					[0] -> String "EditOrder" 
+//					[1] -> true if update sucsessful, false if not
 public class EditOrder {
 	public static void edit(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList waitlist = new WaitingList();
@@ -39,7 +41,7 @@ public class EditOrder {
 				if (waitlist.checkForAvailableSpots(stubForAvilableSpots,client)) {
 					updateVisitorsNumber(originalOrder.getOrderNumber(),newOrder.getVisitorsNumber());
 				} else { //nospots to expand
-					answer.add("no spots avilable");
+					answer.add(false);
 					try {
 						client.sendToClient(answer);
 					} catch (IOException e) {
@@ -49,22 +51,24 @@ public class EditOrder {
 				}
 			}
 			updatePrice(newOrder);
-			answer.add("edit OK");
+			answer.add(true);
 		} else {
 			stubForAvilableSpots.add(newOrder);
 			if (waitlist.checkForAvailableSpots(stubForAvilableSpots,client)) {
 				updatePrice(newOrder);
 				objectArrayStub.add(originalOrder);
 				CancelOrder.cancel(objectArrayStub,client);
-				
-				//use CancelOrder to cancel old order
-				//if there is new spot use insertNewOrder method
-				//if no spots avilable at the date send no spots avilable
-			
-			
+				NewOrder.insertNewOrder(newOrder);
+				answer.add(true);
+			} else {
+				answer.add(false);
 			}
 		}
-		//send to client answer what you did
+		try {
+			client.sendToClient(answer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//input: int order number, int visitors number
@@ -93,14 +97,4 @@ public class EditOrder {
 		return MySQLConnection.update(query);
 	}
 	
-	//input: Order to insert into the DB
-	//output: true if sussesful false if not
-	//send to DB: new order to list in
-	public static boolean insertNewOrder(Order order) {
-	ArrayList<String> query = new ArrayList<String>();
-	query.add("insert"); // command
-	query.add("orders"); // table name
-	query.add(order.toStringForDB()); // values in query format
-	return MySQLConnection.insert(query);
-	}
 }

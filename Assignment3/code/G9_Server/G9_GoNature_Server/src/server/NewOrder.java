@@ -55,14 +55,7 @@ public class NewOrder {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
-		ArrayList<String> query = new ArrayList<String>();
-		query.add("insert"); // command
-		query.add("orders"); // table name
-		query.add(data.toStringForDB()); // values in query format
-		if (MySQLConnection.insert(query)) {
-			answer.add(true);
-		} else
-			answer.add(false);
+		answer.add(insertNewOrder(data)); ////////////////////////////////////////////ROI
 		EchoServer.sendToMyClient(answer, client);
 	}
 
@@ -261,6 +254,17 @@ public class NewOrder {
 				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
 	}
 
+	//input: Order to insert into the DB
+	//output: true if sussesful false if not
+	//send to DB: new order to list in
+	public static boolean insertNewOrder(Order order) {
+	ArrayList<String> query = new ArrayList<String>();
+	query.add("insert"); // command
+	query.add("orders"); // table name
+	query.add(order.toStringForDB()); // values in query format
+	return MySQLConnection.insert(query);
+	}
+	
 }
 
 // for backup
