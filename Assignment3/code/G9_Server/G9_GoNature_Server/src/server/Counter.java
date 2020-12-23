@@ -39,8 +39,8 @@ class Counter {
 	private int getLastNumber(String tableName, String Col) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
-		query.add("orders");
 		query.add(tableName);
+		query.add(Col);
 		query.add("ORDER BY " + Col +" DESC LIMIT 1");
 		query.add("1");
 		ArrayList<ArrayList<String>> lastNum = MySQLConnection.select(query);
