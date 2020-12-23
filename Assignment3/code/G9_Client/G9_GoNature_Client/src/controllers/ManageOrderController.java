@@ -203,7 +203,8 @@ public class ManageOrderController implements Initializable {
 		ClientUI.sentToChatClient(msgForServer);
 		if (canceled)
 			alert.setAlert("Canceled succesful");
-		alert.setAlert("Alert was not canceled");
+		else
+			alert.setAlert("Failed to cancel Order");
 	}
 
 	/*
@@ -235,11 +236,8 @@ public class ManageOrderController implements Initializable {
 	}
 
 	public static void canceledOrderFromServer(boolean returned) {
-		if (returned) {
-			order = null;
-			canceled=true;
-		}
-		canceled =false;
+		canceled=returned;
+		order = null;
 	}
 
 	@FXML
