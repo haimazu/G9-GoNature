@@ -78,16 +78,18 @@ public class UpdateVisitorsNumber {
 	// input: ArrayList<Object>,ConnectionToClient
 	// pulling details of a selected park from DB
 	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] details in ArrayList<String> format of the chosen park details
+	// 							   cell[1] ArrayList<String> [0] parkName																
+	//												         [1] number of visitors to add
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : orderByOrderNumber
+		// the service name : getParkDetails
 		answer.add(recived.get(0));
 		// the data that sent from the client
-		// cell 0: orderNumber
+		// cell 0: parkName
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
-
+		int visitorsToAdd = Integer.parseInt(data.get(1));
+		
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("park"); // table name
@@ -97,7 +99,12 @@ public class UpdateVisitorsNumber {
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		Park park = new Park(queryData.get(0));
-		answer.add(park);
+		
+		if (park.getCurrentAmount() + visitorsToAdd > park.getMaximumCapacityInPark()) {
+			answer.add("Full");
+		} else {
+			answer.add(park);			
+		}
 
 		EchoServer.sendToMyClient(answer, client);
 	}

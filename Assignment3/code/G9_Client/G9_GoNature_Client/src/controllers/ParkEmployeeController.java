@@ -114,7 +114,6 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnApprove;
 
-	// check if we already was is the DB
 	private AlertController alert = new AlertController();
 	private boolean informationExists = false;
 	private String radVisitorStatusText;
@@ -125,8 +124,6 @@ public class ParkEmployeeController implements Initializable {
 	private static Order randomVisitorFakeOrderDetails;
 	private static Park parkDetails;
 	private static String error = "";
-	// private Map<String, Integer> orderDocumentation = new HashMap<String,
-	// Integer>();
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -145,7 +142,6 @@ public class ParkEmployeeController implements Initializable {
 
 		int id = getOrderNumberFromBarcodeByID();
 		int memberId = getOrderNumberFromBarcodeByMemberId();
-		System.out.println("MemberId: " + memberId);
 
 		sendToServer("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(String.valueOf(memberId))));
 
@@ -210,7 +206,6 @@ public class ParkEmployeeController implements Initializable {
 		setPrice();
 
 		informationExists = false;
-		btnApprove.setDisable(false);
 	}
 
 	// input: none
@@ -278,7 +273,8 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 		
-		informationExists = false;
+		// update park status
+		updateParkStatus();
 		clearAllFields();
 	}
 	
@@ -287,7 +283,12 @@ public class ParkEmployeeController implements Initializable {
 	// output: updating the current visitors in the park 
 	public void execEnter() {
 		int tooManyVisitors = 0;
-
+		
+		ArrayList<String> data = new ArrayList<String>();
+		data.add(getParkName());
+		data.add("2");
+		sendToServer("getParkDetails", data);
+		
 		// check if the amount of "visitorsEntered" greater than the invitation.
 		if (Integer.parseInt(txtVisitorsAmount.getText()) > 
 	    	Integer.parseInt(lblVisitorsNumber.getText())) {
@@ -298,20 +299,8 @@ public class ParkEmployeeController implements Initializable {
 			alert.ensureAlert("Ensure", "Are you sure you want to approve the purchase?");
 			if (alert.getResult().equals("OK")) {
 				if (checkFreePlacesInTheGateway()) {
-					// ArrayList<String> data
-					// 		  cell 0: orderNumber
-					//        cell 1: new arrived amount (updated one)
-					ArrayList<String> data = new ArrayList<String>();
-					data.add(String.valueOf(orderDetails.getOrderNumber()));
-					data.add(lblVisitorsNumber.getText());
-					//sendToServer("updateAmountArrived", data);
-					
-					// check if the update failed and showing alert
-					if (getError().equals("false")) {
-						alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-						return;
-					}
-					
+					// updates the number of visitors who came for a specific order
+					updateAmountArrived();
 					// make an automatic purchase for the additional visitors
 					execRandomVisitor(tooManyVisitors);
 					
@@ -323,21 +312,10 @@ public class ParkEmployeeController implements Initializable {
 		// amount of visitors is less than or equal to what is on the order
 		} else {
 			if (checkFreePlacesInTheGateway()) {
-				// ArrayList<String> data
-				// 		  cell 0: orderNumber
-				//        cell 1: new arrived amount (updated one)
-				ArrayList<String> data = new ArrayList<String>();
-				data.add(String.valueOf(orderDetails.getOrderNumber()));
-				data.add(txtVisitorsAmount.getText());
-				//sendToServer("updateAmountArrived", data);
-				
+				// updates the number of visitors who came for a specific order
+				updateAmountArrived();		
+				// update current visitors
 				updateCurrentVisitors(Integer.parseInt(txtVisitorsAmount.getText()));
-				
-				// check if the update failed and showing alert
-				if (getError().equals("false")) {
-					alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-					return;
-				}
 				
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 			} 
@@ -360,28 +338,6 @@ public class ParkEmployeeController implements Initializable {
 		}
 		// update current visitors
 		updateCurrentVisitors(updateCurrentVisitors);
-		updateParkStatus();
-	}
-	
-	// updates the current amount of visitors in the appropriate park table
-	// input: number of visitor to update
-	// output: updated number of visitors in DB
-	public void updateCurrentVisitors(int updateCurrentVisitors) {
-		// ArrayList<String> data, sending to the server to update the current visitors amount
-		// input: cell 0: parkName
-		//        cell 1: new current visitors (updated one)
-		// output: message with the result of the update: true if success
-		//                                                false, otherwise
-		ArrayList<String> data = new ArrayList<String>();
-		data.add(getParkName());
-		data.add(String.valueOf(updateCurrentVisitors));
-		sendToServer("updateCurrentVisitors", data);
-		
-		// check if the update failed and showing alert
-		if (getError().equals("false")) {
-			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-			return;
-		}
 	}
 
 	// checking the entrance and exit of the random visitor
@@ -417,17 +373,7 @@ public class ParkEmployeeController implements Initializable {
 		}
 		
 		// update current visitors
-		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
-				+ String.valueOf(updateCurrentVisitors) + "/" 
-				+ parkDetails.getMaximumCapacityInPark());
-
 		updateCurrentVisitors(updateCurrentVisitors);
-		
-		// check if the update failed and showing alert
-		if (getError().equals("false")) {
-			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-			return;
-		}	
 	}
 
 	// prints order data
@@ -478,7 +424,7 @@ public class ParkEmployeeController implements Initializable {
 		String id = "";
 		String memberId = "";
 		double discount = 0;
-		double difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
+		double difference = 0;
 		double managerDiscount = parkDetails.getMangerDiscount();	
 
 		// format time
@@ -510,6 +456,8 @@ public class ParkEmployeeController implements Initializable {
 			lblDiscount.setText(String.format("%.1f", discount) + "%");	
 			System.out.println(randomVisitorFakeOrderDetails);
 		} else {
+			difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
+			
 			if (difference > 0) {
 				double price = difference * parkDetails.getEnteryPrice();
 				price += orderDetails.getTotalPrice();
@@ -594,6 +542,45 @@ public class ParkEmployeeController implements Initializable {
 		return false;
 	}
 	
+	// input: number of visitor to update
+	// output: updates the number of visitors who came for a specific order
+	public void updateAmountArrived() {
+		// ArrayList<String> data
+		// 		  cell 0: orderNumber
+		//        cell 1: new arrived amount (updated one)
+		ArrayList<String> data = new ArrayList<String>();
+		data.add(String.valueOf(orderDetails.getOrderNumber()));
+		data.add(lblVisitorsNumber.getText());
+		//sendToServer("updateAmountArrived", data);
+		
+		// check if the update failed and showing alert
+		if (getError().equals("false")) {
+			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+			return;
+		}
+	}
+	
+	// updates the current amount of visitors in the appropriate park table
+	// input: number of visitor to update
+	// output: updated number of visitors in DB
+	public void updateCurrentVisitors(int updateCurrentVisitors) {
+		// ArrayList<String> data, sending to the server to update the current visitors amount
+		// input: cell 0: parkName
+		//        cell 1: new current visitors (updated one)
+		// output: message with the result of the update: true if success
+		//                                                false, otherwise
+		ArrayList<String> data = new ArrayList<String>();
+		data.add(getParkName());
+		data.add(String.valueOf(updateCurrentVisitors));
+		sendToServer("updateCurrentVisitors", data);
+		
+		// check if the update failed and showing alert
+		if (getError().equals("false")) {
+			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+			return;
+		}
+	}
+	
 	// checking to see if there are any available places in the park 
 	// for the amount of people who want to enter right now
 	// input: amount of visitors
@@ -632,6 +619,8 @@ public class ParkEmployeeController implements Initializable {
 		return false;
 	}
 	
+	// input: none
+	// output: update the park title with the current visitors
 	public void updateParkStatus() {
 		sendToServer("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName())));
 
@@ -674,7 +663,11 @@ public class ParkEmployeeController implements Initializable {
 	// input: ArrayList<String> park with all the park data
 	// output: new park
 	public static void receivedFromServerParkDetails(Object park) {
-		ParkEmployeeController.parkDetails = (Park) park;
+		if (park instanceof Park) {
+			ParkEmployeeController.parkDetails = (Park) park;			
+		} else {
+			setError("Full");
+		}
 	}
 	
 	// getting information from the server
