@@ -26,7 +26,7 @@ public class NewMember {
 			//adding a member to DB
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
-			query.add("orders"); // table name
+			query.add("member"); // table name
 			query.add(queryToString(memb)); // values in query format
 			MySQLConnection.insert(query);
 			EchoServer.sendToMyClient(answer, client);
