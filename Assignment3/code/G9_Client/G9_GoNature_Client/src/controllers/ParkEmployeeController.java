@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXRadioButton;
@@ -165,10 +166,10 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	private int getOrderNumberFromBarcodeByMemberId() {
-		// Random rand = new Random();
+		 Random rand = new Random();
 		// generate random integers in range 0 to 3
-		// return rand.nextInt(4);
-		return 2;
+		 return rand.nextInt(4);
+		//return 2;
 	}
 
 	private int getVisitorsEnteredFromBarcode() {
@@ -179,7 +180,6 @@ public class ParkEmployeeController implements Initializable {
 	// output: order details
 	@FXML
 	void showDetails(ActionEvent event) {
-		radExit.setDisable(false);
 		setRandomModeOff();
 
 		if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
@@ -213,37 +213,6 @@ public class ParkEmployeeController implements Initializable {
 		btnApprove.setDisable(false);
 	}
 
-	// enter random mode
-	// input: random button has been pressed
-	// output: screen changes
-	@FXML
-	void randomVisitor(ActionEvent event) {
-		btnRandomVisitor.setVisible(false);
-		lblDateTitle.setVisible(true);
-		lblRandomDate.setVisible(true);
-		lblTimeTitle.setVisible(true);
-		lblRandomTime.setVisible(true);
-		txtRandomVisitorsAmount.setVisible(true);
-		txtIdOrMemberId.setVisible(true);
-		
-		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
-		LocalDateTime arrivelTime = LocalDateTime.now();
-		lblRandomTime.setText(arrivelTime.format(time));
-	}
-	
-	// turns off random mode
-	// input: none
-	// output: screen changes
-	public void setRandomModeOff() {
-		btnRandomVisitor.setVisible(true);
-		lblDateTitle.setVisible(false);
-		lblRandomDate.setVisible(false);
-		lblTimeTitle.setVisible(false);
-		lblRandomTime.setVisible(false);
-		txtRandomVisitorsAmount.setVisible(false);
-		txtIdOrMemberId.setVisible(false);
-	}
-
 	// input: none
 	// output: number of visitor/s that enter / leave the park
 	@FXML
@@ -257,7 +226,13 @@ public class ParkEmployeeController implements Initializable {
 					alert.failedAlert("Failed", "All fields required.");
 					return;
 				} else {
-					execRandomVisitor(Integer.parseInt(txtRandomVisitorsAmount.getText()));
+					/*** Enter ***/
+					if (radVisitorStatusText.equals("Enter")) {
+						execRandomVisitor(Integer.parseInt(txtRandomVisitorsAmount.getText()));
+					/*** Enter ***/
+					} else {
+						
+					}
 				}
 			// barcode / regular entry
 			} else {
@@ -276,7 +251,6 @@ public class ParkEmployeeController implements Initializable {
 				// check date and time
 				if (checkDate() && checkTime()) {
 					/*** Enter ***/
-					// doesn't exists in the list -> entering the park
 					if (radVisitorStatusText.equals("Enter")) {
 						
 						// if this order is already listed in "Used", asked to make a purchase for everyone 
@@ -375,18 +349,20 @@ public class ParkEmployeeController implements Initializable {
 	// output: updating the current visitors in the park 
 	public void execExit() {
 		int updateCurrentVisitors = 0;
+		// random mode
+		if (!btnRandomVisitor.isVisible()) {
+			alert.successAlert("Success", txtRandomVisitorsAmount.getText() + " visitor/s leaved.");
+			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtRandomVisitorsAmount.getText());
+		// barcode / regular mode
+		} else {
+			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
+			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());
+		}
 		// update current visitors
-		alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");
 		updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());
 		lblCurrentVisitors.setText(String.valueOf(updateCurrentVisitors) + "/" + parkDetails.getMaximumCapacityInPark());
 	
 		updateCurrentVisitors(updateCurrentVisitors);
-		
-		// check if the update failed and showing alert
-		if (getError().equals("false")) {
-			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-			return;
-		}
 	}
 	
 	// updates the current amount of visitors in the appropriate park table
@@ -402,6 +378,12 @@ public class ParkEmployeeController implements Initializable {
 		data.add(getParkName());
 		data.add(String.valueOf(updateCurrentVisitors));
 		sendToServer("updateCurrentVisitors", data);
+		
+		// check if the update failed and showing alert
+		if (getError().equals("false")) {
+			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+			return;
+		}
 	}
 
 	// checking the entrance and exit of the random visitor
@@ -656,34 +638,6 @@ public class ParkEmployeeController implements Initializable {
 									+ String.valueOf(parkDetails.getCurrentAmount()) + "/" 
 									+ parkDetails.getMaximumCapacityInPark());
 	}
-
-	public static String getFirstName() {
-		return firstName;
-	}
-
-	public static void setFirstName(String firstName) {
-		ParkEmployeeController.firstName = firstName;
-	}
-
-	public static String getError() {
-		return error;
-	}
-
-	public static void setError(String error) {
-		ParkEmployeeController.error = error;
-	}
-
-	public static Order getOrderDetails() {
-		return orderDetails;
-	}
-
-	public static String getParkName() {
-		return parkName;
-	}
-
-	public static void setParkName(String parkName) {
-		ParkEmployeeController.parkName = parkName;
-	}
 	
 	// String type, the case we dealing with
 	// ArrayList<String> dbColumns, sending to the server to get data
@@ -756,6 +710,65 @@ public class ParkEmployeeController implements Initializable {
 		} else {
 			setError("false");
 		}
+	}
+	
+	public static String getFirstName() {
+		return firstName;
+	}
+
+	public static void setFirstName(String firstName) {
+		ParkEmployeeController.firstName = firstName;
+	}
+
+	public static String getError() {
+		return error;
+	}
+
+	public static void setError(String error) {
+		ParkEmployeeController.error = error;
+	}
+
+	public static Order getOrderDetails() {
+		return orderDetails;
+	}
+
+	public static String getParkName() {
+		return parkName;
+	}
+
+	public static void setParkName(String parkName) {
+		ParkEmployeeController.parkName = parkName;
+	}
+	
+	// enter random mode
+	// input: random button has been pressed
+	// output: screen changes
+	@FXML
+	void randomVisitor(ActionEvent event) {
+		btnRandomVisitor.setVisible(false);
+		lblDateTitle.setVisible(true);
+		lblRandomDate.setVisible(true);
+		lblTimeTitle.setVisible(true);
+		lblRandomTime.setVisible(true);
+		txtRandomVisitorsAmount.setVisible(true);
+		txtIdOrMemberId.setVisible(true);
+		
+		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
+		LocalDateTime arrivelTime = LocalDateTime.now();
+		lblRandomTime.setText(arrivelTime.format(time));
+	}
+	
+	// turns off random mode
+	// input: none
+	// output: screen changes
+	public void setRandomModeOff() {
+		btnRandomVisitor.setVisible(true);
+		lblDateTitle.setVisible(false);
+		lblRandomDate.setVisible(false);
+		lblTimeTitle.setVisible(false);
+		lblRandomTime.setVisible(false);
+		txtRandomVisitorsAmount.setVisible(false);
+		txtIdOrMemberId.setVisible(false);
 	}
 
 	// clear the screen fields

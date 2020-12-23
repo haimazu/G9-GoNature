@@ -111,7 +111,7 @@
                         <Font name="Tahoma Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXTextField focusColor="#0080ff" labelFloat="true" layoutX="51.0" layoutY="245.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="First Name" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField focusColor="#0080ff" labelFloat="true" layoutX="51.0" layoutY="245.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*First Name" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -119,7 +119,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="51.0" layoutY="295.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Last Name" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="51.0" layoutY="295.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Last Name" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -127,7 +127,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="51.0" layoutY="395.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Phone Number" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="51.0" layoutY="395.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Phone Number" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -136,7 +136,7 @@
                      </font>
                   </JFXTextField>
                   <JFXComboBox focusColor="SEAGREEN" focusTraversable="false" layoutX="319.0" layoutY="260.0" prefHeight="25.0" prefWidth="250.0" promptText="Payment" unFocusColor="#a3a3a3" />
-                  <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="51.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="51.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Email" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -144,7 +144,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="319.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Family Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField disable="true" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="319.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Family Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
