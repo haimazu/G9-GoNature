@@ -1,11 +1,8 @@
 package server;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import dataLayer.Park;
 import ocsf.server.ConnectionToClient;
-import orderData.Order;
 
 public class UpdateVisitorsNumber {
 
