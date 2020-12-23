@@ -410,6 +410,8 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		} 
 		
+		setPrice(0);
+		
 		// update current visitors
 		alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
 		updateCurrentVisitors = visitorsAmount + currentVisitors;
@@ -426,9 +428,7 @@ public class ParkEmployeeController implements Initializable {
 		if (getError().equals("false")) {
 			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
 			return;
-		}
-		
-		setPrice();
+		}	
 	}
 
 	// prints order data
@@ -472,11 +472,12 @@ public class ParkEmployeeController implements Initializable {
 	}
 	
 	
-	public void setPrice() {	
+	public void setPrice(int difference) {	
+		Order fakeOrder;
 		String id = "";
 		String memberId = "";
-		double discount;
-		int managerDiscount = parkDetails.getMangerDiscount();	
+		double discount = 0;
+		double managerDiscount = parkDetails.getMangerDiscount();	
 
 		// format time
 		dateAndTimeFormat += roundingTime();
@@ -484,31 +485,35 @@ public class ParkEmployeeController implements Initializable {
 				
 		// case 2 or 4 -> single/family OR group
 		/***** Random *****/
-		if (!btnRandomVisitor.isVisible()) {
-			
+		if (!btnRandomVisitor.isVisible()) {		
 			if (txtIdOrMemberId.getText().length() == 9) {
 				id = txtIdOrMemberId.getText();
 			} else {
 				memberId = txtIdOrMemberId.getText();
 			}
-
-			Order o = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
+		
+			fakeOrder = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
 			// check the random visitor type and calculate the price
 			// Query
 			ArrayList<Object> msg = new ArrayList<Object>();	
 			msg.add("randomVisitorFakeOrder");
 			// Data fields
-			msg.add(o);	
+			msg.add(fakeOrder);	
 			// set up all the order details and the payment method
 			ClientUI.sentToChatClient(msg);
 			
+			//TODO add manager discount if not 0
+			discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+			lblDiscount.setText(String.format("%.1f", discount) + "%");	
 			System.out.println(randomVisitorFakeOrderDetails);
-		} 
-			
-		//TODO add manager discount if not 0
-		discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
-		lblDiscount.setText(String.format("%.1f", discount) + "%");
+		} else {
+			if (difference > 0) {
+				discount = difference * parkDetails.getEnteryPrice();
+				discount += (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+				lblDiscount.setText(String.format("%.1f", discount) + "%");	
+			}
+		}	
 	}
 	
 	public String roundingTime() {
@@ -795,7 +800,7 @@ public class ParkEmployeeController implements Initializable {
 			
 			if (Integer.parseInt(txtVisitorsAmount.getText()) > Integer.parseInt(lblVisitorsNumber.getText())) {
 				int difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
-				execRandomVisitor(difference);
+				setPrice(difference);
 			}
 			// \\d -> only digits
 			// * -> escaped special characters
