@@ -48,7 +48,7 @@ import orderData.Order;
  *  This controller include all three screen of success order
  */
 public class OrderController implements Initializable {
-	/*********Pane**************/
+	/********* Pane **************/
 	@FXML
 	private StackPane pnStackOrder;
 	@FXML
@@ -72,7 +72,7 @@ public class OrderController implements Initializable {
 	@FXML
 	private Button information;
 
-	/********* Order screen************/
+	/********* Order screen ************/
 	@FXML
 	private JFXDatePicker txtdate;
 	@FXML
@@ -139,7 +139,7 @@ public class OrderController implements Initializable {
 	public static void setConfirmOrder(boolean confirmOrder) {
 		OrderController.confirmOrder = confirmOrder;
 	}
-	
+
 	public static Order getOrder() {
 		return order;
 	}
@@ -160,16 +160,18 @@ public class OrderController implements Initializable {
 	public static String getStatus() {
 		return status;
 	}
+
 	// status to check if the order success
 	public static void setStatus(String status) {
 		OrderController.status = status;
 	}
 
-	//order after server
+	// order after server
 	public static Order getOrderSuccess() {
 		return orderSuccess;
 	}
-	//order after server
+
+	// order after server
 	public static void setOrderSuccess(Order orderSuccess) {
 		OrderController.orderSuccess = orderSuccess;
 	}
@@ -177,18 +179,16 @@ public class OrderController implements Initializable {
 	public static void setParksNames(ArrayList<String> parksNames) {
 		ParksNames = parksNames;
 	}
-	
-	
-	
-	
-	/*************************************my Code*******************************************************/
-	
-	
-				/**************code for buttons - JAVAFX********************/
-	
-	
+
+	/*************************************
+	 * my Code
+	 *******************************************************/
+
+	/************** code for buttons - JAVAFX ********************/
+
 	/**
 	 * button for forward to the screen before
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -199,14 +199,14 @@ public class OrderController implements Initializable {
 		if (stackPanels.size() > 1) {
 			Node topNode = stackPanels.get(stackPanels.size() - 1);
 
-			if (topNode.getId().equals("pnOrder")) {//in order screen
+			if (topNode.getId().equals("pnOrder")) {// in order screen
 				Stage stage = (Stage) btnBack.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 				stage.setScene(new Scene(root));
-			} else if (topNode.getId().equals("pnPayment")) {//in payment screen
+			} else if (topNode.getId().equals("pnPayment")) {// in payment screen
 				imgOrder.setImage(imgOrderEmpty);
 				pnOrder.toFront();
-			} else if (topNode.getId().equals("pnConfirmation")) {//in confirmation screen
+			} else if (topNode.getId().equals("pnConfirmation")) {// in confirmation screen
 				pnPayment.toFront();
 			}
 		}
@@ -214,6 +214,7 @@ public class OrderController implements Initializable {
 
 	/**
 	 * clear all fields in order screen
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -226,6 +227,7 @@ public class OrderController implements Initializable {
 
 	/**
 	 * radio button for open screen creditCard
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -237,31 +239,31 @@ public class OrderController implements Initializable {
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.show();
-		
+
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent t) {
-					radioCash.setSelected(true);
-				}
-			});
+			@Override
+			public void handle(WindowEvent t) {
+				radioCash.setSelected(true);
+			}
+		});
 	}
 
-
 	/**
-	 * msgForServer is ArrayList of objects -> [0] -> name of the class "order" [1] -> order
-	 * Object / String / boolean
-	 * output from server : Object Order / String / boolean
+	 * msgForServer is ArrayList of objects -> [0] -> name of the class "order" [1]
+	 * -> order Object / String / boolean output from server : Object Order / String
+	 * / boolean
 	 * 
 	 * By clicking button next the function will check if the values in the fields
-	 * are correct - if so, send them to server
-	 * Or if there is no place will open the waiting list screen
+	 * are correct - if so, send them to server Or if there is no place will open
+	 * the waiting list screen
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
 	@FXML
 	void next(ActionEvent event) throws IOException {
 		ArrayList<Object> msgNewOrderForServer = new ArrayList<>();
-		 ArrayList<Object> msgConfirmForServer = new ArrayList<>();
+		ArrayList<Object> msgConfirmForServer = new ArrayList<>();
 		// continue only if the fields are correct
 		if (checkNotEmptyFields() && checkCorrectFields() && checkCurrentTime()) {
 			msgNewOrderForServer.add("order");
@@ -275,18 +277,18 @@ public class OrderController implements Initializable {
 			if (btnNext == event.getSource()) {
 
 				ClientUI.sentToChatClient(msgNewOrderForServer);
-				this.memberId=null; 
-				this.ID=null;
-				
-				if (status.equals("Failed")) { //the user can't order 
-					OrderController.status="not";
+				this.memberId = null;
+				this.ID = null;
+
+				if (status.equals("Failed")) { // the user can't order
+					OrderController.status = "not";
 					Stage stage = new Stage();
 					Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
 					Scene scene = new Scene(root);
 					stage.setResizable(false);
 					stage.setScene(scene);
 					stage.show();
-				} else if (!faildDB) { //the Order details didnt enter to DB
+				} else if (!faildDB) { // the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
 
@@ -303,20 +305,18 @@ public class OrderController implements Initializable {
 				msgConfirmForServer.add("confirmOrder");
 				msgConfirmForServer.add(OrderController.orderSuccess);
 				msgConfirmForServer.add(CreditCardController.getDetails());
-				
+
 				if (checkNotEmptyFieldsPaymentScreen()) {
 					ClientUI.sentToChatClient(msgConfirmForServer);
-					
-				//	System.out.println("order con line 310");
-					
-					if(OrderController.confirmOrder) {
-						OrderController.confirmOrder=false;
+
+					// System.out.println("order con line 310");
+
+					if (OrderController.confirmOrder) {
+						OrderController.confirmOrder = false;
 						this.txtOrderNum.setText(String.valueOf(this.orderSuccess.getOrderNumber()));
 						pnConfirmation.toFront();
-					}
-				}
-				else {
-					alert.setAlert("something went wrong\\nplease close the program and start again");
+					} else
+						alert.setAlert("something went wrong\nplease close the program and start again");
 				}
 
 			}
@@ -335,7 +335,7 @@ public class OrderController implements Initializable {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		stage.setScene(new Scene(root));
 	}
-	
+
 	// need to fix
 	@FXML
 	void here(ActionEvent event) throws IOException {
@@ -344,8 +344,10 @@ public class OrderController implements Initializable {
 		stage.setScene(new Scene(root));
 
 	}
-	
-	/*******************************Code for tests and additions****************************************/
+
+	/*******************************
+	 * Code for tests and additions
+	 ****************************************/
 
 	/**
 	 * 
@@ -404,9 +406,10 @@ public class OrderController implements Initializable {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * check only for reservation for today
+	 * 
 	 * @return true if the reservation is in the correct time
 	 */
 	public boolean checkCurrentTime() {
@@ -425,11 +428,12 @@ public class OrderController implements Initializable {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * for create the string to the DB
+	 * 
 	 * @param time
-	 * @return The  start time of the reservation 
+	 * @return The start time of the reservation
 	 */
 	public String getArrivalTime() {
 		String[] array = cbxArrivelTime.getValue().toString().split("-");
@@ -464,7 +468,7 @@ public class OrderController implements Initializable {
 		alert.setAlert("Invalid member-ID / ID ");
 		return false;
 	}
-	
+
 	/**
 	 * patterns:
 	 */
@@ -495,10 +499,13 @@ public class OrderController implements Initializable {
 			matcher = VALIDPhone.matcher(txt);
 		return matcher.find();
 	}
-	
-/**********************Methods that get answer from server *************************************/
+
+	/**********************
+	 * Methods that get answer from server
+	 *************************************/
 	/**
 	 * recived from server : Object Order / String / Boolean
+	 * 
 	 * @param newOrder
 	 */
 	public static void recivedFromServer(Object newOrder) {
@@ -516,25 +523,30 @@ public class OrderController implements Initializable {
 
 	/**
 	 * return list of all the parks names
+	 * 
 	 * @param parks
 	 */
 	public static void recivedFromServerParksNames(ArrayList<String> parks) {
 		setParksNames(parks);
 	}
-	
+
 	/**
-	 * return true if the user is confirm the order and the server success to enter the db
+	 * return true if the user is confirm the order and the server success to enter
+	 * the db
+	 * 
 	 * @param msg
 	 */
 	public static void recivedFromServerConfirmOrder(boolean msg) {
 		setConfirmOrder(msg);
 	}
 
+	/***************************************
+	 * Done with the server
+	 **********************************************/
 
-/***************************************Done with the server**********************************************/
-
-
-/******************************initialize****************************************/
+	/******************************
+	 * initialize
+	 ****************************************/
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -560,8 +572,6 @@ public class OrderController implements Initializable {
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
 		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
-		
-		
 
 		/*********** need to do this**** for save detail after fill **********/
 //		if(OrderController.order!=null) {

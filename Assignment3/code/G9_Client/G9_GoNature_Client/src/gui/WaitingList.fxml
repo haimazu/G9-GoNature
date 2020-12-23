@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -24,18 +25,21 @@
       <Separator layoutX="75.0" layoutY="185.0" prefHeight="3.0" prefWidth="113.0" />
       <Label layoutX="191.0" layoutY="177.0" text="Or" />
       <Separator layoutX="207.0" layoutY="185.0" prefHeight="3.0" prefWidth="113.0" />
-      <Label focusTraversable="false" layoutX="133.0" layoutY="213.0" text="Select another date">
+      <Label focusTraversable="false" layoutX="133.0" layoutY="217.0" text="Select another date">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <JFXDatePicker editable="false" focusTraversable="false" layoutX="122.0" layoutY="236.0" promptText="Change Date" />
-      <Button fx:id="btnCheck" focusTraversable="false" layoutX="120.0" layoutY="305.0" mnemonicParsing="false" onAction="#check" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Check" />
+      <Button fx:id="btnCheck" focusTraversable="false" layoutX="113.0" layoutY="327.0" mnemonicParsing="false" onAction="#check" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Check" />
       <Button fx:id="btnHere" focusTraversable="false" layoutX="277.0" layoutY="134.0" mnemonicParsing="false" onAction="#here" prefHeight="25.0" prefWidth="157.0" styleClass="btnSmallGreen" text="here" />
-      <ImageView fitHeight="83.0" fitWidth="85.0" layoutX="163.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="83.0" fitWidth="85.0" layoutX="154.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@oops3-removebg-80.png" />
          </image>
       </ImageView>
+      <JFXDatePicker fx:id="txtdate" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="85.0" layoutY="258.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
+      <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="199.0" layoutY="238.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
+      <Label layoutX="159.0" layoutY="300.0" text="Required fields" textFill="#404040" />
+      <Label layoutX="152.0" layoutY="300.0" text="*" textFill="RED" />
    </children>
 </Pane>
