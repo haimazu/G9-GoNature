@@ -222,6 +222,7 @@
     -fx-pref-height: 40px;
 }
 
+
 .btnClear:hover {
 	-fx-border-insets: -1 -1 -1 -1;
 	-fx-border-radius: 5px;
@@ -264,6 +265,7 @@
     -jfx-focus-color: #a3a3a3;
 }
 
+
 /********** For JFXTextFields With Invalid Input **********/
 .txtFieldRed {
 	-fx-highlight-fill: red;
@@ -284,22 +286,33 @@
 .date-picker > .text-field {
 	-fx-prompt-text-fill: #a3a3a3;
 	-fx-font-size: 13px;
+	
 }
 
 .date-picker:focused > .text-field,
 .date-picker > .text-field:focused {
     -fx-prompt-text-fill: #009688;
+    
 }
 
 .date-picker .input-line {
 	-fx-background-color: #a3a3a3;
 }
 
+ .date-picker .cell {
+-fx-border-color: #F0EAD2;
+ }
+
  /* Remove The Arrow Buttons Style */
 .jfx-button {
 	-fx-background-color: transparent;
 	-fx-effect: null;
 }
+
+.date-picker-popup  {
+	-fx-border-color: #2e8b57;
+-fx-background-color: #FFFFF0;
+ }
 
 /********** All Dashboards Side Bar Buttons Style **********/
 .btnSidebarMenu {
