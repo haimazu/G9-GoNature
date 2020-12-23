@@ -161,7 +161,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard1" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight" visible="false">
+            <Pane fx:id="pnDashboard1" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <Label focusTraversable="false" layoutX="42.0" layoutY="36.0" styleClass="labelBold" text="Member Details:" textAlignment="CENTER">
                      <font>

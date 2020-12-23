@@ -231,7 +231,7 @@ public class ParkEmployeeController implements Initializable {
 						execRandomVisitor(Integer.parseInt(txtRandomVisitorsAmount.getText()));
 					/*** Enter ***/
 					} else {
-						
+						execExit();
 					}
 				}
 			// barcode / regular entry
@@ -359,10 +359,8 @@ public class ParkEmployeeController implements Initializable {
 			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());
 		}
 		// update current visitors
-		updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());
-		lblCurrentVisitors.setText(String.valueOf(updateCurrentVisitors) + "/" + parkDetails.getMaximumCapacityInPark());
-	
 		updateCurrentVisitors(updateCurrentVisitors);
+		updateParkStatus();
 	}
 	
 	// updates the current amount of visitors in the appropriate park table
@@ -403,13 +401,16 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		} 
 		
+		// update prices
 		setPrice();
 		
+		// in case without order
 		if (!lblVisitorsNumber.getText().isEmpty()) {
 			alert.successAlert("Success", 
 					Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
 					+ String.valueOf(visitorsAmount) + " casual visitor/s, entered.");
 			updateCurrentVisitors = visitorsAmount + Integer.parseInt(lblVisitorsNumber.getText()) + currentVisitors;
+		// in case with order
 		} else {
 			alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");			
 			updateCurrentVisitors = visitorsAmount + currentVisitors;
@@ -777,6 +778,7 @@ public class ParkEmployeeController implements Initializable {
 	public void clearAllFields() {
 		alert.setResult("");
 		setError("");
+		txtIdOrMemberId.clear();
 		txtOrderNumber.clear();
 		lblOrderNumber.setText("");
 		txtVisitorsAmount.clear();
@@ -789,7 +791,7 @@ public class ParkEmployeeController implements Initializable {
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
-		txtRandomVisitorsAmount.setText("");
+		txtRandomVisitorsAmount.clear();;
 		lblDateTitle.setVisible(false);
 		lblRandomDate.setVisible(false);
 		lblTimeTitle.setVisible(false);
