@@ -31,6 +31,7 @@ public class NewMember {
 			query.add("member"); // table name
 			query.add(queryToString(memb)); // values in query format
 			MySQLConnection.insert(query);
+			answer.add(true);
 			EchoServer.sendToMyClient(answer, client);
 		}
 	}
