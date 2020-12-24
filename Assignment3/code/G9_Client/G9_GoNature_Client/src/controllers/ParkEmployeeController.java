@@ -415,7 +415,6 @@ public class ParkEmployeeController implements Initializable {
 			
 			lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
 			discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
-			// not a member, has only manager discount
 			lblDiscount.setText(String.format("%.1f", discount) + "%");			
 			lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
 			
@@ -802,6 +801,7 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(true);
 		txtRandomVisitorsAmount.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
+		clearAllOrderFields();
 		
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
@@ -855,7 +855,7 @@ public class ParkEmployeeController implements Initializable {
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
-		txtRandomVisitorsAmount.clear();;
+		txtRandomVisitorsAmount.clear();
 		lblDateTitle.setVisible(false);
 		lblRandomDate.setVisible(false);
 		lblTimeTitle.setVisible(false);
@@ -863,6 +863,24 @@ public class ParkEmployeeController implements Initializable {
 		txtRandomVisitorsAmount.setVisible(false);
 		btnApprove.setDisable(true);
 		btnRandomVisitor.setVisible(true);
+	}
+	
+	// turns off order mode
+	// input: none
+	// output: screen changes
+	public void clearAllOrderFields() {
+		txtOrderNumber.clear();
+		lblOrderNumber.setText("");
+		txtVisitorsAmount.clear();
+		lblParkName.setText("");
+		lblDate.setText("");
+		lblTime.setText("");
+		lblVisitorsNumber.setText("");
+		lblEmail.setText("");
+		lblVisitorsAmount.setText("");
+		lblPrice.setText("");
+		lblDiscount.setText("");
+		lblTotalPrice.setText("");
 	}
 
 	@Override
