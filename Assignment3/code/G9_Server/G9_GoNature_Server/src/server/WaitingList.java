@@ -111,15 +111,12 @@ public class WaitingList {
 		arrayForSpots.add("");//fix
 
 		arrayForSpots.add(firstInLineOrder);
-		if (!checkForAvailableSpots(arrayForSpots, client))
+		if (!checkForAvailableSpots(arrayForSpots, client))//if we have avilable spots
 			return false; // no space for the first in line
-		//if we have avilable spots
 		firstInLineOrder.setOrderNumber(Counter.getCounter().orderNum());
 		NewOrder.insertNewOrder(firstInLineOrder); //add to regular orders
 		WaitListSingelton.CancelWaitlist(firstInLineOrder);//delete from the wait list
-		
-		//send notification
-		
+		WaitListSingelton.sendWaitlistNotification(firstInLineOrder);//send notification
 		pullFromWaitList(recived, client); // try next one in line recursively
 		return true;
 	}
