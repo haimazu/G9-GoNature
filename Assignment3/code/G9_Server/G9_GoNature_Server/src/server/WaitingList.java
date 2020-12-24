@@ -7,9 +7,7 @@ import orderData.Order;
 import userData.Member;
 
 public class WaitingList {
-	private static ArrayList<String> confirmed = new ArrayList<String>();
-	private static ArrayList<String> sent = new ArrayList<String>();
-
+	
 	// input: ArrayList of Objects:
 	// in cell 0: String "enterTheWaitList"
 	// in cell 1: Order class of a given order to put in the wait list
@@ -47,7 +45,6 @@ public class WaitingList {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// TODO: decide if the client can ask that directly
 	// input: ArrayList of Objects:
 	// in cell 0: String "checkForAvailableSpots"
 	// in cell 1: Order class of a given order to check if it can fit
@@ -104,7 +101,7 @@ public class WaitingList {
 		query.add("waitingList");
 		query.add("*");
 		query.add("WHERE parkName='" + parkName + "' AND arrivedTime='" + arrivedTime + "' ORDER BY waitlistID");
-		query.add("12");//fix
+		query.add("12");
 		ArrayList<ArrayList<String>> waitingInLineArr = MySQLConnection.select(query);
 		if (waitingInLineArr.get(0).isEmpty())
 			return true; // no one in line
@@ -115,67 +112,15 @@ public class WaitingList {
 
 		arrayForSpots.add(firstInLineOrder);
 		if (!checkForAvailableSpots(arrayForSpots, client))
-			return true; // no space for the first in line
-		sendWaitlistMailAndSMS(firstInLineOrder);
-		for (int i = 0; i < 360; i++) { // wait for confirmation
-			if (confirmed.contains(firstInLine.get(0))) {
-				confirmed.remove(firstInLine.get(0));
-				//TODO: make order
-				return true;
-			}
-			try {
-				TimeUnit.SECONDS.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		// if the for ended the time of one hour has passed
-		sent.remove(firstInLine.get(0));
-		CancelWaitlist(firstInLineOrder);
+			return false; // no space for the first in line
+		//if we have avilable spots
+		firstInLineOrder.setOrderNumber(Counter.getCounter().orderNum());
+		NewOrder.insertNewOrder(firstInLineOrder); //add to regular orders
+		WaitListSingelton.CancelWaitlist(firstInLineOrder);//delete from the wait list
+		
+		//send notification
+		
 		pullFromWaitList(recived, client); // try next one in line recursively
-		return true;
-	}
-
-	// input: ArrayList of Objects:
-	// 			in cell 0: String "pullFromWaitList"
-	// 			in cell 1: Order class of a given order that has been confirmed the mail or sms
-	// output:
-	public void confirmWaitlistMailOrSMS(ArrayList<Object> recived, ConnectionToClient client) { 
-		Order orderConfirm = (Order)recived.get(1);
-		int orderNum = orderConfirm.getOrderNumber();
-		if (sent.contains(String.valueOf(orderNum))) { //the confirmation was made within the hour
-			confirmed.add(String.valueOf(orderNum));
-			sent.remove(String.valueOf(orderNum));
-		} else { //the confermation was made too late
-			System.out.println("you snooze you lose!");
-			//TODO: desice how and what to send back to client
-		}
-	}
-
-	// TODO: decide if the client can ask that directly
-	// input: order number as int
-	//
-	// output: true if found the order on the waitlist and removed it, false if not.
-	private boolean CancelWaitlist(Order recived) {
-		int orderNum = recived.getOrderNumber();
-		ArrayList<String> query = new ArrayList<String>();
-		query.add("delete");
-		query.add("waitingList");
-		query.add("orderNumber");
-		query.add(String.valueOf(orderNum));
-		if (!MySQLConnection.delete(query))
-			return false; // error in delete
-		return true;
-	}
-	
-	// input: Order class that contains the class that sould get a mail
-	//
-	// output: true if messeges sent succsesfully
-	private boolean sendWaitlistMailAndSMS(Order firstInLine) {
-		sent.add(String.valueOf(firstInLine.getOrderNumber())); // add the waitlistID to the sent arraylist
-		//TODO: send mail
-		//TODO: send sms
 		return true;
 	}
 }

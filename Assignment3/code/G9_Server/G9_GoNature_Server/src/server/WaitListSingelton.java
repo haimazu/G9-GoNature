@@ -43,6 +43,15 @@ public class WaitListSingelton {
 		// remvoe from waitlist
 		// remove from sent
 	}
+	
+	//input: date sent and date recived
+	//output: true if less the one hour has passed flase if not
+	private static boolean lessThanOneHour(Date sent, Date recived) {
+		Date limit = new Date(sent.getTime() + 60*60*1000);
+		if (limit.compareTo(recived) >= 0)
+			return true;
+		return false;
+	}
 
 	//input: Email messege replay
 	//output: none
@@ -68,15 +77,6 @@ public class WaitListSingelton {
 		else {
 			//not ok
 		}
-	}
-	
-	//input: date sent and date recived
-	//output: true if less the one hour has passed flase if not
-	private static boolean lessThanOneHour(Date sent, Date recived) {
-		Date limit = new Date(sent.getTime() + 60*60*1000);
-		if (limit.compareTo(recived) >= 0)
-			return true;
-		return false;
 	}
 	
 	private static void confirmWaitlistNotification(Order order) {
