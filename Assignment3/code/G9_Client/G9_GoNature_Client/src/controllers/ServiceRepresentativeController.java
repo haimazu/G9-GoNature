@@ -62,51 +62,46 @@ public class ServiceRepresentativeController implements Initializable {
 	@FXML
 	private JFXCheckBox cbCreditCard;
 
-	
-    @FXML
-    private JFXTextField txtCardNumber;
-    @FXML
-    private JFXComboBox<?> cbxExpiryMonth;
-    @FXML
-    private JFXComboBox<?> cbxExpiryYear;
-    @FXML
-    private JFXTextField txtHolderName;
-    @FXML
-    private JFXTextField txtCVV;
-    @FXML
-    private Button btnSave;
-
-    
-
-    
 	@FXML
-	//add a new groupMember to the db
+	private JFXTextField txtCardNumber;
+	@FXML
+	private JFXComboBox<?> cbxExpiryMonth;
+	@FXML
+	private JFXComboBox<?> cbxExpiryYear;
+	@FXML
+	private JFXTextField txtHolderName;
+	@FXML
+	private JFXTextField txtCVV;
+	@FXML
+	private Button btnSave;
+
+	@FXML
+	// add a new groupMember to the db
 	void addMember(ActionEvent event) {
 
 		String id = txtId.getText();
 		String firstName = txtFirstName.getText();
 		String lastName = txtLastName.getText();
-		//String groupMemberAmount=txtGroupMembersAmount.getText();
-		String groupMemberAmount="5";
+		String groupMemberAmount = txtGroupMembersAmount.getText();
+		// String groupMemberAmount="5";
 		String email = txtEmail.getText();
 		String phoneNumber = txtPhoneNumber.getText();
 
-		//txtGroupMembersAmount.setEditable(cbGuideMember.isSelected());
-		
-		if (id.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() 
-				|| firstName.isEmpty()|| !cbGuideMember.isSelected())
+		// txtGroupMembersAmount.setEditable(cbGuideMember.isSelected());
+
+		if (id.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || firstName.isEmpty())
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 
-		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput()&&validEmailInput())
-		{
+		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput() && validEmailInput()) {
+			if (!cbGuideMember.isSelected()) {
 
-			//	if(txtGroupMembersAmount.getText().matches("[0-9]+") && Integer.parseInt(groupMemberAmount)<=15
-					//	&&Integer.parseInt(groupMemberAmount)>0)
-				// alert.setAlert("You need to choose amount between 1-15.");
-				
-			
-				Member newMember = new Member(id,firstName,lastName,null,phoneNumber,email,null,groupMemberAmount);
-			 	// check the random visitor type and calculate the price
+				if (txtGroupMembersAmount.getText().matches("[0-9]+") && Integer.parseInt(groupMemberAmount) <= 15
+						&& Integer.parseInt(groupMemberAmount) > 0)
+					alert.setAlert("You need to choose amount between 1-15.");
+
+				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, "member",
+						groupMemberAmount);
+				// check the random visitor type and calculate the price
 				// Query
 				ArrayList<Object> msg = new ArrayList<Object>();
 				msg.add("newMembershipInsert");
@@ -114,13 +109,32 @@ public class ServiceRepresentativeController implements Initializable {
 				msg.add(newMember);
 				// set up all the order details and the payment method
 				ClientUI.sentToChatClient(msg);
-				
-				if(getStatus())
+
+				if (getStatus())
 					alert.successAlert("Succesful", "A member add succesfuly");
-				else alert.setAlert("Failed to add your member.");
-				
+				else
+					alert.setAlert("Failed to add your member.");
+			} else 
+			//member=guide
+				{
+				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, "guide", "0");
+				// check the random visitor type and calculate the price
+				// Query
+				ArrayList<Object> msg = new ArrayList<Object>();
+				msg.add("newMembershipInsert");
+				// Data fields
+				msg.add(newMember);
+				// set up all the order details and the payment method
+				ClientUI.sentToChatClient(msg);
+
+				if (getStatus())
+					alert.successAlert("Succesful", "A member add succesfuly");
+				else
+					alert.setAlert("Failed to add your member.");
+			}
+
 		}
-		
+
 	}
 
 	@FXML
@@ -139,9 +153,9 @@ public class ServiceRepresentativeController implements Initializable {
 				cbCreditCard.setSelected(false);
 			}
 		});
-		
+
 	}
-   
+
 	// check valid input for first and last name
 	public boolean validFirstLastNameInput() {
 
@@ -174,19 +188,16 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
-	
 
 	// check valid input for email
 	public boolean validEmailInput() {
 
-		if (!(txtEmail.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))) 
-			{
-				alert.setAlert("The filed has to be in this pattern foobar@gmail.com.");
-				return false;
-			}
+		if (!(txtEmail.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))) {
+			alert.setAlert("The filed has to be in this pattern foobar@gmail.com.");
+			return false;
+		}
 		return true;
 	}
-
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -208,8 +219,7 @@ public class ServiceRepresentativeController implements Initializable {
 		// TODO Auto-generated method stub
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
-		
-		
+
 		// force the field to be numeric only
 		txtId.textProperty().addListener((obs, oldValue, newValue) -> {
 
@@ -266,8 +276,9 @@ public class ServiceRepresentativeController implements Initializable {
 
 			}
 		});
-		
+
 	}
+
 	public static boolean getStatus() {
 		return status;
 	}
@@ -275,12 +286,12 @@ public class ServiceRepresentativeController implements Initializable {
 	public static void setStatuss(boolean status) {
 		ServiceRepresentativeController.status = status;
 	}
-	
+
 	public static void receivedFromServerAddMemberStatus(boolean status) {
 		if (status) {
-			setStatuss(status);//status=true
+			setStatuss(status);// status=true
 		} else {
-			setStatuss(status);//status=false
+			setStatuss(status);// status=false
 		}
 	}
 
