@@ -97,6 +97,9 @@ public class ChatClient extends AbstractClient {
 				System.out.println("im here chetclient 96");
 				WaitingListConfirmContoller.recivedfromWaitListServer((Object)received.get(1));
 				break;
+			case "newMembershipInsert":
+				ServiceRepresentativeController.receivedFromServerAddMemberStatus((boolean)received.get(1));
+				break;
 			default:
 			break;
 		}

@@ -63,6 +63,9 @@ public class EchoServer extends AbstractServer {
 		case "cancelOrder":
 			CancelOrder.cancel(recived, client);
 			break;
+		case "newMembershipInsert":
+			NewMember.NewMemberInsert(recived, client);
+			break;
 		default:
 			break;
 		}

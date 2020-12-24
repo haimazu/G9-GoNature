@@ -1,10 +1,11 @@
 package userData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import orderData.OrderType;
 
-public class Member {
+public class Member implements Serializable {
 
 	String memberID;
 	String memberFirstName;

@@ -1,12 +1,18 @@
 package controllers;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
@@ -36,6 +42,7 @@ public class ServiceRepresentativeController implements Initializable {
 	private Button btnLogout;
 
 	private static String firstName;
+	private static boolean status;
 
 	@FXML
 	private JFXTextField txtId;
@@ -55,38 +62,65 @@ public class ServiceRepresentativeController implements Initializable {
 	@FXML
 	private JFXCheckBox cbCreditCard;
 
+	
+    @FXML
+    private JFXTextField txtCardNumber;
+    @FXML
+    private JFXComboBox<?> cbxExpiryMonth;
+    @FXML
+    private JFXComboBox<?> cbxExpiryYear;
+    @FXML
+    private JFXTextField txtHolderName;
+    @FXML
+    private JFXTextField txtCVV;
+    @FXML
+    private Button btnSave;
+
+    
+
+    
 	@FXML
+	//add a new groupMember to the db
 	void addMember(ActionEvent event) {
 
 		String id = txtId.getText();
 		String firstName = txtFirstName.getText();
 		String lastName = txtLastName.getText();
-		;
+		//String groupMemberAmount=txtGroupMembersAmount.getText();
+		String groupMemberAmount="5";
 		String email = txtEmail.getText();
 		String phoneNumber = txtPhoneNumber.getText();
 
-		if (id.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || firstName.isEmpty())
+		//txtGroupMembersAmount.setEditable(cbGuideMember.isSelected());
+		
+		if (id.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() 
+				|| firstName.isEmpty()|| !cbGuideMember.isSelected())
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 
-		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput())
+		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput()&&validEmailInput())
+		{
 
-			if (!(txtEmail.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")))
-				alert.setAlert("The filed has to be in this pattern foobar@gmail.com.");
-
-		// single member
-		// if(!cbFamilyMember.isSelected()&&!cbGuideMember.isSelected())
-		// membership= new Member(id,firstName,lastName,email,phoneNumber,'1',)
-
-		// newMember = new Member(getParkName(), dateAndTimeFormat, memberId, id,
-		// Integer.parseInt(txtRandomVisitorsAmount.getText()));
-		// check the random visitor type and calculate the price
-		// Query
-		// ArrayList<Object> = new ArrayList<Object>();
-		// msg.add("newMembershipInsert");
-		// Data fields
-		// msg.add(newMember);
-		// set up all the order details and the payment method
-		// ClientUI.sentToChatClient(msg);
+			//	if(txtGroupMembersAmount.getText().matches("[0-9]+") && Integer.parseInt(groupMemberAmount)<=15
+					//	&&Integer.parseInt(groupMemberAmount)>0)
+				// alert.setAlert("You need to choose amount between 1-15.");
+				
+			
+				Member newMember = new Member(id,firstName,lastName,null,phoneNumber,email,null,groupMemberAmount);
+			 	// check the random visitor type and calculate the price
+				// Query
+				ArrayList<Object> msg = new ArrayList<Object>();
+				msg.add("newMembershipInsert");
+				// Data fields
+				msg.add(newMember);
+				// set up all the order details and the payment method
+				ClientUI.sentToChatClient(msg);
+				
+				if(getStatus())
+					alert.successAlert("Succesful", "A member add succesfuly");
+				else alert.setAlert("Failed to add your member.");
+				
+		}
+		
 	}
 
 	@FXML
@@ -105,12 +139,13 @@ public class ServiceRepresentativeController implements Initializable {
 				cbCreditCard.setSelected(false);
 			}
 		});
+		
 	}
-
+   
 	// check valid input for first and last name
 	public boolean validFirstLastNameInput() {
 
-		if (txtFirstName.getText().length() < 2 || txtLastName.getText().length() < 2) {
+		if (txtFirstName.getText().length() < 3 || txtLastName.getText().length() < 3) {
 			alert.setAlert("A name must have at least 2 letters.");
 			return false;
 		}
@@ -139,6 +174,19 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
+	
+
+	// check valid input for email
+	public boolean validEmailInput() {
+
+		if (!(txtEmail.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))) 
+			{
+				alert.setAlert("The filed has to be in this pattern foobar@gmail.com.");
+				return false;
+			}
+		return true;
+	}
+
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -160,7 +208,8 @@ public class ServiceRepresentativeController implements Initializable {
 		// TODO Auto-generated method stub
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
-
+		
+		
 		// force the field to be numeric only
 		txtId.textProperty().addListener((obs, oldValue, newValue) -> {
 
@@ -217,7 +266,22 @@ public class ServiceRepresentativeController implements Initializable {
 
 			}
 		});
+		
+	}
+	public static boolean getStatus() {
+		return status;
+	}
 
+	public static void setStatuss(boolean status) {
+		ServiceRepresentativeController.status = status;
+	}
+	
+	public static void receivedFromServerAddMemberStatus(boolean status) {
+		if (status) {
+			setStatuss(status);//status=true
+		} else {
+			setStatuss(status);//status=false
+		}
 	}
 
 }
