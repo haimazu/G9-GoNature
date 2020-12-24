@@ -143,7 +143,7 @@ public class ParkEmployeeController implements Initializable {
 		int id = getOrderNumberFromBarcodeByID();
 		int memberId = getOrderNumberFromBarcodeByMemberId();
 
-		sendToServer("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(String.valueOf(memberId))));
+		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(String.valueOf(memberId))));
 
 		if (getError().equals("No such order")) {
 			alert.failedAlert("Failed", "No such order.");
@@ -185,7 +185,7 @@ public class ParkEmployeeController implements Initializable {
 
 		// will not enter if already has information from the barcodeScan
 		if (!informationExists) {
-			sendToServer("ordersByOrderNumber", new ArrayList<String>(Arrays.asList(txtOrderNumber.getText())));
+			sendToServerArrayList("ordersByOrderNumber", new ArrayList<String>(Arrays.asList(txtOrderNumber.getText())));
 
 			if (getError().equals("No such order")) {
 				alert.failedAlert("Failed", "No such order.");
@@ -206,12 +206,15 @@ public class ParkEmployeeController implements Initializable {
 		setPrice();
 
 		informationExists = false;
+		btnApprove.setDisable(false);
 	}
 
 	// input: none
 	// output: number of visitor/s that enter / leave the park
 	@FXML
 	void approve(ActionEvent event) {
+		// update park status
+		updateParkStatus(0);
 		
 		// checking for places in the park
 		if (!getError().equals("Full")) {
@@ -224,7 +227,7 @@ public class ParkEmployeeController implements Initializable {
 					/*** Enter ***/
 					if (radVisitorStatusText.equals("Enter")) {
 						execRandomVisitor(Integer.parseInt(txtRandomVisitorsAmount.getText()));
-					/*** Enter ***/
+					/*** Exit ***/
 					} else {
 						execExit();
 					}
@@ -269,16 +272,10 @@ public class ParkEmployeeController implements Initializable {
 				}
 			}
 		} else {
-			alert.failedAlert("Failed", "We're sorry, the park is full.\nPlease try again later.");
-			return;
-		}
-		
-		// update park status
-		updateParkStatus();
-		
-		if (parkDetails.getCurrentAmount() == parkDetails.getMaximumCapacityInPark()) {
 			lblCurrentVisitors.setText("[" + getParkName() + "]: is full right now ");
 			theParkIsOff();
+			alert.failedAlert("Failed", "We're sorry, the park is full.\nPlease try again later.");
+			return;
 		}
 		
 		clearAllFields();
@@ -290,42 +287,44 @@ public class ParkEmployeeController implements Initializable {
 	public void execEnter() {
 		int tooManyVisitors = 0;
 		
-		// get the current status in the park (about the visitors)
-		ArrayList<String> data = new ArrayList<String>();
-		data.add(getParkName());
-		data.add("2");
-		sendToServer("getParkDetails", data);
-		
 		// check if the amount of "visitorsEntered" greater than the invitation.
 		if (Integer.parseInt(txtVisitorsAmount.getText()) > 
 	    	Integer.parseInt(lblVisitorsNumber.getText())) {
 				tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText()) -
 						Integer.parseInt(lblVisitorsNumber.getText());
-//TODO update amount
-			// alert to ensure that the employee didn't get typing wrong
-			alert.ensureAlert("Ensure", "Are you sure you want to approve the purchase?");
-			if (alert.getResult().equals("OK")) {
-				if (!getError().equals("Full")) {
+			
+			// check the available places in the park
+			updateParkStatus(tooManyVisitors);
+			
+			if (!getError().equals("Full")) {
+				// alert to ensure that the employee didn't get typing wrong
+				alert.ensureAlert("Ensure", "Are you sure you want to approve the purchase?\n"
+						+ "You can check if the additional visitors have a membership in the random part,"
+						+ " otherwise they will pay the full price for the entrance to the park.");
+				if (alert.getResult().equals("OK")) {	
+					// update the current visitors in the park after the entry
+					updateCurrentVisitors(tooManyVisitors);
 					// updates the number of visitors who came for a specific order
 					updateAmountArrived();
 					// make an automatic purchase for the additional visitors
-					execRandomVisitor(tooManyVisitors);
-					
-				} else {
-					alert.failedAlert("Failed", "The amount of visitors is greater than the available places in the park.");
-					return;
-				}
+					execRandomVisitor(tooManyVisitors);				
+				} 
+			} else {
+				alert.failedAlert("Failed", "The amount of visitors is greater than the available places in the park.");
+				return;
 			}
-			//TODO update amount
 		// amount of visitors is less than or equal to what is on the order
 		} else {
+			// check the available places in the park
+			updateParkStatus(tooManyVisitors);
+				
 			if (!getError().equals("Full")) {
+				// update the current visitors in the park after the entry
+				updateCurrentVisitors(Integer.parseInt(txtVisitorsAmount.getText()));
 				// updates the number of visitors who came for a specific order
 				updateAmountArrived();		
-				// update current visitors
-				updateCurrentVisitors(Integer.parseInt(txtVisitorsAmount.getText()));
-				
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
+				
 			} else {
 				alert.failedAlert("Failed", "The amount of visitors is greater than the available places in the park.");
 				return;
@@ -387,59 +386,20 @@ public class ParkEmployeeController implements Initializable {
 		// update current visitors
 		updateCurrentVisitors(updateCurrentVisitors);
 	}
-
-	// prints order data
-	// input: order
-	// output: prints the order data 
-	public void printOrderDetails() {
-		// 2021-01-01 08:00:00
-		double discount;
-		String DateAndTime = orderDetails.getArrivedTime();
-		String[] splitDateAndTime = DateAndTime.split(" ");
-		// 2021-01-01
-		String date = splitDateAndTime[0];
-
-		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
-		// iFormatter -> input format
-		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		// oFormatter -> output format
-		DateFormat oFormatter = new SimpleDateFormat("dd-MM-yyyy");
-		try {
-			String strDateTime = oFormatter.format(iFormatter.parse(date));
-
-			// 08:00:00 -> 08:00
-			String time = (String) splitDateAndTime[1].subSequence(0, 5);
-
-			lblOrderNumber.setText(String.valueOf(orderDetails.getOrderNumber()));
-			lblParkName.setText(orderDetails.getParkName());
-			lblDate.setText(strDateTime);
-			lblTime.setText(time);
-			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
-			lblEmail.setText(orderDetails.getOrderEmail());
-
-			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
-			lblPrice.setText(orderDetails.getPrice() + "₪");
-			discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-			lblDiscount.setText(String.format("%.1f", discount) + "%");
-			lblTotalPrice.setText(orderDetails.getTotalPrice() + "₪");
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	// updates prices
 	// input: none
 	// output: prints the latest data for payment
 	public void setPrice() {	
 		Order fakeOrder;
-		String id = "";
-		String memberId = "";
+		String id = null;
+		String memberId = null;
+		String tempDate = dateAndTimeFormat;
 		double discount = 0;
-		double difference = 0;
+		int difference = 0;
 
 		// format time
-		dateAndTimeFormat += roundingTime();
+		tempDate += roundingTime();
 		// after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
 				
 		// case 2 or 4 -> single/family OR group
@@ -451,26 +411,35 @@ public class ParkEmployeeController implements Initializable {
 				memberId = txtIdOrMemberId.getText();
 			}
 		
-			fakeOrder = new Order(getParkName(), dateAndTimeFormat, memberId, id, 
+			fakeOrder = new Order(getParkName(), tempDate, memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
-			// Query
-			ArrayList<Object> msg = new ArrayList<Object>();	
-			msg.add("randomVisitorFakeOrder");
-			// Data fields
-			msg.add(fakeOrder);	
-			// set up all the order details and the payment method
-			ClientUI.sentToChatClient(msg);
 			
+			sendToServerObject("randomVisitorFakeOrder", fakeOrder);
+			
+			lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
 			discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
 			lblDiscount.setText(String.format("%.1f", discount) + "%");	
-			System.out.println(randomVisitorFakeOrderDetails);
+			lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
+			
+		// if added to visitors in the order, making fake order
 		} else {
 			difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
-			
+				
 			if (difference > 0) {
 				double price = difference * parkDetails.getEnteryPrice();
+				// set price
+				lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪ , " 
+							   + String.format("%.1f", price) + "₪");
+				// set discount
+				discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+				lblDiscount.setText(String.format("%.1f", discount) + "% , "
+								  + String.format("%.1f", (double) parkDetails.getMangerDiscount()) + "%");	
+				// set total price
+				double totalPrice = price * (((100 - (double) parkDetails.getMangerDiscount()) / 100));
 				price += orderDetails.getTotalPrice();
-				lblTotalPrice.setText(String.format("%.1f", price) + "₪");	
+				lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪ + " 
+							   + String.format("%.1f", totalPrice) + "₪ = " 
+							   + String.format("%.1f", price) + "₪");
 			}
 		}	
 	}
@@ -560,7 +529,7 @@ public class ParkEmployeeController implements Initializable {
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(String.valueOf(orderDetails.getOrderNumber()));
 		data.add(lblVisitorsNumber.getText());
-		//sendToServer("updateAmountArrived", data);
+		//sendToServerArrayList("updateAmountArrived", data);
 		
 		// check if the update failed and showing alert
 		if (getError().equals("false")) {
@@ -581,7 +550,7 @@ public class ParkEmployeeController implements Initializable {
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(getParkName());
 		data.add(String.valueOf(updateCurrentVisitors));
-		sendToServer("updateCurrentVisitors", data);
+		sendToServerArrayList("updateCurrentVisitors", data);
 		
 		// check if the update failed and showing alert
 		if (getError().equals("false")) {
@@ -590,48 +559,11 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
-	// checking to see if there are any available places in the park 
-	// for the amount of people who want to enter right now
-	// input: amount of visitors
-	// output: if there are available places return true
-	//         otherwise false
-//	public boolean checkFreePlacesInTheGateway() {
-//		int visitorsNumber = 0;
-//		
-//		// random mode
-//		if (!btnRandomVisitor.isVisible()) {
-//			visitorsNumber = parkDetails.getCurrentAmount() + 
-//					Integer.parseInt(txtRandomVisitorsAmount.getText());
-//			if (visitorsNumber <= parkDetails.getMaximumCapacityInPark()) {
-//				return true;
-//			}
-//		// barcode / regular
-//		} else {
-//			visitorsNumber = parkDetails.getCurrentAmount() + 
-//					Integer.parseInt(txtVisitorsAmount.getText());
-//			if (visitorsNumber <= parkDetails.getMaximumCapacityInPark()) {
-//				return true;
-//			}
-//		}
-//		
-//		return false;
-//	}
-
-	// checking the park for available places
-	// input: none
-	// output: if there are available places return true
-	//		   otherwise false
-//	public boolean checkFreePlacesInThePark() {
-//		if (parkDetails.getCurrentAmount() < parkDetails.getMaximumCapacityInPark()) {
-//			return true;
-//		}
-//		return false;
-//	}
-	
 	// input: none
 	// output: update the park title with the current visitors
-	public void updateParkStatus() {
-		sendToServer("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName(), "0")));
+	public void updateParkStatus(int addToEnter) {
+		sendToServerArrayList("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName(), 
+				String.valueOf(addToEnter))));
 
 		if (!getError().equals("Full")) {
 			lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
@@ -643,11 +575,69 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
+	// prints order data
+	// input: order
+	// output: prints the order data 
+	public void printOrderDetails() {
+		// 2021-01-01 08:00:00
+		double discount;
+		String DateAndTime = orderDetails.getArrivedTime();
+		String[] splitDateAndTime = DateAndTime.split(" ");
+		// 2021-01-01
+		String date = splitDateAndTime[0];
+
+		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
+		// iFormatter -> input format
+		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		// oFormatter -> output format
+		DateFormat oFormatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			String strDateTime = oFormatter.format(iFormatter.parse(date));
+
+			// 08:00:00 -> 08:00
+			String time = (String) splitDateAndTime[1].subSequence(0, 5);
+
+			lblOrderNumber.setText(String.valueOf(orderDetails.getOrderNumber()));
+			lblParkName.setText(orderDetails.getParkName());
+			lblDate.setText(strDateTime);
+			lblTime.setText(time);
+			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
+			lblEmail.setText(orderDetails.getOrderEmail());
+
+			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
+			lblPrice.setText(orderDetails.getPrice() + "₪");
+			discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+			lblDiscount.setText(String.format("%.1f", discount) + "%");
+			lblTotalPrice.setText(orderDetails.getTotalPrice() + "₪");
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// String type, the case we dealing with
+	// Object obj, sending to the server to get data
+	// input: object
+	// output: none
+	public void sendToServerObject(String type, Object obj) {
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+			
+		msg.add(type);
+		// Data fields
+		if (obj instanceof Order) {
+			msg.add((Order) obj);			
+		}
+			
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
+	}
+	
 	// String type, the case we dealing with
 	// ArrayList<String> dbColumns, sending to the server to get data
 	// input: cells, depending on the case
 	// output: none
-	public void sendToServer(String type, ArrayList<String> dbColumns) {
+	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		
@@ -826,7 +816,7 @@ public class ParkEmployeeController implements Initializable {
 		
 		//setParkName(LoginController.getParkName());
 		setParkName("jurasic");
-		updateParkStatus();
+		updateParkStatus(0);
 		
 		/***** Random *****/
 		LocalDateTime arrivelDate = LocalDateTime.now();
@@ -840,7 +830,6 @@ public class ParkEmployeeController implements Initializable {
 		/***** Barcode / Regular *****/
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
-			btnApprove.setDisable(false);
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.matches("\\d")) {
@@ -850,14 +839,12 @@ public class ParkEmployeeController implements Initializable {
 		});
 
 		// force the field to be numeric only
-		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
-			btnApprove.setDisable(false);		
+		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {	
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
-				lblVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
 
