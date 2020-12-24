@@ -104,8 +104,8 @@ public class WelcomeController implements Initializable {
 //				}
 //			}
 //			System.out.println("after2");
-			if(!arrivalTimePassed())
-				alert.setAlert("It is not possible to manage an order with a time that already passed !");
+		//	if(!arrivalTimePassed())
+			//	alert.setAlert("It is not possible to manage an order with a time that already passed !");
 			if (orderDetails == null) {
 				alert.setAlert("Failed, No such order.");
 				btnOrderNumber.setVisible(true);
@@ -153,6 +153,8 @@ public class WelcomeController implements Initializable {
 		parkNamesArr.add("orderParksNameList");
 		ClientUI.sentToChatClient(parkNamesArr);
 	}
+	
+	////////NOT WORKING!!!!/////
 //	public boolean arrivalTimePassed() throws ParseException
 //	{
 //		LocalDateTime arrivelDate = LocalDateTime.now();
