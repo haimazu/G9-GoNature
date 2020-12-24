@@ -56,7 +56,7 @@ public class UpdateVisitorsNumber {
 	// cell [1]: currentVisitoreAmount ,ConnectionToClient
 	// updates the ParkCurrentVisitors in Park table
 	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] T/F if update succeeded
+	// cell[1] T if update succeeded, F if not, Full if we can add more visitors
 	@SuppressWarnings("unchecked")
 	public static void updateParkCurrentVisitors(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
