@@ -1,22 +1,23 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import dataLayer.EmailMessege;
+import dataLayer.Messege;
+import dataLayer.SmsMessege;
 import orderData.Order;
 
 public class WaitListSingelton {
 
 	// singleton WaitListSingelton
 	private static WaitListSingelton obj;
-	private static ArrayList<String> sent;
-	//private static TIME whenchaecked;
 
 	private WaitListSingelton() {
-		sent = new ArrayList<String>();
 		// on start up do this
 	}
 
-	public static WaitListSingelton getCounter() {
+	public static WaitListSingelton getWaitlist() {
 		if (obj == null) {
 			if (obj == null) {
 				obj = new WaitListSingelton();// instance will be created at request time
@@ -25,11 +26,14 @@ public class WaitListSingelton {
 		return obj;
 	}
 
-	public static void oneHourChance(Order order) {
-		// check if exist
-		// Make a SET!!!
-		// add both orderNumber and time listed to the set
-		sent.add("" + order.getOrderNumber());
+	//input: order that is pulled from the waitlist
+	//output: none
+	//send to client: SMS and Mail notification
+	public static void sendWaitlistNotification(Order order) {
+		String msg = "WaitlistNotification";
+		SmsMessege waitlistSms = new SmsMessege(order.getOrderPhone(), msg, order);
+		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), msg, order);
+		// send mail and sms notification                 
 	}
 	
 	public static void CheckTheWaitList() {
@@ -40,26 +44,47 @@ public class WaitListSingelton {
 		// remove from sent
 	}
 
-	public static void confirmWaitlistMailOrSMS(int orderNum) {
-		ArrayList<Object> stubForOrder = new ArrayList<Object>();
-
-		ArrayList<ArrayList<String>> orderCluster = ExistingOrderCheck.fechOrder(stubForOrder, "waitinglist",
-				"waitlistID");
-		if (orderCluster.isEmpty()) {// not in waiting list
-		} else {
-			// MAKE A SET!!
-			// search by order number the order
-			// if found check the time listed
-			// if timeNow is less then onehour from timeListed than keep its order and send
-			// confemation mail
-			// else if more than one hour delete the order from the DB send were sorry mail
-			// remvoe from waitlist
-			// remove from sent
-			// maybe call for next one in line
-			Order orderConfirm = new Order(orderCluster.get(0));
-
-			System.out.println("you snooze you lose!");
+	//input: Email messege replay
+	//output: none
+	public static void replayFromMail(EmailMessege msg) {
+		Date sent = msg.getRepliedTo().getSentTime();
+		Date recived = msg.getSentTime();
+		if (lessThanOneHour(sent,recived)) {
+			//ok
 		}
+		else {
+			//not ok
+		}
+	}
+	
+	//input: Sms messege replay
+	//output: none
+	public static void replayFromSms(SmsMessege msg) {
+		Date sent = msg.getRepliedTo().getSentTime();
+		Date recived = msg.getSentTime();
+		if (lessThanOneHour(sent,recived)) {
+			//ok
+		}
+		else {
+			//not ok
+		}
+	}
+	
+	//input: date sent and date recived
+	//output: true if less the one hour has passed flase if not
+	private static boolean lessThanOneHour(Date sent, Date recived) {
+		Date limit = new Date(sent.getTime() + 60*60*1000);
+		if (limit.compareTo(recived) >= 0)
+			return true;
+		return false;
+	}
+	
+	private static void confirmWaitlistNotification(Order order) {
+		//at that point we know than less than one hour has passed
+		//
+		//
+			System.out.println("you snooze you lose!");
+		
 	}
 
 	// TODO: decide if the client can ask that directly
