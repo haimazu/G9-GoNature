@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -201,7 +202,6 @@ public class ParkEmployeeController implements Initializable {
 		}
 
 		printOrderDetails();
-		/****** calculate discount ******/
 		setPrice();
 
 		informationExists = false;
@@ -277,7 +277,7 @@ public class ParkEmployeeController implements Initializable {
 			// checking for places in the park
 			if (getError().equals("Free")) {
 				// update current visitors
-				updateCurrentVisitors(updateCurrentVisitors);
+				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
 				alert.successAlert("Success", 
 						Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
 						+ String.valueOf(visitorsAmount) + " casual visitor/s, entered.");
@@ -287,7 +287,7 @@ public class ParkEmployeeController implements Initializable {
 			// checking for places in the park
 			if (getError().equals("Free")) {
 				// update current visitors
-				updateCurrentVisitors(updateCurrentVisitors);
+				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
 				alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");	
 			}
 		}		
@@ -347,7 +347,8 @@ public class ParkEmployeeController implements Initializable {
 					// updates the number of visitors who came for a specific order
 					updateAmountArrived(Integer.parseInt(txtVisitorsAmount.getText()));	
 					// update current visitors
-					updateCurrentVisitors(Integer.parseInt(txtVisitorsAmount.getText()));	
+					updateCurrentVisitors(parkDetails.getCurrentAmount() + 
+										  Integer.parseInt(txtVisitorsAmount.getText()));	
 					alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");	
 				}
 			}
@@ -424,13 +425,22 @@ public class ParkEmployeeController implements Initializable {
 		}	
 	}
 	
+	// updates prices for ordered visitors
+	// input: none
+	// output: prints the latest data for payment
 	public void setPriceForOrdering() {
 		int difference = 0;
 		double discount = 0;
+		double price = 0;
+		double totalPrice = 0;
 		
 		difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
-		double price = difference * parkDetails.getEnteryPrice();
-		double totalPrice = price * (((100 - (double) parkDetails.getMangerDiscount()) / 100));	
+		if (difference <= 0) {
+			price = Integer.parseInt(txtVisitorsAmount.getText()) * parkDetails.getEnteryPrice();
+		} else {
+			price = difference * parkDetails.getEnteryPrice();
+		}
+		totalPrice = price * (((100 - (double) parkDetails.getMangerDiscount()) / 100));	
 		
 		if (difference > 0) {
 			discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
@@ -539,7 +549,7 @@ public class ParkEmployeeController implements Initializable {
 				return true;
 			}
 		} else if (arrivelHour == 16) {
-			if (currentHour >= 16 && currentHour < 20) {
+			if (currentHour >= 16 && currentHour < 22) {
 				return true;
 			}
 		}
@@ -577,7 +587,7 @@ public class ParkEmployeeController implements Initializable {
 		//                                                false, otherwise
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(getParkName());
-		data.add(String.valueOf(parkDetails.getCurrentAmount() + updateCurrentVisitors));
+		data.add(String.valueOf(updateCurrentVisitors));
 		sendToServerArrayList("updateCurrentVisitors", data);
 		
 		// check if the update failed and showing alert
@@ -596,6 +606,8 @@ public class ParkEmployeeController implements Initializable {
 		// the park is empty
 		if (parkDetails.getCurrentAmount() == 0) {
 			theParkIsFullOrEmpty("Empty");
+		} else {
+			radExit.setDisable(false);
 		}
 		
 		// the park is full
@@ -651,11 +663,13 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			lblEmail.setText(orderDetails.getOrderEmail());
 
-			lblVisitorsAmount.setText(txtVisitorsAmount.getText());
-			lblPrice.setText(orderDetails.getPrice() + "₪");
-			discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-			lblDiscount.setText(String.format("%.1f", discount) + "%");
-			lblTotalPrice.setText(orderDetails.getTotalPrice() + "₪");
+			if (radVisitorStatusText.equals("Enter")) {
+				lblVisitorsAmount.setText(txtVisitorsAmount.getText());
+				lblPrice.setText(orderDetails.getPrice() + "₪");
+				discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+				lblDiscount.setText(String.format("%.1f", discount) + "%");
+				lblTotalPrice.setText(orderDetails.getTotalPrice() + "₪");
+			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -846,12 +860,12 @@ public class ParkEmployeeController implements Initializable {
 		txtOrderNumber.clear();
 		lblOrderNumber.setText("");
 		txtVisitorsAmount.clear();
-		lblVisitorsAmount.setText("");
 		lblParkName.setText("");
 		lblDate.setText("");
 		lblTime.setText("");
 		lblVisitorsNumber.setText("");
 		lblEmail.setText("");
+		lblVisitorsAmount.setText("");
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
@@ -877,6 +891,16 @@ public class ParkEmployeeController implements Initializable {
 		lblTime.setText("");
 		lblVisitorsNumber.setText("");
 		lblEmail.setText("");
+		lblVisitorsAmount.setText("");
+		lblPrice.setText("");
+		lblDiscount.setText("");
+		lblTotalPrice.setText("");
+	}
+	
+	// turns off payment mode (on exit)
+	// input: none
+	// output: screen changes
+	public void clearPaymentFields() {
 		lblVisitorsAmount.setText("");
 		lblPrice.setText("");
 		lblDiscount.setText("");
@@ -913,7 +937,7 @@ public class ParkEmployeeController implements Initializable {
 				txtOrderNumber.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
-
+		
 		// force the field to be numeric only
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {	
 			// \\d -> only digits
@@ -960,6 +984,7 @@ public class ParkEmployeeController implements Initializable {
 			if (newToggle == radEnter) {
 				radVisitorStatusText = ((RadioButton) radGroupStatus.getSelectedToggle()).getText();
 			} else if (newToggle == radExit) {
+				clearPaymentFields();
 				radVisitorStatusText = ((RadioButton) radGroupStatus.getSelectedToggle()).getText();
 			}
 		});
