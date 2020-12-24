@@ -155,13 +155,12 @@ public class ManageOrderController implements Initializable {
 
 	/*
 	 * input : non output : non send to server : Array list of objects : [0]->
-	 * string for server : editOrder , [1]-> updated order object , [2]-> old order
-	 * object
+	 * string for server : editOrder , [1]-> updated order object , [2]-> old order object
 	 */
 	@FXML
 	void update(ActionEvent event) {
 		Order sentOrder = new Order(order); // maybe a pointer ???
-		if (checkNotEmptyVisitorsField() && checkCurrentTime()) {
+		if (checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
 			//System.out.println(timeString[0]);
 			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " 0"
@@ -228,18 +227,7 @@ public class ManageOrderController implements Initializable {
 		}
 		return true;
 	}
-	/*
-	 * Check that the user didn't leave field empty
-	 */
 
-	public boolean checkNotEmptyVisitorsField() { // check not 0, chek not 999 etc.
-		String visitorsNumber = txtVisitorsNumber.getText();
-		if (visitorsNumber.isEmpty()) {
-			alert.setAlert("Cannot leave 'Visitors Amount' field empty");
-			return false;
-		}
-		return true;
-	}
 
 	public static void canceledOrderFromServer(boolean returned) {
 		canceled=returned;
