@@ -39,6 +39,11 @@ public class WaitListSingelton {
 		// send mail and sms notification
 	}
 	
+	
+	//input: none
+	//output: none
+	//DB: delete (if found) expierd orders listed in pending (more than 1 hour)
+	//NOTE: the timeLastChecked mehanizem make sure that this function run not more than once per minute (to not overload the server and DB eah time)
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
 		Date LastPlusMinute = new Date(timeLastChecked.getTime()+60*1000);
@@ -65,10 +70,8 @@ public class WaitListSingelton {
 			
 			//send were sorry mail
 			
-		}else //if last check was less than minute ago dont check
-			return;
-		
-
+		} //if last check was less than minute ago dont check
+			
 	}
 	
 	//input: date sent and date recived
@@ -82,6 +85,7 @@ public class WaitListSingelton {
 
 	//input: Email messege replay
 	//output: none
+	//DB: if replay was made less than 1 hour from when sent remove from pending list
 	public static void replayFromMail(EmailMessege msg) {
 		Date sent = msg.getRepliedTo().getSentTime();
 		Date recived = msg.getSentTime();
@@ -89,13 +93,12 @@ public class WaitListSingelton {
 			removePending(msg.getOrder());
 			//notify ok
 		}
-		else {
-			//notify not ok
-		}
+		//else part taking care by CheckTheWaitList()
 	}
 	
 	//input: Sms messege replay
 	//output: none
+	//DB: if replay was made less than 1 hour from when sent remove from pending list
 	public static void replayFromSms(SmsMessege msg) {
 		Date sent = msg.getRepliedTo().getSentTime();
 		Date recived = msg.getSentTime();
@@ -103,13 +106,12 @@ public class WaitListSingelton {
 			removePending(msg.getOrder());
 			//notify ok
 		}
-		else {
-			//notify not ok
-		}
+		//else part taking care by CheckTheWaitList()
 	}
 
 	// input: order class of the order to cancel
 	// output: true if found the order on the waitlist and removed it, false if not.
+	// DB: delete the waitlist entry of that order if found
 	public static boolean CancelWaitlist(Order recived) {
 		int orderNum = recived.getOrderNumber();
 		ArrayList<String> query = new ArrayList<String>();
@@ -124,7 +126,7 @@ public class WaitListSingelton {
 	
 	// input: Order to delete from the DB
 	// output: true if found the order on the waitlist and removed it, false if not.
-	// send to DB: order to remove
+	// send to DB: order to remove from pending
 	private static boolean removePending(Order order) {
 		int orderNum = order.getOrderNumber();
 		ArrayList<String> query = new ArrayList<String>();
@@ -150,8 +152,7 @@ public class WaitListSingelton {
 	
 	
 	//input: Order to insert into the DB
-	//output: true if sussesful false if not
-	//send to DB: new order to list in pending
+	//output: Array list of array list of strings that contains the expired entrys in pending (more than 1 hour)
 	private static ArrayList<ArrayList<String>> selectExpiredPending() {
 	ArrayList<String> query = new ArrayList<String>();
 	query.add("select"); // command
