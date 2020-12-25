@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 
+import client.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +51,7 @@ public class WaitingListController implements Initializable {
 		return Dates;
 	}
 
-	public static void setTime(ArrayList<String> time) {
+	public static void setDates(ArrayList<String> time) {
 		WaitingListController.Dates = time;
 	}
 
@@ -141,27 +142,25 @@ public class WaitingListController implements Initializable {
 			if (places[i] != -1)
 				Dates.remove(i);
 		}
-		System.out.println(Dates.toString());
 	}
 
 	public void setTimeWithSpecificDate(String date) {
-		ArrayList<String> timeTmp = time;
+		ArrayList<String> timeTmp = new ArrayList<>(time);
+		System.out.println(time);
 		for (String str : Dates) {
 			String[] TimesDates = getDate(str, "all");
 			if (TimesDates[0].equals(date)) {
-				System.out.println("hello: "+ TimesDates[0] + " " + date);
 				for (String start : timeTmp) {
 					String[] arr = start.split("-");
 					String  [] specificArrTime = arr[0].split(":");
 					String [] specificArrDate = TimesDates[1].split(":");
-					System.out.println(specificArrDate[0] + " " +specificArrTime[0] );
 					if (specificArrDate[0].equals(specificArrTime[0])) {
 						timeTmp.remove(start);
 					}
 				}
 			}
 		}
-		System.out.println(timeTmp);
+		System.out.println("look: "+ time);
 		cbxArrivelTime.setDisable(false);
 		cbxArrivelTime.setItems(FXCollections.observableArrayList(timeTmp));
 	}
@@ -181,7 +180,11 @@ public class WaitingListController implements Initializable {
 	@FXML
 	void check(ActionEvent event) {
 		
+		
 	}
+	
+	
+	
 
 	@FXML
 	void here(ActionEvent event) throws IOException {
@@ -197,7 +200,7 @@ public class WaitingListController implements Initializable {
 	}
 
 	public static void getListDatesServer(ArrayList<String> arr) {
-		setTime(arr);
+		setDates(arr);
 	}
 
 	@Override
@@ -206,7 +209,6 @@ public class WaitingListController implements Initializable {
 		this.time.add("8:00 - 12:00");
 		this.time.add("12:00 - 16:00");
 		this.time.add("16:00 - 20:00");
-		//cbxArrivelTime.setItems(FXCollections.observableArrayList(time));
 		cbxArrivelTime.setDisable(true);
 
 		Dates.add("2020-12-30 08:00:00");
@@ -217,11 +219,14 @@ public class WaitingListController implements Initializable {
 		Dates.add("2021-01-30 08:00:00");
 		Dates.add("2021-01-30 12:00:00");
 		Dates.add("2021-01-30 16:00:00");
+		
+		ArrayList<Object> sendServer = new ArrayList<>();
+		sendServer.add("WaitingListController");
+		sendServer.add(OrderController.getOrder());
+		//ClientUI.sentToChatClient(sendServer);
+		
 		setArrForDatePicker();
-
-		nonReleventDatesForCalender(this.nonReleventDates);
 		setArrForTime();
-
 	}
 
 }
