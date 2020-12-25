@@ -78,6 +78,9 @@ public class ChatClient extends AbstractClient {
 			case "randomVisitorFakeOrder":
 				ParkEmployeeController.receivedFromServerVisitorsPrice((Object)received.get(1));
 				break;
+			case "addFakeOrder":
+				ParkEmployeeController.receivedFromServerAddFakeOrder((boolean)received.get(1));
+				break;
 			case "order":
 				OrderController.recivedFromServer((Object)received.get(1));
 				break;

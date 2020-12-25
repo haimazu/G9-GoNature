@@ -117,7 +117,7 @@ public class ParkEmployeeController implements Initializable {
 
 	private AlertController alert = new AlertController();
 	private boolean informationExists = false;
-	private String radVisitorStatusText;
+	private String timeFormat = "";
 	private String dateAndTimeFormat = "";
 	private static String firstName;
 	private static String parkName;
@@ -182,6 +182,9 @@ public class ParkEmployeeController implements Initializable {
 		if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
 			alert.failedAlert("Failed", "All fields required.");
 			return;
+		} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
+			alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
+			return;
 		}
 
 		// will not enter if already has information from the barcodeScan
@@ -203,6 +206,10 @@ public class ParkEmployeeController implements Initializable {
 
 		printOrderDetails();
 		setPrice();
+		
+		if (radExit.isSelected()) {
+			clearPaymentFields();
+		}
 
 		informationExists = false;
 		btnApprove.setDisable(false);
@@ -218,9 +225,12 @@ public class ParkEmployeeController implements Initializable {
 			if (txtIdOrMemberId.getText().isEmpty() || txtRandomVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "All fields required.");
 				return;
+			} else if (txtRandomVisitorsAmount.getText().charAt(0) == '0') {
+				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
+				return;
 			} else {
 				/*** Enter ***/
-				if (radVisitorStatusText.equals("Enter")) {
+				if (radEnter.isSelected()) {
 					execRandomVisitor(Integer.parseInt(txtRandomVisitorsAmount.getText()));
 				/*** Exit ***/
 				} else {
@@ -231,6 +241,9 @@ public class ParkEmployeeController implements Initializable {
 		} else {
 			if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "All fields required.");
+				return;
+			} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
+				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			}
 				
@@ -244,7 +257,7 @@ public class ParkEmployeeController implements Initializable {
 			// check date and time
 			if (checkDate() && checkTime()) {
 				/*** Enter ***/
-				if (radVisitorStatusText.equals("Enter")) {		
+				if (radEnter.isSelected()) {		
 					execEnter();	
 				/*** Exit ***/
 				} else {
@@ -282,7 +295,7 @@ public class ParkEmployeeController implements Initializable {
 						Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
 						+ String.valueOf(visitorsAmount) + " casual visitor/s, entered.");
 			}
-		// in case without order
+		// in case without order (only random visitors)
 		} else {
 			// checking for places in the park
 			if (getError().equals("Free")) {
@@ -397,7 +410,8 @@ public class ParkEmployeeController implements Initializable {
 		double discount = 0;
 
 		// format time
-		tempDate += roundingTime();
+		checkTime();
+		tempDate += timeFormat;
 		// after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
 				
 		// case 2 or 4 -> single/family OR group
@@ -412,7 +426,10 @@ public class ParkEmployeeController implements Initializable {
 			fakeOrder = new Order(getParkName(), tempDate, memberId, id, 
 					Integer.parseInt(txtRandomVisitorsAmount.getText()));
 			
+			// check for a member with fake order
 			sendToServerObject("randomVisitorFakeOrder", fakeOrder);
+			// create new order for the random visitors
+			sendToServerObject("confirmOrder", fakeOrder);
 			
 			lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
 			discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
@@ -481,26 +498,6 @@ public class ParkEmployeeController implements Initializable {
 		// set total price
 		lblTotalPrice.setText(String.format("%.1f", totalPrice) + "₪");
 	}
-	
-	// takes the current time and adjusts it to the system
-	// input: 'today's time' 
-	// output: return String -> with the appropriate time for the system
-	public String roundingTime() {
-		LocalDateTime arrivelTime = LocalDateTime.now();
-		// currentHour = hh
-		int currentHour = arrivelTime.getHour();
-		
-		// currentHour = 08:00 | 12:00 | 16:00
-		if (currentHour >= 8 && currentHour < 12) {
-			return " 08:00:00";
-		} else if (currentHour >= 12 && currentHour < 16) {
-				return " 12:00:00";
-		} else if (currentHour >= 16 && currentHour < 20) {
-				return " 16:00:00";
-		}
-
-		return "";
-	}
 
 	// check for valid date in the order
 	// input: [0] 'today's date' 
@@ -528,30 +525,43 @@ public class ParkEmployeeController implements Initializable {
 	// output: return true if the visitor arrived at the right hours
 	//         otherwise false
 	public boolean checkTime() {
+		timeFormat = "";
+		int arrivelHour;
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		// currentHour = hh
 		int currentHour = arrivelTime.getHour();
 		// startTime = hh:mm
-		String startTime = lblTime.getText();
-		String[] splitStartTime = startTime.split(":");
-		// stringArrivelHour = hh
-		String stringArrivelHour = splitStartTime[0];
-		int arrivelHour = Integer.parseInt(stringArrivelHour);
+		if (!lblTime.getText().isEmpty()) {
+			String startTime = lblTime.getText();
+			String[] splitStartTime = startTime.split(":");
+			// stringArrivelHour = hh
+			String stringArrivelHour = splitStartTime[0];
+			arrivelHour = Integer.parseInt(stringArrivelHour);
+		} else {
+			arrivelHour = 0;
+		}
 
 		// currentHour = 08:00 | 12:00 | 16:00
 		// arrivelHour = 08:00 - 12:00 | 12:00 - 16:00 | 16:00 - 20:00
-		if (arrivelHour == 8) {
-			if (currentHour >= 8 && currentHour < 12) {
+		if (currentHour >= 8 && currentHour < 12) {
+			timeFormat = " 08:00:00";
+			if (arrivelHour == 8) {
 				return true;
 			}
-		} else if (arrivelHour == 12) {
-			if (currentHour >= 12 && currentHour < 16) {
+		} else if (currentHour >= 12 && currentHour < 16) {
+			timeFormat = " 12:00:00";
+			if (arrivelHour == 12) {
 				return true;
 			}
-		} else if (arrivelHour == 16) {
-			if (currentHour >= 16 && currentHour < 22) {
+		} else if (currentHour >= 16 && currentHour < 20) {
+			timeFormat = " 16:00:00";
+			if (arrivelHour == 16) {
 				return true;
 			}
+		}
+		
+		if (arrivelHour == 0) {
+			return false;
 		}
 
 		alert.failedAlert("Failed", "Arrival time doesn't match the time on order.");
@@ -617,13 +627,13 @@ public class ParkEmployeeController implements Initializable {
 		} 
 		
 		// too many visitors (check after enter)
-		if (getError().equals("Greater") && radVisitorStatusText.equals("Enter")) {
+		if (getError().equals("Greater") && radEnter.isSelected()) {
 			alert.failedAlert("Failed", "The amount of visitors is greater than the number existing in the park.");
 			return;
 		} 
 		
 		// too few visitors (check after exit)
-		if (getError().equals("Lower") && radVisitorStatusText.equals("Exit")) {
+		if (getError().equals("Lower") && radExit.isSelected()) {
 			alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
 			return;
 		} 
@@ -663,7 +673,7 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			lblEmail.setText(orderDetails.getOrderEmail());
 
-			if (radVisitorStatusText.equals("Enter")) {
+			if (radEnter.isSelected()) {
 				lblVisitorsAmount.setText(txtVisitorsAmount.getText());
 				lblPrice.setText(orderDetails.getPrice() + "₪");
 				discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
@@ -682,14 +692,12 @@ public class ParkEmployeeController implements Initializable {
 	// output: none
 	public void sendToServerObject(String type, Object obj) {
 		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();
-			
+		ArrayList<Object> msg = new ArrayList<Object>();		
 		msg.add(type);
 		// Data fields
 		if (obj instanceof Order) {
 			msg.add((Order) obj);			
-		}
-		
+		}	
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
 	}
@@ -753,7 +761,7 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 
-	// getting information from the server
+	// acceptance status 'CurrentVisitorsUpdate'
 	// input: boolean status
 	// output: set error message with the following return
 	public static void receivedFromServerCurrentVisitorsUpdateStatus(boolean status) {
@@ -764,10 +772,21 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
-	// getting information from the server
+	// acceptance status 'amountArrived'
 	// input: boolean status
 	// output: set error message with the following return
 	public static void receivedFromServerAmountArrivedStatus(boolean status) {
+		if (status) {
+			setError("true");
+		} else {
+			setError("false");
+		}
+	}
+	
+	// acceptance status 'add order'
+	// input: boolean status
+	// output: set error message with the following return
+	public static void receivedFromServerAddFakeOrder(boolean status) {
 		if (status) {
 			setError("true");
 		} else {
@@ -912,7 +931,6 @@ public class ParkEmployeeController implements Initializable {
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
 		setRandomModeOff();
-		radVisitorStatusText = "Enter";
 		
 		//setParkName(LoginController.getParkName());
 		setParkName("jurasic");
@@ -952,9 +970,9 @@ public class ParkEmployeeController implements Initializable {
 		// force the field to be numeric only
 		txtRandomVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
-			lblVisitorsAmount.setText(newValue);
 			
-			if (!newValue.isEmpty()) {
+			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
+				lblVisitorsAmount.setText(newValue);
 				// update prices
 				setPrice();
 			}
@@ -963,7 +981,6 @@ public class ParkEmployeeController implements Initializable {
 			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtRandomVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
-				lblVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
 		
@@ -982,10 +999,10 @@ public class ParkEmployeeController implements Initializable {
 		// listen to changes in selected toggle
 		radGroupStatus.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
 			if (newToggle == radEnter) {
-				radVisitorStatusText = ((RadioButton) radGroupStatus.getSelectedToggle()).getText();
+				((RadioButton) radGroupStatus.getSelectedToggle()).getText();
 			} else if (newToggle == radExit) {
 				clearPaymentFields();
-				radVisitorStatusText = ((RadioButton) radGroupStatus.getSelectedToggle()).getText();
+				((RadioButton) radGroupStatus.getSelectedToggle()).getText();
 			}
 		});
 	}
