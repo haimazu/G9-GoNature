@@ -78,6 +78,9 @@ public class ChatClient extends AbstractClient {
 			case "randomVisitorFakeOrder":
 				ParkEmployeeController.receivedFromServerVisitorsPrice((Object)received.get(1));
 				break;
+			case "addFakeOrder":
+				ParkEmployeeController.receivedFromServerAddFakeOrder((boolean)received.get(1));
+				break;
 			case "order":
 				OrderController.recivedFromServer((Object)received.get(1));
 				break;
@@ -94,11 +97,13 @@ public class ChatClient extends AbstractClient {
 				ManageOrderController.canceledOrderFromServer((boolean)received.get(1));
 				break;
 			case "enterTheWaitList":
-				System.out.println("im here chetclient 96");
 				WaitingListConfirmContoller.recivedfromWaitListServer((Object)received.get(1));
 				break;
 			case "newMembershipInsert":
 				ServiceRepresentativeController.receivedFromServerAddMemberStatus((boolean)received.get(1));
+				break;
+			case "WaitingListController":
+				WaitingListController.getListDatesServer(((ArrayList<String>)received.get(1)));
 				break;
 			default:
 			break;

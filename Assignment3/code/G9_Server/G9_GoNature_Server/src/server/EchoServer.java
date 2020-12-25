@@ -46,6 +46,9 @@ public class EchoServer extends AbstractServer {
 		case "randomVisitorFakeOrder":
 			NewOrder.NewReservation(recived, client);
 			break;
+		case "addFakeOrder":
+			NewOrder.queInsert(recived, client);
+			break;
 		case "order":
 			NewOrder.NewReservation(recived, client);
 			break;

@@ -103,16 +103,24 @@ public class WelcomeController implements Initializable {
 //					e.printStackTrace();
 //				}
 //			}
-//			System.out.println("after2");
-		//	if(!arrivalTimePassed())
-			//	alert.setAlert("It is not possible to manage an order with a time that already passed !");
+			System.out.println("after2");
 			if (orderDetails == null) {
 				alert.setAlert("Failed, No such order.");
 				btnOrderNumber.setVisible(true);
 				btnGo.setVisible(false);
 				txtOrderNum.setVisible(false);
 				return;
-			} else {
+			}
+		
+			if(arrivalTimePassed()) {
+				alert.setAlert("It is not possible to manage an order with a time that already passed !");
+				btnOrderNumber.setVisible(true);
+				btnGo.setVisible(false);
+				txtOrderNum.setVisible(false);
+				return;
+			}
+			
+			 else {
 				Stage stage = (Stage) btnGo.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
 				setOrderDetails(orderDetails);
@@ -154,22 +162,22 @@ public class WelcomeController implements Initializable {
 		ClientUI.sentToChatClient(parkNamesArr);
 	}
 	
-	////////NOT WORKING!!!!/////
-//	public boolean arrivalTimePassed() throws ParseException
-//	{
-//		LocalDateTime arrivelDate = LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-//        String dateAndTimeFormat = arrivelDate.format(formatter);
-////		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-////      Date date1 =  (Date) sdf.parse(dateAndTimeFormat);
-////      Date date2 = (Date) sdf.parse(orderDetails.getArrivedTime());
-////
-////        if(date2.compareTo(date1)<0){
-////            return true;
-////        }
-////		return false;
-//		
-//	}
+	
+	public boolean arrivalTimePassed() throws ParseException
+	{
+		LocalDate now = LocalDate.now();
+		String [] arrsplitStrings = orderDetails.getArrivedTime().split(" ");
+		String [] datesplit =arrsplitStrings[0].split("-");
+		String[] hour = arrsplitStrings[1].split(":");
+		LocalTime arrivalTime = LocalTime.of(Integer.parseInt(hour[0]), 00, 00);
+		//[0]->year , [1]->month , [2]->day
+		LocalDate arrivedate =LocalDate.of(Integer.parseInt(datesplit[0]), Integer.parseInt(datesplit[1]), Integer.parseInt(datesplit[2]));
+		if(arrivedate.compareTo(now) <0)
+			return true;
+		if(arrivedate.compareTo(now) == 0 && arrivalTime.compareTo(LocalTime.now())<0)
+			return true;
+		return false;
+	}
 
 
 

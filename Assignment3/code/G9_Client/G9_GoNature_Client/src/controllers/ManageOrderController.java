@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class ManageOrderController implements Initializable {
 			lblVisitors.setText(String.valueOf(details.getVisitorsNumber()));
 			lblMail.setText(details.getOrderEmail());
 			lblPrice.setText(details.getPrice() + "₪");
-			this.lblTotal.setText(String.valueOf(details.getTotalPrice()));
+			this.lblTotal.setText(String.valueOf(details.getTotalPrice()) + "₪");
 			double discValue = (1 - (details.getTotalPrice() / details.getPrice())) * 100;
 			this.lblDiscount.setText(String.format("%.1f", discValue) + "%");
 		} catch (ParseException e) {
@@ -220,15 +221,18 @@ public class ManageOrderController implements Initializable {
 		String[] arrSplit = cbxArriveTime.getValue().toString().split("-");
 		String[] hour = arrSplit[0].split(":");
 		LocalTime arrivalTime = LocalTime.of(Integer.parseInt(hour[0]), 00, 00);
+
 		LocalTime now = LocalTime.now();
 		if (date.compareTo(LocalDate.now()) == 0 && now.compareTo(arrivalTime) >= 0) {
 			alert.setAlert("You're trying to book for a time that has already passed. Please select a future time\r\n");
+
 			return false;
 		}
 		return true;
 	}
+	
 
-
+	
 	public static void canceledOrderFromServer(boolean returned) {
 		canceled=returned;
 		order = null;

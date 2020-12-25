@@ -254,6 +254,7 @@ public class MySQLConnection {
 			}
 		} catch (Exception e) {
 			System.out.println("Oh no...\n" + e);
+			System.out.println(e.getStackTrace());
 			return null;
 		}
 		return reply;

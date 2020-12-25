@@ -195,7 +195,7 @@ public class NewOrder {
 		query.add("1"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.get(0).isEmpty()) {
+		if (queryData.isEmpty()) {
 			// no parks in DB
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
@@ -208,7 +208,12 @@ public class NewOrder {
 		EchoServer.sendToMyClient(answer, client);
 
 	}
-
+	
+	// input: ArrayList<Object>,ConnectionToClient
+	// pulling details of a selected park from DB
+	// output: ArrayList<Object>=> cell[0] function name
+	// 							   cell[1] ArrayList<String> [0] orderNumber																
+	//												         [1] number of visitors to add
 	@SuppressWarnings("unchecked")
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
@@ -225,7 +230,7 @@ public class NewOrder {
 		query.add("orders"); // table name
 		query.add("amountArrived = '" + data.get(1) + "'"); // columns to update
 		query.add("orderNumber"); // condition
-		query.add(data.get(0)); // parkName value
+		query.add(data.get(0)); // orderNumber value
 
 		if (MySQLConnection.update(query))
 			answer.add(true);
