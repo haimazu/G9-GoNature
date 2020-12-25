@@ -195,7 +195,7 @@ public class NewOrder {
 		query.add("1"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		if (queryData.get(0).isEmpty()) {
+		if (queryData.isEmpty()) {
 			// no parks in DB
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
 		} else {
