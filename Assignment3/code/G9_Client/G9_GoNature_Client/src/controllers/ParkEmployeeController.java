@@ -205,7 +205,6 @@ public class ParkEmployeeController implements Initializable {
 		}
 
 		printOrderDetails();
-		setPrice();
 		
 		if (radExit.isSelected()) {
 			clearPaymentFields();
@@ -255,7 +254,7 @@ public class ParkEmployeeController implements Initializable {
 			}
 				
 			// check date and time
-			if (checkDate() && checkTime()) {
+			if (checkDate() && checkTime("approve")) {
 				/*** Enter ***/
 				if (radEnter.isSelected()) {		
 					execEnter();	
@@ -269,6 +268,41 @@ public class ParkEmployeeController implements Initializable {
 		// update the number of visitors in the park
 		updateParkStatus(0);
 		clearAllFields();
+	}
+	
+	// checking the entrance of the random visitor
+	// sending to the server to update the current visitors amount
+	// input: new current visitors 
+	// output: updating the current visitors in the park 
+	public void execRandomVisitor(int visitorsAmount) {
+		int updateCurrentVisitors = visitorsAmount;
+		
+		// update park status
+		updateParkStatus(updateCurrentVisitors);
+				
+		// in case with order
+		if (!lblVisitorsNumber.getText().isEmpty()) {
+			updateCurrentVisitors += Integer.parseInt(lblVisitorsNumber.getText());
+			// update park status
+			updateParkStatus(updateCurrentVisitors);
+				
+			// checking for places in the park
+			if (getError().equals("Free")) {
+				// update current visitors
+				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
+				alert.successAlert("Success", 
+						Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
+						+ String.valueOf(visitorsAmount) + " casual visitor/s, entered.");
+			}
+		// in case without order (only random visitors)
+		} else {
+			// checking for places in the park
+			if (getError().equals("Free")) {
+				// update current visitors
+				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
+				alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");	
+			}
+		}		
 	}
 	
 	// enter control to the park
@@ -333,43 +367,6 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
-	// checking the entrance of the random visitor
-	// sending to the server to update the current visitors amount
-	// input: new current visitors 
-	// output: updating the current visitors in the park 
-	public void execRandomVisitor(int visitorsAmount) {
-		int updateCurrentVisitors = visitorsAmount;
-		
-		// update park status
-		updateParkStatus(updateCurrentVisitors);
-				
-		// in case with order
-		if (!lblVisitorsNumber.getText().isEmpty()) {
-			updateCurrentVisitors += Integer.parseInt(lblVisitorsNumber.getText());
-			// update park status
-			updateParkStatus(updateCurrentVisitors);
-				
-			// checking for places in the park
-			if (getError().equals("Free")) {
-				// update current visitors
-				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
-				createFakeOrder(visitorsAmount);
-				alert.successAlert("Success", 
-						Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
-						+ String.valueOf(visitorsAmount) + " casual visitor/s, entered.");
-			}
-		// in case without order (only random visitors)
-		} else {
-			// checking for places in the park
-			if (getError().equals("Free")) {
-				// update current visitors
-				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
-				createFakeOrder(visitorsAmount);
-				alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");	
-			}
-		}		
-	}
-	
 	// exit control from the park
 	// input: none
 	// output: updating the current visitors in the park 
@@ -400,111 +397,108 @@ public class ParkEmployeeController implements Initializable {
 			}
 		}	
 	}
-	public void createFakeOrder(int visitorsAmount) {
-		Order fakeOrder;
-		String id = null;
-		String memberId = null;		
-		double discount = 0;	
-		String tempDate = dateAndTimeFormat;
-		
-		// format time
-		checkTime();
-		tempDate += timeFormat;
-		// after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
-			
-		// if there is no order
-		if (lblVisitorsNumber.getText().isEmpty()) {
-			/***** Random *****/
-			if (!btnRandomVisitor.isVisible()) {	
-				if (txtIdOrMemberId.getText().length() == 9) {
-					id = txtIdOrMemberId.getText();
-				} else {
-					memberId = txtIdOrMemberId.getText();
-				}
-				// calculates the prices
-				lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
-				discount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
-				lblDiscount.setText(String.format("%.1f", discount) + "%");			
-				lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
-			} 		
-		} else {
-			setPriceForOrdering();
-		}
-		
-		fakeOrder = new Order(getParkName(), tempDate, memberId, id, visitorsAmount);
-			
-		// check for a member with fake order
-		sendToServerObject("randomVisitorFakeOrder", fakeOrder);
-		// create new order for the random visitors
-		sendToServerObject("confirmOrder", fakeOrder);
-	}
 	
 	// updates prices
 	// input: none
 	// output: prints the latest data for payment
-	public void setPrice() {	
-			
-			
+	public void setPriceForRandom() {	
+		String id = null;
+		String memberId = "0";
 		
-			
+		// case 2 or 4 -> single/family OR group
+		/***** Random *****/
+		if (!btnRandomVisitor.isVisible() && lblVisitorsNumber.getText().isEmpty()) {		
+			if (txtIdOrMemberId.getText().length() == 9) {
+				id = txtIdOrMemberId.getText();
+			} else {
+				memberId = txtIdOrMemberId.getText();
+			}
 		
+			createFakeOrder(memberId, id, Integer.parseInt(txtRandomVisitorsAmount.getText()));
+		}
 	}
 	
 	// updates prices for ordered visitors
 	// input: none
 	// output: prints the latest data for payment
 	public void setPriceForOrdering() {
+		Order fakeOrder;
 		int difference = 0;
-		double discount = 0;
-		double price = 0;
-		double totalPrice = 0;
+		double orderVisitorDiscount = 0;
+		double randomVisitorDiscount = 0;
+		String tempDate = dateAndTimeFormat;
+		
+		// format time
+		checkTime("setPrice");
+		tempDate += timeFormat;
+		// after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
 		
 		difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
+		// visitorsAmount <= visitorsNumber in order
 		if (difference <= 0) {
-			price = Integer.parseInt(txtVisitorsAmount.getText()) * parkDetails.getEnteryPrice();
-		} else {
-			price = difference * parkDetails.getEnteryPrice();
-		}
-		totalPrice = price * (((100 - (double) parkDetails.getMangerDiscount()) / 100));	
-		
-		if (difference > 0) {
-			discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-			
-			// the order is not used, pay according to the order details
-			if (orderDetails.getAmountArrived() == 0) {
-				// set price
-				lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪ , " 
-							   + String.format("%.1f", price) + "₪");
-				// set discount
-				lblDiscount.setText(String.format("%.1f", discount) + "% , "
-								  + String.format("%.1f", (double) parkDetails.getMangerDiscount()) + "%");	
-				// set total price
-				price += orderDetails.getTotalPrice();
-				lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪ + " 
-							   + String.format("%.1f", totalPrice) + "₪ = " 
-							   + String.format("%.1f", price) + "₪");
-				return;
-			}
-	
-		// we check if the order is already "used"
-		} else {
-			// the order is not used, pay according to the order details
+			// order not used
 			if (orderDetails.getAmountArrived() == 0) {
 				lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪");
-				discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-				lblDiscount.setText(String.format("%.1f", discount) + "%");
+				orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+				lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "%");
 				lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪");
-				return;
+			// order used
+			} else {
+				createFakeOrder("0", null, Integer.parseInt(txtVisitorsAmount.getText()));
+			}
+		// visitorsAmount > visitorsNumber in order
+		} else {
+			// order not used
+			if (orderDetails.getAmountArrived() == 0) {
+				// id = memberId = null
+				fakeOrder = new Order(getParkName(), tempDate, "0", null, difference);
+				
+				// check for a member with fake order
+				sendToServerObject("randomVisitorFakeOrder", fakeOrder);
+				// create new order for the random visitors
+				sendToServerObject("addFakeOrder", fakeOrder);
+				
+				// set price
+				lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪ , " 
+							   + String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
+				// set discount
+				orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+				randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+				lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "% , "
+								  + String.format("%.1f", randomVisitorDiscount) + "%");	
+				// set total price
+				lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪ + " 
+							   + String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪ = " 
+							   + String.format("%.1f", (orderDetails.getTotalPrice() + randomVisitorFakeOrderDetails.getTotalPrice())) + "₪");
+			// order used
+			} else {
+				createFakeOrder("0", null, Integer.parseInt(txtVisitorsAmount.getText()));
 			}
 		}
+	}
 	
-		// the order is already used, pay full price
-		// set price
-		lblPrice.setText(String.format("%.1f", price) + "₪");
-		// set discount
-		lblDiscount.setText(String.format("%.1f", (double) parkDetails.getMangerDiscount()) + "%");	
-		// set total price
-		lblTotalPrice.setText(String.format("%.1f", totalPrice) + "₪");
+	public void createFakeOrder(String memberId, String id, int amountArrived) {
+		Order fakeOrder;
+		double randomVisitorDiscount = 0;
+		String tempDate = dateAndTimeFormat;
+		
+		// format time
+		checkTime("setPrice");
+		tempDate += timeFormat;
+		// after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
+		
+		// id = memberId = null
+		fakeOrder = new Order(getParkName(), tempDate, memberId, id, amountArrived);
+		
+		// check for a member with fake order
+		sendToServerObject("randomVisitorFakeOrder", fakeOrder);
+		// create new order for the random visitors
+		sendToServerObject("addFakeOrder", fakeOrder);
+		
+		lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
+		randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+		lblDiscount.setText(String.format("%.1f", randomVisitorDiscount) + "%");			
+		lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
 	}
 
 	// check for valid date in the order
@@ -532,9 +526,9 @@ public class ParkEmployeeController implements Initializable {
 	//        [1] order time range
 	// output: return true if the visitor arrived at the right hours
 	//         otherwise false
-	public boolean checkTime() {
+	public boolean checkTime(String from) {
 		timeFormat = "";
-		int arrivelHour;
+		int arrivelHour = 0;
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		// currentHour = hh
 		int currentHour = arrivelTime.getHour();
@@ -545,8 +539,6 @@ public class ParkEmployeeController implements Initializable {
 			// stringArrivelHour = hh
 			String stringArrivelHour = splitStartTime[0];
 			arrivelHour = Integer.parseInt(stringArrivelHour);
-		} else {
-			arrivelHour = 0;
 		}
 
 		// currentHour = 08:00 | 12:00 | 16:00
@@ -561,14 +553,14 @@ public class ParkEmployeeController implements Initializable {
 			if (arrivelHour == 12) {
 				return true;
 			}
-		} else if (currentHour >= 16 && currentHour < 20) {
+		} else if (currentHour >= 16 && currentHour < 22) {
 			timeFormat = " 16:00:00";
 			if (arrivelHour == 16) {
 				return true;
 			}
 		}
 		
-		if (arrivelHour == 0) {
+		if (from.equals("setPrice")) {
 			return false;
 		}
 
@@ -657,7 +649,6 @@ public class ParkEmployeeController implements Initializable {
 	// output: prints the order data 
 	public void printOrderDetails() {
 		// 2021-01-01 08:00:00
-		double discount;
 		String DateAndTime = orderDetails.getArrivedTime();
 		String[] splitDateAndTime = DateAndTime.split(" ");
 		// 2021-01-01
@@ -681,13 +672,7 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			lblEmail.setText(orderDetails.getOrderEmail());
 
-			if (radEnter.isSelected()) {
-				lblVisitorsAmount.setText(txtVisitorsAmount.getText());
-				lblPrice.setText(orderDetails.getPrice() + "₪");
-				discount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-				lblDiscount.setText(String.format("%.1f", discount) + "%");
-				lblTotalPrice.setText(orderDetails.getTotalPrice() + "₪");
-			}
+			setPriceForOrdering();
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -982,7 +967,7 @@ public class ParkEmployeeController implements Initializable {
 			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
 				lblVisitorsAmount.setText(newValue);
 				// update prices
-				setPrice();
+				setPriceForRandom();
 			}
 			// \\d -> only digits
 			// * -> escaped special characters
