@@ -20,6 +20,7 @@ public class EchoServer extends AbstractServer {
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		@SuppressWarnings("unchecked")
 		ArrayList<Object> recived = (ArrayList<Object>) msg;
+		WaitListSingelton.getWaitlist().CheckTheWaitList();
 		switch ((String) recived.get(0)) {
 		case "login":
 			Login.login(recived, client);

@@ -59,7 +59,7 @@ public class WaitListSingelton {
 				ArrayList<String> query = new ArrayList<String>();
 				query.add("deleteCond");
 				query.add("pending");
-				query.add("timeSent >= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+				query.add("timeSent <= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
 				MySQLConnection.deleteCond(query);
 			}
 			
@@ -157,7 +157,7 @@ public class WaitListSingelton {
 	query.add("select"); // command
 	query.add("pending"); // table name
 	query.add("orderNumber"); // col name
-	query.add("timeSent >= DATE_SUB(NOW(), INTERVAL 1 HOUR)"); // condition
+	query.add("WHERE timeSent <= DATE_SUB(NOW(), INTERVAL 1 HOUR)"); // condition
 	query.add("1"); // col num
 	return MySQLConnection.select(query);
 	}

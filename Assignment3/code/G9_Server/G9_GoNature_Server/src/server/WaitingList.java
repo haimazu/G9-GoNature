@@ -103,7 +103,7 @@ public class WaitingList {
 		query.add("WHERE parkName='" + parkName + "' AND arrivedTime='" + arrivedTime + "' ORDER BY waitlistID");
 		query.add("12");
 		ArrayList<ArrayList<String>> waitingInLineArr = MySQLConnection.select(query);
-		if (waitingInLineArr.get(0).isEmpty())
+		if (waitingInLineArr.isEmpty())
 			return true; // no one in line
 		ArrayList<String> firstInLine = waitingInLineArr.get(0); // first in line
 		Order firstInLineOrder = new Order(firstInLine);
