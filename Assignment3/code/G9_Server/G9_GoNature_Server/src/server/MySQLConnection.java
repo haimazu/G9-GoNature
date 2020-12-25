@@ -171,6 +171,20 @@ public class MySQLConnection {
 		String StatmentString = ("DELETE FROM " + dbScheme + "." + tableName + " WHERE (" + primaryKey + " = " + pkValue + ")");
 		return execute(StatmentString, data);
 	}
+	
+	//input: ArrayList of strings ->
+	//		string in cell 0: command (in this case will always be "delete")
+	//		string in cell 1: table name to delete from
+	//		string in cell 2: primary key column name of that table
+	//		string in cell 3: primary key value of the row that need to be deleted
+	//NOTE: insert only full rows!
+	//output: true if update successful, false if failed
+	public static boolean deleteCond(ArrayList<String> data) {
+		String tableName = data.get(1);
+		String cond = data.get(2);
+		String StatmentString = ("DELETE FROM " + dbScheme + "." + tableName + " WHERE " + cond);
+		return execute(StatmentString, data);
+	}
 
 	//input: ArrayList of strings ->
 	//		string in cell 0: command (in this case will always be "update")

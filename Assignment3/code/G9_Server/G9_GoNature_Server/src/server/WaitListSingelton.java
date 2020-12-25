@@ -12,8 +12,10 @@ public class WaitListSingelton {
 
 	// singleton WaitListSingelton
 	private static WaitListSingelton obj;
-
+	private static Date timeLastChecked;
+	
 	private WaitListSingelton() {
+		timeLastChecked = new Date();
 		// on start up do this
 	}
 
@@ -33,15 +35,40 @@ public class WaitListSingelton {
 		String msg = "WaitlistNotification";
 		SmsMessege waitlistSms = new SmsMessege(order.getOrderPhone(), msg, order);
 		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), msg, order);
-		// send mail and sms notification                 
+		insertPending(waitlistMail);
+		// send mail and sms notification
 	}
 	
 	public static void CheckTheWaitList() {
-		//if last check was less than minute ago dont check
-		//for each order listed in the SET check if one hour has passed since listed
-		// if more than one hour delete the order from the DB send were sorry mail
-		// remvoe from waitlist
-		// remove from sent
+		Date timeNow = new Date();
+		Date LastPlusMinute = new Date(timeLastChecked.getTime()+60*1000);
+		if (LastPlusMinute.compareTo(timeNow)>=0){
+			ArrayList<ArrayList<String>> expired = selectExpiredPending(); //select all expired in pending
+			if (!expired.isEmpty()) { //if not empty
+				for (ArrayList<String> row : expired) { //for each expired order
+					ArrayList<Object> stubForFetchOrder = new ArrayList<Object>();
+					stubForFetchOrder.add("orderByID");
+					stubForFetchOrder.add(row);
+					Order exp = new Order((ExistingOrderCheck.fechOrder(stubForFetchOrder,"orders","orderNumber")).get(0));
+					CancelOrder.deleteOrder(exp.getOrderNumber());
+					ArrayList<Object> stubForpullFromWaitList = new ArrayList<Object>();
+					stubForpullFromWaitList.add("waitlist");
+					stubForpullFromWaitList.add(exp);
+					WaitingList.pullFromWaitList(stubForpullFromWaitList);
+				}
+				ArrayList<String> query = new ArrayList<String>();
+				query.add("deleteCond");
+				query.add("pending");
+				query.add("timeSent >= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+				MySQLConnection.deleteCond(query);
+			}
+			
+			//send were sorry mail
+			
+		}else //if last check was less than minute ago dont check
+			return;
+		
+
 	}
 	
 	//input: date sent and date recived
@@ -59,10 +86,11 @@ public class WaitListSingelton {
 		Date sent = msg.getRepliedTo().getSentTime();
 		Date recived = msg.getSentTime();
 		if (lessThanOneHour(sent,recived)) {
-			//ok
+			removePending(msg.getOrder());
+			//notify ok
 		}
 		else {
-			//not ok
+			//notify not ok
 		}
 	}
 	
@@ -72,24 +100,15 @@ public class WaitListSingelton {
 		Date sent = msg.getRepliedTo().getSentTime();
 		Date recived = msg.getSentTime();
 		if (lessThanOneHour(sent,recived)) {
-			//ok
+			removePending(msg.getOrder());
+			//notify ok
 		}
 		else {
-			//not ok
+			//notify not ok
 		}
 	}
-	
-	private static void confirmWaitlistNotification(Order order) {
-		//at that point we know than less than one hour has passed
-		//
-		//
-			System.out.println("you snooze you lose!");
-		
-	}
 
-	// TODO: decide if the client can ask that directly
-	// input: order number as int
-	//
+	// input: order class of the order to cancel
 	// output: true if found the order on the waitlist and removed it, false if not.
 	public static boolean CancelWaitlist(Order recived) {
 		int orderNum = recived.getOrderNumber();
@@ -101,6 +120,46 @@ public class WaitListSingelton {
 		if (!MySQLConnection.delete(query))
 			return false; // error in delete
 		return true;
+	}
+	
+	// input: Order to delete from the DB
+	// output: true if found the order on the waitlist and removed it, false if not.
+	// send to DB: order to remove
+	private static boolean removePending(Order order) {
+		int orderNum = order.getOrderNumber();
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("delete");
+		query.add("pending");
+		query.add("orderNumber");
+		query.add(String.valueOf(orderNum));
+		if (!MySQLConnection.delete(query))
+			return false; // error in delete
+		return true;
+	}
+	
+	//input: Order to insert into the DB
+	//output: true if sussesful false if not
+	//send to DB: new order to list in pending
+	private static boolean insertPending(EmailMessege messege) {
+	ArrayList<String> query = new ArrayList<String>();
+	query.add("insert"); // command
+	query.add("pending"); // table name
+	query.add(messege.getOrder().getOrderNumber() + ","+ messege.getSentTime()); // values in query format
+	return MySQLConnection.insert(query);
+	}
+	
+	
+	//input: Order to insert into the DB
+	//output: true if sussesful false if not
+	//send to DB: new order to list in pending
+	private static ArrayList<ArrayList<String>> selectExpiredPending() {
+	ArrayList<String> query = new ArrayList<String>();
+	query.add("select"); // command
+	query.add("pending"); // table name
+	query.add("orderNumber"); // col name
+	query.add("timeSent >= DATE_SUB(NOW(), INTERVAL 1 HOUR)"); // condition
+	query.add("1"); // col num
+	return MySQLConnection.select(query);
 	}
 
 }

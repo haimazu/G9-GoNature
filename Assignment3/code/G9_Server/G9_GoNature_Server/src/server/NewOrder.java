@@ -26,7 +26,7 @@ public class NewOrder {
 		Member memb = MemerCheck(data); // to check the member type by order
 
 		// check if the capacity of orders is full
-		if ((!a.checkForAvailableSpots(recived, client))) {
+		if ((!a.checkForAvailableSpots(recived))) {
 			answer.add("Failed");// need to enter waiting list
 			EchoServer.sendToMyClient(answer, client);
 		}

@@ -34,11 +34,11 @@ public class EditOrder {
 				updateVisitorsNumber(originalOrder.getOrderNumber(),newOrder.getVisitorsNumber());
 				stubOrder.setVisitorsNumber(originalOrder.getVisitorsNumber()-newOrder.getVisitorsNumber()); //will stay positive cause of the if
 				objectArrayStub.add(stubOrder);
-				waitlist.pullFromWaitList(recived, client); ////fix the wait list
+				waitlist.pullFromWaitList(recived); ////fix the wait list
 			} else { //if more than original
 				stubOrder.setVisitorsNumber(newOrder.getVisitorsNumber()-originalOrder.getVisitorsNumber()); //will stay positive cause of the if
 				stubForAvilableSpots.add(stubOrder);
-				if (waitlist.checkForAvailableSpots(stubForAvilableSpots,client)) {
+				if (waitlist.checkForAvailableSpots(stubForAvilableSpots)) {
 					updateVisitorsNumber(originalOrder.getOrderNumber(),newOrder.getVisitorsNumber());
 				} else { //nospots to expand
 					answer.add(false);
@@ -54,7 +54,7 @@ public class EditOrder {
 			answer.add(true);
 		} else {
 			stubForAvilableSpots.add(newOrder);
-			if (waitlist.checkForAvailableSpots(stubForAvilableSpots,client)) {
+			if (waitlist.checkForAvailableSpots(stubForAvilableSpots)) {
 				updatePrice(newOrder);
 				objectArrayStub.add(originalOrder);
 				CancelOrder.cancel(objectArrayStub,client);

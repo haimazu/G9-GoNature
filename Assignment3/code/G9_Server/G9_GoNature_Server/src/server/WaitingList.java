@@ -51,7 +51,7 @@ public class WaitingList {
 	//
 	// output: True -> if there are available spots at the given park at the given time
 	// False -> if there are no spots available
-	public boolean checkForAvailableSpots(ArrayList<Object> recived, ConnectionToClient client) {
+	public static boolean checkForAvailableSpots(ArrayList<Object> recived) {
 		Order order = (Order) recived.get(1);
 		String parkName = order.getParkName();
 		String arrivedTime = order.getArrivedTime();
@@ -92,7 +92,7 @@ public class WaitingList {
 	// 			in cell 1: Order class of a given order that has been canceled
 	//
 	// output:
-	public boolean pullFromWaitList(ArrayList<Object> recived, ConnectionToClient client) {
+	public static boolean pullFromWaitList(ArrayList<Object> recived) {
 		Order order = (Order) recived.get(1); //been deleted
 		String parkName = order.getParkName();
 		String arrivedTime = order.getArrivedTime();
@@ -109,15 +109,14 @@ public class WaitingList {
 		Order firstInLineOrder = new Order(firstInLine);
 		ArrayList<Object> arrayForSpots = new ArrayList<Object>();
 		arrayForSpots.add("");//fix
-
 		arrayForSpots.add(firstInLineOrder);
-		if (!checkForAvailableSpots(arrayForSpots, client))//if we have avilable spots
+		if (!checkForAvailableSpots(arrayForSpots))//if we dont have avilable spots
 			return false; // no space for the first in line
-		firstInLineOrder.setOrderNumber(Counter.getCounter().orderNum());
-		NewOrder.insertNewOrder(firstInLineOrder); //add to regular orders
-		WaitListSingelton.CancelWaitlist(firstInLineOrder);//delete from the wait list
+		firstInLineOrder.setOrderNumber(Counter.getCounter().orderNum());// give ordernumber tag
+		NewOrder.insertNewOrder(firstInLineOrder); //add to orders on DB
+		WaitListSingelton.CancelWaitlist(firstInLineOrder);//delete from the waitlist
 		WaitListSingelton.sendWaitlistNotification(firstInLineOrder);//send notification
-		pullFromWaitList(recived, client); // try next one in line recursively
+		pullFromWaitList(recived); // try next one in line recursively
 		return true;
 	}
 }
