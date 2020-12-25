@@ -114,7 +114,7 @@ public class ManageOrderController implements Initializable {
 			lblVisitors.setText(String.valueOf(details.getVisitorsNumber()));
 			lblMail.setText(details.getOrderEmail());
 			lblPrice.setText(details.getPrice() + "₪");
-			this.lblTotal.setText(String.valueOf(details.getTotalPrice()));
+			this.lblTotal.setText(String.valueOf(details.getTotalPrice()) + "₪");
 			double discValue = (1 - (details.getTotalPrice() / details.getPrice())) * 100;
 			this.lblDiscount.setText(String.format("%.1f", discValue) + "%");
 		} catch (ParseException e) {

@@ -181,12 +181,12 @@
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="346.0" layoutY="330.0" styleClass="labelBold" text="Visitors Entered:">
+                  <Label layoutX="346.0" layoutY="330.0" styleClass="labelBold" text="Visitors enter / leave:">
                      <font>
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblVisitorsAmount" layoutX="459.0" layoutY="329.0">
+                  <Label fx:id="lblVisitorsAmount" layoutX="490.0" layoutY="329.0">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>

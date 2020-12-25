@@ -107,27 +107,22 @@
                   <Font name="Ebrima Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="81.0" layoutY="490.0" styleClass="labelBold" text="Total Price:">
+            <Label layoutX="86.0" layoutY="490.0" styleClass="labelBold" text="Total Price:">
                <font>
                   <Font name="Ebrima Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblPrice" layoutX="126.0" layoutY="438.0" prefHeight="21.0" prefWidth="36.0">
+            <Label fx:id="lblPrice" layoutX="126.0" layoutY="438.0">
                <font>
                   <Font name="Ebrima" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblDiscount" layoutX="150.0" layoutY="463.0" prefHeight="21.0" prefWidth="36.0">
+            <Label fx:id="lblDiscount" layoutX="152.0" layoutY="463.0">
                <font>
                   <Font name="Ebrima" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblPayment" layoutX="208.0" layoutY="488.0" prefHeight="21.0" prefWidth="36.0">
-               <font>
-                  <Font name="Ebrima" size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblTotal" layoutX="158.0" layoutY="489.0" prefHeight="21.0" prefWidth="36.0">
+            <Label fx:id="lblTotal" layoutX="165.0" layoutY="489.0">
                <font>
                   <Font name="Ebrima" size="14.0" />
                </font>
