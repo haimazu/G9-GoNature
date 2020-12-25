@@ -104,6 +104,14 @@ public class WelcomeController implements Initializable {
 //				}
 //			}
 			System.out.println("after2");
+			if (orderDetails == null) {
+				alert.setAlert("Failed, No such order.");
+				btnOrderNumber.setVisible(true);
+				btnGo.setVisible(false);
+				txtOrderNum.setVisible(false);
+				return;
+			}
+		
 			if(arrivalTimePassed()) {
 				alert.setAlert("It is not possible to manage an order with a time that already passed !");
 				btnOrderNumber.setVisible(true);
@@ -111,13 +119,8 @@ public class WelcomeController implements Initializable {
 				txtOrderNum.setVisible(false);
 				return;
 			}
-			if (orderDetails == null) {
-				alert.setAlert("Failed, No such order.");
-				btnOrderNumber.setVisible(true);
-				btnGo.setVisible(false);
-				txtOrderNum.setVisible(false);
-				return;
-			} else {
+			
+			 else {
 				Stage stage = (Stage) btnGo.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
 				setOrderDetails(orderDetails);
