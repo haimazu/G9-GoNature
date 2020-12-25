@@ -146,7 +146,6 @@
                   <Font name="Ebrima" size="14.0" />
                </font>
             </JFXTextField>
-            <JFXDatePicker fx:id="txtdate" editable="false" focusTraversable="false" layoutX="130.0" layoutY="279.0" prefHeight="29.0" prefWidth="148.0" promptText="Arrivel Date" styleClass="datePicker" />
             <JFXComboBox fx:id="cbxArriveTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="130.0" layoutY="350.0" promptText="Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
             <Label layoutX="130.0" layoutY="157.0" styleClass="labelBold" text="Edit the visitors amount:">
                <font>
@@ -164,6 +163,7 @@
             <Label layoutX="184.0" layoutY="505.0" text="Or" />
             <Separator layoutX="201.0" layoutY="513.0" prefHeight="3.0" prefWidth="113.0" />
             <Button fx:id="btnBack" focusTraversable="false" layoutX="11.0" layoutY="124.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="36.0" styleClass="btnBackWithImg" />
+            <JFXDatePicker fx:id="txtdate" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="126.0" layoutY="280.0" prefHeight="40.0" prefWidth="129.0" promptText="*Arrivel Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
          </children>
       </Pane>
       <Pane prefHeight="112.0" prefWidth="800.0" styleClass="pnAnchor">
