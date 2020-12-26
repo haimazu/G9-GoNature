@@ -166,14 +166,15 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="tableDep" focusTraversable="false" layoutX="24.0" layoutY="307.0" prefHeight="215.0" prefWidth="570.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="tableDep" focusTraversable="false" layoutX="14.0" layoutY="157.0" prefHeight="275.0" prefWidth="461.0" tableMenuButtonVisible="true">
                      <columns>
-                        <TableColumn prefWidth="197.0" text="Name" />
-                        <TableColumn prefWidth="185.0" text="Type" />
-                        <TableColumn prefWidth="175.0" text="Status" />
+                        <TableColumn fx:id="parkName" prefWidth="79.39999389648438" text="Park Name" />
+                        <TableColumn fx:id="requestType" prefWidth="91.79998779296875" text="Request Type" />
+                        <TableColumn fx:id="requestDetails" prefWidth="238.0" text="Requset Details" />
+                        <TableColumn fx:id="checkBox" prefWidth="36.0" />
                      </columns>
                   </TableView>
-                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="20.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    masseges to confirm">
+                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="20.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
                      <font>
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
@@ -183,31 +184,13 @@
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnSeeAll" focusTraversable="false" layoutX="334.0" layoutY="18.0" mnemonicParsing="false" onAction="#seeAll" prefHeight="31.0" prefWidth="57.0" styleClass="btnMiddleButtons" text="see all" />
-                  <JFXTextField fx:id="txtDiscount" editable="false" focusTraversable="false" labelFloat="true" layoutX="10.0" layoutY="115.0" prefHeight="40.0" prefWidth="145.0" promptText="Discount (%)" styleClass="txtField" />
-                  <Label alignment="TOP_LEFT" layoutX="12.0" layoutY="89.0" prefHeight="26.0" prefWidth="174.0" styleClass="labelBold" text="Confirm discount">
-                     <font>
-                        <Font name="Ebrima Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="txtDates" editable="false" focusTraversable="false" labelFloat="true" layoutX="167.0" layoutY="115.0" prefHeight="40.0" prefWidth="145.0" promptText="Dates" styleClass="txtField" />
-                  <Button fx:id="btnApproveDis" focusTraversable="false" layoutX="473.0" layoutY="134.0" mnemonicParsing="false" onAction="#approve" styleClass="btnMiddleButtons" text="approve" />
-                  <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="172.0" prefHeight="26.0" prefWidth="174.0" styleClass="labelBold" text="Visitors amount">
-                     <font>
-                        <Font name="Ebrima Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="txtMaxVisitor" editable="false" focusTraversable="false" labelFloat="true" layoutX="13.0" layoutY="198.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" />
-                  <JFXTextField fx:id="txtParkNameVis" editable="false" focusTraversable="false" labelFloat="true" layoutX="174.0" layoutY="198.0" prefHeight="40.0" prefWidth="145.0" promptText="Park name" styleClass="txtField" />
                   <Label alignment="TOP_LEFT" layoutX="38.0" layoutY="268.0" prefHeight="26.0" prefWidth="174.0" styleClass="labelBold" text="Reports" visible="false">
                      <font>
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txtParkNameDis" editable="false" focusTraversable="false" labelFloat="true" layoutX="323.0" layoutY="115.0" prefHeight="40.0" prefWidth="145.0" promptText="Park name" styleClass="txtField" />
-                  <Button fx:id="btnDisaproveDis" focusTraversable="false" layoutX="539.0" layoutY="134.0" mnemonicParsing="false" onAction="#disapprove" style="-fx-background-color: #cc0000;" text="disapprove" />
-                  <Button fx:id="btnApproveVis" focusTraversable="false" layoutX="342.0" layoutY="218.0" mnemonicParsing="false" onAction="#btnApproveDis" styleClass="btnMiddleButtons" text="approve" />
-                  <Button fx:id="btnDisaproveVis" focusTraversable="false" layoutX="408.0" layoutY="218.0" mnemonicParsing="false" onAction="#disapprove" style="-fx-background-color: #cc0000;" text="disapprove" />
+                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="506.0" layoutY="178.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnMiddleButtons" text="approve" />
+                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="506.0" layoutY="247.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" text="disapprove" />
                </children>
             </Pane>
          </children>
