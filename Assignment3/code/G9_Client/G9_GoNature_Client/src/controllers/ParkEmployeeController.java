@@ -213,6 +213,7 @@ public class ParkEmployeeController implements Initializable {
 		informationExists = false;
 		btnApprove.setDisable(false);
 		orderStatus = true;
+		approveIsPressed = false;
 	}
 
 	// input: none
@@ -384,32 +385,25 @@ public class ParkEmployeeController implements Initializable {
 		int updateCurrentVisitors = 0;
 		
 		// random mode
-		//if (!btnRandomVisitor.isVisible()) {
-		if (!orderStatus) {
+		if (!btnRandomVisitor.isVisible()) {
 			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtRandomVisitorsAmount.getText());
 			
-			if (updateCurrentVisitors < 0) {
-				alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
-			} else {
+			if (updateCurrentVisitors > 0) {
 				alert.successAlert("Success", txtRandomVisitorsAmount.getText() + " visitor/s leaved.");	
 			}
 		// barcode / regular mode
 		} else {
 			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());	
 			
-			if (updateCurrentVisitors < 0) {
-				alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
-			} else {				
+			if (updateCurrentVisitors > 0) {
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
 			}
 		}
-		// check the available places in the park
-		updateParkStatus(updateCurrentVisitors);
 		
-		if (getError().equals("Free")) {
-			// update current visitors
-			updateCurrentVisitors(updateCurrentVisitors);	
-		}
+		// update places in the park
+		updateParkStatus(updateCurrentVisitors);
+		// update current visitors
+		updateCurrentVisitors(updateCurrentVisitors);	
 	}
 	
 	// updates prices
@@ -619,7 +613,10 @@ public class ParkEmployeeController implements Initializable {
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(getParkName());
 		data.add(String.valueOf(updateCurrentVisitors));
-		sendToServerArrayList("updateCurrentVisitors", data);
+		
+		if (getError().equals("Free")) {
+			sendToServerArrayList("updateCurrentVisitors", data);
+		}
 		
 		// check if the update failed and showing alert
 		if (getError().equals("false")) {
@@ -910,6 +907,8 @@ public class ParkEmployeeController implements Initializable {
 		txtRandomVisitorsAmount.setVisible(false);
 		btnApprove.setDisable(true);
 		btnRandomVisitor.setVisible(true);
+		orderStatus = false;
+		approveIsPressed = false;
 	}
 	
 	// turns off order mode
@@ -927,6 +926,8 @@ public class ParkEmployeeController implements Initializable {
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
+		orderStatus = false;
+		approveIsPressed = false;
 	}
 	
 	// turns off payment mode (on exit)
@@ -936,6 +937,8 @@ public class ParkEmployeeController implements Initializable {
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
+		orderStatus = false;
+		approveIsPressed = false;
 	}
 
 	@Override
