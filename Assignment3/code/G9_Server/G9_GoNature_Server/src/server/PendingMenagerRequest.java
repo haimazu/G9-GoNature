@@ -50,6 +50,38 @@ public class PendingMenagerRequest {
 	}
 
 	// input: ArrayList<Object>: cell[0] name
+	// cell[1] user_name
+	// cell[2] password
+	//
+	// output:T/F
+	public static void employeeNumberSet(ArrayList<Object> recived, ConnectionToClient client) {
+		ArrayList<Object> answer = new ArrayList<Object>();
+		String username=(String) recived.get(1);
+		String password=(String)recived.get(2);
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("employee"); // table name
+		query.add("employeeNumber"); // columns to select from
+		query.add("WHERE username='" + username + "' AND password='"+password+"'"); // condition
+		query.add("1"); // how many columns returned
+
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+		if(queryData.isEmpty()) {
+			System.out.println("no such employee");
+			answer.add(false);
+		}
+		else {
+			System.out.println(queryData.get(0));
+			answer.add(queryData.get(0));
+		}
+		
+		EchoServer.sendToMyClient(answer, client);
+	}
+	
+	
+	
+
+	// input: ArrayList<Object>: cell[0] name
 	// cell[1] ManagerRequest object
 	//
 	// output:
