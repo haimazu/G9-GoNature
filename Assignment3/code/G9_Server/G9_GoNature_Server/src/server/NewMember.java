@@ -18,6 +18,7 @@ public class NewMember {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Member memb = (Member) recived.get(1);
+		CreditCard cc = (CreditCard) recived.get(2);
 		// if member is already exists in DB
 		if (MemerCheck(memb.getMemberID())) {
 			answer.add(false);
@@ -32,12 +33,15 @@ public class NewMember {
 			query.add("member"); // table name
 			query.add(queryToString(memb)); // values in query format
 			MySQLConnection.insert(query);
+			System.out.println("check1");
 			answer.add(true);
-			CreditCard cc = (CreditCard) recived.get(2);
-			if (recived.get(2) != null) {
+			if (cc != null) {
 				cc.setOrderNumber(Integer.parseInt(memb.getMemberID()));
-				NewOrder.creditCardSave(cc);
+				boolean a = NewOrder.creditCardSave(cc);
+				if (!a)
+					System.out.println("credit card insert fail");
 			}
+			System.out.println("check2");
 			EchoServer.sendToMyClient(answer, client);
 		}
 	}
@@ -57,8 +61,10 @@ public class NewMember {
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty())
 			return false;
-		else
+		else {
+			System.out.println("Member already exist!!");
 			return true;
+		}
 	}
 
 	// input: Member object
