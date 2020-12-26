@@ -66,9 +66,21 @@ public class CreditCardController implements Initializable {
 		if (checkNotEmptyCardFields() && chechCorrectfeilds()) {
 			dateCC = cbxExpiryMonth.getValue().toString() + "/" + cbxExpiryYear.getValue().toString();
 
-			details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
-					Integer.parseInt(txtCVV.getText()),0);
+		
+		try {
 			
+				
+				details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
+						Integer.parseInt(txtCVV.getText()), myOrder.getOrderNumber());
+				
+			}
+		
+			catch(NullPointerException e){
+				
+				details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
+						Integer.parseInt(txtCVV.getText()),0);
+				
+			}
 //			msgEditPaymentForServer.add("orderPaymentMathod");
 //			msgEditPaymentForServer.add(details);
 			
