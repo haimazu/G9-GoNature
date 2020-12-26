@@ -153,8 +153,6 @@ public class ParkManagerController implements Initializable {
 	private AlertController alert = new AlertController();
 	private static boolean discountAnswerFromServer;
 	private static String empID;
-	private static String password;
-	private static String username;
 	
 
 	public static String getEmpID() {
