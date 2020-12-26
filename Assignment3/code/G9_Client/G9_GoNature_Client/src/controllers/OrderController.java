@@ -582,10 +582,10 @@ public class OrderController implements Initializable {
 //		}
 
 		/****************** for me ******************/
-//		txtmemberID.setText("315818987");
-//		txtVisitorsNumber.setText("2");
-//		txtInvitingEmail.setText("bar@kaz.com");
-//		txtPhoneNum.setText("0541234567");
+		txtmemberID.setText("315818987");
+		txtVisitorsNumber.setText("2");
+		txtInvitingEmail.setText("bar@kaz.com");
+		txtPhoneNum.setText("0541234567");
 
 	}
 
