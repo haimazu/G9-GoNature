@@ -10,8 +10,8 @@ public class PendingMenagerRequest {
 	// input: ArrayList<Object>: cell[0] name
 	// cell[1] ManagerRequest object
 	//
-	// output:
-	public static void OverallVisitorsReport(ArrayList<Object> recived, ConnectionToClient client) {
+	// output:T/F
+	public static void InsertToPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : ??
 		answer.add(recived.get(0));
@@ -43,6 +43,14 @@ public class PendingMenagerRequest {
 
 		}
 		EchoServer.sendToMyClient(answer, client);
+	}
+
+	// input: ArrayList<Object>: cell[0] name
+	// cell[1] ManagerRequest object
+	//
+	// output:
+	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
+		
 	}
 
 	public static String toStringForDB(ManagerRequest mr) {
