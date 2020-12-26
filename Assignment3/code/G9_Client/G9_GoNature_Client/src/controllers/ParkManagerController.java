@@ -2,7 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -12,6 +14,7 @@ import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
 
 import client.ClientUI;
 import dataLayer.Park;
@@ -152,14 +155,14 @@ public class ParkManagerController implements Initializable {
 	private static String parkName;
 	private AlertController alert = new AlertController();
 	private static boolean discountAnswerFromServer;
-	private static String empID;
+	private static int empID;
 	
 
-	public static String getEmpID() {
+	public static int getEmpID() {
 		return empID;
 	}
 
-	public static void setEmpID(String empID) {
+	public static void setEmpID(int empID) {
 		ParkManagerController.empID = empID;
 	}
 
@@ -222,7 +225,7 @@ public class ParkManagerController implements Initializable {
 		});
 
 		txtDateTo.setValue(LocalDate.now());
-
+		//RequestForEmployeeID();
 	}
 
 	@FXML
@@ -317,14 +320,18 @@ public class ParkManagerController implements Initializable {
 	}
 
 	@FXML
-	void submitPendingDiscount(ActionEvent event) {
+	void submitPendingDiscount(ActionEvent event) throws ParseException {
 
 		String discount = txtManageDsic.getText();
-		int integerDisc = Integer.parseInt(discount);
-		double discountInPrecents = integerDisc / 100.0;
+		
+		
+		if(DatesNotCorresponding())
+			alert.setAlert("You are trying to set incorrect dated!\nPlease try again");
 		if (discount.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
 		else {
+			int integerDisc = Integer.parseInt(discount);
+			double discountInPrecents = integerDisc / 100.0;
 			if (integerDisc > 100)
 				alert.setAlert(
 						"You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
@@ -382,7 +389,7 @@ public class ParkManagerController implements Initializable {
 			msg.add("parkManagerRequest");
 			//Req.setDiscount(String.valueOf(1 - discountInPrecents));
 			Req.setParkName(getParkName());
-			Req.setEmployeeID(0);// ??????
+			Req.setEmployeeID(ParkManagerController.getEmpID());// ??????
 			Req.setRequesttype("discount");
 			msg.add(Req);
 			System.out.println(msg);
@@ -408,7 +415,8 @@ public class ParkManagerController implements Initializable {
 		
 	}
 	public static void recivedFromserverEmployeeID(String answer) {
-		setEmpID(answer);
+		setEmpID(Integer.parseInt(answer));
+		System.out.println("Employee" +answer);
 		
 	}
 	public void RequestForEmployeeID() {
@@ -418,6 +426,23 @@ public class ParkManagerController implements Initializable {
 		msg.add(LoginController.getPassword());
 		msg.add(LoginController.getUsername());
 		ClientUI.sentToChatClient(msg);
+	}
+	public boolean DatesNotCorresponding() throws ParseException
+	{
+		LocalDate from ;
+		LocalDate to ;
+		
+		String [] fromarrsplitStrings = txtDateFrom.toString().split(" ");
+		String [] fromdatesplit =fromarrsplitStrings[0].split("-");
+		String [] toarrsplitStrings = txtDateTo.toString().split(" ");
+		String [] todatesplit =toarrsplitStrings[0].split("-");	
+		//[0]->year , [1]->month , [2]->day
+		from = LocalDate.of(Integer.parseInt(fromdatesplit[0]), Integer.parseInt(fromdatesplit[1]), Integer.parseInt(fromdatesplit[2]));
+		to = LocalDate.of(Integer.parseInt(todatesplit[0]), Integer.parseInt(todatesplit[1]), Integer.parseInt(todatesplit[2]));
+		if(to.compareTo(from) <0)
+			return true;
+		
+		return false;
 	}
 
 }
