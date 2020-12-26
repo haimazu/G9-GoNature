@@ -48,6 +48,7 @@ public class WaitingListController implements Initializable {
 	//private ArrayList<String> ReleventDates = new ArrayList<>();
 
 	public static ArrayList<String> getTime() {
+		System.out.println(Dates);
 		return Dates;
 	}
 
@@ -121,6 +122,7 @@ public class WaitingListController implements Initializable {
 			flag = 0;
 		}
 		this.nonReleventDates = newArr;
+		System.out.println(nonReleventDates.toString());
 	}
 
 	public void setArrForTime() {
@@ -146,10 +148,11 @@ public class WaitingListController implements Initializable {
 
 	public void setTimeWithSpecificDate(String date) {
 		ArrayList<String> timeTmp = new ArrayList<>(time);
+		System.out.println(time);
 		for (String str : Dates) {
 			String[] TimesDates = getDate(str, "all");
 			if (TimesDates[0].equals(date)) {
-				for (String start : time) {
+				for (String start : timeTmp) {
 					String[] arr = start.split("-");
 					String  [] specificArrTime = arr[0].split(":");
 					String [] specificArrDate = TimesDates[1].split(":");
@@ -159,6 +162,7 @@ public class WaitingListController implements Initializable {
 				}
 			}
 		}
+		System.out.println("look: "+ time);
 		cbxArrivelTime.setDisable(false);
 		cbxArrivelTime.setItems(FXCollections.observableArrayList(timeTmp));
 	}
@@ -177,7 +181,6 @@ public class WaitingListController implements Initializable {
 
 	@FXML
 	void check(ActionEvent event) {
-		
 		
 	}
 	
@@ -204,7 +207,7 @@ public class WaitingListController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		this.time.add("08:00 - 12:00");
+		this.time.add("8:00 - 12:00");
 		this.time.add("12:00 - 16:00");
 		this.time.add("16:00 - 20:00");
 		cbxArrivelTime.setDisable(true);
