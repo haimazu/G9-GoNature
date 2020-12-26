@@ -301,7 +301,7 @@ public class ParkManagerController implements Initializable {
 
 		String discount = txtManageDsic.getText();
 		int integerDisc = Integer.parseInt(discount);
-		double discountInPrecents = integerDisc / 100;
+		double discountInPrecents = integerDisc / 100.0;
 		if (discount.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
 		else {
