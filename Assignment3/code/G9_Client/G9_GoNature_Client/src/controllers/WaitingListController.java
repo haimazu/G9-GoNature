@@ -224,7 +224,7 @@ public class WaitingListController implements Initializable {
 		ArrayList<Object> sendServer = new ArrayList<>();
 		sendServer.add("checkFullDays");
 		sendServer.add(OrderController.getOrder());
-		//ClientUI.sentToChatClient(sendServer);
+		ClientUI.sentToChatClient(sendServer);
 		
 		setArrForDatePicker();
 		nonReleventDatesForCalender(nonReleventDates);
