@@ -30,6 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import orderData.Order;
+import orderData.OrderType;
 import userData.Member;
 
 public class ServiceRepresentativeController implements Initializable {
@@ -57,8 +58,8 @@ public class ServiceRepresentativeController implements Initializable {
 
 	@FXML
 	private JFXCheckBox cbGuideMember;
-	@FXML
-	private JFXTextField txtGroupMembersAmount;
+	 @FXML
+	private JFXTextField txtMembersAmount;
 	@FXML
 	private JFXCheckBox cbCreditCard;
 
@@ -76,59 +77,75 @@ public class ServiceRepresentativeController implements Initializable {
 	private Button btnSave;
 
 	@FXML
-	// add a new groupMember to the db
+	// add a new Member data into the db
 	void addMember(ActionEvent event) {
 
 		String id = txtId.getText();
+		//txtId.setText("111222333");
 		String firstName = txtFirstName.getText();
+		//txtFirstName.setText("roni");
 		String lastName = txtLastName.getText();
-		String groupMemberAmount = txtGroupMembersAmount.getText();
-		// String groupMemberAmount="5";
+		//txtLastName.setText("haim");
+		String memberAmount = txtMembersAmount.getText();
+		//txtMembersAmount.setText("5");
 		String email = txtEmail.getText();
+		//txtEmail.setText("mor@gmail.com");
 		String phoneNumber = txtPhoneNumber.getText();
+		//txtPhoneNumber.setText("0536754898");
 
-		// txtGroupMembersAmount.setEditable(cbGuideMember.isSelected());
 
 		if (id.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || firstName.isEmpty())
-			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
-
+			{
+				alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
+				return;
+			}
 		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput() && validEmailInput()) {
+			
+			//member= member/family
 			if (!cbGuideMember.isSelected()) {
 
-				if (txtGroupMembersAmount.getText().matches("[0-9]+") && Integer.parseInt(groupMemberAmount) <= 15
-						&& Integer.parseInt(groupMemberAmount) > 0)
+				if (txtMembersAmount.getText().matches("[0-9]+") && Integer.parseInt(memberAmount) > 15
+						&& Integer.parseInt(memberAmount) < 0)
 					alert.setAlert("You need to choose amount between 1-15.");
 
-				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, "member",
-						groupMemberAmount);
-				// check the random visitor type and calculate the price
+				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, 
+						OrderType.MEMBER,memberAmount);
+				System.out.println(newMember.toString());
+				// check the member type and insert him to the db
 				// Query
 				ArrayList<Object> msg = new ArrayList<Object>();
 				msg.add("newMembershipInsert");
 				// Data fields
 				msg.add(newMember);
-				// set up all the order details and the payment method
+				// set up all the member details of the new member
 				ClientUI.sentToChatClient(msg);
-
-				if (getStatus())
+				
+				if (getStatus()) {
 					alert.successAlert("Succesful", "A member add succesfuly");
+					ClearFields();
+				}
 				else
 					alert.setAlert("Failed to add your member.");
-			} else 
+			}
+			
 			//member=guide
+			else 
 				{
-				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, "guide", "0");
-				// check the random visitor type and calculate the price
+				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, 
+						OrderType.GROUP, "0");
+				// check the member type and insert him to the db
 				// Query
 				ArrayList<Object> msg = new ArrayList<Object>();
 				msg.add("newMembershipInsert");
 				// Data fields
 				msg.add(newMember);
-				// set up all the order details and the payment method
+				// set up all the member details of the new member
 				ClientUI.sentToChatClient(msg);
 
-				if (getStatus())
+				if (getStatus()) {
 					alert.successAlert("Succesful", "A member add succesfuly");
+					ClearFields();
+					}
 				else
 					alert.setAlert("Failed to add your member.");
 			}
@@ -198,6 +215,16 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
+	public void ClearFields() {
+		
+		txtId.clear();
+		txtFirstName.clear();
+		txtLastName.clear();
+		txtEmail.clear();
+		txtMembersAmount.clear();
+		txtPhoneNumber.clear();
+		
+	}
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -219,7 +246,7 @@ public class ServiceRepresentativeController implements Initializable {
 		// TODO Auto-generated method stub
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
-
+		
 		// force the field to be numeric only
 		txtId.textProperty().addListener((obs, oldValue, newValue) -> {
 
@@ -276,7 +303,17 @@ public class ServiceRepresentativeController implements Initializable {
 
 			}
 		});
-
+		
+		cbGuideMember.selectedProperty().addListener((obs,oldValue,newValue)-> {
+		
+			if(newValue)
+				txtMembersAmount.setDisable(true);
+			else {
+				txtMembersAmount.setDisable(false);
+			}
+		});
+	
+	
 	}
 
 	public static boolean getStatus() {
