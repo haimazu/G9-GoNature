@@ -48,6 +48,7 @@ public class WaitingListController implements Initializable {
 	//private ArrayList<String> ReleventDates = new ArrayList<>();
 
 	public static ArrayList<String> getTime() {
+		System.out.println(Dates);
 		return Dates;
 	}
 

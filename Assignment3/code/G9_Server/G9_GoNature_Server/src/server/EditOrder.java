@@ -108,19 +108,21 @@ public class EditOrder {
 		query.add("select"); //select
 		query.add("orders"); //tableName
 		query.add("arrivedTime,SUM(visitorsNumber) AS visitorsNumber");	//columns
-		query.add("WHERE parkName=" + parkName + " GROUP BY arrivedTime ORDER BY arrivedTime");	//condition
+		query.add("WHERE parkName='" + parkName + "' GROUP BY arrivedTime ORDER BY arrivedTime");	//condition
 		query.add("2");	//replyColNum
 		ArrayList<ArrayList<String>> parkSummedCapacityByCapsule = MySQLConnection.select(query);
 		query.clear();
 		query.add("select"); //select
 		query.add("park"); //tableName
 		query.add("maxOrderVisitorsAmount");	//columns
-		query.add("WHERE parkName=" + parkName);	//condition
+		query.add("WHERE parkName='" + parkName +"'");	//condition
 		query.add("1");	//replyColNum
 		ArrayList<ArrayList<String>> maxCapacityForPark = MySQLConnection.select(query);
 		int maxCapacity = Integer.parseInt(maxCapacityForPark.get(0).get(0));
 		for (ArrayList<String> row : parkSummedCapacityByCapsule) {
-			if (Integer.parseInt(row.get(1))+order.getVisitorsNumber()>maxCapacity)
+			String capacityInCapsule = row.get(1);
+			double newCapacity = Double.parseDouble(capacityInCapsule) + order.getVisitorsNumber();
+			if (newCapacity>maxCapacity)
 				fullDays.add(row.get(0));
 		}
 		answer.add(fullDays);
