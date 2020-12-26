@@ -388,22 +388,26 @@ public class ParkEmployeeController implements Initializable {
 		if (!btnRandomVisitor.isVisible()) {
 			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtRandomVisitorsAmount.getText());
 			
-			if (updateCurrentVisitors > 0) {
+			if (updateCurrentVisitors >= 0) {
 				alert.successAlert("Success", txtRandomVisitorsAmount.getText() + " visitor/s leaved.");	
 			}
 		// barcode / regular mode
 		} else {
 			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());	
 			
-			if (updateCurrentVisitors > 0) {
+			if (updateCurrentVisitors >= 0) {
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
 			}
 		}
 		
-		// update places in the park
-		updateParkStatus(updateCurrentVisitors);
-		// update current visitors
-		updateCurrentVisitors(updateCurrentVisitors);	
+		if (updateCurrentVisitors >= 0) {
+			// update places in the park
+			updateParkStatus(updateCurrentVisitors);
+			// update current visitors
+			updateCurrentVisitors(updateCurrentVisitors);	
+		} else {
+			alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
+		}
 	}
 	
 	// updates prices
@@ -628,8 +632,10 @@ public class ParkEmployeeController implements Initializable {
 	// input: none
 	// output: update the park title with the current visitors
 	public void updateParkStatus(int addToEnter) {
-		sendToServerArrayList("getParkDetails", new ArrayList<String>(Arrays.asList(getParkName(), 
-				String.valueOf(addToEnter))));
+		ArrayList<String> data = new ArrayList<String>();
+		data.add(getParkName());
+		data.add(String.valueOf(addToEnter));
+		sendToServerArrayList("getParkDetails", data);
 		
 		// the park is empty
 		if (parkDetails.getCurrentAmount() == 0) {
@@ -645,16 +651,17 @@ public class ParkEmployeeController implements Initializable {
 		} 
 		
 		// too many visitors (check after enter)
-		if (getError().equals("Greater") && radEnter.isSelected()) {
+		if (approveIsPressed && getError().equals("Greater") && radEnter.isSelected()) {
 			alert.failedAlert("Failed", "The amount of visitors is greater than the number existing in the park.");
+			approveIsPressed = false;
 			return;
 		} 
 		
-		// too few visitors (check after exit)
-		if (getError().equals("Lower") && radExit.isSelected()) {
-			alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
-			return;
-		} 
+//		// too few visitors (check after exit)
+//		if (getError().equals("Lower") && radExit.isSelected()) {
+//			alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
+//			return;
+//		} 
 		
 		setError("Free");
 		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
