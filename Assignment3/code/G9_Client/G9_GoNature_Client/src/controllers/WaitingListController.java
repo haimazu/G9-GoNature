@@ -212,19 +212,19 @@ public class WaitingListController implements Initializable {
 		this.time.add("16:00 - 20:00");
 		cbxArrivelTime.setDisable(true);
 
-		Dates.add("2020-12-30 08:00:00");
-		Dates.add("2020-12-30 12:00:00");
-		Dates.add("2020-12-30 16:00:00");
-		Dates.add("2021-01-02 12:00:00");
-		Dates.add("2021-01-10 12:00:00");
-		Dates.add("2021-01-30 08:00:00");
-		Dates.add("2021-01-30 12:00:00");
-		Dates.add("2021-01-30 16:00:00");
-		
+//		Dates.add("2020-12-30 08:00:00");
+//		Dates.add("2020-12-30 12:00:00");
+//		Dates.add("2020-12-30 16:00:00");
+//		Dates.add("2021-01-02 12:00:00");
+//		Dates.add("2021-01-10 12:00:00");
+//		Dates.add("2021-01-30 08:00:00");
+//		Dates.add("2021-01-30 12:00:00");
+//		Dates.add("2021-01-30 16:00:00");
+//		
 		ArrayList<Object> sendServer = new ArrayList<>();
 		sendServer.add("checkFullDays");
 		sendServer.add(OrderController.getOrder());
-		//ClientUI.sentToChatClient(sendServer);
+		ClientUI.sentToChatClient(sendServer);
 		
 		setArrForDatePicker();
 		nonReleventDatesForCalender(nonReleventDates);

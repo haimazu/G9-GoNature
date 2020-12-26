@@ -70,6 +70,8 @@ public class EchoServer extends AbstractServer {
 		case "newMembershipInsert":
 			NewMember.NewMemberInsert(recived, client);
 			break;
+		case "checkFullDays":
+			EditOrder.checkFullDays(recived, client);
 		default:
 			break;
 		}
