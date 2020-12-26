@@ -97,4 +97,39 @@ public class EditOrder {
 		return MySQLConnection.update(query);
 	}
 	
+	//checkFullDays
+	public static void checkFullDays(ArrayList<Object> recived, ConnectionToClient client) {
+		ArrayList<Object> answer = new ArrayList<Object>();
+		ArrayList<String> fullDays = new ArrayList<String>();
+		answer.add(recived.get(0));
+		Order order = (Order)recived.get(1);
+		String parkName = order.getParkName();
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); //select
+		query.add("orders"); //tableName
+		query.add("arrivedTime,SUM(visitorsNumber) AS visitorsNumber");	//columns
+		query.add("WHERE parkName=" + parkName + " GROUP BY arrivedTime ORDER BY arrivedTime");	//condition
+		query.add("2");	//replyColNum
+		ArrayList<ArrayList<String>> parkSummedCapacityByCapsule = MySQLConnection.select(query);
+		query.clear();
+		query.add("select"); //select
+		query.add("park"); //tableName
+		query.add("maxOrderVisitorsAmount");	//columns
+		query.add("WHERE parkName=" + parkName);	//condition
+		query.add("1");	//replyColNum
+		ArrayList<ArrayList<String>> maxCapacityForPark = MySQLConnection.select(query);
+		int maxCapacity = Integer.parseInt(maxCapacityForPark.get(0).get(0));
+		for (ArrayList<String> row : parkSummedCapacityByCapsule) {
+			if (Integer.parseInt(row.get(1))+order.getVisitorsNumber()>maxCapacity)
+				fullDays.add(row.get(0));
+		}
+		answer.add(fullDays);
+		try {
+			client.sendToClient(answer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

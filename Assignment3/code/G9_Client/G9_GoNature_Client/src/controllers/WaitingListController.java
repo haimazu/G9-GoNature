@@ -45,14 +45,14 @@ public class WaitingListController implements Initializable {
 	private static ArrayList<String> Dates = new ArrayList<>();
 	private static ArrayList<String> time = new ArrayList<>();
 	private ArrayList<String> nonReleventDates = new ArrayList<>();
-	private ArrayList<String> ReleventDates = new ArrayList<>();
+	//private ArrayList<String> ReleventDates = new ArrayList<>();
 
 	public static ArrayList<String> getTime() {
 		return Dates;
 	}
 
-	public static void setDates(ArrayList<String> time) {
-		WaitingListController.Dates = time;
+	public static void setDates(ArrayList<String> date) {
+		WaitingListController.Dates = date;
 	}
 
 	public void nonReleventDatesForCalender(ArrayList<String> arr) {
@@ -121,6 +121,7 @@ public class WaitingListController implements Initializable {
 			flag = 0;
 		}
 		this.nonReleventDates = newArr;
+		System.out.println(nonReleventDates.toString());
 	}
 
 	public void setArrForTime() {
@@ -211,21 +212,22 @@ public class WaitingListController implements Initializable {
 		this.time.add("16:00 - 20:00");
 		cbxArrivelTime.setDisable(true);
 
-		Dates.add("2020-12-30 08:00:00");
-		Dates.add("2020-12-30 12:00:00");
-		Dates.add("2020-12-30 16:00:00");
-		Dates.add("2021-01-02 12:00:00");
-		Dates.add("2021-01-10 12:00:00");
-		Dates.add("2021-01-30 08:00:00");
-		Dates.add("2021-01-30 12:00:00");
-		Dates.add("2021-01-30 16:00:00");
-		
+//		Dates.add("2020-12-30 08:00:00");
+//		Dates.add("2020-12-30 12:00:00");
+//		Dates.add("2020-12-30 16:00:00");
+//		Dates.add("2021-01-02 12:00:00");
+//		Dates.add("2021-01-10 12:00:00");
+//		Dates.add("2021-01-30 08:00:00");
+//		Dates.add("2021-01-30 12:00:00");
+//		Dates.add("2021-01-30 16:00:00");
+//		
 		ArrayList<Object> sendServer = new ArrayList<>();
-		sendServer.add("WaitingListController");
+		sendServer.add("checkFullDays");
 		sendServer.add(OrderController.getOrder());
-		//ClientUI.sentToChatClient(sendServer);
+		ClientUI.sentToChatClient(sendServer);
 		
 		setArrForDatePicker();
+		nonReleventDatesForCalender(nonReleventDates);
 		setArrForTime();
 	}
 
