@@ -18,6 +18,13 @@ public class CreditCard  implements Serializable{
 		this.cvc = cvc;
 		this.orderNumber = orderNumber;
 	}
+	public CreditCard(String cardNumber, String cardHolderName, String expirationDate, int cvc) {
+		super();
+		this.cardNumber = cardNumber;
+		this.cardHolderName = cardHolderName;
+		this.expirationDate = expirationDate;
+		this.cvc = cvc;
+	}
 
 	String cardNumber;
 	String cardHolderName;

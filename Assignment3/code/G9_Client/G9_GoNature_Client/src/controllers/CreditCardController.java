@@ -67,7 +67,7 @@ public class CreditCardController implements Initializable {
 			dateCC = cbxExpiryMonth.getValue().toString() + "/" + cbxExpiryYear.getValue().toString();
 
 			details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
-					Integer.parseInt(txtCVV.getText()), myOrder.getOrderNumber());
+					Integer.parseInt(txtCVV.getText()),0);
 			
 //			msgEditPaymentForServer.add("orderPaymentMathod");
 //			msgEditPaymentForServer.add(details);
