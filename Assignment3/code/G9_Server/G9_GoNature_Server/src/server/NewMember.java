@@ -58,9 +58,15 @@ public class NewMember {
 	// input: Member object
 	// output: ToString For DB query
 	public static String queryToString(Member memb) {
-		return "'" + memb.getMemberID() + "','" + memb.getMemberFirstName() + "','" + memb.getMemberLastName() + "','"
-				+ memb.getMemberNumber() + "','" + memb.getMemberPhoneNumber() + "','" + memb.getMemberEmail() + "','"
-				+ memb.getMemberPaymentType() + "','" + memb.getMemberOrderType() + "','" + memb.getMemberAmount()
+		return "'" + memb.getMemberID() + "','" 
+				+ memb.getMemberFirstName() + "','" 
+				+ memb.getMemberLastName() + "','"
+				+ memb.getMemberNumber() + "','" 
+				+ memb.getMemberPhoneNumber() + "','" 
+				+ memb.getMemberEmail() + "','"
+				+ memb.getMemberPaymentType() + "','" 
+				+ memb.getMemberOrderType() + "','" 
+				+ memb.getMemberAmount()
 				+ "'";
 	}
 }

@@ -201,7 +201,7 @@
                      </font>
                   </JFXTextField>
                   <JFXCheckBox fx:id="cbGuideMember" layoutX="378.0" layoutY="113.0" text="Tour Guide " />
-                  <JFXTextField fx:id="txtGroupMembersAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="38.0" layoutY="362.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtMembersAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="38.0" layoutY="362.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
