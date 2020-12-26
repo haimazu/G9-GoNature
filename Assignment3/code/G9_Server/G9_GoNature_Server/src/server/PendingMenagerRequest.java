@@ -12,11 +12,7 @@ public class PendingMenagerRequest {
 	//
 	// output:T/F
 	public static void InsertToPending(ArrayList<Object> recived, ConnectionToClient client) {
-		
-		//------Added by Rinat for tests ! please ask before delete :) ---//
-		System.out.println("Im in the server : "+ recived);
-		//---------------------------------------------------------------------//
-		
+
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : ??
 		answer.add(recived.get(0));
@@ -27,8 +23,11 @@ public class PendingMenagerRequest {
 		query1.add("pendingmanagerrequests"); // table name
 		query1.add("*"); // columns to select from
 		query1.add("WHERE requesttype='" + mr.getRequesttype() + "' AND employeeID='" + mr.getEmployeeID() + "'");
-
-		if (!query1.isEmpty()) {
+		query1.add("8");
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
+		System.out.println(query1);
+		System.out.println(queryData);
+		if (!queryData.isEmpty()) {
 			System.out.println("already has this type of request for this employee");
 			answer.add(false);
 		}
@@ -36,7 +35,7 @@ public class PendingMenagerRequest {
 		else {
 			ArrayList<String> query2 = new ArrayList<String>();
 			query2.add("insert"); // command
-			query2.add("orders"); // table name
+			query2.add("pendingmanagerrequests"); // table name
 			query2.add(toStringForDB(mr)); // values in query format
 			if (!MySQLConnection.insert(query2)) {
 				answer.add(false);
@@ -55,7 +54,7 @@ public class PendingMenagerRequest {
 	//
 	// output:
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
-		
+
 	}
 
 	public static String toStringForDB(ManagerRequest mr) {
