@@ -334,9 +334,9 @@ public class ParkManagerController implements Initializable {
 			if (discountAnswerFromServer)
 				alert.successAlert("Request Info", "Your request was sent and pending for deapartment manager approval.");
 			else
-				alert.setAlert(
-						"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
+				alert.setAlert("You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
 			Req=null;
+			
 		}
 		}
 	}
@@ -346,7 +346,7 @@ public class ParkManagerController implements Initializable {
 		String capacity = lblSetMax.getText();
 		if (capacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
-		else 
+		//else 
 			
 	}
 
@@ -363,7 +363,7 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserver(boolean answer) {
 		setDiscountAnswerFromServer(answer);
-		System.out.println("I recevid from server : "+answer);
+		
 
 	}
 
