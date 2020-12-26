@@ -235,7 +235,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void submitPendingDiscount(ActionEvent event) {
-
+		
 	}
 
 	@FXML
