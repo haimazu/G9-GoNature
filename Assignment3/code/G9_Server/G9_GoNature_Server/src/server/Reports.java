@@ -47,7 +47,7 @@ public class Reports {
 		query.add("select"); // command
 		query.add("canceledorders"); // table name
 		query.add("*"); // columns to select from
-		query.add("WHERE DATEPART(MONTH, arrivedTime) = '" + currentmonth + "'"); // condition
+		query.add("WHERE MONTH(arrivedTime) = '" + currentmonth + "'"); // condition
 		query.add("1"); // how many columns returned
 		System.out.println(query.toString());
 
