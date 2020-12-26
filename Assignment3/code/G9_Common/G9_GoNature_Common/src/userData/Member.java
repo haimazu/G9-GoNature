@@ -13,7 +13,7 @@ public class Member implements Serializable {
 	String memberNumber;
 	String memberPhoneNumber;
 	String memberEmail;
-	String hasCreditCardDetails;
+	String memberPaymentType;
 	OrderType memberOrderType;
 	String memberAmount;
 
@@ -25,7 +25,7 @@ public class Member implements Serializable {
 		this.memberNumber = memberFromDB.get(3);
 		this.memberPhoneNumber = memberFromDB.get(4);
 		this.memberEmail = memberFromDB.get(5);
-		this.hasCreditCardDetails = memberFromDB.get(6);
+		this.memberPaymentType = memberFromDB.get(6);
 		this.memberOrderType = OrderType.valueOf(memberFromDB.get(7).toUpperCase());
 		this.memberAmount = memberFromDB.get(8);
 	}
@@ -34,7 +34,7 @@ public class Member implements Serializable {
 	public String toString() {
 		return "Member [memberID=" + memberID + ", memberFirstName=" + memberFirstName + ", memberLastName="
 				+ memberLastName + ", memberNumber=" + memberNumber + ", memberPhoneNumber=" + memberPhoneNumber
-				+ ", memberEmail=" + memberEmail + ", memberPaymentType=" + hasCreditCardDetails + ", memberOrderType="
+				+ ", memberEmail=" + memberEmail + ", memberPaymentType=" + memberPaymentType + ", memberOrderType="
 				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
 	}
 
@@ -49,7 +49,7 @@ public class Member implements Serializable {
 		this.memberEmail = memberEmail;
 		this.memberOrderType = memberOrderType;
 		this.memberAmount = memberAmount;
-		this.hasCreditCardDetails = null;
+		this.memberPaymentType = null;
 	}
 
 	public String getMemberID() {
@@ -101,11 +101,11 @@ public class Member implements Serializable {
 	}
 
 	public String getMemberPaymentType() {
-		return hasCreditCardDetails;
+		return memberPaymentType;
 	}
 
 	public void setMemberPaymentType(String memberPaymentType) {
-		this.hasCreditCardDetails = memberPaymentType;
+		this.memberPaymentType = memberPaymentType;
 	}
 
 	public OrderType getMemberOrderType() {
