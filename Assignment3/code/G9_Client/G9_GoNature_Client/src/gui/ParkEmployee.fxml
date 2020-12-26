@@ -123,7 +123,7 @@
                         <Font name="Tahoma Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label focusTraversable="false" layoutX="341.0" layoutY="326.0" prefHeight="103.0" prefWidth="272.0" style="-fx-border-color: deceb8;">
+                  <Label focusTraversable="false" layoutX="341.0" layoutY="349.0" prefHeight="80.0" prefWidth="271.0" style="-fx-border-color: deceb8;">
                      <font>
                         <Font size="11.0" />
                      </font></Label>
@@ -179,16 +179,6 @@
                   <Label fx:id="lblEmail" layoutX="393.0" layoutY="281.0">
                      <font>
                         <Font name="Ebrima" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="346.0" layoutY="330.0" styleClass="labelBold" text="Visitors enter / leave:">
-                     <font>
-                        <Font name="Ebrima Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblVisitorsAmount" layoutX="490.0" layoutY="329.0">
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
                      </font>
                   </Label>
                   <Label layoutX="346.0" layoutY="355.0" styleClass="labelBold" text="Price:">
