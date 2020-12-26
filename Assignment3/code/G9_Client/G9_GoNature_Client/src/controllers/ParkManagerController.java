@@ -146,10 +146,19 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSetDisc1;
-	private static ManagerRequest Req=new ManagerRequest(0,"",0,0,"","","","");
+	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
 	private AlertController alert = new AlertController();
+	private static boolean discountAnswerFromServer;
+
+	public static boolean isDiscountAnswerFromServer() {
+		return discountAnswerFromServer;
+	}
+
+	public static void setDiscountAnswerFromServer(boolean discountAnswerFromServer) {
+		ParkManagerController.discountAnswerFromServer = discountAnswerFromServer;
+	}
 
 	public static String getParkName() {
 		return parkName;
@@ -317,8 +326,13 @@ public class ParkManagerController implements Initializable {
 				msg.add(Req);
 				ClientUI.sentToChatClient(msg);
 			}
-		}
+			if (discountAnswerFromServer)
+				alert.setAlert("Your request was sent and pending for deapartment manager approval.");
+			else
+				alert.setAlert(
+						"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
 
+		}
 	}
 
 	@FXML
@@ -336,6 +350,11 @@ public class ParkManagerController implements Initializable {
 	}
 
 	void presentParkData(Park parkDetails) {
+
+	}
+
+	public static void recivedFromserver(boolean answer) {
+		setDiscountAnswerFromServer(answer);
 
 	}
 
