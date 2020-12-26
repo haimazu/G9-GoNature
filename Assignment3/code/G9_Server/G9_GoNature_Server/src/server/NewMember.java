@@ -28,12 +28,15 @@ public class NewMember {
 			// adding a member to DB
 			String s = "" + Counter.getCounter().memberNum();
 			memb.setMemberNumber(s);
+			if (cc != null)
+				memb.setMemberPaymentType("yes");// has credit card
+			else
+				memb.setMemberPaymentType("no");// Doesn't has credit card
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("insert"); // command
 			query.add("member"); // table name
 			query.add(queryToString(memb)); // values in query format
 			MySQLConnection.insert(query);
-			System.out.println("check1");
 			answer.add(true);
 			if (cc != null) {
 				cc.setOrderNumber(Integer.parseInt(memb.getMemberID()));
@@ -41,7 +44,6 @@ public class NewMember {
 				if (!a)
 					System.out.println("credit card insert fail");
 			}
-			System.out.println("check2");
 			EchoServer.sendToMyClient(answer, client);
 		}
 	}
