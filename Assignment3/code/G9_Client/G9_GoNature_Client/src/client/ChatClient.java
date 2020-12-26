@@ -105,6 +105,8 @@ public class ChatClient extends AbstractClient {
 			case "checkFullDays":
 				WaitingListController.getListDatesServer(((ArrayList<String>)received.get(1)));
 				break;
+			case "parkManagerRequest":
+				ParkManagerController.recivedFromserver((boolean)received.get(1));
 			default:
 			break;
 		}

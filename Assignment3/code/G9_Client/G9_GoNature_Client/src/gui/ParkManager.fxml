@@ -281,7 +281,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="lblMaxcapByorder" editable="false" focusTraversable="false" labelFloat="true" layoutX="378.0" layoutY="181.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" visible="false" />
+                  <JFXTextField fx:id="txtMaxcapByorder" focusTraversable="false" labelFloat="true" layoutX="378.0" layoutY="181.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" visible="false" />
                   <Button fx:id="btnSubmitCapacityByorder" focusTraversable="false" layoutX="415.0" layoutY="229.0" mnemonicParsing="false" onAction="#submitVisitorsCapacityByorder" styleClass="btnMiddle" text="Submit" visible="false" />
                   <Button fx:id="btnSetMaxByOrder" focusTraversable="false" layoutX="325.0" layoutY="189.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setVisitorsCapacityByorder" prefHeight="84.0" prefWidth="291.0" styleClass="btnWelcome" text="Set Max capacity by order" textAlignment="CENTER">
                      <font>

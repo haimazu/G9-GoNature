@@ -103,7 +103,7 @@ public class WelcomeController implements Initializable {
 //					e.printStackTrace();
 //				}
 //			}
-			System.out.println("after2");
+			//System.out.println("after2");
 			if (orderDetails == null) {
 				alert.setAlert("Failed, No such order.");
 				btnOrderNumber.setVisible(true);
