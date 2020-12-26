@@ -35,7 +35,6 @@ public class NewOrder {
 
 			data = totalPrice(data, memb, data.isOccasional());// updating the prices in the order
 			///// Roi//////
-			data.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
 			answer.add(data);
 
 			EchoServer.sendToMyClient(answer, client);
