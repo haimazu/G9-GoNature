@@ -107,6 +107,13 @@ public class ChatClient extends AbstractClient {
 				break;
 			case "parkManagerRequest":
 				ParkManagerController.recivedFromserver((boolean)received.get(1));
+				break;
+			case "requestForEmployeeID":
+				ParkManagerController.recivedFromserverEmployeeID((String)received.get(1));;
+				break;
+//			case "getCancellationReports":
+//				CancelReportsController.receivedFromServerVisitorsPrice(((ArrayList<Object>)received.get(1)));
+//				break;
 			default:
 			break;
 		}

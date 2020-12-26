@@ -131,7 +131,7 @@ public class WaitListSingelton {
 		int orderNum = order.getOrderNumber();
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("delete");
-		query.add("pending");
+		query.add("pendingwaitlist");
 		query.add("orderNumber");
 		query.add(String.valueOf(orderNum));
 		if (!MySQLConnection.delete(query))
@@ -145,7 +145,7 @@ public class WaitListSingelton {
 	private static boolean insertPending(EmailMessege messege) {
 	ArrayList<String> query = new ArrayList<String>();
 	query.add("insert"); // command
-	query.add("pending"); // table name
+	query.add("pendingwaitlist"); // table name
 	query.add(messege.getOrder().getOrderNumber() + ","+ messege.getSentTime()); // values in query format
 	return MySQLConnection.insert(query);
 	}
@@ -156,7 +156,7 @@ public class WaitListSingelton {
 	private static ArrayList<ArrayList<String>> selectExpiredPending() {
 	ArrayList<String> query = new ArrayList<String>();
 	query.add("select"); // command
-	query.add("pending"); // table name
+	query.add("pendingwaitlist"); // table name
 	query.add("orderNumber"); // col name
 	query.add("WHERE timeSent <= DATE_SUB(NOW(), INTERVAL 1 HOUR)"); // condition
 	query.add("1"); // col num

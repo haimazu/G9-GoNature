@@ -43,7 +43,27 @@ public class LoginController implements Initializable {
 	private Button btnLogin;
 
 	private static String status, firstName;
+	public static String password; 
+	public static String username;
 	private static String parkName;
+	public static String getPassword() {
+		return password;
+	}
+
+	public static void setPassword(String password) {
+		LoginController.password = password;
+	}
+
+	public static String getUsername() {
+		return username;
+	}
+
+	public static void setUsername(String username) {
+		LoginController.username = username;
+	}
+
+
+	
 	private boolean userStatus = false, passStatus = false;
 	private AlertController alert = new AlertController();
 
@@ -67,6 +87,9 @@ public class LoginController implements Initializable {
 	 **/
 	@FXML
 	void login(ActionEvent event) throws IOException {
+		//needed for check in parkManager
+		setPassword(txtPassword.getText());
+		setUsername(txtUsername.getText());
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		// Data fields
