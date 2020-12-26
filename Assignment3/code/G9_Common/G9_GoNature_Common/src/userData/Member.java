@@ -38,13 +38,13 @@ public class Member implements Serializable {
 				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
 	}
 
-	public Member(String memberID, String memberFirstNAme, String memberLastNAme, String memberNumber,
+	public Member(String memberID, String memberFirstNAme, String memberLastNAme,
 			String memberPhoneNumber, String memberEmail, OrderType memberOrderType, String memberAmount) {
 		super();
 		this.memberID = memberID;
 		this.memberFirstName = memberFirstNAme;
 		this.memberLastName = memberLastNAme;
-		this.memberNumber = memberNumber;
+		//this.memberNumber = memberNumber;
 		this.memberPhoneNumber = memberPhoneNumber;
 		this.memberEmail = memberEmail;
 		this.memberOrderType = memberOrderType;
