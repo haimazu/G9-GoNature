@@ -38,9 +38,8 @@ public class Member implements Serializable {
 				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
 	}
 
-
 	public Member(String memberID, String memberFirstNAme, String memberLastNAme, String memberNumber,
-			String memberPhoneNumber, String memberEmail, String memberPaymentType, String memberAmount) {
+			String memberPhoneNumber, String memberEmail, OrderType memberOrderType, String memberAmount) {
 		super();
 		this.memberID = memberID;
 		this.memberFirstName = memberFirstNAme;
@@ -48,26 +47,11 @@ public class Member implements Serializable {
 		this.memberNumber = memberNumber;
 		this.memberPhoneNumber = memberPhoneNumber;
 		this.memberEmail = memberEmail;
-		this.memberPaymentType = memberPaymentType;
+		this.memberOrderType = memberOrderType;
 		this.memberAmount = memberAmount;
-	}
-	
-	
-	public Member(String memberID, String memberFirstNAme, String memberLastNAme, String memberNumber,
-			String memberPhoneNumber, String memberEmail,OrderType memberOrderType, String memberAmount) {
-		super();
-		this.memberID = memberID;
-		this.memberFirstName = memberFirstNAme;
-		this.memberLastName = memberLastNAme;
-		this.memberNumber = memberNumber;
-		this.memberPhoneNumber = memberPhoneNumber;
-		this.memberEmail = memberEmail;
 		this.memberPaymentType = null;
-		this.memberOrderType=memberOrderType;
-		this.memberAmount = memberAmount;
 	}
-	
-	
+
 	public String getMemberID() {
 		return memberID;
 	}
@@ -140,5 +124,4 @@ public class Member implements Serializable {
 		this.memberAmount = memberAmount;
 	}
 
-	
 }

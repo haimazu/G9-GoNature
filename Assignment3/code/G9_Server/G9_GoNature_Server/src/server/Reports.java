@@ -80,7 +80,7 @@ public class Reports {
 		strArrLst.add("g9_gonature");
 		strArrLst.add("root");
 		//strArrLst.add("123456");
-		strArrLst.add("NewP@ssword4theSQL");
+		strArrLst.add("Aa123456");
 		MySQLConnection.connectToDB(strArrLst);
 		CancellationReport();
 	}
