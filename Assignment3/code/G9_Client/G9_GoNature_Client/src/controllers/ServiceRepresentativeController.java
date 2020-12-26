@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
+import dataLayer.CreditCard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -58,10 +59,11 @@ public class ServiceRepresentativeController implements Initializable {
 
 	@FXML
 	private JFXCheckBox cbGuideMember;
-	 @FXML
-	private JFXTextField txtMembersAmount;
 	@FXML
-	private JFXCheckBox cbCreditCard;
+	private JFXTextField txtMembersAmount;
+
+	@FXML
+	private Button btnCreditCard;
 
 	@FXML
 	private JFXTextField txtCardNumber;
@@ -81,35 +83,36 @@ public class ServiceRepresentativeController implements Initializable {
 	void addMember(ActionEvent event) {
 
 		String id = txtId.getText();
-		//txtId.setText("111222333");
+		// txtId.setText("111222333");
 		String firstName = txtFirstName.getText();
-		//txtFirstName.setText("roni");
+		// txtFirstName.setText("roni");
 		String lastName = txtLastName.getText();
-		//txtLastName.setText("haim");
+		// txtLastName.setText("haim");
 		String memberAmount = txtMembersAmount.getText();
-		//txtMembersAmount.setText("5");
+		// txtMembersAmount.setText("5");
 		String email = txtEmail.getText();
-		//txtEmail.setText("mor@gmail.com");
+		// txtEmail.setText("mor@gmail.com");
 		String phoneNumber = txtPhoneNumber.getText();
-		//txtPhoneNumber.setText("0536754898");
+		// txtPhoneNumber.setText("0536754898");
 
-
-		if (id.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || firstName.isEmpty())
-			{
-				alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
-				return;
-			}
+		if (id.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || firstName.isEmpty()) {
+			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
+			return;
+		}
 		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput() && validEmailInput()) {
+
+			CreditCard creditCard = CreditCardController.getDetails();
 			
-			//member= member/family
+			
+			// member= member/family
 			if (!cbGuideMember.isSelected()) {
 
 				if (txtMembersAmount.getText().matches("[0-9]+") && Integer.parseInt(memberAmount) > 15
 						&& Integer.parseInt(memberAmount) < 0)
 					alert.setAlert("You need to choose amount between 1-15.");
 
-				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, 
-						OrderType.MEMBER,memberAmount);
+				Member newMember = new Member(id, firstName, lastName, phoneNumber, email, OrderType.MEMBER,
+						memberAmount);
 				System.out.println(newMember.toString());
 				// check the member type and insert him to the db
 				// Query
@@ -117,36 +120,42 @@ public class ServiceRepresentativeController implements Initializable {
 				msg.add("newMembershipInsert");
 				// Data fields
 				msg.add(newMember);
-				// set up all the member details of the new member
-				ClientUI.sentToChatClient(msg);
-				
-				if (getStatus()) {
-					alert.successAlert("Succesful", "A member add succesfuly");
-					ClearFields();
-				}
-				else
-					alert.setAlert("Failed to add your member.");
-			}
-			
-			//member=guide
-			else 
-				{
-				Member newMember = new Member(id, firstName, lastName, null, phoneNumber, email, 
-						OrderType.GROUP, "0");
-				// check the member type and insert him to the db
-				// Query
-				ArrayList<Object> msg = new ArrayList<Object>();
-				msg.add("newMembershipInsert");
-				// Data fields
-				msg.add(newMember);
+
+				 if(creditCard!=null)
+					 msg.add(creditCard);//insert credit card details
+				 else msg.add(null);
+
 				// set up all the member details of the new member
 				ClientUI.sentToChatClient(msg);
 
 				if (getStatus()) {
 					alert.successAlert("Succesful", "A member add succesfuly");
 					ClearFields();
-					}
-				else
+				} else
+					alert.setAlert("Failed to add your member.");
+			}
+
+			// member=guide
+			else {
+				Member newMember = new Member(id, firstName, lastName, phoneNumber, email, OrderType.GROUP, "0");
+				// check the member type and insert him to the db
+				// Query
+				ArrayList<Object> msg = new ArrayList<Object>();
+				msg.add("newMembershipInsert");
+				// Data fields
+				msg.add(newMember);
+				
+				 if(creditCard!=null)
+					 msg.add(creditCard);//insert credit card details
+				 else msg.add(null);
+				 
+				// set up all the member details of the new member
+				ClientUI.sentToChatClient(msg);
+
+				if (getStatus()) {
+					alert.successAlert("Succesful", "A member add succesfuly");
+					ClearFields();
+				} else
 					alert.setAlert("Failed to add your member.");
 			}
 
@@ -155,7 +164,7 @@ public class ServiceRepresentativeController implements Initializable {
 	}
 
 	@FXML
-	void crditCard(ActionEvent event) throws IOException {
+	void creditCard(ActionEvent event) throws IOException {
 		Stage stage = new Stage();
 		Pane root = FXMLLoader.load(getClass().getResource("/gui/CreditCard.fxml"));
 		Scene scene = new Scene(root);
@@ -167,7 +176,7 @@ public class ServiceRepresentativeController implements Initializable {
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
-				cbCreditCard.setSelected(false);
+				btnCreditCard.isPressed();
 			}
 		});
 
@@ -215,15 +224,16 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
+
 	public void ClearFields() {
-		
+
 		txtId.clear();
 		txtFirstName.clear();
 		txtLastName.clear();
 		txtEmail.clear();
 		txtMembersAmount.clear();
 		txtPhoneNumber.clear();
-		
+
 	}
 
 	@FXML
@@ -246,7 +256,7 @@ public class ServiceRepresentativeController implements Initializable {
 		// TODO Auto-generated method stub
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
-		
+
 		// force the field to be numeric only
 		txtId.textProperty().addListener((obs, oldValue, newValue) -> {
 
@@ -281,7 +291,7 @@ public class ServiceRepresentativeController implements Initializable {
 
 		});
 
-		// force the field to be with
+		// force the field to be with letters only
 		txtLastName.textProperty().addListener((obs, oldValue, newValue) -> {
 
 			// \\d -> only digits
@@ -303,17 +313,16 @@ public class ServiceRepresentativeController implements Initializable {
 
 			}
 		});
-		
-		cbGuideMember.selectedProperty().addListener((obs,oldValue,newValue)-> {
-		
-			if(newValue)
+
+		cbGuideMember.selectedProperty().addListener((obs, oldValue, newValue) -> {
+
+			if (newValue)
 				txtMembersAmount.setDisable(true);
 			else {
 				txtMembersAmount.setDisable(false);
 			}
 		});
-	
-	
+
 	}
 
 	public static boolean getStatus() {
