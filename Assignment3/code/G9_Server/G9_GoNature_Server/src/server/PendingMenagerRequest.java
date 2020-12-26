@@ -70,8 +70,10 @@ public class PendingMenagerRequest {
 			System.out.println("no such employee");
 			answer.add(false);
 		}
-		else
+		else {
+			System.out.println(queryData.get(0));
 			answer.add(queryData.get(0));
+		}
 		
 		EchoServer.sendToMyClient(answer, client);
 	}
