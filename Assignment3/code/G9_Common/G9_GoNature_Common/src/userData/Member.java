@@ -13,7 +13,7 @@ public class Member implements Serializable {
 	String memberNumber;
 	String memberPhoneNumber;
 	String memberEmail;
-	String memberPaymentType;
+	String memberPaymentType;//Yes-has credit card. No-doesn't have credit card
 	OrderType memberOrderType;
 	String memberAmount;
 
