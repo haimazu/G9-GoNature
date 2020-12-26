@@ -42,7 +42,7 @@
                   <Insets left="14.0" />
                </padding>
             </Button>
-            <Button fx:id="btnEditOrDelete" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Delete Member" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="btnEditOrDelete" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Delete Member" textAlignment="CENTER" textFill="WHITE" visible="false">
                <graphic>
                   <FontAwesomeIconView glyphName="EDIT" size="16" />
                </graphic>
@@ -50,7 +50,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
+            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE" visible="false">
                <graphic>
                   <FontAwesomeIconView glyphName="COG" size="16" />
                </graphic>

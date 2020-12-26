@@ -30,7 +30,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import orderData.Order;
 import orderData.OrderType;
 import userData.Member;
 
@@ -56,27 +55,17 @@ public class ServiceRepresentativeController implements Initializable {
 	private JFXTextField txtEmail;
 	@FXML
 	private JFXTextField txtPhoneNumber;
-
-	@FXML
-	private JFXCheckBox cbGuideMember;
 	@FXML
 	private JFXTextField txtMembersAmount;
+	
+	
+	@FXML
+	private JFXCheckBox cbGuideMember;
+
 
 	@FXML
 	private Button btnCreditCard;
 
-	@FXML
-	private JFXTextField txtCardNumber;
-	@FXML
-	private JFXComboBox<?> cbxExpiryMonth;
-	@FXML
-	private JFXComboBox<?> cbxExpiryYear;
-	@FXML
-	private JFXTextField txtHolderName;
-	@FXML
-	private JFXTextField txtCVV;
-	@FXML
-	private Button btnSave;
 
 	@FXML
 	// add a new Member data into the db
@@ -85,9 +74,9 @@ public class ServiceRepresentativeController implements Initializable {
 		String id = txtId.getText();
 		// txtId.setText("111222333");
 		String firstName = txtFirstName.getText();
-		// txtFirstName.setText("roni");
+		// txtFirstName.setText("hodaya");
 		String lastName = txtLastName.getText();
-		// txtLastName.setText("haim");
+		// txtLastName.setText("mekonen");
 		String memberAmount = txtMembersAmount.getText();
 		// txtMembersAmount.setText("5");
 		String email = txtEmail.getText();
@@ -100,7 +89,8 @@ public class ServiceRepresentativeController implements Initializable {
 			return;
 		}
 		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput() && validEmailInput()) {
-
+			
+			//gets the member credit card details
 			CreditCard creditCard = CreditCardController.getDetails();
 			
 			
@@ -132,7 +122,7 @@ public class ServiceRepresentativeController implements Initializable {
 					alert.successAlert("Succesful", "A member add succesfuly");
 					ClearFields();
 				} else
-					alert.setAlert("Failed to add your member.");
+					alert.setAlert("Failed! the member u trying to insert allready exist.");
 			}
 
 			// member=guide
@@ -156,7 +146,7 @@ public class ServiceRepresentativeController implements Initializable {
 					alert.successAlert("Succesful", "A member add succesfuly");
 					ClearFields();
 				} else
-					alert.setAlert("Failed to add your member.");
+					alert.setAlert("Failed! the member u trying to insert allready exist.");
 			}
 
 		}
@@ -313,7 +303,9 @@ public class ServiceRepresentativeController implements Initializable {
 
 			}
 		});
-
+		
+			//check if the group member type has been selected
+			//if true set disable the member amount text field
 		cbGuideMember.selectedProperty().addListener((obs, oldValue, newValue) -> {
 
 			if (newValue)
