@@ -417,7 +417,9 @@ public class ParkManagerController implements Initializable {
 
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("requestForEmployeeID");
-		//msg.add()
+		msg.add(LoginController.getPassword());
+		msg.add(LoginController.getUsername());
+		ClientUI.sentToChatClient(msg);
 	}
 
 }
