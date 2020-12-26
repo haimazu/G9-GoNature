@@ -104,6 +104,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private JFXTextField txtRandomVisitorsAmount;
 
+	/***** Bottom Right Screen *****/
 	@FXML
 	private JFXRadioButton radEnter;
 	@FXML
@@ -126,6 +127,8 @@ public class ParkEmployeeController implements Initializable {
 	private static Park parkDetails;
 	private static String error = "";
 
+	// input: none
+	// output: moving to 'login' screen
 	@FXML
 	void logout(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
@@ -492,6 +495,10 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
+	// create fake order for the random visitors (for statistics)
+	// input: [0] case name 
+	//        [1] Order object
+	// output: get the new order details and prints the prices on the screen
 	public void createFakeOrder(String memberId, String id, int amountArrived) {
 		Order fakeOrder;
 		double randomVisitorDiscount = 0;
