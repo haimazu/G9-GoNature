@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 
+import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import userData.Member;
 
@@ -9,7 +10,7 @@ import userData.Member;
 public class NewMember {
 
 	// input: ArrayList<Object>: cell[0] function name
-	// cell[1] member object ,ConnectionToClient
+	// cell[1] member object, cell[2] credit card object ,ConnectionToClient
 	// inserting a new member:MEMBER\GUIDE in members table in DB
 	// output: ArrayList<Object>=> cell[0] function name
 	// cell[1] T/F
@@ -32,6 +33,8 @@ public class NewMember {
 			query.add(queryToString(memb)); // values in query format
 			MySQLConnection.insert(query);
 			answer.add(true);
+			if (recived.get(2) != null)
+				NewOrder.creditCardSave((CreditCard) recived.get(2));
 			EchoServer.sendToMyClient(answer, client);
 		}
 	}
@@ -58,15 +61,9 @@ public class NewMember {
 	// input: Member object
 	// output: ToString For DB query
 	public static String queryToString(Member memb) {
-		return "'" + memb.getMemberID() + "','" 
-				+ memb.getMemberFirstName() + "','" 
-				+ memb.getMemberLastName() + "','"
-				+ memb.getMemberNumber() + "','" 
-				+ memb.getMemberPhoneNumber() + "','" 
-				+ memb.getMemberEmail() + "','"
-				+ memb.getMemberPaymentType() + "','" 
-				+ memb.getMemberOrderType() + "','" 
-				+ memb.getMemberAmount()
+		return "'" + memb.getMemberID() + "','" + memb.getMemberFirstName() + "','" + memb.getMemberLastName() + "','"
+				+ memb.getMemberNumber() + "','" + memb.getMemberPhoneNumber() + "','" + memb.getMemberEmail() + "','"
+				+ memb.getMemberPaymentType() + "','" + memb.getMemberOrderType() + "','" + memb.getMemberAmount()
 				+ "'";
 	}
 }

@@ -25,51 +25,85 @@ public class Reports {
 
 	}
 
-	// input: ArrayList<Object>,ConnectionToClient
+	// input: ArrayList<Object>: cell[0] name
+	//						 	 cell[1] month
+	//   						 cell[2] year  ,ConnectionToClient
 	// Cancellation Report and visits lost
-	// output: list of cancelled orders
-	// public static void CancellationReport(ArrayList<Object> recived,
-	// ConnectionToClient client) {
-	public static void CancellationReport() {
+	// output: list of cancelled orders:
+	//ArrayList<Object>: cell[0] func_name
+	//						 	 cell[1] list of cancelled orders
+	//   						 cell[2] list of dismissed orders
+	 public static void CancellationReport(ArrayList<Object> recived,
+	 ConnectionToClient client) {
 		// Getting the current month
 		int currentmonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-		System.out.println(currentmonth);
-		int currentyear = Calendar.getInstance().get(Calendar.YEAR);
-		System.out.println(currentyear);
+		int month=(int)recived.get(1);
+		int year=(int)recived.get(2);
+		int day = 31;
+		if (month == currentmonth)
+			day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
 		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : ??
-		// answer.add(recived.get(0));************
+		answer.add(recived.get(0));
 		// cell 0: the service name
 
-		ArrayList<String> query = new ArrayList<String>();
-		query.add("select"); // command
-		query.add("canceledorders"); // table name
-		query.add("*"); // columns to select from
-		query.add("WHERE MONTH(arrivedTime) = '" + currentmonth + "'"); // condition
-		query.add("12"); // how many columns returned
-		System.out.println(query.toString());
-		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		System.out.println(queryData.get(0));
+		//pre-cancelled orders
+		ArrayList<String> query1 = new ArrayList<String>();
+		query1.add("select"); // command
+		query1.add("canceledorders"); // table name
+		query1.add("*"); // columns to select from
+		query1.add("WHERE MONTH(arrivedTime) = '" + month + "' AND YEAR(arrivedTime) = '" + year + "'"); // condition
+		query1.add("12"); // how many columns returned
+		System.out.println(query1.toString());
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
 		if (queryData.isEmpty()) {
 			// no canceled orders in this month
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
+			EchoServer.sendToMyClient(answer, client);
+			return;
 		} else {
 			ArrayList<ArrayList<String>> canceledOrders = new ArrayList<ArrayList<String>>();
 			for (ArrayList<String> a : queryData) {
 				ArrayList<String> oneOrderData = new ArrayList<String>();
 				for (String b : a)
 					oneOrderData.add(b);
+				canceledOrders.add(oneOrderData);
 			}
 			answer.add(canceledOrders);
-			for (ArrayList<String> a : canceledOrders) {
-				for (String b : a)
-					System.out.println(b + " ");
-				System.out.println("\n");
-			}
-			// EchoServer.sendToMyClient(answer, client);
+			System.out.println(canceledOrders);// **
+			
 		}
+
+		//Dismmised orders
+		ArrayList<String> query2 = new ArrayList<String>();
+		query2.add("select"); // command
+		query2.add("orders"); // table name
+		query2.add("*"); // columns to select from
+		query2.add("WHERE MONTH(arrivedTime) = '" + month + "' AND YEAR(arrivedTime) = '" + year
+				+ "' AND DAY(arrivedTime)<= '" + day + "' AND amountArrived='0'"); // condition
+		query2.add("12"); // how many columns returned
+		System.out.println(query2.toString());
+		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
+		if (queryData2.isEmpty()) {
+			// no canceled orders in this month
+			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
+			EchoServer.sendToMyClient(answer, client);
+			return;
+		} else {
+			ArrayList<ArrayList<String>> dismmisedOrders = new ArrayList<ArrayList<String>>();
+			for (ArrayList<String> a : queryData2) {
+				ArrayList<String> oneOrderData = new ArrayList<String>();
+				for (String b : a)
+					oneOrderData.add(b);
+				dismmisedOrders.add(oneOrderData);
+			}
+			answer.add(dismmisedOrders);
+			System.out.println(dismmisedOrders);
+			EchoServer.sendToMyClient(answer, client);
+		}
+		
 	}
 
 	public static void main(String[] args) {
@@ -78,10 +112,10 @@ public class Reports {
 		strArrLst.add("3306");
 		strArrLst.add("g9_gonature");
 		strArrLst.add("root");
-		//strArrLst.add("123456");
+		// strArrLst.add("123456");
 		strArrLst.add("Aa123456");
 		MySQLConnection.connectToDB(strArrLst);
-		CancellationReport();
+		//CancellationReport(12, 2020);
 	}
 
 }
