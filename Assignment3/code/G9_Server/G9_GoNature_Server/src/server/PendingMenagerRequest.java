@@ -12,6 +12,11 @@ public class PendingMenagerRequest {
 	//
 	// output:T/F
 	public static void InsertToPending(ArrayList<Object> recived, ConnectionToClient client) {
+		
+		//------Added by Rinat for tests ! please ask before delete :) ---//
+		System.out.println("Im in the server : "+ recived);
+		//---------------------------------------------------------------------//
+		
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : ??
 		answer.add(recived.get(0));

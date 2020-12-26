@@ -323,15 +323,21 @@ public class ParkManagerController implements Initializable {
 				Req.setDiscount(String.valueOf(1 - discountInPrecents));
 				Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				Req.setParkName(getParkName());
+				Req.setEmployeeID(0);// ??????
+				Req.setRequesttype("discount");
 				msg.add(Req);
+				System.out.println(msg);
 				ClientUI.sentToChatClient(msg);
-			}
+			
+			
 			if (discountAnswerFromServer)
 				alert.setAlert("Your request was sent and pending for deapartment manager approval.");
 			else
 				alert.setAlert(
 						"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
 
+		}
 		}
 	}
 
@@ -355,6 +361,7 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserver(boolean answer) {
 		setDiscountAnswerFromServer(answer);
+		System.out.println("I recevid from server : "+answer);
 
 	}
 
