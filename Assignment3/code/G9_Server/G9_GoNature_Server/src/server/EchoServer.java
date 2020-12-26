@@ -72,6 +72,11 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "checkFullDays":
 			EditOrder.checkFullDays(recived, client);
+		
+		case "parkManagerRequest":
+			PendingMenagerRequest.InsertToPending(recived, client);
+			break;
+		
 		default:
 			break;
 		}

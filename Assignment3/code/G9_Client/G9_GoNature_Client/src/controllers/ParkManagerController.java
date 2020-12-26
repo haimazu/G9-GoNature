@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
@@ -10,6 +11,7 @@ import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
+import client.ClientUI;
 import dataLayer.Park;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import reportData.ManagerRequest;
 
 public class ParkManagerController implements Initializable {
 	@FXML
@@ -142,7 +145,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSetDisc1;
-
+	private static ManagerRequest Req=null;
 	private static String firstName;
 	private static String parkName;
 	private AlertController alert = new AlertController();
@@ -177,7 +180,7 @@ public class ParkManagerController implements Initializable {
 		lblFirstNameTitle.setText(getFirstName());
 		setParkName(LoginController.getParkName());
 		lblParkName.setText(getParkName());
-		
+
 		txtDateFrom.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
@@ -198,8 +201,7 @@ public class ParkManagerController implements Initializable {
 		});
 
 		txtDateTo.setValue(LocalDate.now());
-		
-		
+
 	}
 
 	@FXML
@@ -219,7 +221,7 @@ public class ParkManagerController implements Initializable {
 		txtDateFrom.setVisible(true);
 		txtDateTo.setVisible(true);
 		btnSubmitDisc.setVisible(true);
-		
+
 		txtManageDsic.textProperty().addListener((obs, oldValue, newValue) -> {
 
 			// \\d -> only digits
@@ -249,7 +251,7 @@ public class ParkManagerController implements Initializable {
 		btnSetMaxByOrder.setVisible(false);
 		txtMaxcapByorder.setVisible(true);
 		btnSubmitCapacityByorder.setVisible(true);
-		
+
 		txtMaxcapByorder.textProperty().addListener((obs, oldValue, newValue) -> {
 
 			// \\d -> only digits
@@ -279,7 +281,7 @@ public class ParkManagerController implements Initializable {
 		btnSetVisitors.setVisible(false);
 		lblSetMax.setVisible(true);
 		btnSubmitVisits.setVisible(true);
-		
+
 		lblSetMax.textProperty().addListener((obs, oldValue, newValue) -> {
 
 			// \\d -> only digits
@@ -295,22 +297,35 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void submitPendingDiscount(ActionEvent event) {
+		
 		String discount = txtManageDsic.getText();
+		int integerDisc = Integer.parseInt(discount);
 		if (discount.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
+		else {
+			if(integerDisc>100)
+				alert.setAlert("You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
+			else {
+				ArrayList<Object> msg = new ArrayList<>();
+				msg.add("parkManagerRequest");
+				msg.add(data);
+				ClientUI.sentToChatClient(msg);
+			}
+			}
+	
 	}
 
 	@FXML
 	void submitVisitorsCapacityByorder(ActionEvent event) {
 		String capacity = lblSetMax.getText();
-		if(capacity.isEmpty())
+		if (capacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
 
 	@FXML
 	void submitVisitorsCapacity(ActionEvent event) {
 		String orderCapacity = txtMaxcapByorder.getText();
-		if(orderCapacity.isEmpty())
+		if (orderCapacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
 
