@@ -23,7 +23,6 @@ public class CancelOrder {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
-		
 		answer.add(deleteOrder(data.getOrderNumber()));
 		try {
 			client.sendToClient(answer);
@@ -51,7 +50,6 @@ public class CancelOrder {
 	// output: nada
 	public static void addToDBCanceledOrder(Order ord) {
 		ord.setOrderNumber(Counter.getCounter().cancelledCountNum());
-		System.out.println("cancell start");
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("insert"); // command
 		query.add("canceledorders"); // table name
