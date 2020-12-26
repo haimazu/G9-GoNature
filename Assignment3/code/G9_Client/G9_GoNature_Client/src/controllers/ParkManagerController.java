@@ -146,7 +146,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSetDisc1;
-	private static ManagerRequest Req=null;
+	private static ManagerRequest Req = null;
 	private static String firstName;
 	private static String parkName;
 	private AlertController alert = new AlertController();
@@ -298,26 +298,27 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void submitPendingDiscount(ActionEvent event) {
-		
+
 		String discount = txtManageDsic.getText();
 		int integerDisc = Integer.parseInt(discount);
-		double discountInPrecents =integerDisc/100;
+		double discountInPrecents = integerDisc / 100;
 		if (discount.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
 		else {
-			if(integerDisc>100)
-				alert.setAlert("You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
+			if (integerDisc > 100)
+				alert.setAlert(
+						"You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
 			else {
 				ArrayList<Object> msg = new ArrayList<>();
 				msg.add("parkManagerRequest");
-				Req.setDiscount(String.valueOf(1-discountInPrecents));
+				Req.setDiscount(String.valueOf(1 - discountInPrecents));
 				Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				msg.add(Req);
 				ClientUI.sentToChatClient(msg);
 			}
-			}
-	
+		}
+
 	}
 
 	@FXML
