@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -300,6 +301,7 @@ public class ParkManagerController implements Initializable {
 		
 		String discount = txtManageDsic.getText();
 		int integerDisc = Integer.parseInt(discount);
+		double discountInPrecents =integerDisc/100;
 		if (discount.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
 		else {
@@ -308,7 +310,10 @@ public class ParkManagerController implements Initializable {
 			else {
 				ArrayList<Object> msg = new ArrayList<>();
 				msg.add("parkManagerRequest");
-				msg.add(data);
+				Req.setDiscount(String.valueOf(1-discountInPrecents));
+				Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				msg.add(Req);
 				ClientUI.sentToChatClient(msg);
 			}
 			}
