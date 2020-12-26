@@ -135,7 +135,7 @@ public class ParkManagerController implements Initializable {
 	private Label lblPresentReservationCap;
 
 	@FXML
-	private JFXTextField lblMaxcapByorder;
+	private JFXTextField txtMaxcapByorder;
 
 	@FXML
 	private Button btnSubmitCapacityByorder;
@@ -206,7 +206,7 @@ public class ParkManagerController implements Initializable {
 	void setDiscount(ActionEvent event) {
 		if (!btnSetMaxByOrder.isVisible()) {
 			btnSetMaxByOrder.setVisible(true);
-			lblMaxcapByorder.setVisible(false);
+			txtMaxcapByorder.setVisible(false);
 			btnSubmitCapacityByorder.setVisible(false);
 		}
 		if (!btnSetVisitors.isVisible()) {
@@ -247,16 +247,16 @@ public class ParkManagerController implements Initializable {
 			btnSetVisitors.setVisible(true);
 		}
 		btnSetMaxByOrder.setVisible(false);
-		lblMaxcapByorder.setVisible(true);
+		txtMaxcapByorder.setVisible(true);
 		btnSubmitCapacityByorder.setVisible(true);
 		
-		lblMaxcapByorder.textProperty().addListener((obs, oldValue, newValue) -> {
+		txtMaxcapByorder.textProperty().addListener((obs, oldValue, newValue) -> {
 
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
-				lblMaxcapByorder.setText(newValue.replaceAll("[^\\d]", ""));
+				txtMaxcapByorder.setText(newValue.replaceAll("[^\\d]", ""));
 
 			}
 		});
@@ -273,7 +273,7 @@ public class ParkManagerController implements Initializable {
 		}
 		if (!btnSetMaxByOrder.isVisible()) {
 			btnSetMaxByOrder.setVisible(true);
-			lblMaxcapByorder.setVisible(false);
+			txtMaxcapByorder.setVisible(false);
 			btnSubmitCapacityByorder.setVisible(false);
 		}
 		btnSetVisitors.setVisible(false);
@@ -309,7 +309,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void submitVisitorsCapacity(ActionEvent event) {
-		String orderCapacity = lblMaxcapByorder.getText();
+		String orderCapacity = txtMaxcapByorder.getText();
 		if(orderCapacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
