@@ -47,8 +47,8 @@ public class Reports {
 		query.add("select"); // command
 		query.add("canceledorders"); // table name
 		query.add("*"); // columns to select from
-		query.add("WHERE MONTH(arrivedTime) = '" + currentmonth + "'"); // condition
-		query.add("1"); // how many columns returned
+		query.add("WHERE MONTH(arrivedTime) = '" + "1" + "'"); // condition
+		query.add("12"); // how many columns returned
 		System.out.println(query.toString());
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
@@ -74,6 +74,14 @@ public class Reports {
 	}
 
 	public static void main(String[] args) {
+		ArrayList<String> strArrLst = new ArrayList<String>();
+		strArrLst.add("localhost");
+		strArrLst.add("3306");
+		strArrLst.add("g9_gonature");
+		strArrLst.add("root");
+		//strArrLst.add("123456");
+		strArrLst.add("NewP@ssword4theSQL");
+		MySQLConnection.connectToDB(strArrLst);
 		CancellationReport();
 	}
 
