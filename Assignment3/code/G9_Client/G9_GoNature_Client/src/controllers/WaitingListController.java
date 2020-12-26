@@ -70,6 +70,8 @@ public class WaitingListController implements Initializable {
 							String[] arrDate = getDate(str, "Date");
 							LocalDate thisDate = LocalDate.of(Integer.parseInt(arrDate[0]),
 									Integer.parseInt(arrDate[1]), Integer.parseInt(arrDate[2]));
+//							LocalDate today = LocalDate.now();
+//							LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
 							if (item.compareTo(thisDate) == 0) {
 								setDisable(true);
 								// setStyle("-fx-background-color: #ffc0cb;");
@@ -220,6 +222,15 @@ public class WaitingListController implements Initializable {
 //		Dates.add("2021-01-30 08:00:00");
 //		Dates.add("2021-01-30 12:00:00");
 //		Dates.add("2021-01-30 16:00:00");
+		
+		txtdate.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
 //		
 		ArrayList<Object> sendServer = new ArrayList<>();
 		sendServer.add("checkFullDays");
