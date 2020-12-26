@@ -198,6 +198,8 @@ public class ParkManagerController implements Initializable {
 		});
 
 		txtDateTo.setValue(LocalDate.now());
+		
+		
 	}
 
 	@FXML
@@ -217,7 +219,17 @@ public class ParkManagerController implements Initializable {
 		txtDateFrom.setVisible(true);
 		txtDateTo.setVisible(true);
 		btnSubmitDisc.setVisible(true);
+		
+		txtManageDsic.textProperty().addListener((obs, oldValue, newValue) -> {
 
+			// \\d -> only digits
+			// * -> escaped special characters
+			if (!newValue.matches("\\d")) {
+				// ^\\d -> everything that not a digit
+				txtManageDsic.setText(newValue.replaceAll("[^\\d]", ""));
+
+			}
+		});
 	}
 
 	@FXML
@@ -237,6 +249,17 @@ public class ParkManagerController implements Initializable {
 		btnSetMaxByOrder.setVisible(false);
 		lblMaxcapByorder.setVisible(true);
 		btnSubmitCapacityByorder.setVisible(true);
+		
+		lblMaxcapByorder.textProperty().addListener((obs, oldValue, newValue) -> {
+
+			// \\d -> only digits
+			// * -> escaped special characters
+			if (!newValue.matches("\\d")) {
+				// ^\\d -> everything that not a digit
+				lblMaxcapByorder.setText(newValue.replaceAll("[^\\d]", ""));
+
+			}
+		});
 	}
 
 	@FXML
@@ -256,6 +279,17 @@ public class ParkManagerController implements Initializable {
 		btnSetVisitors.setVisible(false);
 		lblSetMax.setVisible(true);
 		btnSubmitVisits.setVisible(true);
+		
+		lblSetMax.textProperty().addListener((obs, oldValue, newValue) -> {
+
+			// \\d -> only digits
+			// * -> escaped special characters
+			if (!newValue.matches("\\d")) {
+				// ^\\d -> everything that not a digit
+				lblSetMax.setText(newValue.replaceAll("[^\\d]", ""));
+
+			}
+		});
 
 	}
 
