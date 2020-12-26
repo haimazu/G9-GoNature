@@ -3,7 +3,7 @@ package reportData;
 public class ManagerRequest {
 
 	int employeeID;
-	String requestType;
+	String requestType; //{discount, max_c, max_o}
 	int maxCapacity;
 	int ordersCapacity;
 	String discount;
