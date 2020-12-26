@@ -108,9 +108,9 @@ public class ChatClient extends AbstractClient {
 			case "parkManagerRequest":
 				ParkManagerController.recivedFromserver((boolean)received.get(1));
 				break;
-			case "getCancellationReports":
-				CancelReportsController.receivedFromServerVisitorsPrice(((ArrayList<Object>)received.get(1)));
-				break;
+//			case "getCancellationReports":
+//				CancelReportsController.receivedFromServerVisitorsPrice(((ArrayList<Object>)received.get(1)));
+//				break;
 			default:
 			break;
 		}
