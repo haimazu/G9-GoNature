@@ -47,10 +47,9 @@ public class Reports {
 		query.add("select"); // command
 		query.add("canceledorders"); // table name
 		query.add("*"); // columns to select from
-		query.add("WHERE MONTH(arrivedTime) = '" + "1" + "'"); // condition
+		query.add("WHERE MONTH(arrivedTime) = '" + currentmonth + "'"); // condition
 		query.add("12"); // how many columns returned
 		System.out.println(query.toString());
-
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		System.out.println(queryData.get(0));
 		if (queryData.isEmpty()) {
