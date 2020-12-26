@@ -23,7 +23,7 @@ public class CancelOrder {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
-		addToDBCanceledOrder(data);
+		
 		answer.add(deleteOrder(data.getOrderNumber()));
 		try {
 			client.sendToClient(answer);
@@ -32,6 +32,7 @@ public class CancelOrder {
 			e.printStackTrace();
 		}
 		waitlist.pullFromWaitList(recived);
+		addToDBCanceledOrder(data);
 	}
 
 	/// not working!!

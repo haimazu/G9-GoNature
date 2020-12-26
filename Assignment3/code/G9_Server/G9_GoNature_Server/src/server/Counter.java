@@ -50,6 +50,8 @@ class Counter {
 		query.add("ORDER BY " + Col + " DESC LIMIT 1");
 		query.add("1");
 		ArrayList<ArrayList<String>> lastNum = MySQLConnection.select(query);
+		if (lastNum.isEmpty())
+			return 0;
 		return Integer.parseInt(lastNum.get(0).get(0));
 	}
 }
