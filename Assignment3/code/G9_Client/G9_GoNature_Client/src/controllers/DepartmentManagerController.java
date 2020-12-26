@@ -10,6 +10,8 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -104,7 +107,7 @@ public class DepartmentManagerController implements Initializable {
     private TableColumn<TableViewSet, String> requestDetails;
 
     @FXML
-    private TableColumn<TableViewSet, JFXCheckBox> checkBox;
+    private TableColumn<TableViewSet, CheckBox> checkBox;
 
     @FXML
     private Label LabelCount;
@@ -113,12 +116,7 @@ public class DepartmentManagerController implements Initializable {
     private Button btnApprove;
 
     @FXML
-    private Button btnDisaprove;
-
-
-	@FXML
-	private JFXCheckBox agree;
-	
+    private Button btnDisaprove;	
 	
 	private static String firstName;
 	
@@ -151,7 +149,7 @@ public class DepartmentManagerController implements Initializable {
 
     @FXML
     void approve(ActionEvent event) {
-    	
+  
     }
 
     @FXML
@@ -165,7 +163,7 @@ public class DepartmentManagerController implements Initializable {
 			listForTable.add(arrayList.get(7));
 			listForTable.add(arrayList.get(1));
 			if(arrayList.get(1).equals("discount")) {
-				String str= "Discount : " + arrayList.get(4) + "%"+ " in the following dates: "+ arrayList.get(5) + " - "+arrayList.get(6);
+				String str= "Discount : " + arrayList.get(4) +"%"+ " in the following dates: "+ arrayList.get(5) + " - "+arrayList.get(6);
 				listForTable.add(str);
 			}
 			else if(arrayList.get(1).equals("max_c")) {
@@ -177,9 +175,8 @@ public class DepartmentManagerController implements Initializable {
 				listForTable.add(str);
 			}
 			
-			listForTable.add(agree);
+			listForTable.add(new CheckBox());
 			addRow(listForTable);
-			
 			listForTable.clear();
 		}
 	}
@@ -194,13 +191,14 @@ public class DepartmentManagerController implements Initializable {
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 		
-		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("parkName"));
-		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("requestType"));
-		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("requestDetails"));
-		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet,JFXCheckBox>(""));
+		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("ParkName"));
+		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("reqType"));
+		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("reqDetails"));
+		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet,CheckBox>("mark"));
+		
 		
 		ArrayList<String> msg = new ArrayList<>();
-		//msg.add("PemdingManagerRequests");
+		//msg.add("PendingManagerRequests");
 		//ClientUI.sentToChatClient(msg);
 		
 		msg.add("1234");

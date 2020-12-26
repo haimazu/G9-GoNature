@@ -166,12 +166,12 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="tableDep" focusTraversable="false" layoutX="14.0" layoutY="157.0" prefHeight="275.0" prefWidth="461.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="tableDep" focusTraversable="false" layoutX="11.0" layoutY="107.0" prefHeight="320.0" prefWidth="598.0" tableMenuButtonVisible="true">
                      <columns>
-                        <TableColumn fx:id="parkName" prefWidth="79.39999389648438" text="Park Name" />
-                        <TableColumn fx:id="requestType" prefWidth="91.79998779296875" text="Request Type" />
-                        <TableColumn fx:id="requestDetails" prefWidth="238.0" text="Requset Details" />
-                        <TableColumn fx:id="checkBox" prefWidth="36.0" />
+                        <TableColumn fx:id="parkName" prefWidth="74.0" text="Park Name" />
+                        <TableColumn fx:id="requestType" prefWidth="83.0" text="Request Type" />
+                        <TableColumn fx:id="requestDetails" prefWidth="379.0" text="Requset Details" />
+                        <TableColumn fx:id="checkBox" prefWidth="47.0" text="mark" />
                      </columns>
                   </TableView>
                   <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="20.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
@@ -189,8 +189,8 @@
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="506.0" layoutY="178.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnMiddleButtons" text="approve" />
-                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="506.0" layoutY="247.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" text="disapprove" />
+                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="242.0" layoutY="444.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnMiddleButtons" text="approve" />
+                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="334.0" layoutY="444.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" text="disapprove" />
                </children>
             </Pane>
          </children>

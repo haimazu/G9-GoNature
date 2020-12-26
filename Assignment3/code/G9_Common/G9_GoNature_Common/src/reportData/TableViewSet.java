@@ -4,13 +4,27 @@ import java.util.ArrayList;
 
 import com.jfoenix.controls.JFXCheckBox;
 
+import javafx.scene.control.CheckBox;
+
 public class TableViewSet {
 	
-	
-	String ParkName;
 	String reqType;
 	String reqDetails;
-	JFXCheckBox checkBox;
+	CheckBox mark;
+	String ParkName;
+	/**
+	 * @param parkName
+	 * @param reqType
+	 * @param reqDetails
+	 * @param checkBox
+	 */
+	public TableViewSet(String parkName, String reqType, String reqDetails, CheckBox mark) {
+		this.ParkName = parkName;
+		this.reqType = reqType;
+		this.reqDetails = reqDetails;
+		this.mark = mark;
+	}
+
 	
 	
 	/**
@@ -20,8 +34,12 @@ public class TableViewSet {
 		setParkName((String)arr.get(0));
 		setReqType((String) arr.get(1));
 		setReqDetails((String)arr.get(2));
-		setCheckBox((JFXCheckBox)arr.get(3));
+		setmark((CheckBox)arr.get(3));
 	}
+	
+
+
+
 	public String getParkName() {
 		return ParkName;
 	}
@@ -40,11 +58,11 @@ public class TableViewSet {
 	public void setReqDetails(String reqDetails) {
 		this.reqDetails = reqDetails;
 	}
-	public JFXCheckBox getCheckBox() {
-		return checkBox;
+	public CheckBox getmark() {
+		return mark;
 	}
-	public void setCheckBox(JFXCheckBox checkBox) {
-		this.checkBox = checkBox;
+	public void setmark(CheckBox checkBox) {
+		this.mark = checkBox;
 	}
 
 	
