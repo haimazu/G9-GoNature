@@ -33,8 +33,10 @@ public class NewMember {
 			query.add(queryToString(memb)); // values in query format
 			MySQLConnection.insert(query);
 			answer.add(true);
+			CreditCard cc = (CreditCard) recived.get(2);
+			cc.setOrderNumber(Integer.parseInt(memb.getMemberID()));
 			if (recived.get(2) != null)
-				NewOrder.creditCardSave((CreditCard) recived.get(2));
+				NewOrder.creditCardSave(cc);
 			EchoServer.sendToMyClient(answer, client);
 		}
 	}
