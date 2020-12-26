@@ -2,7 +2,10 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+
+import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
@@ -15,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
@@ -141,6 +145,7 @@ public class ParkManagerController implements Initializable {
 
 	private static String firstName;
 	private static String parkName;
+	private AlertController alert = new AlertController();
 
 	public static String getParkName() {
 		return parkName;
@@ -172,6 +177,27 @@ public class ParkManagerController implements Initializable {
 		lblFirstNameTitle.setText(getFirstName());
 		setParkName(LoginController.getParkName());
 		lblParkName.setText(getParkName());
+		
+		txtDateFrom.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+
+		txtDateFrom.setValue(LocalDate.now());
+		txtDateTo.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+
+		txtDateTo.setValue(LocalDate.now());
 	}
 
 	@FXML
@@ -235,17 +261,23 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void submitPendingDiscount(ActionEvent event) {
-		
+		String discount = txtManageDsic.getText();
+		if (discount.isEmpty())
+			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
 	}
 
 	@FXML
 	void submitVisitorsCapacityByorder(ActionEvent event) {
-
+		String capacity = lblSetMax.getText();
+		if(capacity.isEmpty())
+			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
 
 	@FXML
 	void submitVisitorsCapacity(ActionEvent event) {
-
+		String orderCapacity = lblMaxcapByorder.getText();
+		if(orderCapacity.isEmpty())
+			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
 
 	void presentParkData(Park parkDetails) {
