@@ -130,8 +130,8 @@ public class Reports {
 //		// cell 0: the service name
 
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
-		String startDate = dataFromClient.get(1);
-		String endDate = dataFromClient.get(2);
+		String startDate = dataFromClient.get(0);
+		String endDate = dataFromClient.get(1);
 		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
 
 		// pre-cancelled orders
@@ -149,16 +149,15 @@ public class Reports {
 			EchoServer.sendToMyClient(answer, client);
 			return;
 		} else {
-			ArrayList<ArrayList<String>> canceledOrders = new ArrayList<ArrayList<String>>();
-			for (ArrayList<String> a : queryData) {
-				ArrayList<String> oneOrderData = new ArrayList<String>();
-				for (String b : a)
-					oneOrderData.add(b);
-				canceledOrders.add(oneOrderData);
-			}
-			answer.add(canceledOrders);
-			System.out.println(canceledOrders);// **
-
+//			ArrayList<ArrayList<String>> canceledOrders = new ArrayList<ArrayList<String>>();
+//			for (ArrayList<String> a : queryData) {
+//				ArrayList<String> oneOrderData = new ArrayList<String>();
+//				for (String b : a)
+//					oneOrderData.add(b);
+//				canceledOrders.add(oneOrderData);
+//			}
+			answer.add(queryData);
+			System.out.println(queryData);// **
 		}
 
 		// Dismmised orders
@@ -166,7 +165,7 @@ public class Reports {
 		query2.add("select"); // command
 		query2.add("orders"); // table name
 		query2.add("*"); // columns to select from
-		query2.add("WHERE " + dateCond + "' AND amountArrived='0'"); // condition
+		query2.add("WHERE " + dateCond + " AND amountArrived='0'"); // condition
 		query2.add("12"); // how many columns returned
 		System.out.println(query2.toString());
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
