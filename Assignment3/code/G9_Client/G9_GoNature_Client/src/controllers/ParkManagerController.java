@@ -146,7 +146,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSetDisc1;
-	private static ManagerRequest Req = null;
+	private static ManagerRequest Req=new ManagerRequest(0,"",0,0,"","","","");
 	private static String firstName;
 	private static String parkName;
 	private AlertController alert = new AlertController();

@@ -1,6 +1,15 @@
 package reportData;
 
-public class ManagerRequest {
+import java.io.Serializable;
+
+public class ManagerRequest implements Serializable{
+
+	@Override
+	public String toString() {
+		return "ManagerRequest [employeeID=" + employeeID + ", requestType=" + requestType + ", maxCapacity="
+				+ maxCapacity + ", ordersCapacity=" + ordersCapacity + ", discount=" + discount + ", fromDate="
+				+ fromDate + ", toDate=" + toDate + ", parkName=" + parkName + "]";
+	}
 
 	int employeeID;
 	String requestType; //{discount, max_c, max_o}
