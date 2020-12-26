@@ -159,7 +159,6 @@ public class DepartmentManagerController implements Initializable {
 		btnDisaproveVis.setVisible(true);
 		
 		
-
 	}
 	
     @FXML
@@ -212,6 +211,8 @@ public class DepartmentManagerController implements Initializable {
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("PendingDetials");
 		ClientUI.sentToChatClient(msg);
+		
+		
 		
 	}
 }
