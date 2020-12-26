@@ -149,13 +149,6 @@ public class Reports {
 			EchoServer.sendToMyClient(answer, client);
 			return;
 		} else {
-//			ArrayList<ArrayList<String>> canceledOrders = new ArrayList<ArrayList<String>>();
-//			for (ArrayList<String> a : queryData) {
-//				ArrayList<String> oneOrderData = new ArrayList<String>();
-//				for (String b : a)
-//					oneOrderData.add(b);
-//				canceledOrders.add(oneOrderData);
-//			}
 			answer.add(queryData);
 			System.out.println(queryData);// **
 		}
@@ -175,15 +168,8 @@ public class Reports {
 			EchoServer.sendToMyClient(answer, client);
 			return;
 		} else {
-			ArrayList<ArrayList<String>> dismmisedOrders = new ArrayList<ArrayList<String>>();
-			for (ArrayList<String> a : queryData2) {
-				ArrayList<String> oneOrderData = new ArrayList<String>();
-				for (String b : a)
-					oneOrderData.add(b);
-				dismmisedOrders.add(oneOrderData);
-			}
-			answer.add(dismmisedOrders);
-			System.out.println(dismmisedOrders);
+			answer.add(queryData2);
+			System.out.println(queryData2);
 			EchoServer.sendToMyClient(answer, client);
 		}
 
