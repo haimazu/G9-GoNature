@@ -32,6 +32,8 @@ public class ManagerRequest implements Serializable{
 		this.toDate = toDate;
 		this.parkName = parkName;
 	}
+	
+	
 
 	public int getEmployeeID() {
 		return employeeID;
