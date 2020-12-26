@@ -152,7 +152,7 @@ public class WaitingListController implements Initializable {
 		for (String str : Dates) {
 			String[] TimesDates = getDate(str, "all");
 			if (TimesDates[0].equals(date)) {
-				for (String start : timeTmp) {
+				for (String start : time) {
 					String[] arr = start.split("-");
 					String  [] specificArrTime = arr[0].split(":");
 					String [] specificArrDate = TimesDates[1].split(":");
