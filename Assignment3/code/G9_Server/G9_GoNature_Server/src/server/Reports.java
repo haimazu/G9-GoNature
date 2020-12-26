@@ -40,17 +40,18 @@ public class Reports {
 	}
 
 	// When The Park Wasn't Full
-	//input: array list of objects contains:
-	//			[0] -> String "UsageReport"
-	//			[1]	-> Array list of String contains:
-	//						[0] -> String parkName (if all parks should be "all")
-	//						[1] -> String startDate in a following date format: (YYYY-MM-DD)
-	//						[2] -> String endDate in a following date format: (YYYY-MM-DD)
-	//output: NONE
-	//send to client: Array list that contains:
-	//						[0-n] -> Array list of string that contains: (n depends on number of entrys in the DB)
-	//									[0] -> date and time of a capsule that was not full
-	//									[1] -> Difference between max allowed and actual arrived
+	// input: array list of objects contains:
+	// [0] -> String "UsageReport"
+	// [1] -> Array list of String contains:
+	// [0] -> String parkName (if all parks should be "all")
+	// [1] -> String startDate in a following date format: (YYYY-MM-DD)
+	// [2] -> String endDate in a following date format: (YYYY-MM-DD)
+	// output: NONE
+	// send to client: Array list that contains:
+	// [0-n] -> Array list of string that contains: (n depends on number of entrys
+	// in the DB)
+	// [0] -> date and time of a capsule that was not full
+	// [1] -> Difference between max allowed and actual arrived
 	public static void UsageReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -115,25 +116,30 @@ public class Reports {
 	// cell[1] list of cancelled orders
 	// cell[2] list of dismissed orders
 	public static void CancellationReport(ArrayList<Object> recived, ConnectionToClient client) {
-		int month = (int) recived.get(1);
-		int year = (int) recived.get(2);
-		int day = 31;
-		int currentmonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-		if (month == currentmonth)
-			day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
-		// the returned values stored here
+//		int month = (int) recived.get(1);
+//		int year = (int) recived.get(2);
+//		int day = 31;
+//		int currentmonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+//		if (month == currentmonth)
+//			day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+//		
+//		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : ??
+//		// the service name : ??
 		answer.add(recived.get(0));
-		// cell 0: the service name
+//		// cell 0: the service name
+
+		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
+		String startDate = dataFromClient.get(1);
+		String endDate = dataFromClient.get(2);
+		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
 
 		// pre-cancelled orders
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
 		query1.add("canceledorders"); // table name
 		query1.add("*"); // columns to select from
-		query1.add("WHERE MONTH(arrivedTime) = '" + month + "' AND YEAR(arrivedTime) = '" + year + "'"); // condition
+		query1.add("WHERE " + dateCond); // condition
 		query1.add("12"); // how many columns returned
 		System.out.println(query1.toString());
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
@@ -160,8 +166,7 @@ public class Reports {
 		query2.add("select"); // command
 		query2.add("orders"); // table name
 		query2.add("*"); // columns to select from
-		query2.add("WHERE MONTH(arrivedTime) = '" + month + "' AND YEAR(arrivedTime) = '" + year
-				+ "' AND DAY(arrivedTime)<= '" + day + "' AND amountArrived='0'"); // condition
+		query2.add("WHERE " + dateCond + "' AND amountArrived='0'"); // condition
 		query2.add("12"); // how many columns returned
 		System.out.println(query2.toString());
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
