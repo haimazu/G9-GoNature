@@ -18,7 +18,6 @@ public class NewMember {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Member memb = (Member) recived.get(1);
-		memb.setMemberNumber("" + Counter.getCounter().memberNum());
 		// if member is already exists in DB
 		if (MemerCheck(memb.getMemberID())) {
 			answer.add(false);
