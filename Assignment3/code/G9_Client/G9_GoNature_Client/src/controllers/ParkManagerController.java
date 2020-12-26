@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
 import com.jfoenix.controls.JFXDatePicker;
@@ -151,6 +152,18 @@ public class ParkManagerController implements Initializable {
 	private static String parkName;
 	private AlertController alert = new AlertController();
 	private static boolean discountAnswerFromServer;
+	private static String empID;
+	private static String password;
+	private static String username;
+	
+
+	public static String getEmpID() {
+		return empID;
+	}
+
+	public static void setEmpID(String empID) {
+		ParkManagerController.empID = empID;
+	}
 
 	public static boolean isDiscountAnswerFromServer() {
 		return discountAnswerFromServer;
@@ -331,14 +344,33 @@ public class ParkManagerController implements Initializable {
 				ClientUI.sentToChatClient(msg);
 			
 			
-			if (discountAnswerFromServer)
+			if (discountAnswerFromServer) {
 				alert.successAlert("Request Info", "Your request was sent and pending for deapartment manager approval.");
-			else
+				btnSetDisc.setVisible(true);
+				txtManageDsic.setVisible(false);
+				txtDateFrom.setVisible(false);
+				txtDateTo.setVisible(false);
+				btnSubmitDisc.setVisible(false);
+				
+			}
+			else {
 				alert.setAlert("You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
-			Req=null;
+				btnSetDisc.setVisible(true);
+				txtManageDsic.setVisible(false);
+				txtDateFrom.setVisible(false);
+				txtDateTo.setVisible(false);
+				btnSubmitDisc.setVisible(false);
+			}
+			
 			
 		}
 		}
+		Req.setDiscount("");
+		Req.setFromDate("");
+		Req.setToDate("");
+		Req.setParkName("");
+		Req.setEmployeeID(0);// ??????
+		Req.setRequesttype("");
 	}
 
 	@FXML
@@ -346,7 +378,19 @@ public class ParkManagerController implements Initializable {
 		String capacity = lblSetMax.getText();
 		if (capacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
-		//else 
+		else 
+		{
+			ArrayList<Object> msg = new ArrayList<>();
+			msg.add("parkManagerRequest");
+			//Req.setDiscount(String.valueOf(1 - discountInPrecents));
+			Req.setParkName(getParkName());
+			Req.setEmployeeID(0);// ??????
+			Req.setRequesttype("discount");
+			msg.add(Req);
+			System.out.println(msg);
+			ClientUI.sentToChatClient(msg);
+			
+		}
 			
 	}
 
@@ -364,7 +408,16 @@ public class ParkManagerController implements Initializable {
 	public static void recivedFromserver(boolean answer) {
 		setDiscountAnswerFromServer(answer);
 		
+	}
+	public static void recivedFromserverEmployeeID(String answer) {
+		setEmpID(answer);
+		
+	}
+	public void RequestForEmployeeID() {
 
+		ArrayList<Object> msg = new ArrayList<>();
+		msg.add("requestForEmployeeID");
+		//msg.add()
 	}
 
 }
