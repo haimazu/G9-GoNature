@@ -183,7 +183,7 @@
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnReload1" focusTraversable="false" layoutX="334.0" layoutY="18.0" mnemonicParsing="false" onAction="#seeAll" prefHeight="31.0" prefWidth="57.0" styleClass="btnMiddleButtons" text="see all" />
+                  <Button fx:id="btnSeeAll" focusTraversable="false" layoutX="334.0" layoutY="18.0" mnemonicParsing="false" onAction="#seeAll" prefHeight="31.0" prefWidth="57.0" styleClass="btnMiddleButtons" text="see all" />
                   <JFXTextField fx:id="txtDiscount" focusTraversable="false" labelFloat="true" layoutX="10.0" layoutY="115.0" prefHeight="40.0" prefWidth="145.0" promptText="Discount (%)" styleClass="txtField" />
                   <Label alignment="TOP_LEFT" layoutX="12.0" layoutY="89.0" prefHeight="26.0" prefWidth="174.0" styleClass="labelBold" text="Confirm discount">
                      <font>

@@ -69,13 +69,13 @@ public class CreditCardController implements Initializable {
 		
 		try {
 			
-				
-				details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
-						Integer.parseInt(txtCVV.getText()), myOrder.getOrderNumber());
-				
-			}
+
+                details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
+                        Integer.parseInt(txtCVV.getText()));
+
+          
 		
-			catch(NullPointerException e){
+		}catch(NullPointerException e){
 				
 				details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
 						Integer.parseInt(txtCVV.getText()),0);
