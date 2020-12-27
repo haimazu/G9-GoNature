@@ -30,7 +30,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import reportData.CancelReport;
+import orderData.Order;
+import reportData.CanceledReport;
 import reportData.TableViewSet;
 
 public class DepartmentManagerController implements Initializable {
@@ -100,7 +101,9 @@ public class DepartmentManagerController implements Initializable {
 
 	/***** Cancel Reports Variables *****/
 	//private static ArrayList<ArrayList<Report>> cancelReportsDetails = new ArrayList<>();
-	private static ArrayList<CancelReport> cancelReportsDetails = new ArrayList<>();
+	private static ArrayList<ArrayList<String>> allCancelledOrders = new ArrayList<>();
+	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
+	private static ArrayList<Order> dismissedOrders = new ArrayList<>();
 
 	/***** Dashboard Variables *****/
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
@@ -245,29 +248,26 @@ public class DepartmentManagerController implements Initializable {
 		bcCancells.getData().clear();
 		bcCancells.setAnimated(false);
 		bcCancells.setBarGap(0d);
-		bcCancells.setCategoryGap(1.0);
+		bcCancells.setCategoryGap(2.0);
 		
-		bcCancells.setTitle("Graph Cancellation Reports");
+		bcCancells.setTitle("Cancellation/Dismissed Reports");
 		
 		Series<String, Double> disney = new Series<>();
 		Series<String, Double> jurasic = new Series<>();
 		Series<String, Double> universal = new Series<>();
 		
-		for (int i = 0; i < 30; i++) {
+		for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
+		    int i = date.getDayOfMonth();
+		    
 			disney.setName("Disney");       
+			// x = day of the month, y = sum of cancel
 			disney.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
-			disney.getData().add(new XYChart.Data(Integer.toString(i), 148.82));
-			disney.getData().add(new XYChart.Data(Integer.toString(i), 100));    
 	        			
 	        jurasic.setName("Jurasic");
 	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
-	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 941.19));
-	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 263.37));
 	        	        
 	        universal.setName("Universal");
 	        universal.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
-	        universal.getData().add(new XYChart.Data(Integer.toString(i), 448.76));
-	        universal.getData().add(new XYChart.Data(Integer.toString(i), 187.18));
 		}
         
         bcCancells.getData().addAll(disney, jurasic, universal);
@@ -294,8 +294,9 @@ public class DepartmentManagerController implements Initializable {
 	// ArrayList<Object>: cell[0] list of cancelled orders
 	// 					  cell[1] list of dismissed orders
 	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> data) {
-
-		System.out.println(data.size());
+		allCancelledOrders = data;
+		CanceledReport c = new CanceledReport(allCancelledOrders.get(0));
+		System.out.println(c);
 	}
 	
 	public static ArrayList<ArrayList<String>> getDBList() {

@@ -104,7 +104,7 @@
             <Pane fx:id="pnCancels" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
                   <JFXDatePicker fx:id="dpFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
-                  <JFXDatePicker fx:id="dpTo" focusTraversable="false" layoutX="296.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
                   <BarChart fx:id="bcCancells" barGap="5.0" layoutX="10.0" layoutY="86.0" prefHeight="430.0" prefWidth="598.0">
                      <xAxis>
                         <CategoryAxis label="Day in month" side="BOTTOM" fx:id="xAxis">
@@ -114,7 +114,7 @@
                         </CategoryAxis>
                      </xAxis>
                      <yAxis>
-                        <NumberAxis fx:id="yAxis" label="Amount of cancellations" prefHeight="381.0" prefWidth="59.0" side="LEFT">
+                        <NumberAxis fx:id="yAxis" label="Amount" prefHeight="381.0" prefWidth="59.0" side="LEFT">
                            <tickLabelFont>
                               <Font name="System Bold" size="11.0" />
                            </tickLabelFont>
@@ -124,7 +124,8 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
-                  <Button fx:id="btnShow" focusTraversable="false" layoutX="521.0" layoutY="34.0" mnemonicParsing="false" onAction="#show" styleClass="btnMiddle" text="Show" />
+                  <Button fx:id="btnShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#show" styleClass="btnSmallGreen" text="Show" />
+                  <Button fx:id="btnPrint" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Print" />
                </children>
             </Pane>
             <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css" />

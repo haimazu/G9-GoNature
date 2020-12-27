@@ -116,18 +116,11 @@ public class Reports {
 	// cell[1] list of cancelled orders
 	// cell[2] list of dismissed orders
 	public static void CancellationReport(ArrayList<Object> recived, ConnectionToClient client) {
-//		int month = (int) recived.get(1);
-//		int year = (int) recived.get(2);
-//		int day = 31;
-//		int currentmonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-//		if (month == currentmonth)
-//			day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-//		
-//		// the returned values stored here
+		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();
-//		// the service name : ??
+		// the service name : getCancellationReports
+		// cell 0: the service name
 		answer.add(recived.get(0));
-//		// cell 0: the service name
 
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		String startDate = dataFromClient.get(0);

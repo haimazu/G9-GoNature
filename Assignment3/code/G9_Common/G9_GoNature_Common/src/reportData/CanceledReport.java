@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import orderData.OrderType;
 
 @SuppressWarnings("serial")
-public class CancelReport implements Serializable {
+public class CanceledReport implements Serializable {
 	private int visitorsNumber;
 	private String email;
 	private String phoneNumber;
@@ -20,7 +20,7 @@ public class CancelReport implements Serializable {
 	private int amountArrived;
 	private int orderNumber;
 
-	public CancelReport(ArrayList<String> cancelReportFromDB) {
+	public CanceledReport(ArrayList<String> cancelReportFromDB) {
 		this.visitorsNumber = Integer.parseInt(cancelReportFromDB.get(0));
 		this.email = cancelReportFromDB.get(1);
 		this.phoneNumber = cancelReportFromDB.get(2);
