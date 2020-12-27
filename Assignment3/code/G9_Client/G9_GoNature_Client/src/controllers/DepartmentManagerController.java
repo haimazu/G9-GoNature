@@ -30,7 +30,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import orderData.Order;
 import reportData.CancelReport;
 import reportData.TableViewSet;
 
@@ -232,15 +231,22 @@ public class DepartmentManagerController implements Initializable {
 			data.add(fromFormat);
 			data.add(toFormat);
 			sendToServerArrayList(data);
+			
+			// show all data
+			chart();
 		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chart() {
+		xAxis = new CategoryAxis();
+		yAxis = new NumberAxis(0, 1000, 50);
+		
 		bcCancells.getData().clear();
 		bcCancells.setAnimated(false);
 		bcCancells.setBarGap(0d);
 		bcCancells.setCategoryGap(1.0);
+		
 		bcCancells.setTitle("Graph Cancellation Reports");
 		
 		Series<String, Double> disney = new Series<>();
@@ -249,19 +255,19 @@ public class DepartmentManagerController implements Initializable {
 		
 		for (int i = 0; i < 30; i++) {
 			disney.setName("Disney");       
-			disney.getData().add(new XYChart.Data(Integer.toString(i), 25601.34));
-			disney.getData().add(new XYChart.Data(Integer.toString(i), 20148.82));
-			disney.getData().add(new XYChart.Data(Integer.toString(i), 10000));    
+			disney.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
+			disney.getData().add(new XYChart.Data(Integer.toString(i), 148.82));
+			disney.getData().add(new XYChart.Data(Integer.toString(i), 100));    
 	        			
 	        jurasic.setName("Jurasic");
-	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 57401.85));
-	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 41941.19));
-	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 45263.37));
+	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
+	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 941.19));
+	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 263.37));
 	        	        
 	        universal.setName("Universal");
-	        universal.getData().add(new XYChart.Data(Integer.toString(i), 45000.65));
-	        universal.getData().add(new XYChart.Data(Integer.toString(i), 44835.76));
-	        universal.getData().add(new XYChart.Data(Integer.toString(i), 18722.18));
+	        universal.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
+	        universal.getData().add(new XYChart.Data(Integer.toString(i), 448.76));
+	        universal.getData().add(new XYChart.Data(Integer.toString(i), 187.18));
 		}
         
         bcCancells.getData().addAll(disney, jurasic, universal);
@@ -330,11 +336,7 @@ public class DepartmentManagerController implements Initializable {
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
 		
-		/***** Cancel Reports *****/
-		
-		// show all data
-		chart();
-		
+		/***** Cancel Reports *****/	
 		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
 		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
