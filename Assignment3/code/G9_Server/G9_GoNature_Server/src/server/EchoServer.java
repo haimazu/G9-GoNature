@@ -25,6 +25,9 @@ public class EchoServer extends AbstractServer {
 		case "login":
 			Login.login(recived, client);
 			break;
+		case "updateLoggedIn":
+			Login.updateLoggedInStatus(recived, client);
+			break;
 		case "orderParksNameList":
 			NewOrder.parksNames(recived, client);
 			break;

@@ -55,7 +55,10 @@ public class ChatClient extends AbstractClient {
 		ArrayList<Object> received = (ArrayList<Object>) msg;
 		switch ((String)received.get(0)) {
 			case "login":
-				LoginController.receivedFromServer(((ArrayList<String>)received.get(1)));
+				LoginController.receivedFromServerUserStatus((Object)received.get(1));
+				break;
+			case "updateLoggedIn":
+				LoginController.receivedFromServerLoggedInStatus((boolean)received.get(1));
 				break;
 			case "orderParksNameList":
 				OrderController.recivedFromServerParksNames(((ArrayList<String>)received.get(1)));
