@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
@@ -37,7 +36,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="DASHBOARD" size="15" />
                </graphic>
@@ -45,7 +44,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnVisitsReport" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Visits Report" textFill="WHITE">
+            <Button fx:id="btnVisitsReport" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Visits Report" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="USERS" size="15" />
                </graphic>
@@ -53,7 +52,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnCancelsReport" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Cancels Report" textFill="WHITE">
+            <Button fx:id="btnCancelsReport" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Cancels Report" textFill="WHITE">
                <padding>
                   <Insets left="14.0" />
                </padding>
@@ -61,7 +60,7 @@
                   <FontAwesomeIconView glyphName="BAN" size="16" />
                </graphic>
             </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
+            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="COG" size="16" />
                </graphic>
@@ -128,56 +127,8 @@
                   <Button fx:id="btnShow" focusTraversable="false" layoutX="521.0" layoutY="58.0" mnemonicParsing="false" onAction="#show" styleClass="btnMiddle" text="Show" />
                </children>
             </Pane>
-            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css" visible="false">
-               <children>
-                  <BarChart fx:id="visitsChart" barGap="5.0" layoutX="13.0" layoutY="83.0" prefHeight="430.0" prefWidth="598.0">
-                     <xAxis>
-                        <CategoryAxis label="Visitors Type" side="BOTTOM" fx:id="xAxis">
-                           <tickLabelFont>
-                              <Font name="System Bold" size="11.0" />
-                           </tickLabelFont>
-                        </CategoryAxis>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis fx:id="yAxis" label="hours" prefHeight="381.0" prefWidth="59.0" side="LEFT">
-                           <tickLabelFont>
-                              <Font name="System Bold" size="11.0" />
-                           </tickLabelFont>
-                        </NumberAxis>
-                     </yAxis>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </BarChart>
-                  <Label alignment="TOP_LEFT" layoutX="197.0" layoutY="14.0" prefHeight="26.0" prefWidth="257.0" styleClass="labelBold" text="Hours tracking in the park">
-                     <font>
-                        <Font name="Ebrima Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnReload" focusTraversable="false" layoutX="542.0" layoutY="57.0" mnemonicParsing="false" styleClass="btnMiddleButtons" text="Reload" />
-                  <Button fx:id="btnLoad" focusTraversable="false" layoutX="255.0" layoutY="57.0" mnemonicParsing="false" styleClass="btnMiddleButtons" text="Load" />
-                  <Button fx:id="btnPrevPark" layoutX="246.0" layoutY="430.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@Actions-arrow-left-icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnNextPark" layoutX="388.0" layoutY="430.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@Actions-arrow-right-icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <JFXTextField focusTraversable="false" layoutX="88.0" layoutY="42.0" promptText="Park Name" styleClass="txtField" />
-               </children>
-            </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
+            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css" />
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <Label layoutX="26.0" layoutY="220.0" styleClass="labelBold" text="Last 10 reports:" visible="false">
                      <font>
