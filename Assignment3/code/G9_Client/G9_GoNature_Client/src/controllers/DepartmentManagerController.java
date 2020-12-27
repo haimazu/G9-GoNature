@@ -28,6 +28,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import reportData.CancelReport;
+import reportData.Report;
 import reportData.TableViewSet;
 
 public class DepartmentManagerController implements Initializable {
@@ -96,7 +98,8 @@ public class DepartmentManagerController implements Initializable {
 	private static String firstName;
 
 	/***** Cancel Reports Variables *****/
-	private static ArrayList<Object> cancelReportsDetails = new ArrayList<>();
+	//private static ArrayList<ArrayList<Report>> cancelReportsDetails = new ArrayList<>();
+	private static ArrayList<CancelReport> cancelReportsDetails = new ArrayList<>();
 
 	/***** Dashboard Variables *****/
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
@@ -237,6 +240,16 @@ public class DepartmentManagerController implements Initializable {
 			sendToServerArrayList(data);
 		}
 	}
+	
+	public void chart() {
+		bcCancells.getData().clear();
+		bcCancells.setAnimated(false);
+		bcCancells.setBarGap(0d);
+		bcCancells.setCategoryGap(1.0);
+		bcCancells.setTitle("Graph Cancellation Reports");
+		
+		
+	}	
 
 	// ArrayList<String> data, sending to the server to get data
 	// input: [0] case name
@@ -256,12 +269,20 @@ public class DepartmentManagerController implements Initializable {
 	// getting information from the server
 	// input: none
 	// output: list of cancelled orders:
-	// ArrayList<Object>: cell[0] case name
-	// cell[1] list of cancelled orders
-	// cell[2] list of dismissed orders
-	public static void receivedFromServerVisitorsPrice(ArrayList<Object> msgReceived) {
-		DepartmentManagerController.cancelReportsDetails = msgReceived;
+	// ArrayList<ArrayList<Report>>: cell[0] all the cancels reports
+	// 							     cell[1] list of cancelled orders
+	// 								 cell[2] list of dismissed orders
+	public static void receivedFromServerCancelReportsData(ArrayList<String> arrayList) {	
+//		while (!arrayList.isEmpty()) {
+//			cancelReportsDetails.add(new CancelReport(arrayList));
+//			arrayList.remove(0);
+//		}
 	}
+	
+	public static ArrayList<CancelReport> getCancelReportsDetails() {
+		return DepartmentManagerController.cancelReportsDetails;
+	}
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -294,6 +315,10 @@ public class DepartmentManagerController implements Initializable {
 		addData(DBList);
 		
 		/***** Cancel Reports *****/
+		
+		// show all data
+		chart();
+		
 		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
 		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {

@@ -1,5 +1,7 @@
 package reportData;
 
+import java.util.ArrayList;
+
 import orderData.DateAndTime;
 
 public class Report {
@@ -33,8 +35,6 @@ public class Report {
 		this.cancleOrder = cancleOrder;
 		this.reportType = reportType;
 	}
-	
-	
 	
 	public int getTotalVisitorCapacity() {
 		return totalVisitorCapacity;
