@@ -141,6 +141,8 @@ public class ServerController implements Initializable {
 			@Override
 			public void handle(WindowEvent t) {
 				System.out.println("emergency exit");
+				Login.disconnectAllUsers();
+				System.out.println("All users have been disconnected.");
 				if(ServerUI.isServerUP())
 					ServerUI.stopServer();
 				if(ServerUI.isDBup())

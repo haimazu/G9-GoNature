@@ -7,24 +7,24 @@ import ocsf.server.ConnectionToClient;
 
 public class Login {
 	// input: ArrayList of objects ->
-	//	in cell 0: the client function who called for service (in that case "login")
-	//	in cell 1: ArrayList of String ->
-	//					in cell 0: user name
-	//					in cell 1: password
-	//the function add the relevant data for the query and call MySQLConnection
-	//output: none (send to client with ServerController)
-	//send to client: ArrayList of objects ->
-	//			in cell 0: the client function who called for service (in that case "login")
-	//			in cell 1: ArrayList of String ->
-	//							{if failed:} in cell 0: the string "failed"
-	//							{if success:} in cell 0: the employee role as string
+	// in cell 0: the client function who called for service (in that case "login")
+	// in cell 1: ArrayList of String ->
+	// in cell 0: user name
+	// in cell 1: password
+	// the function add the relevant data for the query and call MySQLConnection
+	// output: none (send to client with ServerController)
+	// send to client: ArrayList of objects ->
+	// in cell 0: the client function who called for service (in that case "login")
+	// in cell 1: ArrayList of String ->
+	// {if failed:} in cell 0: the string "failed"
+	// {if success:} in cell 0: the employee role as string
 	@SuppressWarnings("unchecked")
 	public static void login(ArrayList<Object> recived, ConnectionToClient client) {
 		// add if db up later
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
-		
+
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
 		query.add("employee");
@@ -42,16 +42,18 @@ public class Login {
 	}
 
 	// input: ArrayList of objects ->
-	//	in cell 0: the client function who called for service (in that case "updateLoggedIn")
-	//	in cell 1: ArrayList of String ->
-	//					in cell 0: user name
-	//					in cell 1: loggedin status
-	//the function add the relevant data for the query and call MySQLConnection
-	//output: none (send to client with ServerController)
-	//send to client: ArrayList of objects ->
-	//			in cell 0: the client function who called for service (in that case "updateLoggedIn")
-	//			in cell 1: boolean value -> {if failed:} ==> false
-	//									    {if success:} ==> true
+	// in cell 0: the client function who called for service (in that case
+	// "updateLoggedIn")
+	// in cell 1: ArrayList of String ->
+	// in cell 0: user name
+	// in cell 1: loggedin status
+	// the function add the relevant data for the query and call MySQLConnection
+	// output: none (send to client with ServerController)
+	// send to client: ArrayList of objects ->
+	// in cell 0: the client function who called for service (in that case
+	// "updateLoggedIn")
+	// in cell 1: boolean value -> {if failed:} ==> false
+	// {if success:} ==> true
 	@SuppressWarnings("unchecked")
 	public static void updateLoggedInStatus(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
@@ -70,5 +72,33 @@ public class Login {
 
 		answer.add(MySQLConnection.update(query));
 		EchoServer.sendToMyClient(answer, client);
+	}
+
+	public static void disconnectAllUsers() {
+		// get all the users in the system
+		ArrayList<String> selectQuery = new ArrayList<String>();
+		selectQuery.add("select");
+		selectQuery.add("employee");
+		selectQuery.add("username");
+		selectQuery.add("");
+		selectQuery.add("1");
+
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(selectQuery);
+
+		for (int i = 0; i < queryData.size(); i++) {
+			userToUpdate(queryData.get(i).get(0));
+		}
+	}
+
+	public static void userToUpdate(String username) {
+		// update all the users as logged out
+		ArrayList<String> updateQuery = new ArrayList<String>();
+		updateQuery.add("update"); // command
+		updateQuery.add("employee"); // table name
+		updateQuery.add("loggedin = '" + 0 + "'"); // columns to update
+		updateQuery.add("username"); // condition
+		updateQuery.add(username); // username value
+		
+		MySQLConnection.update(updateQuery);
 	}
 }
