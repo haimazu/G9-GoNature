@@ -1,17 +1,11 @@
 package controllers;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXTextField;
-
 import client.ClientUI;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,99 +24,96 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import reportData.ManagerRequest;
 import reportData.TableViewSet;
 
 public class DepartmentManagerController implements Initializable {
 
-
+	@FXML
+	private Button btnDashboard;
 
 	@FXML
-    private Button btnDashboard;
+	private Button btnVisitsReport;
 
-    @FXML
-    private Button btnVisitsReport;
+	@FXML
+	private Button btnCancelsReport;
 
-    @FXML
-    private Button btnCancelsReport;
+	@FXML
+	private Button btnSettings;
 
-    @FXML
-    private Button btnSettings;
+	@FXML
+	private Label lblTitle;
 
-    @FXML
-    private Label lblTitle;
+	@FXML
+	private Button btnLogout;
 
-    @FXML
-    private Button btnLogout;
+	@FXML
+	private Label lblFirstNameTitle;
 
-    @FXML
-    private Label lblFirstNameTitle;
+	@FXML
+	private StackPane pnStack;
 
-    @FXML
-    private StackPane pnStack;
+	@FXML
+	private Pane pnSettings;
 
-    @FXML
-    private Pane pnSettings;
+	@FXML
+	private Pane pnCancels;
 
-    @FXML
-    private Pane pnCancels;
+	@FXML
+	private Pane pnVisits;
 
-    @FXML
-    private Pane pnVisits;
+	@FXML
+	private BarChart<?, ?> visitsChart;
 
-    @FXML
-    private BarChart<?, ?> visitsChart;
+	@FXML
+	private CategoryAxis xAxis;
 
-    @FXML
-    private CategoryAxis xAxis;
+	@FXML
+	private NumberAxis yAxis;
 
-    @FXML
-    private NumberAxis yAxis;
+	@FXML
+	private Button btnReload;
 
-    @FXML
-    private Button btnReload;
+	@FXML
+	private Button btnLoad;
 
-    @FXML
-    private Button btnLoad;
+	@FXML
+	private Button btnPrevPark;
 
-    @FXML
-    private Button btnPrevPark;
+	@FXML
+	private Button btnNextPark;
 
-    @FXML
-    private Button btnNextPark;
+	@FXML
+	private Pane pnDashboard;
 
-    @FXML
-    private Pane pnDashboard;
+	@FXML
+	private TableView<TableViewSet> tableDep;
 
-    @FXML
-    private TableView<TableViewSet> tableDep;
-    
-    @FXML
-    private TableColumn<TableViewSet, String> parkName;
+	@FXML
+	private TableColumn<TableViewSet, String> parkName;
 
-    @FXML
-    private TableColumn<TableViewSet, String> requestType;
+	@FXML
+	private TableColumn<TableViewSet, String> requestType;
 
-    @FXML
-    private TableColumn<TableViewSet, String> requestDetails;
+	@FXML
+	private TableColumn<TableViewSet, String> requestDetails;
 
-    @FXML
-    private TableColumn<TableViewSet, CheckBox> checkBox;
+	@FXML
+	private TableColumn<TableViewSet, CheckBox> checkBox;
 
-    @FXML
-    private Label LabelCount;
+	@FXML
+	private Label LabelCount;
 
-    @FXML
-    private Button btnApprove;
+	@FXML
+	private Button btnApprove;
 
-    @FXML
-    private Button btnDisaprove;	
-	
+	@FXML
+	private Button btnDisaprove;
+
 	private static String firstName;
-	
-	private static ArrayList<ArrayList<String>> DBList=new ArrayList<>();
 
-	private int count=0;
+	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
+
+	private int count = 0;
 
 	public static ArrayList<ArrayList<String>> getDBList() {
 		return DBList;
@@ -133,21 +124,21 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	@FXML
-	void logout(ActionEvent event) throws IOException {		
+	void logout(ActionEvent event) throws IOException {
 		// Data fields
 		ArrayList<String> data = new ArrayList<String>();
 		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();	
-				
+		ArrayList<Object> msg = new ArrayList<Object>();
+
 		msg.add("updateLoggedIn");
 		// update as loggedin as logged out
 		data.add(LoginController.getUsername());
 		data.add(String.valueOf(0));
 		// Data fields
-		msg.add(data);	
+		msg.add(data);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
-				
+
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
@@ -161,40 +152,39 @@ public class DepartmentManagerController implements Initializable {
 		DepartmentManagerController.firstName = firstName;
 	}
 
-    @FXML
-    void approve(ActionEvent event) {
-  
-    }
+	@FXML
+	void approve(ActionEvent event) {
 
-    @FXML
-    void disapprove(ActionEvent event) {
+	}
 
-    }
-	
+	@FXML
+	void disapprove(ActionEvent event) {
+
+	}
+
 	public void addData(ArrayList<ArrayList<String>> al) {
 		ArrayList<Object> listForTable = new ArrayList<>();
 		for (ArrayList<String> arrayList : al) {
 			listForTable.add(arrayList.get(7));
 			listForTable.add(arrayList.get(1));
-			if(arrayList.get(1).equals("discount")) {
-				String str= "Discount : " + arrayList.get(4) +"%"+ " in the following dates: "+ arrayList.get(5) + " - "+arrayList.get(6);
+			if (arrayList.get(1).equals("discount")) {
+				String str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + arrayList.get(5)
+						+ " - " + arrayList.get(6);
 				listForTable.add(str);
-			}
-			else if(arrayList.get(1).equals("max_c")) {
+			} else if (arrayList.get(1).equals("max_c")) {
 				String str = "Visitors Capacity : " + arrayList.get(2);
 				listForTable.add(str);
-			}
-			else if(arrayList.get(1).equals("max_o")) {
+			} else if (arrayList.get(1).equals("max_o")) {
 				String str = "Visitors Order Capacity : " + arrayList.get(3);
 				listForTable.add(str);
 			}
-			
+
 			listForTable.add(new CheckBox());
 			addRow(listForTable);
 			listForTable.clear();
 		}
 	}
-	
+
 	public void addRow(ArrayList<Object> al) {
 		tableDep.getItems().add(new TableViewSet(al));
 	}
@@ -204,17 +194,16 @@ public class DepartmentManagerController implements Initializable {
 		// TODO Auto-generated method stub
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
-		
-		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("ParkName"));
-		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("reqType"));
-		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet,String>("reqDetails"));
-		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet,CheckBox>("mark"));
-		
-		
+
+		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
+		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
+		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
+		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet, CheckBox>("mark"));
+
 		ArrayList<String> msg = new ArrayList<>();
-		//msg.add("PendingManagerRequests");
-		//ClientUI.sentToChatClient(msg);
-		
+		// msg.add("PendingManagerRequests");
+		// ClientUI.sentToChatClient(msg);
+
 		msg.add("1234");
 		msg.add("discount");
 		msg.add("0");
@@ -223,10 +212,10 @@ public class DepartmentManagerController implements Initializable {
 		msg.add("2020-12-30");
 		msg.add("2020-01-30");
 		msg.add("kuku");
-		
+
 		DBList.add(msg);
-		
-		count=DBList.size();
+
+		count = DBList.size();
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
 	}

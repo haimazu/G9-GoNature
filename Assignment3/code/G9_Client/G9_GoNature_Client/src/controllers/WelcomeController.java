@@ -16,7 +16,9 @@ import java.util.concurrent.TimeUnit;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import orderData.Order;
 
@@ -153,6 +156,29 @@ public class WelcomeController implements Initializable {
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent t) {
+				// Data fields
+				ArrayList<String> data = new ArrayList<String>();
+				// Query
+				ArrayList<Object> msg = new ArrayList<Object>();
+
+				msg.add("updateLoggedIn");
+				// update as loggedin as logged out
+				data.add(LoginController.getUsername());
+				data.add(String.valueOf(0));
+				// Data fields
+				msg.add(data);
+				// set up all the order details and the payment method
+				ClientUI.sentToChatClient(msg);
+				
+				System.out.println("emergency exit");
+				System.out.println(LoginController.getFirstName() + " have been disconnected.");
+				Platform.exit();
+				System.exit(0);
+			}
+		});
 	}
 
 	@Override
