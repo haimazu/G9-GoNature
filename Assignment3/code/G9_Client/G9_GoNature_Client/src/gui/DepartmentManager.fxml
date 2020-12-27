@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
@@ -103,15 +104,31 @@
             </Pane>
             <Pane fx:id="pnCancels" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
-                  <TableView layoutX="10.0" layoutY="105.0" prefHeight="422.0" prefWidth="598.0">
-                     <columns>
-                        <TableColumn prefWidth="75.0" text="C1" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                     </columns>
-                  </TableView>
+                  <JFXDatePicker fx:id="dpFrom" focusTraversable="false" layoutX="84.0" layoutY="57.0" promptText="From Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpTo" focusTraversable="false" layoutX="282.0" layoutY="57.0" promptText="To Date" styleClass="date-picker" />
+                  <BarChart fx:id="bcCancells" barGap="5.0" layoutX="10.0" layoutY="86.0" prefHeight="430.0" prefWidth="598.0">
+                     <xAxis>
+                        <CategoryAxis label="Day in month" side="BOTTOM" fx:id="xAxis">
+                           <tickLabelFont>
+                              <Font name="System Bold" size="11.0" />
+                           </tickLabelFont>
+                        </CategoryAxis>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis fx:id="yAxis" label="Amount of cancellations" prefHeight="381.0" prefWidth="59.0" side="LEFT">
+                           <tickLabelFont>
+                              <Font name="System Bold" size="11.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </BarChart>
+                  <Button fx:id="btnShow" focusTraversable="false" layoutX="521.0" layoutY="58.0" mnemonicParsing="false" onAction="#show" styleClass="btnMiddle" text="Show" />
                </children>
             </Pane>
-            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
+            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css" visible="false">
                <children>
                   <BarChart fx:id="visitsChart" barGap="5.0" layoutX="13.0" layoutY="83.0" prefHeight="430.0" prefWidth="598.0">
                      <xAxis>
@@ -160,7 +177,7 @@
                   <JFXTextField focusTraversable="false" layoutX="88.0" layoutY="42.0" promptText="Park Name" styleClass="txtField" />
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
                <children>
                   <Label layoutX="26.0" layoutY="220.0" styleClass="labelBold" text="Last 10 reports:" visible="false">
                      <font>

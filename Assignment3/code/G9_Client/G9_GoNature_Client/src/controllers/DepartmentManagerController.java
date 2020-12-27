@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXDatePicker;
+
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,9 +46,6 @@ public class DepartmentManagerController implements Initializable {
 	private Label lblTitle;
 
 	@FXML
-	private Button btnLogout;
-
-	@FXML
 	private Label lblFirstNameTitle;
 
 	@FXML
@@ -60,27 +59,6 @@ public class DepartmentManagerController implements Initializable {
 
 	@FXML
 	private Pane pnVisits;
-
-	@FXML
-	private BarChart<?, ?> visitsChart;
-
-	@FXML
-	private CategoryAxis xAxis;
-
-	@FXML
-	private NumberAxis yAxis;
-
-	@FXML
-	private Button btnReload;
-
-	@FXML
-	private Button btnLoad;
-
-	@FXML
-	private Button btnPrevPark;
-
-	@FXML
-	private Button btnNextPark;
 
 	@FXML
 	private Pane pnDashboard;
@@ -108,6 +86,25 @@ public class DepartmentManagerController implements Initializable {
 
 	@FXML
 	private Button btnDisaprove;
+	
+	/***** Cancel Reports *****/
+	@FXML
+	private BarChart<?, ?> bcCancells;
+	@FXML
+	private CategoryAxis xAxis;
+	@FXML
+	private NumberAxis yAxis;
+	@FXML
+	private JFXDatePicker dpFrom;
+	@FXML
+	private JFXDatePicker dpTo;
+	@FXML
+	private Button btnShow;
+	@FXML
+	private Button btnLogout;
+	
+	/***** Cancel Reports Variables *****/
+	private static ArrayList<Object> cancelReportsDetails = new ArrayList<>();
 
 	private static String firstName;
 
