@@ -131,6 +131,20 @@ public class ParkEmployeeController implements Initializable {
 	// output: moving to 'login' screen
 	@FXML
 	void logout(ActionEvent event) throws IOException {
+		// Data fields
+		ArrayList<String> data = new ArrayList<String>();
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();	
+				
+		msg.add("updateLoggedIn");
+		// update as loggedin as logged out
+		data.add(LoginController.getUsername());
+		data.add(String.valueOf(0));
+		// Data fields
+		msg.add(data);	
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
+				
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));

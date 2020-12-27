@@ -66,6 +66,26 @@ public class ServiceRepresentativeController implements Initializable {
 	@FXML
 	private Button btnCreditCard;
 
+	@FXML
+	void logout(ActionEvent event) throws IOException {
+		// Data fields
+		ArrayList<String> data = new ArrayList<String>();
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();	
+				
+		msg.add("updateLoggedIn");
+		// update as loggedin as logged out
+		data.add(LoginController.getUsername());
+		data.add(String.valueOf(0));
+		// Data fields
+		msg.add(data);	
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
+				
+		Stage stage = (Stage) btnLogout.getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+		stage.setScene(new Scene(root));
+	}
 
 	@FXML
 	// add a new Member data into the db
@@ -224,13 +244,6 @@ public class ServiceRepresentativeController implements Initializable {
 		txtMembersAmount.clear();
 		txtPhoneNumber.clear();
 
-	}
-
-	@FXML
-	void logout(ActionEvent event) throws IOException {
-		Stage stage = (Stage) btnLogout.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
-		stage.setScene(new Scene(root));
 	}
 
 	public static String getFirstName() {
