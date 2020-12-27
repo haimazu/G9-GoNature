@@ -184,6 +184,20 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
+		// Data fields
+		ArrayList<String> data = new ArrayList<String>();
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();	
+				
+		msg.add("updateLoggedIn");
+		// update as loggedin as logged out
+		data.add(LoginController.getUsername());
+		data.add(String.valueOf(0));
+		// Data fields
+		msg.add(data);	
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
+		
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
@@ -414,6 +428,7 @@ public class ParkManagerController implements Initializable {
 		setDiscountAnswerFromServer(answer);
 		
 	}
+	
 	public static void recivedFromserverEmployeeID(String answer) {
 		setEmpID(Integer.parseInt(answer));
 		System.out.println("Employee" +answer);
