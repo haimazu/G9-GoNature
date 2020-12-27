@@ -19,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -28,8 +30,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import orderData.Order;
 import reportData.CancelReport;
-import reportData.Report;
 import reportData.TableViewSet;
 
 public class DepartmentManagerController implements Initializable {
@@ -81,7 +83,7 @@ public class DepartmentManagerController implements Initializable {
 
 	/***** Cancel Reports *****/
 	@FXML
-	private BarChart<?, ?> bcCancells;
+	private BarChart<String, Double> bcCancells;
 	@FXML
 	private CategoryAxis xAxis;
 	@FXML
@@ -104,14 +106,6 @@ public class DepartmentManagerController implements Initializable {
 	/***** Dashboard Variables *****/
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
 	private int count = 0;
-
-	public static ArrayList<ArrayList<String>> getDBList() {
-		return DBList;
-	}
-
-	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
-		DBList = dBList;
-	}
 
 	@FXML
 	public void handleSideBar(ActionEvent event) {
@@ -241,6 +235,7 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chart() {
 		bcCancells.getData().clear();
 		bcCancells.setAnimated(false);
@@ -248,7 +243,28 @@ public class DepartmentManagerController implements Initializable {
 		bcCancells.setCategoryGap(1.0);
 		bcCancells.setTitle("Graph Cancellation Reports");
 		
+		Series<String, Double> disney = new Series<>();
+		Series<String, Double> jurasic = new Series<>();
+		Series<String, Double> universal = new Series<>();
 		
+		for (int i = 0; i < 30; i++) {
+			disney.setName("Disney");       
+			disney.getData().add(new XYChart.Data(Integer.toString(i), 25601.34));
+			disney.getData().add(new XYChart.Data(Integer.toString(i), 20148.82));
+			disney.getData().add(new XYChart.Data(Integer.toString(i), 10000));    
+	        			
+	        jurasic.setName("Jurasic");
+	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 57401.85));
+	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 41941.19));
+	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 45263.37));
+	        	        
+	        universal.setName("Universal");
+	        universal.getData().add(new XYChart.Data(Integer.toString(i), 45000.65));
+	        universal.getData().add(new XYChart.Data(Integer.toString(i), 44835.76));
+	        universal.getData().add(new XYChart.Data(Integer.toString(i), 18722.18));
+		}
+        
+        bcCancells.getData().addAll(disney, jurasic, universal);
 	}	
 
 	// ArrayList<String> data, sending to the server to get data
@@ -269,20 +285,20 @@ public class DepartmentManagerController implements Initializable {
 	// getting information from the server
 	// input: none
 	// output: list of cancelled orders:
-	// ArrayList<ArrayList<Report>>: cell[0] all the cancels reports
-	// 							     cell[1] list of cancelled orders
-	// 								 cell[2] list of dismissed orders
-	public static void receivedFromServerCancelReportsData(ArrayList<String> arrayList) {	
-//		while (!arrayList.isEmpty()) {
-//			cancelReportsDetails.add(new CancelReport(arrayList));
-//			arrayList.remove(0);
-//		}
+	// ArrayList<Object>: cell[0] list of cancelled orders
+	// 					  cell[1] list of dismissed orders
+	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> data) {
+
+		System.out.println(data.size());
 	}
 	
-	public static ArrayList<CancelReport> getCancelReportsDetails() {
-		return DepartmentManagerController.cancelReportsDetails;
+	public static ArrayList<ArrayList<String>> getDBList() {
+		return DBList;
 	}
 
+	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
+		DBList = dBList;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
