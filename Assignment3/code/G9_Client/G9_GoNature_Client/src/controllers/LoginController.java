@@ -168,9 +168,9 @@ public class LoginController implements Initializable {
 	// F ==> Update logged in status failed
 	public static void receivedFromServerLoggedInStatus(boolean msgReceived) {
 		if (msgReceived) {
-			System.out.println("Update logged in status success.");
+			System.out.println("Update logged in / out status success.");
 		} else {
-			System.out.println("Update logged in status failed.");
+			System.out.println("Update logged in / out status failed.");
 		}
 	}
 
