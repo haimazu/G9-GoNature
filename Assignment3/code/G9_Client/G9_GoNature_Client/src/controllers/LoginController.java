@@ -52,22 +52,10 @@ public class LoginController implements Initializable {
 
 	// Switch screens: Login -> Welcome
 	@FXML
-	void back(ActionEvent event) throws IOException {
+	void back(ActionEvent event) throws IOException {			
 		Stage stage = (Stage) btnBack.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		stage.setScene(new Scene(root));
-		
-		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();
-		// Data fields
-		ArrayList<String> data = new ArrayList<String>();
-		
-		msg.add("updateLoggedIn");
-		data.add(getUsername());
-		data.add(String.valueOf(0));
-		msg.add(data);
-		
-		ClientUI.sentToChatClient(msg);
 	}
 
 	/*
@@ -79,10 +67,6 @@ public class LoginController implements Initializable {
 	 **/
 	@FXML
 	void login(ActionEvent event) throws IOException {
-		// needed for check in parkManager
-		setPassword(txtPassword.getText());
-		setUsername(txtUsername.getText());
-
 		// Data fields
 		ArrayList<String> data = new ArrayList<String>();
 
@@ -90,11 +74,16 @@ public class LoginController implements Initializable {
 			data.add(txtUsername.getText());
 			data.add(txtPassword.getText());
 			sendToServerArrayList("login", data);
+			data.clear();
 
 			// Username and password doesn't match / the user is already logged in
 			if (getError().equals("Failed")) {
 				alert.failedAlert("Failed", "Username / password doesn't match or the user is already logged in.");
 			} else {
+				// needed for check in parkManager
+				setPassword(txtPassword.getText());
+				setUsername(txtUsername.getText());
+				
 				// update as loggedin
 				data.add(getUsername());
 				data.add(String.valueOf(1));
