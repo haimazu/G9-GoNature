@@ -40,7 +40,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import orderData.Order;
 
@@ -239,13 +241,19 @@ public class OrderController implements Initializable {
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.show();
+//		pnPayment.setDisable(true);
+//		pnOrder.setDisable(true);
 
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
+//				pnPayment.setDisable(false);
+//				pnOrder.setDisable(false);
 				radioCash.setSelected(true);
+
 			}
 		});
+
 	}
 
 	/**
@@ -544,9 +552,6 @@ public class OrderController implements Initializable {
 	 * Done with the server
 	 **********************************************/
 
-	/******************************
-	 * initialize
-	 ****************************************/
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

@@ -45,7 +45,7 @@ public class WaitingListController implements Initializable {
 	private static ArrayList<String> Dates = new ArrayList<>();
 	private static ArrayList<String> time = new ArrayList<>();
 	private ArrayList<String> nonReleventDates = new ArrayList<>();
-	//private ArrayList<String> ReleventDates = new ArrayList<>();
+	// private ArrayList<String> ReleventDates = new ArrayList<>();
 
 	public static ArrayList<String> getTime() {
 
@@ -142,7 +142,7 @@ public class WaitingListController implements Initializable {
 				}
 			}
 		}
-		for (int i = length -1; i >=0 ; i--) {
+		for (int i = length - 1; i >= 0; i--) {
 			if (places[i] != -1)
 				Dates.remove(i);
 		}
@@ -156,8 +156,8 @@ public class WaitingListController implements Initializable {
 			if (TimesDates[0].equals(date)) {
 				for (String start : time) {
 					String[] arr = start.split("-");
-					String  [] specificArrTime = arr[0].split(":");
-					String [] specificArrDate = TimesDates[1].split(":");
+					String[] specificArrTime = arr[0].split(":");
+					String[] specificArrDate = TimesDates[1].split(":");
 					if (specificArrDate[0].equals(specificArrTime[0])) {
 						timeTmp.remove(start);
 					}
@@ -183,11 +183,8 @@ public class WaitingListController implements Initializable {
 
 	@FXML
 	void check(ActionEvent event) {
-		
+
 	}
-	
-	
-	
 
 	@FXML
 	void here(ActionEvent event) throws IOException {
@@ -208,7 +205,7 @@ public class WaitingListController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
+		this.time.clear();
 		this.time.add("08:00 - 12:00");
 		this.time.add("12:00 - 16:00");
 		this.time.add("16:00 - 20:00");
@@ -223,14 +220,14 @@ public class WaitingListController implements Initializable {
 //		Dates.add("2021-01-30 12:00:00");
 //		Dates.add("2021-01-30 16:00:00");
 		
-		txtdate.setDayCellFactory(picker -> new DateCell() {
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				LocalDate today = LocalDate.now();
-				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-			}
-		});
+//		txtdate.setDayCellFactory(picker -> new DateCell() {
+//			public void updateItem(LocalDate date, boolean empty) {
+//				super.updateItem(date, empty);
+//				LocalDate today = LocalDate.now();
+//				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+//				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+//			}
+//		});
 //		
 		ArrayList<Object> sendServer = new ArrayList<>();
 		sendServer.add("checkFullDays");

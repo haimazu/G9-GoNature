@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -17,13 +18,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import orderData.Order;
-
 
 public class CreditCardController implements Initializable {
 
@@ -50,9 +55,7 @@ public class CreditCardController implements Initializable {
 
 	private String dateCC;
 
-	private static CreditCard  details;
-
-
+	private static CreditCard details;
 
 	private Order myOrder = OrderController.getOrderSuccess();
 
@@ -61,34 +64,31 @@ public class CreditCardController implements Initializable {
 	private AlertController alert = new AlertController();
 
 	@FXML
-	void save(ActionEvent event) {
+	void save(ActionEvent event) throws IOException {
 		ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
 		if (checkNotEmptyCardFields() && chechCorrectfeilds()) {
 			dateCC = cbxExpiryMonth.getValue().toString() + "/" + cbxExpiryYear.getValue().toString();
 
-		
-		try {
-			
+			try {
 
-                details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
-                        Integer.parseInt(txtCVV.getText()));
-
-          
-		
-		}catch(NullPointerException e){
-				
 				details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
-						Integer.parseInt(txtCVV.getText()),0);
-				
+						Integer.parseInt(txtCVV.getText()));
+
+			} catch (NullPointerException e) {
+
+				details = new CreditCard(txtCardNumber.getText(), txtHolderName.getText(), dateCC,
+						Integer.parseInt(txtCVV.getText()), 0);
+
 			}
 //			msgEditPaymentForServer.add("orderPaymentMathod");
 //			msgEditPaymentForServer.add(details);
-			
+
 //			ClientUI.sentToChatClient(msgEditPaymentForServer);
 
 //			if (this.getPaymentStatus()) {
-				Stage stage = (Stage) btnSave.getScene().getWindow();
-			    stage.close();
+			Stage stage = (Stage) btnSave.getScene().getWindow();
+			 stage.close();
+
 //			}
 
 		}
@@ -113,6 +113,7 @@ public class CreditCardController implements Initializable {
 	public static void setDetails(CreditCard details) {
 		CreditCardController.details = details;
 	}
+
 	public static final Pattern VALIDCVV = Pattern.compile("^[0-9]{3}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDCardNumber = Pattern.compile("^[0-9]{16}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDName = Pattern.compile("^[A-Za-z]{1,10}+ [A-Za-z]{1,10}$",
@@ -124,7 +125,7 @@ public class CreditCardController implements Initializable {
 		String CardName = txtHolderName.getText();
 //		String mount = cbxExpiryMonth.getValue().toString();
 //		String year = cbxExpiryYear.getValue().toString();
-		if (CardName.isEmpty() || CVC.isEmpty() || CardName.isEmpty() ) {
+		if (CardName.isEmpty() || CVC.isEmpty() || CardName.isEmpty()) {
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 			return false;
 		}
@@ -162,7 +163,7 @@ public class CreditCardController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ArrayList<String> mounthArr = new ArrayList<>();
-		
+
 		for (int i = 1; i <= 12; i++) {
 			mounthArr.add(String.valueOf(i));
 		}
