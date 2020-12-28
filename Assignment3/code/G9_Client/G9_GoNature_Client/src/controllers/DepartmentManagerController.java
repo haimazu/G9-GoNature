@@ -104,9 +104,6 @@ public class DepartmentManagerController implements Initializable {
 	private static String firstName;
 
 	/***** Cancel Reports Variables *****/
-	// private static ArrayList<ArrayList<Report>> cancelReportsDetails = new
-	// ArrayList<>();
-	private static ArrayList<ArrayList<String>> allCancelledOrders = new ArrayList<>();
 	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
 	private static ArrayList<Order> dismissedOrders = new ArrayList<>();
 
@@ -205,8 +202,9 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void setButtonPressed(Button button) {
-		button.setStyle("-fx-background-color: transparent;\r\n" + "	-fx-border-color: brown;\r\n"
-				+ "	-fx-border-width: 0px 0px 0px 3px;");
+		button.setStyle("-fx-background-color: transparent;" 
+					  + "-fx-border-color: brown;"
+				      + "-fx-border-width: 0px 0px 0px 3px;");
 	}
 
 	public void setButtonReleased(Button button, Button button1, Button button2) {
@@ -292,10 +290,15 @@ public class DepartmentManagerController implements Initializable {
 	// output: list of cancelled orders:
 	// ArrayList<Object>: cell[0] list of cancelled orders
 	// cell[1] list of dismissed orders
-	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> data) {
-		allCancelledOrders = data;
-		CanceledReport c = new CanceledReport(allCancelledOrders.get(0));
-		System.out.println(c);
+	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData, 
+														   ArrayList<ArrayList<String>> dismissData) {	
+		for (ArrayList<String> cancel : cancelData) {
+			cancelledOrders.add(new CanceledReport(cancel));
+		}
+		
+		for (ArrayList<String> dismiss : dismissData) {
+			dismissedOrders.add(new Order(dismiss));
+		}
 	}
 
 	public static ArrayList<ArrayList<String>> getDBList() {
