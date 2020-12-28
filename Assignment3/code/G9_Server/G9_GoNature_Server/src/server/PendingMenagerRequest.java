@@ -56,7 +56,9 @@ public class PendingMenagerRequest {
 	// select the emloyeeID by his user name and password
 	// output:F if no such employee OR employeeID
 	public static void employeeNumberSet(ArrayList<Object> recived, ConnectionToClient client) {
+		
 		ArrayList<Object> answer = new ArrayList<Object>();
+		answer.add(recived.get(0));
 		String username = (String) recived.get(1);
 		String password = (String) recived.get(2);
 		ArrayList<String> query = new ArrayList<String>();
