@@ -85,7 +85,6 @@ public class EchoServer extends AbstractServer {
 			PendingMenagerRequest.employeeNumberSet(recived, client);
 		case "PendingManagerRequests":
 			PendingMenagerRequest.pendingManagerRequestAllItems(recived, client);
-			
 			break;
 		default:
 			break;
