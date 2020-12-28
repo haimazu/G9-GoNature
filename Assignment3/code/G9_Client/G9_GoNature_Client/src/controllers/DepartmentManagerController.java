@@ -74,8 +74,8 @@ public class DepartmentManagerController implements Initializable {
 	private TableColumn<TableViewSet, String> requestType;
 	@FXML
 	private TableColumn<TableViewSet, String> requestDetails;
-    @FXML
-    private TableColumn<TableViewSet, String> mark;
+	@FXML
+	private TableColumn<TableViewSet, String> mark;
 
 	@FXML
 	private Label LabelCount;
@@ -101,6 +101,11 @@ public class DepartmentManagerController implements Initializable {
 	private Button btnLogout;
 
 	private static String firstName;
+	private  ArrayList<Object> data = new ArrayList<>();
+	private static String status;
+	private AlertController alert = new AlertController();
+
+
 
 	/***** Cancel Reports Variables *****/
 	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
@@ -168,15 +173,58 @@ public class DepartmentManagerController implements Initializable {
 	public static void setFirstName(String firstName) {
 		DepartmentManagerController.firstName = firstName;
 	}
+	
+
+	public static String getStatus() {
+		return status;
+	}
+
+	public static void setStatus(String status) {
+		DepartmentManagerController.status = status;
+	}
+
+	public static void setData(String status) {
+		setStatus(status);
+	}
 
 	@FXML
 	void approve(ActionEvent event) {
-
+		int counter=DBList.size();
+		for (int i = 0; i < TableDep.getItems().size(); i++) {
+			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
+				data.add("removePendingsManagerReq");
+				data.add("approve");
+				data.add(TableDep.getItems().get(i).getParkName());
+				data.add(TableDep.getItems().get(i).getReqType());
+//				ClientUI.sentToChatClient(data);
+				
+//				if(status.equals("Success"))
+					TableDep.getItems().remove(TableDep.getItems().get(i));
+//				else
+//					alert.failedAlert("Failed", "Something went wrong, can't delete from DB - please try later");
+			}
+			data.clear();
+		}
+		iniailTabel();
 	}
 
 	@FXML
 	void disapprove(ActionEvent event) {
+		
+		for (int i = 0; i < TableDep.getItems().size(); i++) {
+			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
+				data.add("removePendingsManagerReq");
+				data.add("disapprove");
+				data.add(TableDep.getItems().get(i).getParkName());
+				data.add(TableDep.getItems().get(i).getReqType());
+//				ClientUI.sentToChatClient(data);
+				
+//				if(!status.equals("Success"))
+//					alert.failedAlert("information", "We pass your decision to the park manager");
 
+			}
+			data.clear();
+		}
 	}
 
 	public void addData(ArrayList<ArrayList<String>> al) {
@@ -200,9 +248,8 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void setButtonPressed(Button button) {
-		button.setStyle("-fx-background-color: transparent;" 
-					  + "-fx-border-color: brown;"
-				      + "-fx-border-width: 0px 0px 0px 3px;");
+		button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: brown;"
+				+ "-fx-border-width: 0px 0px 0px 3px;");
 	}
 
 	public void setButtonReleased(Button button, Button button1, Button button2) {
@@ -288,12 +335,12 @@ public class DepartmentManagerController implements Initializable {
 	// output: list of cancelled orders:
 	// ArrayList<Object>: cell[0] list of cancelled orders
 	// cell[1] list of dismissed orders
-	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData, 
-														   ArrayList<ArrayList<String>> dismissData) {	
+	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData,
+			ArrayList<ArrayList<String>> dismissData) {
 		for (ArrayList<String> cancel : cancelData) {
 			cancelledOrders.add(new CanceledReport(cancel));
 		}
-		
+
 		for (ArrayList<String> dismiss : dismissData) {
 			dismissedOrders.add(new Order(dismiss));
 		}
@@ -306,13 +353,9 @@ public class DepartmentManagerController implements Initializable {
 	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
 		DBList = dBList;
 	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		setFirstName(LoginController.getFirstName());
-		lblFirstNameTitle.setText(getFirstName());
-
+	
+	public void iniailTabel() {
+		DBList.clear();
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("PendingManagerRequests");
 		ClientUI.sentToChatClient(msg);
@@ -320,7 +363,17 @@ public class DepartmentManagerController implements Initializable {
 		count = DBList.size();
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
+	}
 
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		setFirstName(LoginController.getFirstName());
+		lblFirstNameTitle.setText(getFirstName());
+
+	
+		iniailTabel();
+		
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
