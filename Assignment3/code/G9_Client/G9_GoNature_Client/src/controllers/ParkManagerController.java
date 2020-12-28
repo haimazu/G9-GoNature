@@ -155,7 +155,7 @@ public class ParkManagerController implements Initializable {
 	private static String parkName;
 	private AlertController alert = new AlertController();
 	private static boolean discountAnswerFromServer;
-	private static int empID;
+	private static int empID=0;
 	
 
 	public static int getEmpID() {
@@ -340,7 +340,7 @@ public class ParkManagerController implements Initializable {
 		
 		
 		if(DatesNotCorresponding())
-			alert.setAlert("You are trying to set incorrect dated!\nPlease try again");
+			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 		if (discount.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
 		else {
@@ -393,21 +393,21 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void submitVisitorsCapacityByorder(ActionEvent event) {
-		String capacity = lblSetMax.getText();
-		if (capacity.isEmpty())
-			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
-		else 
-		{
-			ArrayList<Object> msg = new ArrayList<>();
-			msg.add("parkManagerRequest");
-			//Req.setDiscount(String.valueOf(1 - discountInPrecents));
-			Req.setParkName(getParkName());
-			Req.setEmployeeID(0);// ??????
-			Req.setRequesttype("discount");
-			msg.add(Req);
-			ClientUI.sentToChatClient(msg);
-			
-		}
+//		String capacity = lblSetMax.getText();
+//		if (capacity.isEmpty())
+//			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
+//		else 
+//		{
+//			ArrayList<Object> msg = new ArrayList<>();
+//			msg.add("parkManagerRequest");
+//			//Req.setDiscount(String.valueOf(1 - discountInPrecents));
+//			Req.setParkName(getParkName());
+//			Req.setEmployeeID(0);// ??????
+//			Req.setRequesttype("discount");
+//			msg.add(Req);
+//			ClientUI.sentToChatClient(msg);
+//			
+//		}
 			
 	}
 
@@ -430,7 +430,6 @@ public class ParkManagerController implements Initializable {
 	public static void recivedFromserverEmployeeID(String answer) {
 		System.out.println("Employee" +answer);
 		setEmpID(Integer.parseInt(answer));
-		
 		
 	}
 	public void RequestForEmployeeID() {

@@ -13,6 +13,10 @@ public class Employee {
 	private Status employeeStatus;
 	private LogIn systemUser;
 	private Park park;
+	private int employeeNumber;
+	private String employeeEmail;
+	private String employeeParkName;
+
 	/**
 	 * @param employeeFirstName
 	 * @param employeeLasttName
@@ -37,62 +41,66 @@ public class Employee {
 		this.employeeStatus = employeeStatus;
 		setUserSystem(this.employeeUserName, this.employeePassword);
 	}
-	
-	
-	private int employeeNumber;
-	private String employeeEmail;
-	private String employeeParkName;
+
 	public String getEmployeeUserName() {
 		return employeeUserName;
 	}
+
 	public void setEmployeeUserName(String employeeUserName) {
 		this.employeeUserName = employeeUserName;
 	}
+
 	public String getEmployeePassword() {
 		return employeePassword;
 	}
+
 	public void setEmployeePassword(String employeePassword) {
 		this.employeePassword = employeePassword;
 	}
+
 	public int getEmployeeNumber() {
 		return employeeNumber;
 	}
+
 	public void setEmployeeNumber(int employeeNumber) {
 		this.employeeNumber = employeeNumber;
 	}
+
 	public String getEmployeeParkName() {
 		return employeeParkName;
 	}
+
 	public void setEmployeeParkName(String employeeParkName) {
 		this.employeeParkName = employeeParkName;
 	}
+
 	public Status getEmployeeStatus() {
 		return employeeStatus;
 	}
+
 	public void setEmployeeStatus(Status employeeStatus) {
 		this.employeeStatus = employeeStatus;
 	}
 
 	public void setUserSystem(String userName, String password) {
-		systemUser=new LogIn(this);
+		systemUser = new LogIn(this);
 	}
-	
 
 	public LogIn getUserSystem(String userName, String password) {
 		return systemUser;
 	}
-	
+
 	public boolean enterToTheSystem(String userName, String password) {
 		return systemUser.loginToGoNatuerSystem(userName, password);
 	}
-	
+
 	public void exitToTheSystem(String userName, String password) {
-		 systemUser.logoutToGoNatuerSystem();
+		systemUser.logoutToGoNatuerSystem();
 	}
-	
+
 	public void setPark(String ParkName) {
-		this.park=new Park(ParkName);
-		
+		this.park = new Park(ParkName);
+
 	}
-	
+
 }
