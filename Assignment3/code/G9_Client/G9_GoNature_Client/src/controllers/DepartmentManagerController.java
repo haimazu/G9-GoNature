@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXDatePicker;
-import com.sun.javafx.tk.Toolkit.WritableImageAccessor;
 
 import client.ClientUI;
 import javafx.collections.FXCollections;
@@ -193,7 +192,6 @@ public class DepartmentManagerController implements Initializable {
 			} else if (arrayList.get(1).equals("max_o")) {
 				str = "Visitors Order Capacity : " + arrayList.get(3);
 			}
-
 			listForTable.add(new TableViewSet(arrayList.get(7), arrayList.get(1), str));
 
 		}
@@ -326,7 +324,7 @@ public class DepartmentManagerController implements Initializable {
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
-		mark.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("mark"));
+		mark.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("MarkCh"));
 
 		/***** Cancel Reports *****/
 		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));

@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import com.jfoenix.controls.JFXCheckBox;
 
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 
 public class TableViewSet {
 	
 	private String reqType;
 	private String reqDetails;
-	private CheckBox mark;
+	private CheckBox MarkCh;
 	private String ParkName;
 	/**
 	 * @param parkName
@@ -22,7 +23,7 @@ public class TableViewSet {
 		this.ParkName = parkName;
 		this.reqType = reqType;
 		this.reqDetails = reqDetails;
-		this.mark = new CheckBox();
+		this.MarkCh = new CheckBox();
 	}
 
 	
@@ -40,7 +41,8 @@ public class TableViewSet {
 
 
 
-	public String getParkName() {
+	public String getParkName() 
+	{
 		return ParkName;
 	}
 	public void setParkName(String parkName) {
@@ -58,11 +60,11 @@ public class TableViewSet {
 	public void setReqDetails(String reqDetails) {
 		this.reqDetails = reqDetails;
 	}
-	public CheckBox getmark() {
-		return mark;
+	public CheckBox getMarkCh() {
+		return MarkCh;
 	}
-	public void setmark(CheckBox checkBox) {
-		this.mark = checkBox;
+	public void setMarkCh(CheckBox checkBox) {
+		this.MarkCh = checkBox;
 	}
 
 	
