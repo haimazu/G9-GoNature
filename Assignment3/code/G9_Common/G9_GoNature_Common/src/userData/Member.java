@@ -30,13 +30,13 @@ public class Member implements Serializable {
 		this.memberAmount = memberFromDB.get(8);
 	}
 
-	@Override
-	public String toString() {
-		return "Member [memberID=" + memberID + ", memberFirstName=" + memberFirstName + ", memberLastName="
-				+ memberLastName + ", memberNumber=" + memberNumber + ", memberPhoneNumber=" + memberPhoneNumber
-				+ ", memberEmail=" + memberEmail + ", memberPaymentType=" + memberPaymentType + ", memberOrderType="
-				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Member [memberID=" + memberID + ", memberFirstName=" + memberFirstName + ", memberLastName="
+//				+ memberLastName + ", memberNumber=" + memberNumber + ", memberPhoneNumber=" + memberPhoneNumber
+//				+ ", memberEmail=" + memberEmail + ", memberPaymentType=" + memberPaymentType + ", memberOrderType="
+//				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
+//	}
 
 	public Member(String memberID, String memberFirstNAme, String memberLastNAme,
 			String memberPhoneNumber, String memberEmail, OrderType memberOrderType, String memberAmount) {
