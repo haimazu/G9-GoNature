@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXDatePicker;
+import com.sun.javafx.tk.Toolkit.WritableImageAccessor;
 
 import client.ClientUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -179,31 +182,27 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void addData(ArrayList<ArrayList<String>> al) {
-		ArrayList<Object> listForTable = new ArrayList<>();
+		ObservableList<TableViewSet>listForTable= FXCollections.observableArrayList();
+		String str = null;
 		for (ArrayList<String> arrayList : al) {
-			listForTable.add(arrayList.get(7));
-			listForTable.add(arrayList.get(1));
+
 			if (arrayList.get(1).equals("discount")) {
-				String str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + arrayList.get(5)
+				str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + arrayList.get(5)
 						+ " - " + arrayList.get(6);
-				listForTable.add(str);
 			} else if (arrayList.get(1).equals("max_c")) {
-				String str = "Visitors Capacity : " + arrayList.get(2);
-				listForTable.add(str);
+				str = "Visitors Capacity : " + arrayList.get(2);
 			} else if (arrayList.get(1).equals("max_o")) {
-				String str = "Visitors Order Capacity : " + arrayList.get(3);
-				listForTable.add(str);
+				str = "Visitors Order Capacity : " + arrayList.get(3);
 			}
 
-			listForTable.add(new CheckBox());
-			addRow(listForTable);
-			listForTable.clear();
+			//CheckBox ch = new CheckBox();
+			listForTable.add(new TableViewSet(arrayList.get(7),arrayList.get(1),str));
+
 		}
+		
+		tableDep.setItems(listForTable);
 	}
 
-	public void addRow(ArrayList<Object> al) {
-		tableDep.getItems().add(new TableViewSet(al));
-	}
 
 	public void setButtonPressed(Button button) {
 		button.setStyle("-fx-background-color: transparent;\r\n" + "	-fx-border-color: brown;\r\n"
@@ -313,29 +312,22 @@ public class DepartmentManagerController implements Initializable {
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 
-		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
-		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
-		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
-		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet, CheckBox>("mark"));
 
-		ArrayList<String> msg = new ArrayList<>();
-		// msg.add("PendingManagerRequests");
-		// ClientUI.sentToChatClient(msg);
+		ArrayList<Object> msg = new ArrayList<>();
+		 msg.add("PendingManagerRequests");
+		ClientUI.sentToChatClient(msg);
 
-		msg.add("1234");
-		msg.add("discount");
-		msg.add("0");
-		msg.add("0");
-		msg.add("15");
-		msg.add("2020-12-30");
-		msg.add("2020-01-30");
-		msg.add("kuku");
-
-		DBList.add(msg);
+		
 
 		count = DBList.size();
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
+		
+		
+		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
+		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
+		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
+		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet, CheckBox>("mark"));
 		
 		/***** Cancel Reports *****/	
 		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));

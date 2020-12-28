@@ -117,6 +117,8 @@ public class ChatClient extends AbstractClient {
 			case "getCancellationReports":
 				DepartmentManagerController.receivedFromServerCancelReportsData(((ArrayList<ArrayList<String>>)received.get(1)));
 				break;
+			case "PendingManagerRequests":
+				DepartmentManagerController.setDBList((ArrayList<ArrayList<String>>)received.get(1));
 			default:
 			break;
 		}

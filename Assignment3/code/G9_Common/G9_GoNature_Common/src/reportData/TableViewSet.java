@@ -18,11 +18,11 @@ public class TableViewSet {
 	 * @param reqDetails
 	 * @param checkBox
 	 */
-	public TableViewSet(String parkName, String reqType, String reqDetails, CheckBox mark) {
+	public TableViewSet(String parkName, String reqType, String reqDetails) {
 		this.ParkName = parkName;
 		this.reqType = reqType;
 		this.reqDetails = reqDetails;
-		this.mark = mark;
+		this.mark = new CheckBox();
 	}
 
 	
@@ -30,12 +30,12 @@ public class TableViewSet {
 	/**
 	 * 
 	 */
-	public TableViewSet(ArrayList<Object> arr) {
-		setParkName((String)arr.get(0));
-		setReqType((String) arr.get(1));
-		setReqDetails((String)arr.get(2));
-		setmark((CheckBox)arr.get(3));
-	}
+//	public TableViewSet(ArrayList<Object> arr) {
+//		setParkName((String)arr.get(0));
+//		setReqType((String) arr.get(1));
+//		setReqDetails((String)arr.get(2));
+//		setmark((CheckBox)arr.get(3));
+//	}
 	
 
 
