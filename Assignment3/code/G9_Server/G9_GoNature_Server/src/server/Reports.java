@@ -6,7 +6,9 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 
+import dataLayer.Park;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 
@@ -115,7 +117,7 @@ public class Reports {
 	// ArrayList<Object>: cell[0] func_name
 	// cell[1] list of cancelled orders
 	// cell[2] list of dismissed orders
-	public static void CancellationReport(ArrayList<Object> recived, ConnectionToClient client) {
+	public static void CancellationReportFull(ArrayList<Object> recived, ConnectionToClient client) {
 		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : getCancellationReports
@@ -169,14 +171,13 @@ public class Reports {
 	}
 
 	// input: ArrayList<Object>: cell[0] name
-	// cell[1] month
-	// cell[2] year ,ConnectionToClient
+	// cell[1] start date
+	// cell[2] end date ,ConnectionToClient
 	// Cancellation Report and visits lost
 	// output: list of cancelled orders:
 	// ArrayList<Object>: cell[0] func_name
-	// cell[1] list of cancelled orders
-	// cell[2] list of dismissed orders
-	public static void CancellationReportSpecificFields(ArrayList<Object> recived, ConnectionToClient client) {
+	// cell[1] ArrayList<String> of rows in query
+	public static void CancellationReport(ArrayList<Object> recived, ConnectionToClient client) {
 		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : getCancellationReports
@@ -191,10 +192,14 @@ public class Reports {
 		// pre-cancelled orders
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
-		query1.add("canceledorders"); // table name
-		query1.add("visitorsNumber,parkName,arrivedTime,amountArrived"); // columns to select from
-		query1.add("WHERE " + dateCond); // condition
-		query1.add("4"); // how many columns returned
+		query1.add(
+				"(select parkName,arrivedTime,visitorsNumber-amountArrived as visitorsNumber  from g9_gonature.orders where "
+						+ dateCond
+						+ " AND visitorsNumber-amountArrived>0 union all select parkName,arrivedTime,visitorsNumber from g9_gonature.canceledorders where "
+						+ dateCond + ") t1 "); // table name
+		query1.add("parkName,arrivedTime,SUM(visitorsNumber)"); // columns to present
+		query1.add("group by Day(arrivedTime),parkname"); // condition
+		query1.add("3"); // how many columns returned
 		System.out.println(query1.toString());
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
 		if (queryData.isEmpty()) {
@@ -203,51 +208,10 @@ public class Reports {
 			EchoServer.sendToMyClient(answer, client);
 			return;
 		} else {
-			// answer.add(queryData);
+			answer.add(queryData);
 			System.out.println(queryData);// **
 		}
 
-		// Dismmised orders
-		ArrayList<String> query2 = new ArrayList<String>();
-		query2.add("select"); // command
-		query2.add("orders"); // table name
-		query2.add("visitorsNumber,parkName,arrivedTime,amountArrived"); // columns returned
-		query2.add("WHERE " + dateCond + " AND visitorsNumber != amountArrived"); // condition
-		query2.add("4"); // how many columns returned
-		System.out.println(query2.toString());
-		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
-		if (queryData2.isEmpty()) {
-			// no canceled orders in this month
-			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
-			EchoServer.sendToMyClient(answer, client);
-			return;
-		} else {
-			// answer.add(queryData2);
-			System.out.println(queryData2);
-
-		}
-
-		int amountOrdered[] = null;
-		int amountArrived[] = null;
-		int diffrance = 0;
-
-		int i = 0;
-		for (ArrayList<String> a : queryData) {
-			amountOrdered[i] = Integer.parseInt(a.get(0));
-			amountArrived[i] = Integer.parseInt(a.get(3));
-			i++;
-		}
-
-		// calculates the difference of amountOrdered and amountArrived
-		for (int j = 0; j < i; j++)
-			diffrance += (amountOrdered[i] - amountArrived[i]);
-
-		int dismmisedOrders = 0;
-		for (ArrayList<String> a : queryData2)
-			dismmisedOrders += Integer.parseInt(a.get(0));
-
-		answer.add(diffrance);
-		answer.add(dismmisedOrders);
 		EchoServer.sendToMyClient(answer, client);
 	}
 
