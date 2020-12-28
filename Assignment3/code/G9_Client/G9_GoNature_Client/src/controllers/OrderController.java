@@ -279,6 +279,7 @@ public class OrderController implements Initializable {
 					+ getArrivalTime();
 			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					txtPhoneNum.getText(), cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
+			System.out.println(this.ID + " " + this.memberId);
 			msgNewOrderForServer.add(OrderController.order);
 			imgOrder.setImage(imgOrderFull);
 
@@ -356,6 +357,9 @@ public class OrderController implements Initializable {
 	/*******************************
 	 * Code for tests and additions
 	 ****************************************/
+	
+	
+	
 
 	/**
 	 * 
@@ -466,7 +470,7 @@ public class OrderController implements Initializable {
 			return false;
 		}
 		if (validInput("memberId", txtmemberID.getText())) {
-			this.memberId = txtmemberID.getText();
+			this.memberId = txtmemberID.getText().substring(1);
 			return true;
 		} else if (validInput("ID", txtmemberID.getText())) {
 			this.ID = txtmemberID.getText();

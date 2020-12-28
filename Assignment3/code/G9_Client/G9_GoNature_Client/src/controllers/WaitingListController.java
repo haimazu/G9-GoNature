@@ -30,8 +30,8 @@ public class WaitingListController implements Initializable {
 	@FXML
 	private Pane pnVerify;
 
-	@FXML
-	private Button btnCheck;
+    @FXML
+    private Button btnContinue;
 
 	@FXML
 	private Button btnHere;
@@ -45,7 +45,7 @@ public class WaitingListController implements Initializable {
 	private static ArrayList<String> Dates = new ArrayList<>();
 	private static ArrayList<String> time = new ArrayList<>();
 	private ArrayList<String> nonReleventDates = new ArrayList<>();
-	// private ArrayList<String> ReleventDates = new ArrayList<>();
+	private static ArrayList<Object> anotherDates = new ArrayList<>();
 
 	public static ArrayList<String> getTime() {
 
@@ -70,19 +70,22 @@ public class WaitingListController implements Initializable {
 							String[] arrDate = getDate(str, "Date");
 							LocalDate thisDate = LocalDate.of(Integer.parseInt(arrDate[0]),
 									Integer.parseInt(arrDate[1]), Integer.parseInt(arrDate[2]));
-//							LocalDate today = LocalDate.now();
-//							LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+							LocalDate today = LocalDate.now();
+							LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
 							if (item.compareTo(thisDate) == 0) {
 								setDisable(true);
-								// setStyle("-fx-background-color: #ffc0cb;");
 							}
+							else if(item.compareTo(nextYear) > 0)
+								setDisable(true);
+							else if(item.compareTo(today) < 0)
+								setDisable(true);
 						}
 					}
 				};
 			}
 		};
-
 		txtdate.setDayCellFactory(dayCellFactory);
+
 	}
 
 	public String[] getDate(String date, String what) {
@@ -181,10 +184,14 @@ public class WaitingListController implements Initializable {
 		}
 	}
 
-	@FXML
-	void check(ActionEvent event) {
-
-	}
+    @FXML
+    void Continue(ActionEvent event) {
+    	anotherDates.add(txtdate.getValue());
+    	anotherDates.add(cbxArrivelTime.getValue());
+    	
+    	Stage stage2 = (Stage) btnContinue.getScene().getWindow();
+		stage2.close();
+    }
 
 	@FXML
 	void here(ActionEvent event) throws IOException {
@@ -210,25 +217,7 @@ public class WaitingListController implements Initializable {
 		this.time.add("12:00 - 16:00");
 		this.time.add("16:00 - 20:00");
 		cbxArrivelTime.setDisable(true);
-
-//		Dates.add("2020-12-30 08:00:00");
-//		Dates.add("2020-12-30 12:00:00");
-//		Dates.add("2020-12-30 16:00:00");
-//		Dates.add("2021-01-02 12:00:00");
-//		Dates.add("2021-01-10 12:00:00");
-//		Dates.add("2021-01-30 08:00:00");
-//		Dates.add("2021-01-30 12:00:00");
-//		Dates.add("2021-01-30 16:00:00");
 		
-//		txtdate.setDayCellFactory(picker -> new DateCell() {
-//			public void updateItem(LocalDate date, boolean empty) {
-//				super.updateItem(date, empty);
-//				LocalDate today = LocalDate.now();
-//				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-//				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-//			}
-//		});
-//		
 		ArrayList<Object> sendServer = new ArrayList<>();
 		sendServer.add("checkFullDays");
 		sendServer.add(OrderController.getOrder());

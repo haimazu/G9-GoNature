@@ -30,7 +30,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button fx:id="btnCheck" focusTraversable="false" layoutX="113.0" layoutY="327.0" mnemonicParsing="false" onAction="#check" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Check" />
+      <Button fx:id="btnContinue" focusTraversable="false" layoutX="113.0" layoutY="327.0" mnemonicParsing="false" onAction="#Continue" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWide" text="Continue" />
       <Button fx:id="btnHere" focusTraversable="false" layoutX="277.0" layoutY="134.0" mnemonicParsing="false" onAction="#here" prefHeight="25.0" prefWidth="157.0" styleClass="btnSmallGreen" text="here" />
       <ImageView fitHeight="83.0" fitWidth="85.0" layoutX="154.0" pickOnBounds="true" preserveRatio="true">
          <image>

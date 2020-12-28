@@ -5,6 +5,14 @@ import java.util.ArrayList;
 
 public class Order implements Serializable {
 
+	@Override
+	public String toString() {
+		return "Order [visitorsNumber=" + visitorsNumber + ", orderEmail=" + orderEmail + ", orderPhone=" + orderPhone
+				+ ", orderType=" + orderType + ", price=" + price + ", totalPrice=" + totalPrice + ", parkName="
+				+ parkName + ", arrivedTime=" + arrivedTime + ", memberId=" + memberId + ", ID=" + ID
+				+ ", amountArrived=" + amountArrived + ", orderNumber=" + orderNumber + "]";
+	}
+
 	int visitorsNumber;
 	String orderEmail;
 	String orderPhone;
