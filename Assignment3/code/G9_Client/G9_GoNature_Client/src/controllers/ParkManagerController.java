@@ -239,7 +239,7 @@ public class ParkManagerController implements Initializable {
 		});
 
 		txtDateTo.setValue(LocalDate.now());
-		//RequestForEmployeeID();
+		RequestForEmployeeID();
 	}
 
 	@FXML
@@ -356,10 +356,9 @@ public class ParkManagerController implements Initializable {
 				Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				Req.setParkName(getParkName());
-				Req.setEmployeeID(0);// ??????
+				Req.setEmployeeID(getEmpID());// ??????
 				Req.setRequesttype("discount");
 				msg.add(Req);
-				System.out.println(msg);
 				ClientUI.sentToChatClient(msg);
 			
 			
@@ -388,7 +387,7 @@ public class ParkManagerController implements Initializable {
 		Req.setFromDate("");
 		Req.setToDate("");
 		Req.setParkName("");
-		Req.setEmployeeID(0);// ??????
+		Req.setEmployeeID(getEmpID());// ??????
 		Req.setRequesttype("");
 	}
 
@@ -403,10 +402,9 @@ public class ParkManagerController implements Initializable {
 			msg.add("parkManagerRequest");
 			//Req.setDiscount(String.valueOf(1 - discountInPrecents));
 			Req.setParkName(getParkName());
-			Req.setEmployeeID(ParkManagerController.getEmpID());// ??????
+			Req.setEmployeeID(0);// ??????
 			Req.setRequesttype("discount");
 			msg.add(Req);
-			System.out.println(msg);
 			ClientUI.sentToChatClient(msg);
 			
 		}
@@ -430,16 +428,17 @@ public class ParkManagerController implements Initializable {
 	}
 	
 	public static void recivedFromserverEmployeeID(String answer) {
-		setEmpID(Integer.parseInt(answer));
 		System.out.println("Employee" +answer);
+		setEmpID(Integer.parseInt(answer));
+		
 		
 	}
 	public void RequestForEmployeeID() {
 
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("requestForEmployeeID");
-		msg.add(LoginController.getPassword());
 		msg.add(LoginController.getUsername());
+		msg.add(LoginController.getPassword());
 		ClientUI.sentToChatClient(msg);
 	}
 	public boolean DatesNotCorresponding() throws ParseException
@@ -447,12 +446,13 @@ public class ParkManagerController implements Initializable {
 		LocalDate from ;
 		LocalDate to ;
 		
-		String [] fromarrsplitStrings = txtDateFrom.toString().split(" ");
+		String [] fromarrsplitStrings = txtDateFrom.getValue().toString().split(" ");
 		String [] fromdatesplit =fromarrsplitStrings[0].split("-");
-		String [] toarrsplitStrings = txtDateTo.toString().split(" ");
+		String [] toarrsplitStrings = txtDateTo.getValue().toString().split(" ");
 		String [] todatesplit =toarrsplitStrings[0].split("-");	
 		//[0]->year , [1]->month , [2]->day
 		from = LocalDate.of(Integer.parseInt(fromdatesplit[0]), Integer.parseInt(fromdatesplit[1]), Integer.parseInt(fromdatesplit[2]));
+		
 		to = LocalDate.of(Integer.parseInt(todatesplit[0]), Integer.parseInt(todatesplit[1]), Integer.parseInt(todatesplit[2]));
 		if(to.compareTo(from) <0)
 			return true;
