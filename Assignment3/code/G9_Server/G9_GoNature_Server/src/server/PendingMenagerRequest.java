@@ -74,7 +74,7 @@ public class PendingMenagerRequest {
 			answer.add(false);
 		} else {
 			System.out.println(queryData.get(0));
-			answer.add(queryData.get(0));
+			answer.add(queryData.get(0).get(0));
 		}
 
 		EchoServer.sendToMyClient(answer, client);

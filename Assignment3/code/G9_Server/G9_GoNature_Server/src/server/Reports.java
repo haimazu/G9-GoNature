@@ -168,6 +168,89 @@ public class Reports {
 
 	}
 
+	// input: ArrayList<Object>: cell[0] name
+	// cell[1] month
+	// cell[2] year ,ConnectionToClient
+	// Cancellation Report and visits lost
+	// output: list of cancelled orders:
+	// ArrayList<Object>: cell[0] func_name
+	// cell[1] list of cancelled orders
+	// cell[2] list of dismissed orders
+	public static void CancellationReportSpecificFields(ArrayList<Object> recived, ConnectionToClient client) {
+		// the returned values stored here
+		ArrayList<Object> answer = new ArrayList<Object>();
+		// the service name : getCancellationReports
+		// cell 0: the service name
+		answer.add(recived.get(0));
+
+		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
+		String startDate = dataFromClient.get(0);
+		String endDate = dataFromClient.get(1);
+		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
+
+		// pre-cancelled orders
+		ArrayList<String> query1 = new ArrayList<String>();
+		query1.add("select"); // command
+		query1.add("canceledorders"); // table name
+		query1.add("visitorsNumber,parkName,arrivedTime,amountArrived"); // columns to select from
+		query1.add("WHERE " + dateCond); // condition
+		query1.add("4"); // how many columns returned
+		System.out.println(query1.toString());
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
+		if (queryData.isEmpty()) {
+			// no canceled orders in this month
+			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
+			EchoServer.sendToMyClient(answer, client);
+			return;
+		} else {
+			// answer.add(queryData);
+			System.out.println(queryData);// **
+		}
+
+		// Dismmised orders
+		ArrayList<String> query2 = new ArrayList<String>();
+		query2.add("select"); // command
+		query2.add("orders"); // table name
+		query2.add("visitorsNumber,parkName,arrivedTime,amountArrived"); // columns returned
+		query2.add("WHERE " + dateCond + " AND visitorsNumber != amountArrived"); // condition
+		query2.add("4"); // how many columns returned
+		System.out.println(query2.toString());
+		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
+		if (queryData2.isEmpty()) {
+			// no canceled orders in this month
+			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
+			EchoServer.sendToMyClient(answer, client);
+			return;
+		} else {
+			// answer.add(queryData2);
+			System.out.println(queryData2);
+
+		}
+
+		int amountOrdered[] = null;
+		int amountArrived[] = null;
+		int diffrance = 0;
+
+		int i = 0;
+		for (ArrayList<String> a : queryData) {
+			amountOrdered[i] = Integer.parseInt(a.get(0));
+			amountArrived[i] = Integer.parseInt(a.get(3));
+			i++;
+		}
+
+		// calculates the difference of amountOrdered and amountArrived
+		for (int j = 0; j < i; j++)
+			diffrance += (amountOrdered[i] - amountArrived[i]);
+
+		int dismmisedOrders = 0;
+		for (ArrayList<String> a : queryData2)
+			dismmisedOrders += Integer.parseInt(a.get(0));
+
+		answer.add(diffrance);
+		answer.add(dismmisedOrders);
+		EchoServer.sendToMyClient(answer, client);
+	}
+
 	public static void main(String[] args) {
 		ArrayList<String> strArrLst = new ArrayList<String>();
 		strArrLst.add("localhost");
