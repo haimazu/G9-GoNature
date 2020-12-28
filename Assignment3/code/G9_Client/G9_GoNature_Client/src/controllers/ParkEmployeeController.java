@@ -161,10 +161,19 @@ public class ParkEmployeeController implements Initializable {
 		// get order number from the server
 		// call showDetails() function to set up all the order details
 
-		int id = getOrderNumberFromBarcodeByID();
-		int memberId = getOrderNumberFromBarcodeByMemberId();
+		String id = getOrderNumberFromBarcodeByID();
+		String memberId = getOrderNumberFromBarcodeByMemberId();
+		String fromSimulator = "";
+		
+		// memberId case: memberId = G2 ==> memberId = 2
+		if (Character.isLetter(memberId.charAt(0))) {
+			fromSimulator = memberId.substring(1);
+		// Id case
+		} else {
+			fromSimulator = id;
+		}
 
-		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(String.valueOf(memberId))));
+		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(fromSimulator)));
 
 		if (getError().equals("No such order")) {
 			alert.failedAlert("Failed", "No such order.");
@@ -178,15 +187,12 @@ public class ParkEmployeeController implements Initializable {
 		showDetails(event);
 	}
 
-	private int getOrderNumberFromBarcodeByID() {
-		return 123456;
+	private String getOrderNumberFromBarcodeByID() {
+		return "123456";
 	}
 
-	private int getOrderNumberFromBarcodeByMemberId() {
-		 Random rand = new Random();
-		// generate random integers in range 0 to 3
-		 return rand.nextInt(4);
-		//return 2;
+	private String getOrderNumberFromBarcodeByMemberId() {
+		 return "G2";
 	}
 
 	private int getVisitorsEnteredFromBarcode() {
@@ -199,13 +205,10 @@ public class ParkEmployeeController implements Initializable {
 	void showDetails(ActionEvent event) {
 		setRandomModeOff();
 
-		if (txtOrderNumber.getText().isEmpty() || txtVisitorsAmount.getText().isEmpty()) {
-			alert.failedAlert("Failed", "All fields required.");
+		if (txtOrderNumber.getText().isEmpty()) {
+			alert.failedAlert("Failed", "You must enter order number.");
 			return;
-		} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
-			alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
-			return;
-		}
+		} 
 
 		// will not enter if already has information from the barcodeScan
 		if (!informationExists) {
@@ -597,7 +600,7 @@ public class ParkEmployeeController implements Initializable {
 				return true;
 			}
 		} else if (currentHour >= 16 && currentHour < 22) {
-			timeFormat = " 16:00:00";
+			timeFormat = " 16:00:00";//TODO
 			if (arrivelHour == 16) {
 				return true;
 			}
@@ -721,7 +724,9 @@ public class ParkEmployeeController implements Initializable {
 			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			lblEmail.setText(orderDetails.getOrderEmail());
 
-			setPriceForOrdering();
+			if (!txtVisitorsAmount.getText().isEmpty()) {
+				setPriceForOrdering();				
+			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -996,7 +1001,7 @@ public class ParkEmployeeController implements Initializable {
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
 			// \\d -> only digits
 			// * -> escaped special characters
-			if (!newValue.matches("\\d")) {
+			if (!newValue.isEmpty() && !newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtOrderNumber.setText(newValue.replaceAll("[^\\d]", ""));
 			}
@@ -1006,7 +1011,7 @@ public class ParkEmployeeController implements Initializable {
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {	
 			// \\d -> only digits
 			// * -> escaped special characters
-			if (!newValue.matches("\\d")) {
+			if (!newValue.isEmpty() && !newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
 			}
