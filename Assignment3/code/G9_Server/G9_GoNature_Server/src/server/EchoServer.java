@@ -81,8 +81,10 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "getCancellationReports":
 			Reports.CancellationReport(recived, client);
+			break;
 		case "requestForEmployeeID" : 
 			PendingMenagerRequest.employeeNumberSet(recived, client);
+			break;
 		case "PendingManagerRequests":
 			PendingMenagerRequest.pendingManagerRequestAllItems(recived, client);
 			break;

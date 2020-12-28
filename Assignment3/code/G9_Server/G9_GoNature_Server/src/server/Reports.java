@@ -151,7 +151,7 @@ public class Reports {
 		query2.add("select"); // command
 		query2.add("orders"); // table name
 		query2.add("*"); // columns to select from
-		query2.add("WHERE " + dateCond + " AND amountArrived='0'"); // condition
+		query2.add("WHERE " + dateCond + " AND visitorsNumber != amountArrived"); // condition
 		query2.add("12"); // how many columns returned
 		System.out.println(query2.toString());
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
