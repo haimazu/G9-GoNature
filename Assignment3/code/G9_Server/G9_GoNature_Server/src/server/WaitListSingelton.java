@@ -1,6 +1,7 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import dataLayer.EmailMessege;
@@ -13,9 +14,14 @@ public class WaitListSingelton {
 	// singleton WaitListSingelton
 	private static WaitListSingelton obj;
 	private static Date timeLastChecked;
+	private static Date LastDailyCheck;
+	private static boolean dailyCheck;
+	
 	
 	private WaitListSingelton() {
 		timeLastChecked = new Date();
+		LastDailyCheck = new Date();
+		dailyCheck = true;
 		// on start up do this
 	}
 
@@ -42,8 +48,10 @@ public class WaitListSingelton {
 	
 	//input: none
 	//output: none
-	//DB: delete (if found) expierd orders listed in pending (more than 1 hour)
-	//NOTE: the timeLastChecked mehanizem make sure that this function run not more than once per minute (to not overload the server and DB eah time)
+	//DB: 	delete (if found) expierd orders listed in pending (more than 1 hour)
+	//		delete (if found) expierd orders listed in waitlist (more than 24 hours)
+	//NOTE: the timeLastChecked mechanizem make sure that this function run not more than once per minute (to not overload the server and DB each time)
+	//		the LastDailyCheck mechanizem make sure that the function of deleting from the waitlist will not run more than once per day
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
 		Date LastPlusMinute = new Date(timeLastChecked.getTime()+60*1000);
@@ -69,9 +77,32 @@ public class WaitListSingelton {
 			}
 			
 			//send were sorry mail
-			
+			timeLastChecked= new Date();
 		} //if last check was less than minute ago dont check
-			
+		Date LastPlusDay = new Date(LastDailyCheck.getTime()+24*60*60*1000);
+		if (LastPlusDay.compareTo(timeNow)>=0 || ((Calendar.HOUR_OF_DAY>22) && !isSameDay(LastDailyCheck,timeNow))) {
+			dailyCheck=true;
+		}
+		if (dailyCheck) { //TODO: think if we want to send a messege to the deleted or not.
+			ArrayList<String> query = new ArrayList<String>();
+			query.add("deleteOver24");
+			query.add("waitinglist");
+			query.add("arrivedTime <= DATE_SUB(NOW(), INTERVAL 1 DAY)");
+			MySQLConnection.deleteCond(query);
+			//delete wait list of today
+			dailyCheck=false;
+			LastDailyCheck= new Date();
+		}
+	}
+	
+	private static boolean isSameDay(Date date1, Date date2) {
+	    Calendar calendar1 = Calendar.getInstance();
+	    calendar1.setTime(date1);
+	    Calendar calendar2 = Calendar.getInstance();
+	    calendar2.setTime(date2);
+	    return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)
+	      && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
+	      && calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
 	}
 	
 	//input: date sent and date recived
