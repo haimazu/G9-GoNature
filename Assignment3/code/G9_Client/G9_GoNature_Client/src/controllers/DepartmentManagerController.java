@@ -75,8 +75,8 @@ public class DepartmentManagerController implements Initializable {
 	private TableColumn<TableViewSet, String> requestType;
 	@FXML
 	private TableColumn<TableViewSet, String> requestDetails;
-	@FXML
-	private TableColumn<TableViewSet, String> checkBox;
+    @FXML
+    private TableColumn<TableViewSet, String> mark;
 
 	@FXML
 	private Label LabelCount;
@@ -323,7 +323,7 @@ public class DepartmentManagerController implements Initializable {
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
-		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("mark"));
+		mark.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("mark"));
 
 		/***** Cancel Reports *****/
 		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
