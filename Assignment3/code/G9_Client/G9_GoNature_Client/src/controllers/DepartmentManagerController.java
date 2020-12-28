@@ -68,7 +68,7 @@ public class DepartmentManagerController implements Initializable {
 
 	/***** Dashboard *****/
 	@FXML
-	private TableView<TableViewSet> tableDep;
+	private TableView<TableViewSet> TableDep;
 	@FXML
 	private TableColumn<TableViewSet, String> parkName;
 	@FXML
@@ -76,7 +76,8 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private TableColumn<TableViewSet, String> requestDetails;
 	@FXML
-	private TableColumn<TableViewSet, CheckBox> checkBox;
+	private TableColumn<TableViewSet, String> checkBox;
+
 	@FXML
 	private Label LabelCount;
 	@FXML
@@ -103,7 +104,8 @@ public class DepartmentManagerController implements Initializable {
 	private static String firstName;
 
 	/***** Cancel Reports Variables *****/
-	//private static ArrayList<ArrayList<Report>> cancelReportsDetails = new ArrayList<>();
+	// private static ArrayList<ArrayList<Report>> cancelReportsDetails = new
+	// ArrayList<>();
 	private static ArrayList<ArrayList<String>> allCancelledOrders = new ArrayList<>();
 	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
 	private static ArrayList<Order> dismissedOrders = new ArrayList<>();
@@ -182,27 +184,25 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void addData(ArrayList<ArrayList<String>> al) {
-		ObservableList<TableViewSet>listForTable= FXCollections.observableArrayList();
+		ObservableList<TableViewSet> listForTable = FXCollections.observableArrayList();
 		String str = null;
 		for (ArrayList<String> arrayList : al) {
 
 			if (arrayList.get(1).equals("discount")) {
-				str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + arrayList.get(5)
-						+ " - " + arrayList.get(6);
+				str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + arrayList.get(5) + " - "
+						+ arrayList.get(6);
 			} else if (arrayList.get(1).equals("max_c")) {
 				str = "Visitors Capacity : " + arrayList.get(2);
 			} else if (arrayList.get(1).equals("max_o")) {
 				str = "Visitors Order Capacity : " + arrayList.get(3);
 			}
 
-			//CheckBox ch = new CheckBox();
-			listForTable.add(new TableViewSet(arrayList.get(7),arrayList.get(1),str));
+			listForTable.add(new TableViewSet(arrayList.get(7), arrayList.get(1), str));
 
 		}
-		
-		tableDep.setItems(listForTable);
-	}
 
+		TableDep.setItems(listForTable);
+	}
 
 	public void setButtonPressed(Button button) {
 		button.setStyle("-fx-background-color: transparent;\r\n" + "	-fx-border-color: brown;\r\n"
@@ -233,44 +233,44 @@ public class DepartmentManagerController implements Initializable {
 			data.add(fromFormat);
 			data.add(toFormat);
 			sendToServerArrayList(data);
-			
+
 			// show all data
 			chart();
 		}
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chart() {
 		xAxis = new CategoryAxis();
 		yAxis = new NumberAxis(0, 1000, 50);
-		
+
 		bcCancells.getData().clear();
 		bcCancells.setAnimated(false);
 		bcCancells.setBarGap(0d);
 		bcCancells.setCategoryGap(2.0);
-		
+
 		bcCancells.setTitle("Cancellation/Dismissed Reports");
-		
+
 		Series<String, Double> disney = new Series<>();
 		Series<String, Double> jurasic = new Series<>();
 		Series<String, Double> universal = new Series<>();
-		
+
 		for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
-		    int i = date.getDayOfMonth();
-		    
-			disney.setName("Disney");       
+			int i = date.getDayOfMonth();
+
+			disney.setName("Disney");
 			// x = day of the month, y = sum of cancel
 			disney.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
-	        			
-	        jurasic.setName("Jurasic");
-	        jurasic.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
-	        	        
-	        universal.setName("Universal");
-	        universal.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
+
+			jurasic.setName("Jurasic");
+			jurasic.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
+
+			universal.setName("Universal");
+			universal.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
 		}
-        
-        bcCancells.getData().addAll(disney, jurasic, universal);
-	}	
+
+		bcCancells.getData().addAll(disney, jurasic, universal);
+	}
 
 	// ArrayList<String> data, sending to the server to get data
 	// input: [0] case name
@@ -291,13 +291,13 @@ public class DepartmentManagerController implements Initializable {
 	// input: none
 	// output: list of cancelled orders:
 	// ArrayList<Object>: cell[0] list of cancelled orders
-	// 					  cell[1] list of dismissed orders
+	// cell[1] list of dismissed orders
 	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> data) {
 		allCancelledOrders = data;
 		CanceledReport c = new CanceledReport(allCancelledOrders.get(0));
 		System.out.println(c);
 	}
-	
+
 	public static ArrayList<ArrayList<String>> getDBList() {
 		return DBList;
 	}
@@ -312,24 +312,20 @@ public class DepartmentManagerController implements Initializable {
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 
-
 		ArrayList<Object> msg = new ArrayList<>();
-		 msg.add("PendingManagerRequests");
+		msg.add("PendingManagerRequests");
 		ClientUI.sentToChatClient(msg);
-
-		
 
 		count = DBList.size();
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
-		
-		
+
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
-		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet, CheckBox>("mark"));
-		
-		/***** Cancel Reports *****/	
+		checkBox.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("mark"));
+
+		/***** Cancel Reports *****/
 		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
 		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {

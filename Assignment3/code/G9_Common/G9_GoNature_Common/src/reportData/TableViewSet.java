@@ -8,10 +8,10 @@ import javafx.scene.control.CheckBox;
 
 public class TableViewSet {
 	
-	String reqType;
-	String reqDetails;
-	CheckBox mark;
-	String ParkName;
+	private String reqType;
+	private String reqDetails;
+	private CheckBox mark;
+	private String ParkName;
 	/**
 	 * @param parkName
 	 * @param reqType

@@ -135,12 +135,12 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="tableDep" focusTraversable="false" layoutX="11.0" layoutY="107.0" prefHeight="320.0" prefWidth="598.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="TableDep" layoutX="5.0" layoutY="93.0" prefHeight="334.0" prefWidth="612.0" tableMenuButtonVisible="true">
                      <columns>
                         <TableColumn fx:id="parkName" prefWidth="74.0" text="Park Name" />
                         <TableColumn fx:id="requestType" prefWidth="83.0" text="Request Type" />
-                        <TableColumn fx:id="requestDetails" prefWidth="379.0" text="Requset Details" />
-                        <TableColumn fx:id="checkBox" prefWidth="47.0" text="mark" />
+                        <TableColumn fx:id="requestDetails" prefWidth="374.0" text="Requset Details" />
+                        <TableColumn fx:id="checkBox" prefWidth="60.0" text="mark" />
                      </columns>
                   </TableView>
                   <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="20.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
