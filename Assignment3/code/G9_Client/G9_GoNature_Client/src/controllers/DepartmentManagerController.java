@@ -202,8 +202,9 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void setButtonPressed(Button button) {
-		button.setStyle("-fx-background-color: transparent;\r\n" + "	-fx-border-color: brown;\r\n"
-				+ "	-fx-border-width: 0px 0px 0px 3px;");
+		button.setStyle("-fx-background-color: transparent;" 
+					  + "-fx-border-color: brown;"
+				      + "-fx-border-width: 0px 0px 0px 3px;");
 	}
 
 	public void setButtonReleased(Button button, Button button1, Button button2) {
