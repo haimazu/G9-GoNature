@@ -20,11 +20,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -101,11 +103,25 @@ public class DepartmentManagerController implements Initializable {
 	private Button btnLogout;
 
 	private static String firstName;
-	private  ArrayList<Object> data = new ArrayList<>();
+	private ArrayList<Object> data = new ArrayList<>();
 	private static String status;
 	private AlertController alert = new AlertController();
 
+	/********* Useage report *********/
+	@FXML
+	private LineChart<?, ?> lineChart;
 
+	@FXML
+	private CategoryAxis lineX;
+
+	@FXML
+	private NumberAxis lineY;
+
+	@FXML
+	private JFXDatePicker dateFrom;
+
+	@FXML
+	private JFXDatePicker dateTo;
 
 	/***** Cancel Reports Variables *****/
 	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
@@ -127,6 +143,7 @@ public class DepartmentManagerController implements Initializable {
 			pnVisits.toFront();
 			setButtonPressed(btnVisitsReport);
 			setButtonReleased(btnDashboard, btnCancelsReport, btnSettings);
+			setDatePickerInitialValues();
 		} else if (event.getSource() == btnCancelsReport) {
 			lblTitle.setText("Cancels Report");
 			pnCancels.toFront();
@@ -173,7 +190,6 @@ public class DepartmentManagerController implements Initializable {
 	public static void setFirstName(String firstName) {
 		DepartmentManagerController.firstName = firstName;
 	}
-	
 
 	public static String getStatus() {
 		return status;
@@ -188,8 +204,9 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	/**
-	 * button approve will remove the row and will update the table from DB 
-	 * will send to server [0] - name mathod [1] - approve [2] - TabelViewSet
+	 * button approve will remove the row and will update the table from DB will
+	 * send to server [0] - name mathod [1] - approve [2] - TabelViewSet
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -202,9 +219,9 @@ public class DepartmentManagerController implements Initializable {
 //				data.add(TableDep.getItems().get(i).getParkName());
 //				data.add(TableDep.getItems().get(i).getReqType());
 //				ClientUI.sentToChatClient(data);
-				
+
 //				if(status.equals("Success"))
-					TableDep.getItems().remove(TableDep.getItems().get(i));
+				TableDep.getItems().remove(TableDep.getItems().get(i));
 //				else
 //					alert.failedAlert("Failed", "Something went wrong, can't delete from DB - please try later");
 			}
@@ -212,16 +229,16 @@ public class DepartmentManagerController implements Initializable {
 		}
 		iniailTabel();
 	}
-	
 
 	/**
-	 * button disapprove will not remove the row and will update the server
-	 * will send to server [0] - name method [1] - disapprove [2] - TabelViewSet
+	 * button disapprove will not remove the row and will update the server will
+	 * send to server [0] - name method [1] - disapprove [2] - TabelViewSet
+	 * 
 	 * @param event
 	 */
 	@FXML
 	void disapprove(ActionEvent event) {
-		
+
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
 				data.add("removePendingsManagerReq");
@@ -230,7 +247,7 @@ public class DepartmentManagerController implements Initializable {
 //				data.add(TableDep.getItems().get(i).getParkName());
 //				data.add(TableDep.getItems().get(i).getReqType());
 //				ClientUI.sentToChatClient(data);
-				
+
 //				if(!status.equals("Success"))
 //					alert.failedAlert("information", "We pass your decision to the park manager");
 
@@ -252,7 +269,7 @@ public class DepartmentManagerController implements Initializable {
 			} else if (arrayList.get(1).equals("max_o")) {
 				str = "Visitors Order Capacity : " + arrayList.get(3);
 			}
-			TableViewSet TVS =  new TableViewSet(arrayList.get(7), arrayList.get(1), str);
+			TableViewSet TVS = new TableViewSet(arrayList.get(7), arrayList.get(1), str);
 			TVS.setIdEmp(arrayList.get(0));
 			listForTable.add(TVS);
 		}
@@ -288,7 +305,7 @@ public class DepartmentManagerController implements Initializable {
 		if (from.isBefore(to)) {
 			data.add(fromFormat);
 			data.add(toFormat);
-			//sendToServerArrayList(data);
+			// sendToServerArrayList(data);
 
 			// show all data
 			chart();
@@ -367,6 +384,30 @@ public class DepartmentManagerController implements Initializable {
 		DBList = dBList;
 	}
 	
+	public void setDatePickerInitialValues() {
+		dateFrom.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+
+		//txtDateFrom.setValue(LocalDate.now());
+		dateTo.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+
+		//txtDateTo.setValue(LocalDate.now());
+
+	}
+
 	public void iniailTabel() {
 		DBList.clear();
 		ArrayList<Object> msg = new ArrayList<>();
@@ -384,9 +425,8 @@ public class DepartmentManagerController implements Initializable {
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 
-	
 		iniailTabel();
-		
+
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
