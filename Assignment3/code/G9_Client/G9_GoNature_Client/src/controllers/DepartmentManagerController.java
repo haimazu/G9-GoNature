@@ -275,7 +275,7 @@ public class DepartmentManagerController implements Initializable {
 		if (from.isBefore(to)) {
 			data.add(fromFormat);
 			data.add(toFormat);
-			sendToServerArrayList(data);
+			//sendToServerArrayList(data);
 
 			// show all data
 			chart();
