@@ -445,7 +445,7 @@ public class ParkManagerController implements Initializable {
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
 
-	void presentParkData(Park parkDetails) {
+	void presentParkDetails(Park parkDetails) {
 		
 
 	}
@@ -468,6 +468,15 @@ public class ParkManagerController implements Initializable {
 		msg.add(LoginController.getPassword());
 		ClientUI.sentToChatClient(msg);
 	}
+	public void RequestForParkDetails() {
+		ArrayList<Object> msg = new ArrayList<>();
+		ArrayList<String> data = new ArrayList<>();
+		msg.add("requestForParkDetails");
+		data.add(getParkName());
+		msg.add(data);
+		ClientUI.sentToChatClient(msg);
+	}
+	
 
 	public boolean DatesNotCorresponding() throws ParseException {
 		LocalDate from;
