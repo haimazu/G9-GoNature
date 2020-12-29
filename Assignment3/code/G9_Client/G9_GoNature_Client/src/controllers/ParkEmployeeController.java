@@ -310,7 +310,7 @@ public class ParkEmployeeController implements Initializable {
 		// update park status (for the 'else' part)
 		updateParkStatus(updateCurrentVisitors);
 				
-		// in case with order
+		// in case with order (the random visitors are the friends)
 		if (orderStatus) {
 			updateCurrentVisitors += Integer.parseInt(lblVisitorsNumber.getText());
 			// update park status
@@ -321,6 +321,9 @@ public class ParkEmployeeController implements Initializable {
 				// update current visitors
 				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
 				createFakeOrder("0", null, visitorsAmount);
+				// update the exact entry and exit time, for the ordered visitors && for the random friends
+				updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label);
+				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label);
 				alert.successAlert("Success", 
 						Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
 						+ String.valueOf(visitorsAmount) + " casual visitor/s, entered.");
@@ -339,6 +342,8 @@ public class ParkEmployeeController implements Initializable {
 				}
 				// update current visitors
 				updateCurrentVisitors(parkDetails.getCurrentAmount() + visitorsAmount);
+				// update the exact entry and exit time
+				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label);
 				alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");				
 			}
 		}		
@@ -402,6 +407,8 @@ public class ParkEmployeeController implements Initializable {
 					// update current visitors
 					updateCurrentVisitors(parkDetails.getCurrentAmount() + 
 										  Integer.parseInt(txtVisitorsAmount.getText()));	
+					// update the exact entry and exit time
+					updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label);
 					alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");	
 				}
 			}
@@ -413,7 +420,6 @@ public class ParkEmployeeController implements Initializable {
 	// output: updating the current visitors in the park 
 	public void execExit() {
 		int updateCurrentVisitors = 0;
-		boolean doUpdate = false;
 		String memberId = "";
 		
 		// update places in the park
@@ -447,11 +453,14 @@ public class ParkEmployeeController implements Initializable {
 			
 			// number of leavers <= number of entered
 			if (randomVisitorFakeOrderDetails.getAmountArrived() != 0 && Integer.parseInt(txtIdOrMemberId.getText()) <= randomVisitorFakeOrderDetails.getAmountArrived()) {
+				// update the exact entry and exit time
+				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label);
+				// update current visitors
+				updateCurrentVisitors(updateCurrentVisitors);	
 				alert.successAlert("Success", txtRandomVisitorsAmount.getText() + " visitor/s leaved.");	
-				doUpdate = true;
 			} else {
-				alert.failedAlert("Failed", "The amount of visitors entered is smaller than the number of visitors who entered the invitation\n"
-						+ "or they did not enter.");	
+				alert.failedAlert("Failed", "The amount of visitors entered is smaller than the number of visitors who entered the invitation"
+						+ " or they did not enter.");	
 			}
 		// barcode / regular mode
 		} else {
@@ -465,18 +474,15 @@ public class ParkEmployeeController implements Initializable {
 			
 			// number of leavers <= number of entered
 			if (orderDetails.getAmountArrived() != 0 && Integer.parseInt(txtVisitorsAmount.getText()) <= orderDetails.getAmountArrived()) {
+				// update the exact entry and exit time
+				updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label);				
+				// update current visitors
+				updateCurrentVisitors(updateCurrentVisitors);	
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
-				doUpdate = true;
 			} else {
-				alert.failedAlert("Failed", "The amount of visitors entered is smaller than the number of visitors who entered the invitation\n"
-						+ "or they did not enter");	
+				alert.failedAlert("Failed", "The amount of visitors entered is smaller than the number of visitors who entered the invitation"
+						+ " or they did not enter.");	
 			} 
-		} 
-		
-		if (doUpdate) {
-			//TODO check-out time update
-			// update current visitors
-			updateCurrentVisitors(updateCurrentVisitors);	
 		} 
 	}
 	
@@ -491,7 +497,7 @@ public class ParkEmployeeController implements Initializable {
 		
 		// case 2 or 4 -> single/family OR group
 		/***** Random *****/
-		if (!orderStatus) {		
+		if (!orderStatus && !btnRandomVisitor.isVisible()) {		
 			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
 				memberId = txtIdOrMemberId.getText().substring(1);
 				currentValue = memberId;
@@ -499,16 +505,17 @@ public class ParkEmployeeController implements Initializable {
 				id = txtIdOrMemberId.getText();
 				currentValue = id;
 			}
-			
-			sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(currentValue)));
-			createFakeOrder(memberId, id, Integer.parseInt(txtRandomVisitorsAmount.getText()));				
-
-			if (getError().equals("No such order")) {
-				return false;
-			} 
-			return true;
+			createFakeOrder(memberId, id, Integer.parseInt(txtRandomVisitorsAmount.getText()));	
+		} else {
+			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));							
 		}
-		return false;	
+			
+		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(currentValue)));
+
+		if (getError().equals("No such order")) {
+			return false;
+		} 
+		return true;
 	}
 	
 	// updates prices for ordered visitors
@@ -719,11 +726,8 @@ public class ParkEmployeeController implements Initializable {
 	// ArrayList<String> data, sending to the server to update the access control
 	// input: on enter: cell 0: orderNumber
 	//        			cell 1: parkName
-	//        			cell 2: entryTime
+	//        			cell 2: entryTime / exitTime
 	//        			cell 3: orderType
-	//
-	//        on exit:  cell 0: orderNumber
-	//                  cell 1: exitTime
 	// output: message with the result of the update: true if success
 	//                                                false, otherwise
 	public void updateAccessControl(int orderNumber, String orderType) {
@@ -731,17 +735,11 @@ public class ParkEmployeeController implements Initializable {
 		LocalDateTime currentTime = LocalDateTime.now();
 		
 		ArrayList<String> data = new ArrayList<String>();
-		// entry mode
-		if (radEnter.isSelected()) {
-			data.add(String.valueOf(orderNumber));
-			data.add(getParkName());
-			data.add(currentTime.format(dateAndTime));
-			data.add(orderType);
-		// exit mode
-		} else {
-			data.add(String.valueOf(orderNumber));
-			data.add(currentTime.format(dateAndTime));
-		}
+
+		data.add(String.valueOf(orderNumber));
+		data.add(getParkName());
+		data.add(currentTime.format(dateAndTime));
+		data.add(orderType);
 
 		sendToServerArrayList("updateAccessControl", data);
 

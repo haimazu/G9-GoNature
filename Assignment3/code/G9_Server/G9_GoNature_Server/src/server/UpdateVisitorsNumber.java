@@ -78,14 +78,11 @@ public class UpdateVisitorsNumber {
 	}
 
 	// input: cell [0]: case name updateAccessControl
-	//        cell [1]: on enter: cell 0: orderNumber
-	//        					  cell 1: parkName
-	//        			          cell 2: entryTime
-	//        			          cell 3: orderType
-	//
-	//                  on exit:  cell 0: orderNumber
-	//                            cell 1: exitTime
-	// 
+	//        cell [1]: cell 0: orderNumber
+	//        			cell 1: parkName
+	//        			cell 2: entryTime / exitTime
+	//        			cell 3: orderType
+
 	// output: ArrayList<Object>=> cell[0] function name
 	// cell[1] T if update succeeded, F if not, Full if we can add more visitors
 	@SuppressWarnings("unchecked")
@@ -103,22 +100,26 @@ public class UpdateVisitorsNumber {
 		if (!checkIfOrderNumberExists(data.get(0))) {
 			query.add("insert"); // command
 			query.add("accesscontrol"); // table name
-			query.add(data.get(0) + "," + data.get(1) + "," + data.get(2) + "," + null + "," + data.get(3));
+			query.add(data.get(0) + ", '" + data.get(1) + "', '" + data.get(2) + "', " + null + ", '" + data.get(3) + "'");
 
-			MySQLConnection.insert(query);
+			answer.add(MySQLConnection.insert(query));
 			EchoServer.sendToMyClient(answer, client);
+			return;
 		}
 		
 		query.add("update"); // command
 		query.add("accesscontrol"); // table name
+		query.add("exitTime = '" + data.get(2) + "'"); // columns to update	
 		query.add("orderNumber"); // condition
-		query.add("exitTime = '" + data.get(1) + "'"); // columns to update	
 		query.add(data.get(0)); // orderNumber value
 
 		answer.add(MySQLConnection.update(query));
 		EchoServer.sendToMyClient(answer, client);
 	}
 	
+	// check if the order number exists in the table access control
+	// input: orderNumber
+	// output: T / F ==> if the order number exists
 	public static boolean checkIfOrderNumberExists(String orderNumber) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
