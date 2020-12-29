@@ -778,12 +778,6 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		} 
 		
-//		// too few visitors (check after exit)
-//		if (getError().equals("Lower") && radExit.isSelected()) {
-//			alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
-//			return;
-//		} 
-		
 		setError("Free");
 		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
 				+ String.valueOf(parkDetails.getCurrentAmount()) + "/" 
@@ -815,8 +809,13 @@ public class ParkEmployeeController implements Initializable {
 			lblParkName.setText(orderDetails.getParkName());
 			lblDate.setText(strDateTime);
 			lblTime.setText(time);
-			lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			lblEmail.setText(orderDetails.getOrderEmail());
+			// random visitor order
+			if (orderDetails.getOrderEmail().equals("null")) {
+				lblVisitorsNumber.setText(String.valueOf(orderDetails.getAmountArrived()));
+			} else {
+				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));				
+			}
 
 			if (!txtVisitorsAmount.getText().isEmpty()) {
 				setPriceForOrdering();				
