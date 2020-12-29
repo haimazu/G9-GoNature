@@ -125,6 +125,7 @@ public class OrderController implements Initializable {
 	private static ArrayList<String> ParksNames = new ArrayList<>();
 	private static Order orderSuccess;
 	private static Order order;
+	private  ArrayList<Object> saveDetails= new ArrayList<>();
 	private static String status = "not";
 	private static boolean faildDB = true;
 	private static boolean confirmOrder = false;
@@ -202,6 +203,13 @@ public class OrderController implements Initializable {
 			Node topNode = stackPanels.get(stackPanels.size() - 1);
 
 			if (topNode.getId().equals("pnOrder")) {// in order screen
+				saveDetails.add(txtmemberID.getText());
+				saveDetails.add(cbxParkName.getValue());
+				saveDetails.add(txtdate.getValue());
+				saveDetails.add(cbxArrivelTime.getValue());
+				saveDetails.add(txtVisitorsNumber.getText());
+				saveDetails.add(txtInvitingEmail.getText());
+				saveDetails.add(txtPhoneNum.getText());
 				Stage stage = (Stage) btnBack.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 				stage.setScene(new Scene(root));
@@ -301,8 +309,8 @@ public class OrderController implements Initializable {
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
 
-					this.txtprice.setText(String.valueOf(orderSuccess.getPrice()));
-					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()));
+					this.txtprice.setText(String.valueOf(orderSuccess.getPrice())+  " ₪");
+					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()) +  " ₪");
 					double value = (1 - (orderSuccess.getTotalPrice() / orderSuccess.getPrice())) * 100;
 					this.txtdDiscount.setText(String.format("%.1f", value) + "%");
 					this.txtVisitoramountPrice.setText(String.valueOf(orderSuccess.getVisitorsNumber()));
@@ -407,7 +415,9 @@ public class OrderController implements Initializable {
 	public boolean checkNotEmptyFields() {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		String email = txtInvitingEmail.getText();
-		String parkName = cbxParkName.getValue().toString();
+		String parkName = new String();
+		if(cbxParkName.getValue() != null)
+			parkName = cbxParkName.getValue().toString();
 		String memberId = txtmemberID.getText();
 		String Phone = txtPhoneNum.getText();
 //		System.out.println(visitorsNumber + " " + email + " " + parkName + " " + memberId + " " + Phone);
@@ -470,6 +480,12 @@ public class OrderController implements Initializable {
 			return false;
 		}
 		if (validInput("memberId", txtmemberID.getText())) {
+			if(txtmemberID.getText().contains("g")) {
+				if(Integer.parseInt(txtVisitorsNumber.getText()) >15) {
+					alert.setAlert("An organized group is limited to 15 participants");
+					return false;
+				}
+			}
 			this.memberId = txtmemberID.getText().substring(1);
 			return true;
 		} else if (validInput("ID", txtmemberID.getText())) {
@@ -576,25 +592,29 @@ public class OrderController implements Initializable {
 		txtdate.setValue(LocalDate.now());
 
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
-		cbxParkName.getSelectionModel().selectFirst();
+		//cbxParkName.getSelectionModel().selectFirst();
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
 		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
 
 		/*********** need to do this**** for save detail after fill **********/
-//		if(OrderController.order!=null) {
-//			txtmemberID.setText("order.gt");
-//			txtVisitorsNumber.setText("2");
-//			txtInvitingEmail.setText("bar@kaz.com");
-//			txtPhoneNum.setText("0541234567");
-//		}
+		if(!saveDetails.isEmpty()) {
+			System.out.println(saveDetails.toString());
+			txtmemberID.setText((String) saveDetails.get(0));
+			cbxParkName.setValue((String) saveDetails.get(1));
+			txtdate.setValue((LocalDate) saveDetails.get(2));
+			cbxArrivelTime.setValue((String) saveDetails.get(3));
+			txtVisitorsNumber.setText((String) saveDetails.get(4));
+			txtInvitingEmail.setText((String) saveDetails.get(5));
+			txtPhoneNum.setText((String) saveDetails.get(6));
+		}
 
 		/****************** for me ******************/
-		txtmemberID.setText("315818987");
-		txtVisitorsNumber.setText("2");
-		txtInvitingEmail.setText("bar@kaz.com");
-		txtPhoneNum.setText("0541234567");
+//		txtmemberID.setText("315818987");
+//		txtVisitorsNumber.setText("2");
+//		txtInvitingEmail.setText("bar@kaz.com");
+//		txtPhoneNum.setText("0541234567");
 
 	}
 
