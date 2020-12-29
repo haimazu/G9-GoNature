@@ -415,7 +415,8 @@ public class ParkManagerController implements Initializable {
 		if (capacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 		//check that capacity for orders is less than overall capacity
-		
+		if(Integer.parseInt(capacity) >= park.getMaximumCapacityInPark())
+			alert.setAlert("You are trying to determine illegal capacity !\nCapacity for ordered visits should be less than maximum capacity in park ");
 		else 
 		{
 			ArrayList<Object> msg = new ArrayList<>();
@@ -553,5 +554,9 @@ public class ParkManagerController implements Initializable {
 
 		return false;
 	}
+	@FXML
+    void visitsReport(ActionEvent event) {
+		pnVisits1.setVisible(false);
+    }
 
 }

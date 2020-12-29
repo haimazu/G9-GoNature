@@ -43,7 +43,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnVisits" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Visits Report" textFill="WHITE">
+            <Button fx:id="btnVisits" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#visitsReport" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Visits Report" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="USERS" size="15" />
                </graphic>
