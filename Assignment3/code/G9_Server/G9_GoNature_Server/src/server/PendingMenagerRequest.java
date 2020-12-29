@@ -19,8 +19,8 @@ public class PendingMenagerRequest {
 		answer.add(recived.get(0));
 		ManagerRequest mr = (ManagerRequest) recived.get(1);
 		if (mr.getRequesttype() != "discount") {
-			mr.setFromDate("0");
-			mr.setToDate("0");
+			mr.setFromDate("01-01-00 00:00:00");
+			mr.setToDate("01-01-00 00:00:00");
 		}
 		// select pending requests and to check if not more than 1 in every type
 		ArrayList<String> query1 = new ArrayList<String>();
