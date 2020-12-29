@@ -187,15 +187,20 @@ public class DepartmentManagerController implements Initializable {
 		setStatus(status);
 	}
 
+	/**
+	 * button approve will remove the row and will update the table from DB 
+	 * will send to server [0] - name mathod [1] - approve [2] - TabelViewSet
+	 * @param event
+	 */
 	@FXML
 	void approve(ActionEvent event) {
-		int counter=DBList.size();
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
 				data.add("removePendingsManagerReq");
 				data.add("approve");
-				data.add(TableDep.getItems().get(i).getParkName());
-				data.add(TableDep.getItems().get(i).getReqType());
+				data.add(TableDep.getItems().get(i));
+//				data.add(TableDep.getItems().get(i).getParkName());
+//				data.add(TableDep.getItems().get(i).getReqType());
 //				ClientUI.sentToChatClient(data);
 				
 //				if(status.equals("Success"))
@@ -207,7 +212,13 @@ public class DepartmentManagerController implements Initializable {
 		}
 		iniailTabel();
 	}
+	
 
+	/**
+	 * button disapprove will not remove the row and will update the server
+	 * will send to server [0] - name method [1] - disapprove [2] - TabelViewSet
+	 * @param event
+	 */
 	@FXML
 	void disapprove(ActionEvent event) {
 		
@@ -215,8 +226,9 @@ public class DepartmentManagerController implements Initializable {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
 				data.add("removePendingsManagerReq");
 				data.add("disapprove");
-				data.add(TableDep.getItems().get(i).getParkName());
-				data.add(TableDep.getItems().get(i).getReqType());
+				data.add(TableDep.getItems().get(i));
+//				data.add(TableDep.getItems().get(i).getParkName());
+//				data.add(TableDep.getItems().get(i).getReqType());
 //				ClientUI.sentToChatClient(data);
 				
 //				if(!status.equals("Success"))
@@ -240,8 +252,9 @@ public class DepartmentManagerController implements Initializable {
 			} else if (arrayList.get(1).equals("max_o")) {
 				str = "Visitors Order Capacity : " + arrayList.get(3);
 			}
-			listForTable.add(new TableViewSet(arrayList.get(7), arrayList.get(1), str));
-
+			TableViewSet TVS =  new TableViewSet(arrayList.get(7), arrayList.get(1), str);
+			TVS.setIdEmp(arrayList.get(0));
+			listForTable.add(TVS);
 		}
 
 		TableDep.setItems(listForTable);

@@ -13,6 +13,10 @@ public class TableViewSet {
 	private String reqDetails;
 	private CheckBox MarkCh;
 	private String ParkName;
+	private String idEmp;
+
+
+
 	/**
 	 * @param parkName
 	 * @param reqType
@@ -65,6 +69,12 @@ public class TableViewSet {
 	}
 	public void setMarkCh(CheckBox checkBox) {
 		this.MarkCh = checkBox;
+	}
+	public String getIdEmp() {
+		return idEmp;
+	}
+	public void setIdEmp(String idEmp) {
+		this.idEmp = idEmp;
 	}
 
 	
