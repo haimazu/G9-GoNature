@@ -30,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import orderData.Order;
 import reportData.ManagerRequest;
 
 public class ParkManagerController implements Initializable {
@@ -156,6 +157,15 @@ public class ParkManagerController implements Initializable {
 	private AlertController alert = new AlertController();
 	private static boolean requestAnswerFromServer;
 	private static int empID = 0;
+	private static Park park;
+
+	public static Park getPark() {
+		return park;
+	}
+
+	public static void setPark(Park park) {
+		ParkManagerController.park = park;
+	}
 
 	public static int getEmpID() {
 		return empID;
@@ -180,6 +190,42 @@ public class ParkManagerController implements Initializable {
 	public static void setParkName(String parkName) {
 		ParkManagerController.parkName = parkName;
 	}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+		setFirstName(LoginController.getFirstName());
+		lblFirstNameTitle.setText(getFirstName());
+		setParkName(LoginController.getParkName());
+		lblParkName.setText(getParkName());
+
+		setDatePickerInitialValues();
+		RequestForEmployeeID();
+		presentParkDetails(park);
+	}
+	//dates method
+	public void setDatePickerInitialValues() {
+		txtDateFrom.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+
+		txtDateFrom.setValue(LocalDate.now());
+		txtDateTo.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+
+		txtDateTo.setValue(LocalDate.now());
+	}
+
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -210,41 +256,7 @@ public class ParkManagerController implements Initializable {
 		ParkManagerController.firstName = firstName;
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-		setFirstName(LoginController.getFirstName());
-		lblFirstNameTitle.setText(getFirstName());
-		setParkName(LoginController.getParkName());
-		lblParkName.setText(getParkName());
-
-		setDatePickerInitialValues();
-		RequestForEmployeeID();
-	}
-	//dates method
-	public void setDatePickerInitialValues() {
-		txtDateFrom.setDayCellFactory(picker -> new DateCell() {
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				LocalDate today = LocalDate.now();
-				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-			}
-		});
-
-		txtDateFrom.setValue(LocalDate.now());
-		txtDateTo.setDayCellFactory(picker -> new DateCell() {
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				LocalDate today = LocalDate.now();
-				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-			}
-		});
-
-		txtDateTo.setValue(LocalDate.now());
-	}
-
+	
 	@FXML
 	void setDiscount(ActionEvent event) {
 		if (!btnSetMaxByOrder.isVisible()) {
@@ -445,7 +457,9 @@ public class ParkManagerController implements Initializable {
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
 
-	void presentParkDetails(Park parkDetails) {
+	 void presentParkDetails(Park parkDetails) {
+		lblPresentDisc.setText(String.valueOf(parkDetails.getMangerDiscount()));
+		
 		
 
 	}
@@ -454,7 +468,12 @@ public class ParkManagerController implements Initializable {
 		setRequestAnswerFromServer(answer);
 
 	}
-
+	public static void recivedFromserverParkDetails(Object object) {
+		if (object instanceof Park)
+			setPark((Park)object);
+		else
+			setPark(null);
+	}
 	public static void recivedFromserverEmployeeID(String answer) {
 		setEmpID(Integer.parseInt(answer));
 
