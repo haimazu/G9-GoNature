@@ -716,6 +716,42 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
+	// ArrayList<String> data, sending to the server to update the access control
+	// input: on enter: cell 0: orderNumber
+	//        			cell 1: parkName
+	//        			cell 2: entryTime
+	//        			cell 3: orderType
+	//
+	//        on exit:  cell 0: orderNumber
+	//                  cell 1: exitTime
+	// output: message with the result of the update: true if success
+	//                                                false, otherwise
+	public void updateAccessControl(int orderNumber, String orderType) {
+		DateTimeFormatter dateAndTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime currentTime = LocalDateTime.now();
+		
+		ArrayList<String> data = new ArrayList<String>();
+		// entry mode
+		if (radEnter.isSelected()) {
+			data.add(String.valueOf(orderNumber));
+			data.add(getParkName());
+			data.add(currentTime.format(dateAndTime));
+			data.add(orderType);
+		// exit mode
+		} else {
+			data.add(String.valueOf(orderNumber));
+			data.add(currentTime.format(dateAndTime));
+		}
+
+		sendToServerArrayList("updateAccessControl", data);
+
+		// check if the update failed and showing alert
+		if (getError().equals("false")) {
+			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+			return;
+		}
+	}
+	
 	// input: none
 	// output: update the park title with the current visitors
 	public void updateParkStatus(int addToEnter) {

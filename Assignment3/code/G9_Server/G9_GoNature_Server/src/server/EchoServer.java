@@ -88,6 +88,9 @@ public class EchoServer extends AbstractServer {
 		case "PendingManagerRequests":
 			PendingMenagerRequest.pendingManagerRequestAllItems(recived, client);
 			break;
+		case "updateAccessControl":
+			UpdateVisitorsNumber.updateAccessControl(recived, client);
+			break;
 		default:
 			break;
 		}
