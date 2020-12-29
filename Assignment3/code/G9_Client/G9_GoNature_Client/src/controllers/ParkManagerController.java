@@ -192,10 +192,11 @@ public class ParkManagerController implements Initializable {
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		
+		setParkName(LoginController.getParkName());
+		RequestForParkDetails();
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
-		setParkName(LoginController.getParkName());
 		lblParkName.setText(getParkName());
 
 		setDatePickerInitialValues();
@@ -224,6 +225,7 @@ public class ParkManagerController implements Initializable {
 		});
 
 		txtDateTo.setValue(LocalDate.now());
+		
 	}
 
 
@@ -421,6 +423,7 @@ public class ParkManagerController implements Initializable {
 			Req.setParkName(getParkName());
 			Req.setEmployeeID(getEmpID());
 			Req.setRequesttype("max_o");
+			Req.setOrdersCapacity(Integer.parseInt(txtMaxcapByorder.getText()));
 			msg.add(Req);
 			ClientUI.sentToChatClient(msg);
 			
@@ -455,13 +458,47 @@ public class ParkManagerController implements Initializable {
 		String orderCapacity = txtMaxcapByorder.getText();
 		if (orderCapacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
+		else 
+		{
+			ArrayList<Object> msg = new ArrayList<>();
+			msg.add("parkManagerRequest");
+			Req.setParkName(getParkName());
+			Req.setEmployeeID(getEmpID());
+			Req.setRequesttype("max_c");
+			Req.setMaxCapacity(Integer.parseInt(lblSetMax.getText()));
+			msg.add(Req);
+			ClientUI.sentToChatClient(msg);
+			
+			if (requestAnswerFromServer) {
+				alert.successAlert("Request Info",
+						"Your request was sent and pending for deapartment manager approval.");
+				btnSetVisitors.setVisible(true);
+				lblSetMax.setVisible(false);
+				btnSubmitVisits.setVisible(false);
+			}
+			else {
+				alert.setAlert(
+						"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
+				btnSetVisitors.setVisible(true);
+				lblSetMax.setVisible(false);
+				btnSubmitVisits.setVisible(false);
+			}
+			
+		}
+		Req.setDiscount("");
+		Req.setFromDate("");
+		Req.setToDate("");
+		Req.setParkName("");
+		Req.setEmployeeID(getEmpID());
+		Req.setRequesttype("");
+		lblSetMax.clear();
 	}
 
 	 void presentParkDetails(Park parkDetails) {
-		lblPresentDisc.setText(String.valueOf(parkDetails.getMangerDiscount()));
-		
-		
-
+		double disc = parkDetails.getMangerDiscount();
+		lblPresentDisc.setText(String.format("%.1f", disc) + "%");
+		lblPresentMaxVis.setText(String.valueOf(parkDetails.getMaximumCapacityInPark()));
+		lblPresentReservationCap.setText(String.valueOf(parkDetails.getMaxAmountOrders()));
 	}
 
 	public static void recivedFromserver(boolean answer) {

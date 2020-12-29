@@ -34,7 +34,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Pane>
-            <Button fx:id="btnAccessControl" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Access Control" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="btnAccessControl" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Access Control" textAlignment="CENTER" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="DASHBOARD" size="15" />
                </graphic>
@@ -42,7 +42,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
+            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="COG" size="16" />
                </graphic>
@@ -80,7 +80,7 @@
                   </TableView>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnAccessControl" layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <Label fx:id="lblDateTitle" layoutX="30.0" layoutY="426.0" styleClass="labelBold" text="Date:">
                      <font>

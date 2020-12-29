@@ -54,6 +54,7 @@ public class Reports {
 	// in the DB)
 	// [0] -> date and time of a capsule that was not full
 	// [1] -> Difference between max allowed and actual arrived
+	@SuppressWarnings("unchecked")
 	public static void UsageReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -117,6 +118,7 @@ public class Reports {
 	// ArrayList<Object>: cell[0] func_name
 	// cell[1] list of cancelled orders
 	// cell[2] list of dismissed orders
+	@SuppressWarnings("unchecked")
 	public static void CancellationReportFull(ArrayList<Object> recived, ConnectionToClient client) {
 		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -177,6 +179,7 @@ public class Reports {
 	// output: list of cancelled orders:
 	// ArrayList<Object>: cell[0] func_name
 	// cell[1] ArrayList<String> of rows in query
+	@SuppressWarnings("unchecked")
 	public static void CancellationReport(ArrayList<Object> recived, ConnectionToClient client) {
 		// the returned values stored here
 		ArrayList<Object> answer = new ArrayList<Object>();
