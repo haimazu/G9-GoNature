@@ -81,7 +81,7 @@ public class WaitListSingelton {
 			timeLastChecked= new Date();
 		} //if last check was less than minute ago dont check
 		Date LastPlusDay = new Date(LastDailyCheck.getTime()+24*60*60*1000);
-		if (LastPlusDay.compareTo(timeNow)>=0 || ((Calendar.HOUR_OF_DAY>22) && !isSameDay(LastDailyCheck,timeNow))) {
+		if (LastPlusDay.compareTo(timeNow)<=0 || ((Calendar.HOUR_OF_DAY>22) && !isSameDay(LastDailyCheck,timeNow))) {
 			dailyCheck=true;
 		}
 		if (dailyCheck) { //TODO: think if we want to send a messege to the deleted or not.
