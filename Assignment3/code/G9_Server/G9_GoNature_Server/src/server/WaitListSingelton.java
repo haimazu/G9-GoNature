@@ -17,7 +17,7 @@ public class WaitListSingelton {
 	private static Date LastDailyCheck;
 	private static boolean dailyCheck;
 	
-	
+	//SingletonBuilder
 	private WaitListSingelton() {
 		timeLastChecked = new Date();
 		LastDailyCheck = new Date();
@@ -25,6 +25,7 @@ public class WaitListSingelton {
 		// on start up do this
 	}
 
+	//Singleton, create one instance only
 	public static WaitListSingelton getWaitlist() {
 		if (obj == null) {
 			if (obj == null) {
@@ -95,6 +96,8 @@ public class WaitListSingelton {
 		}
 	}
 	
+	//input: two dates
+	//output: true if the two dates are on the same day, false if not
 	private static boolean isSameDay(Date date1, Date date2) {
 	    Calendar calendar1 = Calendar.getInstance();
 	    calendar1.setTime(date1);

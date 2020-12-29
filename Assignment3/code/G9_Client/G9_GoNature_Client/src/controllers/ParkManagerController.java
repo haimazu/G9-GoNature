@@ -30,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import orderData.Order;
 import reportData.ManagerRequest;
 
 public class ParkManagerController implements Initializable {
@@ -154,9 +155,17 @@ public class ParkManagerController implements Initializable {
 	private static String firstName;
 	private static String parkName;
 	private AlertController alert = new AlertController();
-	private static boolean discountAnswerFromServer;
-	private static int empID=0;
-	
+	private static boolean requestAnswerFromServer;
+	private static int empID = 0;
+	private static Park park;
+
+	public static Park getPark() {
+		return park;
+	}
+
+	public static void setPark(Park park) {
+		ParkManagerController.park = park;
+	}
 
 	public static int getEmpID() {
 		return empID;
@@ -166,12 +175,12 @@ public class ParkManagerController implements Initializable {
 		ParkManagerController.empID = empID;
 	}
 
-	public static boolean isDiscountAnswerFromServer() {
-		return discountAnswerFromServer;
+	public static boolean getRequestAnswerFromServer() {
+		return requestAnswerFromServer;
 	}
 
-	public static void setDiscountAnswerFromServer(boolean discountAnswerFromServer) {
-		ParkManagerController.discountAnswerFromServer = discountAnswerFromServer;
+	public static void setRequestAnswerFromServer(boolean discountAnswerFromServer) {
+		ParkManagerController.requestAnswerFromServer = discountAnswerFromServer;
 	}
 
 	public static String getParkName() {
@@ -181,36 +190,6 @@ public class ParkManagerController implements Initializable {
 	public static void setParkName(String parkName) {
 		ParkManagerController.parkName = parkName;
 	}
-
-	@FXML
-	void logout(ActionEvent event) throws IOException {
-		// Data fields
-		ArrayList<String> data = new ArrayList<String>();
-		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();	
-				
-		msg.add("updateLoggedIn");
-		// update as loggedin as logged out
-		data.add(LoginController.getUsername());
-		data.add(String.valueOf(0));
-		// Data fields
-		msg.add(data);	
-		// set up all the order details and the payment method
-		ClientUI.sentToChatClient(msg);
-		
-		Stage stage = (Stage) btnLogout.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
-		stage.setScene(new Scene(root));
-	}
-
-	public static String getFirstName() {
-		return firstName;
-	}
-
-	public static void setFirstName(String firstName) {
-		ParkManagerController.firstName = firstName;
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -219,6 +198,12 @@ public class ParkManagerController implements Initializable {
 		setParkName(LoginController.getParkName());
 		lblParkName.setText(getParkName());
 
+		setDatePickerInitialValues();
+		RequestForEmployeeID();
+		presentParkDetails(park);
+	}
+	//dates method
+	public void setDatePickerInitialValues() {
 		txtDateFrom.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
@@ -239,9 +224,39 @@ public class ParkManagerController implements Initializable {
 		});
 
 		txtDateTo.setValue(LocalDate.now());
-		RequestForEmployeeID();
 	}
 
+
+	@FXML
+	void logout(ActionEvent event) throws IOException {
+		// Data fields
+		ArrayList<String> data = new ArrayList<String>();
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+
+		msg.add("updateLoggedIn");
+		// update as loggedin as logged out
+		data.add(LoginController.getUsername());
+		data.add(String.valueOf(0));
+		// Data fields
+		msg.add(data);
+		// set up all the order details and the payment method
+		ClientUI.sentToChatClient(msg);
+
+		Stage stage = (Stage) btnLogout.getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+		stage.setScene(new Scene(root));
+	}
+
+	public static String getFirstName() {
+		return firstName;
+	}
+
+	public static void setFirstName(String firstName) {
+		ParkManagerController.firstName = firstName;
+	}
+
+	
 	@FXML
 	void setDiscount(ActionEvent event) {
 		if (!btnSetMaxByOrder.isVisible()) {
@@ -304,6 +319,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void setMaxCapacity(ActionEvent event) {
+
 		if (!btnSetDisc.isVisible()) {
 			btnSetDisc.setVisible(true);
 			txtManageDsic.setVisible(false);
@@ -337,9 +353,8 @@ public class ParkManagerController implements Initializable {
 	void submitPendingDiscount(ActionEvent event) throws ParseException {
 
 		String discount = txtManageDsic.getText();
-		
-		
-		if(DatesNotCorresponding())
+
+		if (DatesNotCorresponding())
 			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 		if (discount.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
@@ -356,59 +371,83 @@ public class ParkManagerController implements Initializable {
 				Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				Req.setParkName(getParkName());
-				Req.setEmployeeID(getEmpID());// ??????
+				Req.setEmployeeID(getEmpID());
 				Req.setRequesttype("discount");
 				msg.add(Req);
 				ClientUI.sentToChatClient(msg);
-			
-			
-			if (discountAnswerFromServer) {
-				alert.successAlert("Request Info", "Your request was sent and pending for deapartment manager approval.");
-				btnSetDisc.setVisible(true);
-				txtManageDsic.setVisible(false);
-				txtDateFrom.setVisible(false);
-				txtDateTo.setVisible(false);
-				btnSubmitDisc.setVisible(false);
-				
+
+				if (requestAnswerFromServer) {
+					alert.successAlert("Request Info",
+							"Your request was sent and pending for deapartment manager approval.");
+					btnSetDisc.setVisible(true);
+					txtManageDsic.setVisible(false);
+					txtDateFrom.setVisible(false);
+					txtDateTo.setVisible(false);
+					btnSubmitDisc.setVisible(false);
+
+				} else {
+					alert.setAlert(
+							"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
+					btnSetDisc.setVisible(true);
+					txtManageDsic.setVisible(false);
+					txtDateFrom.setVisible(false);
+					txtDateTo.setVisible(false);
+					btnSubmitDisc.setVisible(false);
+				}
+
 			}
-			else {
-				alert.setAlert("You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
-				btnSetDisc.setVisible(true);
-				txtManageDsic.setVisible(false);
-				txtDateFrom.setVisible(false);
-				txtDateTo.setVisible(false);
-				btnSubmitDisc.setVisible(false);
-			}
-			
-			
-		}
 		}
 		Req.setDiscount("");
 		Req.setFromDate("");
 		Req.setToDate("");
 		Req.setParkName("");
-		Req.setEmployeeID(getEmpID());// ??????
+		Req.setEmployeeID(getEmpID());
 		Req.setRequesttype("");
+		txtManageDsic.clear();
+		setDatePickerInitialValues();
 	}
 
 	@FXML
 	void submitVisitorsCapacityByorder(ActionEvent event) {
-//		String capacity = lblSetMax.getText();
-//		if (capacity.isEmpty())
-//			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
-//		else 
-//		{
-//			ArrayList<Object> msg = new ArrayList<>();
-//			msg.add("parkManagerRequest");
-//			//Req.setDiscount(String.valueOf(1 - discountInPrecents));
-//			Req.setParkName(getParkName());
-//			Req.setEmployeeID(0);// ??????
-//			Req.setRequesttype("discount");
-//			msg.add(Req);
-//			ClientUI.sentToChatClient(msg);
-//			
-//		}
+		String capacity = txtMaxcapByorder.getText();
+		if (capacity.isEmpty())
+			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
+		//check that capacity for orders is less than overall capacity
+		
+		else 
+		{
+			ArrayList<Object> msg = new ArrayList<>();
+			msg.add("parkManagerRequest");
+			Req.setParkName(getParkName());
+			Req.setEmployeeID(getEmpID());
+			Req.setRequesttype("max_o");
+			msg.add(Req);
+			ClientUI.sentToChatClient(msg);
 			
+			if (requestAnswerFromServer) {
+				alert.successAlert("Request Info",
+						"Your request was sent and pending for deapartment manager approval.");
+				btnSetMaxByOrder.setVisible(true);
+				txtMaxcapByorder.setVisible(false);
+				btnSubmitCapacityByorder.setVisible(false);
+			}
+			else {
+				alert.setAlert(
+						"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
+				btnSetMaxByOrder.setVisible(true);
+				txtMaxcapByorder.setVisible(false);
+				btnSubmitCapacityByorder.setVisible(false);
+			}
+			
+		}
+		Req.setDiscount("");
+		Req.setFromDate("");
+		Req.setToDate("");
+		Req.setParkName("");
+		Req.setEmployeeID(getEmpID());
+		Req.setRequesttype("");
+		txtMaxcapByorder.clear();
+
 	}
 
 	@FXML
@@ -418,20 +457,28 @@ public class ParkManagerController implements Initializable {
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
 	}
 
-	void presentParkData(Park parkDetails) {
+	 void presentParkDetails(Park parkDetails) {
+		lblPresentDisc.setText(String.valueOf(parkDetails.getMangerDiscount()));
 		
+		
+
 	}
 
 	public static void recivedFromserver(boolean answer) {
-		setDiscountAnswerFromServer(answer);
-		
+		setRequestAnswerFromServer(answer);
+
 	}
-	
+	public static void recivedFromserverParkDetails(Object object) {
+		if (object instanceof Park)
+			setPark((Park)object);
+		else
+			setPark(null);
+	}
 	public static void recivedFromserverEmployeeID(String answer) {
-		System.out.println("Employee" +answer);
 		setEmpID(Integer.parseInt(answer));
-		
+
 	}
+
 	public void RequestForEmployeeID() {
 
 		ArrayList<Object> msg = new ArrayList<>();
@@ -440,22 +487,33 @@ public class ParkManagerController implements Initializable {
 		msg.add(LoginController.getPassword());
 		ClientUI.sentToChatClient(msg);
 	}
-	public boolean DatesNotCorresponding() throws ParseException
-	{
-		LocalDate from ;
-		LocalDate to ;
-		
-		String [] fromarrsplitStrings = txtDateFrom.getValue().toString().split(" ");
-		String [] fromdatesplit =fromarrsplitStrings[0].split("-");
-		String [] toarrsplitStrings = txtDateTo.getValue().toString().split(" ");
-		String [] todatesplit =toarrsplitStrings[0].split("-");	
-		//[0]->year , [1]->month , [2]->day
-		from = LocalDate.of(Integer.parseInt(fromdatesplit[0]), Integer.parseInt(fromdatesplit[1]), Integer.parseInt(fromdatesplit[2]));
-		
-		to = LocalDate.of(Integer.parseInt(todatesplit[0]), Integer.parseInt(todatesplit[1]), Integer.parseInt(todatesplit[2]));
-		if(to.compareTo(from) <0)
+	public void RequestForParkDetails() {
+		ArrayList<Object> msg = new ArrayList<>();
+		ArrayList<String> data = new ArrayList<>();
+		msg.add("requestForParkDetails");
+		data.add(getParkName());
+		msg.add(data);
+		ClientUI.sentToChatClient(msg);
+	}
+	
+
+	public boolean DatesNotCorresponding() throws ParseException {
+		LocalDate from;
+		LocalDate to;
+
+		String[] fromarrsplitStrings = txtDateFrom.getValue().toString().split(" ");
+		String[] fromdatesplit = fromarrsplitStrings[0].split("-");
+		String[] toarrsplitStrings = txtDateTo.getValue().toString().split(" ");
+		String[] todatesplit = toarrsplitStrings[0].split("-");
+		// [0]->year , [1]->month , [2]->day
+		from = LocalDate.of(Integer.parseInt(fromdatesplit[0]), Integer.parseInt(fromdatesplit[1]),
+				Integer.parseInt(fromdatesplit[2]));
+
+		to = LocalDate.of(Integer.parseInt(todatesplit[0]), Integer.parseInt(todatesplit[1]),
+				Integer.parseInt(todatesplit[2]));
+		if (to.compareTo(from) < 0)
 			return true;
-		
+
 		return false;
 	}
 
