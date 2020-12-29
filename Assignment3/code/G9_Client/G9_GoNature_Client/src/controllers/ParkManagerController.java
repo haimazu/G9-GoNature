@@ -190,9 +190,10 @@ public class ParkManagerController implements Initializable {
 	public static void setParkName(String parkName) {
 		ParkManagerController.parkName = parkName;
 	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		setParkName(LoginController.getParkName());
 		RequestForParkDetails();
 		setFirstName(LoginController.getFirstName());
@@ -203,7 +204,8 @@ public class ParkManagerController implements Initializable {
 		RequestForEmployeeID();
 		presentParkDetails(park);
 	}
-	//dates method
+
+	// dates method
 	public void setDatePickerInitialValues() {
 		txtDateFrom.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
@@ -225,9 +227,8 @@ public class ParkManagerController implements Initializable {
 		});
 
 		txtDateTo.setValue(LocalDate.now());
-		
-	}
 
+	}
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -258,7 +259,6 @@ public class ParkManagerController implements Initializable {
 		ParkManagerController.firstName = firstName;
 	}
 
-	
 	@FXML
 	void setDiscount(ActionEvent event) {
 		if (!btnSetMaxByOrder.isVisible()) {
@@ -358,46 +358,48 @@ public class ParkManagerController implements Initializable {
 
 		if (DatesNotCorresponding())
 			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
-		if (discount.isEmpty())
-			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
-		else {
-			int integerDisc = Integer.parseInt(discount);
-			double discountInPrecents = integerDisc / 100.0;
-			if (integerDisc > 100)
-				alert.setAlert(
-						"You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
+		
+			if (discount.isEmpty())
+				alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
 			else {
-				ArrayList<Object> msg = new ArrayList<>();
-				msg.add("parkManagerRequest");
-				Req.setDiscount(String.valueOf(1 - discountInPrecents));
-				Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-				Req.setParkName(getParkName());
-				Req.setEmployeeID(getEmpID());
-				Req.setRequesttype("discount");
-				msg.add(Req);
-				ClientUI.sentToChatClient(msg);
-
-				if (requestAnswerFromServer) {
-					alert.successAlert("Request Info",
-							"Your request was sent and pending for deapartment manager approval.");
-					btnSetDisc.setVisible(true);
-					txtManageDsic.setVisible(false);
-					txtDateFrom.setVisible(false);
-					txtDateTo.setVisible(false);
-					btnSubmitDisc.setVisible(false);
-
-				} else {
+				int integerDisc = Integer.parseInt(discount);
+				double discountInPrecents = integerDisc / 100.0;
+				if (integerDisc > 100)
 					alert.setAlert(
-							"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
-					btnSetDisc.setVisible(true);
-					txtManageDsic.setVisible(false);
-					txtDateFrom.setVisible(false);
-					txtDateTo.setVisible(false);
-					btnSubmitDisc.setVisible(false);
-				}
+							"You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
+				else {
+					ArrayList<Object> msg = new ArrayList<>();
+					msg.add("parkManagerRequest");
+					Req.setDiscount(String.valueOf(1 - discountInPrecents));
+					Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+					Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+					Req.setParkName(getParkName());
+					Req.setEmployeeID(getEmpID());
+					Req.setRequesttype("discount");
+					msg.add(Req);
+					ClientUI.sentToChatClient(msg);
 
-			}
+					if (requestAnswerFromServer) {
+						alert.successAlert("Request Info",
+								"Your request was sent and pending for deapartment manager approval.");
+						btnSetDisc.setVisible(true);
+						txtManageDsic.setVisible(false);
+						txtDateFrom.setVisible(false);
+						txtDateTo.setVisible(false);
+						btnSubmitDisc.setVisible(false);
+
+					} else {
+						alert.setAlert(
+								"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
+						btnSetDisc.setVisible(true);
+						txtManageDsic.setVisible(false);
+						txtDateFrom.setVisible(false);
+						txtDateTo.setVisible(false);
+						btnSubmitDisc.setVisible(false);
+					}
+
+				}
+			
 		}
 		Req.setDiscount("");
 		Req.setFromDate("");
@@ -414,10 +416,11 @@ public class ParkManagerController implements Initializable {
 		String capacity = txtMaxcapByorder.getText();
 		if (capacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
-		//check that capacity for orders is less than overall capacity
-		
-		else 
-		{
+		// check that capacity for orders is less than overall capacity
+		if (Integer.parseInt(capacity) >= park.getMaximumCapacityInPark())
+			alert.setAlert(
+					"You are trying to determine illegal capacity !\nCapacity for ordered visits should be less than maximum capacity in park ");
+		else {
 			ArrayList<Object> msg = new ArrayList<>();
 			msg.add("parkManagerRequest");
 			Req.setParkName(getParkName());
@@ -426,22 +429,21 @@ public class ParkManagerController implements Initializable {
 			Req.setOrdersCapacity(Integer.parseInt(txtMaxcapByorder.getText()));
 			msg.add(Req);
 			ClientUI.sentToChatClient(msg);
-			
+
 			if (requestAnswerFromServer) {
 				alert.successAlert("Request Info",
 						"Your request was sent and pending for deapartment manager approval.");
 				btnSetMaxByOrder.setVisible(true);
 				txtMaxcapByorder.setVisible(false);
 				btnSubmitCapacityByorder.setVisible(false);
-			}
-			else {
+			} else {
 				alert.setAlert(
 						"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
 				btnSetMaxByOrder.setVisible(true);
 				txtMaxcapByorder.setVisible(false);
 				btnSubmitCapacityByorder.setVisible(false);
 			}
-			
+
 		}
 		Req.setDiscount("");
 		Req.setFromDate("");
@@ -455,11 +457,10 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void submitVisitorsCapacity(ActionEvent event) {
-		String orderCapacity = txtMaxcapByorder.getText();
+		String orderCapacity = lblSetMax.getText();
 		if (orderCapacity.isEmpty())
 			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid capacity.");
-		else 
-		{
+		else {
 			ArrayList<Object> msg = new ArrayList<>();
 			msg.add("parkManagerRequest");
 			Req.setParkName(getParkName());
@@ -468,22 +469,21 @@ public class ParkManagerController implements Initializable {
 			Req.setMaxCapacity(Integer.parseInt(lblSetMax.getText()));
 			msg.add(Req);
 			ClientUI.sentToChatClient(msg);
-			
+
 			if (requestAnswerFromServer) {
 				alert.successAlert("Request Info",
 						"Your request was sent and pending for deapartment manager approval.");
 				btnSetVisitors.setVisible(true);
 				lblSetMax.setVisible(false);
 				btnSubmitVisits.setVisible(false);
-			}
-			else {
+			} else {
 				alert.setAlert(
 						"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
 				btnSetVisitors.setVisible(true);
 				lblSetMax.setVisible(false);
 				btnSubmitVisits.setVisible(false);
 			}
-			
+
 		}
 		Req.setDiscount("");
 		Req.setFromDate("");
@@ -494,8 +494,8 @@ public class ParkManagerController implements Initializable {
 		lblSetMax.clear();
 	}
 
-	 void presentParkDetails(Park parkDetails) {
-		double disc = parkDetails.getMangerDiscount();
+	void presentParkDetails(Park parkDetails) {
+		double disc = (parkDetails.getMangerDiscount()) * 100;
 		lblPresentDisc.setText(String.format("%.1f", disc) + "%");
 		lblPresentMaxVis.setText(String.valueOf(parkDetails.getMaximumCapacityInPark()));
 		lblPresentReservationCap.setText(String.valueOf(parkDetails.getMaxAmountOrders()));
@@ -505,12 +505,14 @@ public class ParkManagerController implements Initializable {
 		setRequestAnswerFromServer(answer);
 
 	}
+
 	public static void recivedFromserverParkDetails(Object object) {
 		if (object instanceof Park)
-			setPark((Park)object);
+			setPark((Park) object);
 		else
 			setPark(null);
 	}
+
 	public static void recivedFromserverEmployeeID(String answer) {
 		setEmpID(Integer.parseInt(answer));
 
@@ -524,6 +526,7 @@ public class ParkManagerController implements Initializable {
 		msg.add(LoginController.getPassword());
 		ClientUI.sentToChatClient(msg);
 	}
+
 	public void RequestForParkDetails() {
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> data = new ArrayList<>();
@@ -532,7 +535,6 @@ public class ParkManagerController implements Initializable {
 		msg.add(data);
 		ClientUI.sentToChatClient(msg);
 	}
-	
 
 	public boolean DatesNotCorresponding() throws ParseException {
 		LocalDate from;
@@ -552,6 +554,11 @@ public class ParkManagerController implements Initializable {
 			return true;
 
 		return false;
+	}
+
+	@FXML
+	void visitsReport(ActionEvent event) {
+		pnVisits1.setVisible(false);
 	}
 
 }

@@ -196,7 +196,7 @@ public class Reports {
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
 		query1.add(
-				"(select parkName,arrivedTime,visitorsNumber-amountArrived as visitorsNumber  from g9_gonature.orders where "
+				"from (select parkName,arrivedTime,visitorsNumber-amountArrived as visitorsNumber  from g9_gonature.orders where "
 						+ dateCond
 						+ " AND visitorsNumber-amountArrived>0 union all select parkName,arrivedTime,visitorsNumber from g9_gonature.canceledorders where "
 						+ dateCond + ") t1 "); // table name

@@ -18,6 +18,10 @@ public class PendingMenagerRequest {
 		// the service name : ??
 		answer.add(recived.get(0));
 		ManagerRequest mr = (ManagerRequest) recived.get(1);
+		if (mr.getRequesttype() != "discount") {
+			mr.setFromDate("01-01-00 00:00:00");
+			mr.setToDate("01-01-00 00:00:00");
+		}
 		// select pending requests and to check if not more than 1 in every type
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
@@ -56,7 +60,7 @@ public class PendingMenagerRequest {
 	// select the emloyeeID by his user name and password
 	// output:F if no such employee OR employeeID
 	public static void employeeNumberSet(ArrayList<Object> recived, ConnectionToClient client) {
-		
+
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		String username = (String) recived.get(1);
@@ -107,11 +111,11 @@ public class PendingMenagerRequest {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	
-	//for bar with love
+	// for bar with love
 	// input: ArrayList<Object>: cell[0] name
 	//
-	// output:ArrayList<ArrayList<String>> of all Items in pending manager request table
+	// output:ArrayList<ArrayList<String>> of all Items in pending manager request
+	// table
 	public static void pendingManagerRequestAllItems(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -134,6 +138,8 @@ public class PendingMenagerRequest {
 	//
 	// output:
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
+		ArrayList<Object> answer = new ArrayList<Object>();
+		answer.add(recived.get(0));
 
 	}
 
