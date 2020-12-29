@@ -43,20 +43,19 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnLogout;
 	@FXML
-	private Button btnDashboard;
+	private Button btnAccessControl;
 	@FXML
 	private Button btnSettings;
+	@FXML
+    private Pane pnSettings;
+	@FXML
+    private Pane pnAccessControl;
 
 	/***** Current Park Details *****/
 	@FXML
 	private Label lblTitle;
 	@FXML
 	private Label lblCurrentVisitors;
-
-	@FXML
-	private Pane pnSettings;
-	@FXML
-	private Pane pnDashboard;
 
 	/***** Print Details *****/
 	@FXML
@@ -152,6 +151,31 @@ public class ParkEmployeeController implements Initializable {
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
+	}
+	
+	@FXML
+	public void handleSideBar(ActionEvent event) {
+		if (event.getSource() == btnAccessControl) {
+			lblTitle.setText("Access Control");
+			pnAccessControl.toFront();
+			setButtonPressed(btnAccessControl);
+			setButtonReleased(btnSettings);
+		} else if (event.getSource() == btnSettings) {
+			lblTitle.setText("Visits Report");
+			pnSettings.toFront();
+			setButtonPressed(btnSettings);
+			setButtonReleased(btnAccessControl);
+		} 
+	}
+	
+	public void setButtonPressed(Button button) {
+		button.setStyle("-fx-background-color: transparent;" 
+					  + "-fx-border-color: brown;"
+				      + "-fx-border-width: 0px 0px 0px 3px;");
+	}
+
+	public void setButtonReleased(Button button) {
+		button.setStyle("-fx-background-color: transparent;");
 	}
 
 	// input: Id / memberId
