@@ -10,13 +10,13 @@ public class Park implements Serializable {
 	private int currentAmount = 0;
 	private int maxAmountOrders = 0;
 	private int enteryPrice;
-	private int mangerDiscount;
+	private double mangerDiscount;
 
 	// ******************************************************
 	// needed to be checked that 'maxAmountOrders < maximumCapacityInPark' while
 	// editing!!
 	// ******************************************************
-	
+
 	public Park(String name, int maxAmountOrders, int maximumCapacityInPark, int currentAmount) {
 		this.name = name;
 		this.maxAmountOrders = maxAmountOrders;
@@ -26,16 +26,16 @@ public class Park implements Serializable {
 			System.out.println("Orders capacity is bigger than the Park Capacity!");
 		}
 	}
-	
+
 	public Park(ArrayList<String> parkFromDB) {
 		this.name = parkFromDB.get(0);
 		this.currentAmount = Integer.parseInt(parkFromDB.get(1));
 		this.maximumCapacityInPark = Integer.parseInt(parkFromDB.get(2));
 		this.maxAmountOrders = Integer.parseInt(parkFromDB.get(3));
 		this.enteryPrice = Integer.parseInt(parkFromDB.get(4));
-		this.mangerDiscount = Integer.parseInt(parkFromDB.get(5));
+		this.mangerDiscount = Double.parseDouble(parkFromDB.get(5));
 	}
-	
+
 	public int getEnteryPrice() {
 		return enteryPrice;
 	}
@@ -44,7 +44,7 @@ public class Park implements Serializable {
 		this.enteryPrice = enteryPrice;
 	}
 
-	public int getMangerDiscount() {
+	public double getMangerDiscount() {
 		return mangerDiscount;
 	}
 
