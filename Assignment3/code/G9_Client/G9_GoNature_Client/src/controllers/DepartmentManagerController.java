@@ -319,33 +319,90 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void chart() {
+	public void chart() {		
+		int i, j = 0;
+		String day = "";
+		String month = "";
+		int disneyDate = 0;
+		int jurasicDate = 0;
+		int universalDate = 0;
 		xAxis = new CategoryAxis();
 		yAxis = new NumberAxis(0, 1000, 50);
 
 		bcCancells.getData().clear();
 		bcCancells.setAnimated(false);
 		bcCancells.setBarGap(0d);
-		bcCancells.setCategoryGap(2.0);
+		bcCancells.setCategoryGap(4.0);
 
 		bcCancells.setTitle("Cancellation/Dismissed Reports");
 
 		Series<String, Double> disney = new Series<>();
 		Series<String, Double> jurasic = new Series<>();
 		Series<String, Double> universal = new Series<>();
-
-		for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
-			int i = date.getDayOfMonth();
-
-			disney.setName("Disney");
-			// x = day of the month, y = sum of cancel
-			disney.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
-
-			jurasic.setName("Jurasic");
-			jurasic.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
-
-			universal.setName("Universal");
-			universal.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
+		
+		disney.setName("Disney");
+		jurasic.setName("Jurasic");
+		universal.setName("Universal");
+		
+		//for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
+		//	i = date.getDayOfMonth();
+		for (j = 0; j < cancelledOrders.size(); j++) {
+			
+			if (!day.equals(cancelledOrders.get(j).get(1).substring(8, 10))) {
+				disneyDate = jurasicDate = universalDate = 0;
+				i = j + 1;
+				day = cancelledOrders.get(j).get(1).substring(8, 10);	
+				month = cancelledOrders.get(j).get(1).substring(5, 7);
+				
+				while (i < cancelledOrders.size()) {
+					if (day.equals(cancelledOrders.get(i).get(1).substring(8, 10)) &&
+						month.equals(cancelledOrders.get(i).get(1).substring(5, 7))) {
+						if (cancelledOrders.get(i).get(0).equals("disney")) {
+							disneyDate = i;
+						} else if (cancelledOrders.get(i).get(0).equals("jurasic")) {
+							jurasicDate = i;
+						} else if (cancelledOrders.get(i).get(0).equals("universal")) {
+							universalDate = i;
+						}
+					} else if (i >= j + 2) {
+						break;
+					}
+					i++;
+				}
+			} else {
+				continue;
+			}
+					
+			// parkName = Disney && same day in the month
+			if (cancelledOrders.get(j).get(0).equals("disney") && disneyDate == 0) {
+				// x = day of the month, y = sum of cancel
+				disney.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(j).get(2))));
+			} else if (disneyDate != 0) {
+				disney.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(disneyDate).get(2))));
+				disneyDate = 0;
+			} else {
+				disney.getData().add(new XYChart.Data(day + "/" + month, 0));
+			}
+			
+			// parkName = Jurasic && same day in the month
+			if (cancelledOrders.get(j).get(0).equals("jurasic") && jurasicDate == 0) {
+				jurasic.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(j).get(2))));
+			} else if (jurasicDate != 0) {
+				jurasic.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(jurasicDate).get(2))));
+				jurasicDate = 0;
+			} else {
+				jurasic.getData().add(new XYChart.Data(day + "/" + month, 0));
+			}
+				
+			// parkName = Universal && same day in the month
+			if (cancelledOrders.get(j).get(0).equals("universal") && universalDate == 0) {
+				universal.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(j).get(2))));
+			} else if (universalDate != 0) {
+				universal.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(universalDate).get(2))));
+				universalDate = 0;
+			} else {
+				universal.getData().add(new XYChart.Data(day + "/" + month, 0));
+			}
 		}
 
 		bcCancells.getData().addAll(disney, jurasic, universal);
