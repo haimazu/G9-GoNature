@@ -205,7 +205,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblPresentDisc" layoutX="475.0" layoutY="14.0" prefHeight="21.0" prefWidth="41.0" styleClass="labelBold">
+                  <Label fx:id="lblPresentDisc" layoutX="478.0" layoutY="14.0" styleClass="labelBold">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -215,7 +215,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblPresentMaxVis" layoutX="247.0" layoutY="14.0" prefHeight="21.0" prefWidth="41.0" styleClass="labelBold">
+                  <Label fx:id="lblPresentMaxVis" layoutX="250.0" layoutY="14.0" styleClass="labelBold">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -225,7 +225,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblPresentReservationCap" layoutX="251.0" layoutY="161.0" prefHeight="21.0" prefWidth="41.0" styleClass="labelBold">
+                  <Label fx:id="lblPresentReservationCap" layoutX="260.0" layoutY="161.0" styleClass="labelBold">
                      <font>
                         <Font size="16.0" />
                      </font>

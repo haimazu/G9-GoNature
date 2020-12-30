@@ -206,7 +206,7 @@ public class Reports {
 
 		// pre-cancelled orders
 		ArrayList<String> query1 = new ArrayList<String>();
-		query1.add("select"); // command
+		query1.add("complexSelect"); // command
 		query1.add(
 				"(SELECT parkName, arrivedTime, visitorsNumber - amountArrived AS visitorsNumber FROM g9_gonature.orders WHERE "
 						+ dateCond
