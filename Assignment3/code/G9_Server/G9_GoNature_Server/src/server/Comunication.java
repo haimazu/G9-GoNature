@@ -15,14 +15,14 @@ public class Comunication {
 		SmsMessege sms = new SmsMessege(order.getOrderPhone(),messege,order);
 		EmailMessege email = new EmailMessege(order.getOrderEmail(),subject,messege,order);
 		//SIMULATION ONLY
-//		ExecutorService exec = Executors.newSingleThreadExecutor();
-//		exec.execute(new Runnable() {
-//			@Override
-//			public void run() {
-//				SendMail.simulateMail(email);
-//				SendMail.simulateSms(sms);
-//			}
-//		});
+		ExecutorService exec = Executors.newSingleThreadExecutor();
+		exec.execute(new Runnable() {
+			@Override
+			public void run() {
+				SendMail.simulateMail(email);
+				SendMail.simulateSms(sms);
+			}
+		});
 			
 //		
 //		Simulations.getSim().sendMailSimulation(email);
