@@ -239,10 +239,16 @@ public class ParkManagerController implements Initializable {
 			setButtonReleased(btnDashboard, btnUsage, btnMonthlyRevenue);
 			setDatePickerInitialValues();
 		} else if (event.getSource() == btnUsage) {
-			lblTitle.setText("Cancels Report");
-			btnUsage.toFront();
+			lblTitle.setText("Usage Report");
+			pnUsage.toFront();
 			setButtonPressed(btnUsage);
 			setButtonReleased(btnDashboard, btnVisits, btnMonthlyRevenue);
+		} else if (event.getSource() == btnMonthlyRevenue) {
+			lblTitle.setText("Revenew report");
+			pnMonthlyRev.toFront();
+			setButtonPressed(btnMonthlyRevenue);
+			setButtonReleased(btnVisits, btnDashboard, btnUsage);
+			
 		}
 	}
 
@@ -633,9 +639,9 @@ public class ParkManagerController implements Initializable {
 
 		return false;
 	}
-//
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	public void chart() {
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void chart() {
 //		xAxis = new CategoryAxis();
 //		yAxis = new NumberAxis(0, 1000, 50);
 //
@@ -665,7 +671,7 @@ public class ParkManagerController implements Initializable {
 //		}
 //
 //		bcVisitorsChart.getData().addAll(regular, member, group);
-//	}
+	}
 
 	@FXML
 	void showChart(ActionEvent event) throws ParseException {
