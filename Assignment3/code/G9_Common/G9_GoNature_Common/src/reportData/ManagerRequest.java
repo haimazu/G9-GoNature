@@ -20,24 +20,16 @@ public class ManagerRequest implements Serializable {
 	String toDate;
 	String parkName;
 
-	public ManagerRequest(int employeeID, String requesttype, int maxCapacity, int ordersCapacity, String discount,
+	public ManagerRequest(int employeeID, String requestType, int maxCapacity, int ordersCapacity, String discount,
 			String fromDate, String toDate, String parkName) {
 		this.employeeID = employeeID;
-		this.requestType = requesttype;
+		this.requestType = requestType;
 		this.maxCapacity = maxCapacity;
 		this.ordersCapacity = ordersCapacity;
 		this.discount = discount;
 		this.fromDate = fromDate;
 		this.toDate = toDate;
 		this.parkName = parkName;
-	}
-
-	public String getRequestType() {
-		return requestType;
-	}
-
-	public void setRequestType(String requestType) {
-		this.requestType = requestType;
 	}
 
 	public int getEmployeeID() {
@@ -48,12 +40,12 @@ public class ManagerRequest implements Serializable {
 		this.employeeID = employeeID;
 	}
 
-	public String getRequesttype() {
+	public String getRequestType() {
 		return requestType;
 	}
 
-	public void setRequesttype(String requesttype) {
-		this.requestType = requesttype;
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
 	}
 
 	public int getMaxCapacity() {

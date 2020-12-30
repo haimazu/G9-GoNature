@@ -373,7 +373,7 @@ public class ParkManagerController implements Initializable {
 				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 				Req.setParkName(getParkName());
 				Req.setEmployeeID(getEmpID());
-				Req.setRequesttype("discount");
+				Req.setRequestType("discount");
 				msg.add(Req);
 				ClientUI.sentToChatClient(msg);
 
@@ -406,7 +406,7 @@ public class ParkManagerController implements Initializable {
 		Req.setToDate("");
 		Req.setParkName("");
 		Req.setEmployeeID(getEmpID());
-		Req.setRequesttype("");
+		Req.setRequestType("");
 		txtManageDsic.clear();
 		setDatePickerInitialValues();
 	}
@@ -438,7 +438,7 @@ public class ParkManagerController implements Initializable {
 			msg.add("parkManagerRequest");
 			Req.setParkName(getParkName());
 			Req.setEmployeeID(getEmpID());
-			Req.setRequesttype("max_o");
+			Req.setRequestType("max_o");
 			Req.setOrdersCapacity(Integer.parseInt(txtMaxcapByorder.getText()));
 			msg.add(Req);
 			ClientUI.sentToChatClient(msg);
@@ -463,7 +463,7 @@ public class ParkManagerController implements Initializable {
 		Req.setToDate("");
 		Req.setParkName("");
 		Req.setEmployeeID(getEmpID());
-		Req.setRequesttype("");
+		Req.setRequestType("");
 		txtMaxcapByorder.clear();
 
 	}
@@ -478,7 +478,7 @@ public class ParkManagerController implements Initializable {
 			msg.add("parkManagerRequest");
 			Req.setParkName(getParkName());
 			Req.setEmployeeID(getEmpID());
-			Req.setRequesttype("max_c");
+			Req.setRequestType("max_c");
 			Req.setMaxCapacity(Integer.parseInt(lblSetMax.getText()));
 			msg.add(Req);
 			ClientUI.sentToChatClient(msg);
@@ -503,7 +503,7 @@ public class ParkManagerController implements Initializable {
 		Req.setToDate("");
 		Req.setParkName("");
 		Req.setEmployeeID(getEmpID());
-		Req.setRequesttype("");
+		Req.setRequestType("");
 		lblSetMax.clear();
 	}
 
