@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dataLayer.Park;
 import ocsf.server.ConnectionToClient;
 import reportData.ManagerRequest;
+import reportData.TableViewSet;
 
 public class PendingMenagerRequest {
 
@@ -137,12 +138,26 @@ public class PendingMenagerRequest {
 	}
 
 	// input: ArrayList<Object>: cell[0] name
-	// cell[1] ManagerRequest object
+	// cell[1] tabelViewSet object
+	// cell[2] yes/no
 	//
 	// output:
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
+		TableViewSet tsv = (TableViewSet) recived.get(1);
+		String yesno = (String) recived.get(2);
+		ArrayList<String> query = new ArrayList<String>();
+		if (yesno.equals("no")) {
+			query.add("deleteCond");
+			query.add("pendingmanagerrequests");
+			query.add("employeeID");
+			query.add("employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
+		}
+		else {
+			
+			
+		}
 
 	}
 
