@@ -4,19 +4,48 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-public class SendMail3 {
+import dataLayer.EmailMessege;
+import dataLayer.SmsMessege;
+
+
+public class SendMail {
 
     private static String USER_NAME = "gonature.g9";  // GMail user name (just the part before "@gmail.com")
     private static String PASSWORD = "Aa123456!"; // GMail password
-    private static String RECIPIENT = "row.e333555@gmail.com";
 
-    public static void main(String[] args) {
+    public static void send(String sendTo, String mailSubjet, String mailBody) {
         String from = USER_NAME;
         String pass = PASSWORD;
-        String[] to = { RECIPIENT }; // list of recipient email addresses
-        String subject = "Java send mail example";
-        String body = "Welcome to JavaMail!";
-
+        String[] to = { sendTo }; // list of recipient email addresses
+        String subject = mailSubjet;
+        String body = mailBody;
+        sendFromGMail(from, pass, to, subject, body);
+    }
+    
+    public static void send(EmailMessege email) {
+    	String from = USER_NAME;
+        String pass = PASSWORD;
+        String[] to = { email.getTo() }; // list of recipient email addresses
+        String subject = email.getSubject();
+        String body = email.getMessage();
+        sendFromGMail(from, pass, to, subject, body);
+    }
+    
+    public static void simulateSms(SmsMessege sms) {
+    	String from = USER_NAME;
+        String pass = PASSWORD;
+        String[] to = { "gonature.g9@gmail.com" }; // list of recipient email addresses
+        String subject = "sms simulation for "+sms.getTo();
+        String body = sms.getMessage();
+        sendFromGMail(from, pass, to, subject, body);
+    }
+    
+    public static void simulateMail(EmailMessege email) {
+    	String from = USER_NAME;
+        String pass = PASSWORD;
+        String[] to = { "gonature.g9@gmail.com" }; // list of recipient email addresses
+        String subject = "mail simulation for "+email.getTo();
+        String body = email.getMessage();
         sendFromGMail(from, pass, to, subject, body);
     }
 

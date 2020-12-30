@@ -39,10 +39,11 @@ public class WaitListSingelton {
 	//output: none
 	//send to client: SMS and Mail notification
 	public static void sendWaitlistNotification(Order order) {
-		String msg = "WaitlistNotification";
-		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), msg, order);
+		String subject = "Waitlist Notification";
+		String body = "Waitlist Notification body";
+		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), subject, body, order);
 		insertPending(waitlistMail);
-		Comunication.sendNotification(msg, order);
+		Comunication.sendNotification(subject, body, order);
 		// send mail and sms notification
 	}
 	
@@ -141,6 +142,30 @@ public class WaitListSingelton {
 			//notify ok
 		}
 		//else part taking care by CheckTheWaitList()
+	}
+	
+	//input:
+	//output:
+	//sendToClient: true if less than hour has passed and all good false if not
+	public static boolean replay(Order order) {
+		//if order not exist in pending send denied
+		//else if exist check if one hour gone by
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select");
+		query.add("pendingwaitlist");
+		query.add("timeSent");
+		query.add("WHERE orderNumber='"+order.getOrderNumber()+"'");
+		query.add("1");
+		ArrayList<ArrayList<String>> answer = MySQLConnection.select(query);
+		if (!answer.isEmpty()) {
+			Date sent = java.sql.Timestamp.valueOf(answer.get(0).get(0)); ////////////check this closely
+			Date recived = new Date();
+			if (lessThanOneHour(sent,recived)) {
+				removePending(order);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// input: order class of the order to cancel
