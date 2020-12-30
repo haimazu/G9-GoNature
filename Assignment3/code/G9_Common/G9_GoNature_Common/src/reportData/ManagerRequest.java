@@ -2,7 +2,7 @@ package reportData;
 
 import java.io.Serializable;
 
-public class ManagerRequest implements Serializable{
+public class ManagerRequest implements Serializable {
 
 	@Override
 	public String toString() {
@@ -12,7 +12,7 @@ public class ManagerRequest implements Serializable{
 	}
 
 	int employeeID;
-	String requestType; //{discount, max_c, max_o}
+	String requestType; // {discount, max_c, max_o}
 	int maxCapacity;
 	int ordersCapacity;
 	String discount;
@@ -20,7 +20,6 @@ public class ManagerRequest implements Serializable{
 	String toDate;
 	String parkName;
 
-	
 	public ManagerRequest(int employeeID, String requesttype, int maxCapacity, int ordersCapacity, String discount,
 			String fromDate, String toDate, String parkName) {
 		this.employeeID = employeeID;
@@ -32,8 +31,14 @@ public class ManagerRequest implements Serializable{
 		this.toDate = toDate;
 		this.parkName = parkName;
 	}
-	
-	
+
+	public String getRequestType() {
+		return requestType;
+	}
+
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
+	}
 
 	public int getEmployeeID() {
 		return employeeID;
