@@ -356,50 +356,50 @@ public class ParkManagerController implements Initializable {
 
 		String discount = txtManageDsic.getText();
 
-		if (DatesNotCorresponding())
-			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 		
-			if (discount.isEmpty())
-				alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
-			else {
-				int integerDisc = Integer.parseInt(discount);
-				double discountInPrecents = integerDisc / 100.0;
-				if (integerDisc > 100)
-					alert.setAlert(
-							"You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
-				else {
-					ArrayList<Object> msg = new ArrayList<>();
-					msg.add("parkManagerRequest");
-					Req.setDiscount(String.valueOf(1 - discountInPrecents));
-					Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-					Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-					Req.setParkName(getParkName());
-					Req.setEmployeeID(getEmpID());
-					Req.setRequesttype("discount");
-					msg.add(Req);
-					ClientUI.sentToChatClient(msg);
-
-					if (requestAnswerFromServer) {
-						alert.successAlert("Request Info",
-								"Your request was sent and pending for deapartment manager approval.");
-						btnSetDisc.setVisible(true);
-						txtManageDsic.setVisible(false);
-						txtDateFrom.setVisible(false);
-						txtDateTo.setVisible(false);
-						btnSubmitDisc.setVisible(false);
-
-					} else {
-						alert.setAlert(
-								"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
-						btnSetDisc.setVisible(true);
-						txtManageDsic.setVisible(false);
-						txtDateFrom.setVisible(false);
-						txtDateTo.setVisible(false);
-						btnSubmitDisc.setVisible(false);
-					}
-
-				}
+		if(!illegalValues(discount))
 			
+		 {
+			int integerDisc = Integer.parseInt(discount);
+			double discountInPrecents = integerDisc / 100.0;
+			if (integerDisc > 100)
+				alert.setAlert(
+						"You are trying to set illegal discount!\nDiscount value should be in a range of 0%-100%");
+			else {
+				ArrayList<Object> msg = new ArrayList<>();
+				msg.add("parkManagerRequest");
+				Req.setDiscount(String.valueOf(1 - discountInPrecents));
+				Req.setFromDate(txtDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				Req.setToDate(txtDateTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				Req.setParkName(getParkName());
+				Req.setEmployeeID(getEmpID());
+				Req.setRequesttype("discount");
+				msg.add(Req);
+				ClientUI.sentToChatClient(msg);
+
+				if (requestAnswerFromServer) 
+				{
+					alert.successAlert("Request Info",
+							"Your request was sent and pending for deapartment manager approval.");
+					btnSetDisc.setVisible(true);
+					txtManageDsic.setVisible(false);
+					txtDateFrom.setVisible(false);
+					txtDateTo.setVisible(false);
+					btnSubmitDisc.setVisible(false);
+
+				} 
+				else {
+					alert.setAlert(
+							"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
+					btnSetDisc.setVisible(true);
+					txtManageDsic.setVisible(false);
+					txtDateFrom.setVisible(false);
+					txtDateTo.setVisible(false);
+					btnSubmitDisc.setVisible(false);
+				}
+
+			}
+
 		}
 		Req.setDiscount("");
 		Req.setFromDate("");
@@ -409,6 +409,19 @@ public class ParkManagerController implements Initializable {
 		Req.setRequesttype("");
 		txtManageDsic.clear();
 		setDatePickerInitialValues();
+	}
+
+	public boolean illegalValues(String discount) throws ParseException {
+		if (DatesNotCorresponding()) {
+			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
+			return true;
+		}
+
+		if (discount.isEmpty()) {
+			alert.setAlert("Cannot leave this field empty! \nPlease insert Valid discount.");
+			return true;
+		}
+		return false;
 	}
 
 	@FXML
