@@ -221,7 +221,7 @@ public class Reports {
 		query1.add("GROUP BY Day(arrivedTime), parkname"); // condition
 		query1.add("3"); // how many columns returned
 		System.out.println(query1.toString());
-		ArrayList<ArrayList<String>> queryData = MySQLConnection.complexSelect(query1);
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
 		if (queryData.isEmpty()) {
 			// no canceled orders in this month
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
