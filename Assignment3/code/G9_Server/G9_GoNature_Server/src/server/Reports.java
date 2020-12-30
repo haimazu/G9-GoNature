@@ -208,12 +208,12 @@ public class Reports {
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
 		query1.add(
-				"(select parkName,arrivedTime,visitorsNumber-amountArrived as visitorsNumber  from g9_gonature.orders where "
+				"(SELECT parkName, arrivedTime, visitorsNumber - amountArrived AS visitorsNumber FROM g9_gonature.orders WHERE "
 						+ dateCond
-						+ " AND visitorsNumber-amountArrived>0 union all select parkName,arrivedTime,visitorsNumber from g9_gonature.canceledorders where "
-						+ dateCond + ") t1 "); // table name
-		query1.add("parkName,arrivedTime,SUM(visitorsNumber)"); // columns to present
-		query1.add("group by Day(arrivedTime),parkname"); // condition
+						+ " AND visitorsNumber - amountArrived > 0 UNION ALL SELECT parkName, arrivedTime, visitorsNumber FROM g9_gonature.canceledorders WHERE "
+						+ dateCond + " ORDER BY arrivedTime) t1 "); // table name
+		query1.add("parkName, arrivedTime, SUM(visitorsNumber)"); // columns to present
+		query1.add("GROUP BY Day(arrivedTime), parkname"); // condition
 		query1.add("3"); // how many columns returned
 		System.out.println(query1.toString());
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.complexSelect(query1);

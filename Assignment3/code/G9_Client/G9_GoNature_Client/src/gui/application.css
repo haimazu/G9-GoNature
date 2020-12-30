@@ -286,13 +286,13 @@
 .date-picker > .text-field {
 	-fx-prompt-text-fill: #a3a3a3;
 	-fx-font-size: 13px;
-	
+
 }
 
 .date-picker:focused > .text-field,
 .date-picker > .text-field:focused {
     -fx-prompt-text-fill: #009688;
-    
+
 }
 
 .date-picker .input-line {
@@ -337,4 +337,17 @@
 	-fx-pref-width: 170px;
 	-fx-pref-height: 120px;
 	-fx-background-radius: 2px;
+}
+
+/********** Chart **********/
+.default-color0.chart-bar {
+	-fx-bar-fill: #EEE8AA;
+}
+
+.default-color1.chart-bar {
+	-fx-bar-fill: #F0E68C;
+}
+
+.default-color2.chart-bar {
+	-fx-bar-fill: #BDB76B;
 }
