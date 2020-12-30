@@ -2,6 +2,9 @@ package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import dataLayer.EmailMessege;
 import dataLayer.SmsMessege;
 import ocsf.server.ConnectionToClient;
@@ -12,13 +15,22 @@ public class Comunication {
 		SmsMessege sms = new SmsMessege(order.getOrderPhone(),messege,order);
 		EmailMessege email = new EmailMessege(order.getOrderEmail(),subject,messege,order);
 		//SIMULATION ONLY
-		SendMail.simulateMail(email);
-		SendMail.simulateSms(sms);
+//		ExecutorService exec = Executors.newSingleThreadExecutor();
+//		exec.execute(new Runnable() {
+//			@Override
+//			public void run() {
+//				SendMail.simulateMail(email);
+//				SendMail.simulateSms(sms);
+//			}
+//		});
+			
 //		
 //		Simulations.getSim().sendMailSimulation(email);
 //		Simulations.getSim().sendSmsSimulation(sms);
 //		
 	}
+	
+	
 	
 	//input: array list of objects that contains:
 	// [0] -> string "waitlistReplay"
