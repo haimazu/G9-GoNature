@@ -81,7 +81,7 @@ public class WaitListSingelton {
 			timeLastChecked= new Date();
 		} //if last check was less than minute ago dont check
 		Date LastPlusDay = new Date(LastDailyCheck.getTime()+24*60*60*1000);
-		if (LastPlusDay.compareTo(timeNow)>=0 || ((Calendar.HOUR_OF_DAY>22) && !isSameDay(LastDailyCheck,timeNow))) {
+		if (LastPlusDay.compareTo(timeNow)<=0 || ((Calendar.HOUR_OF_DAY>22) && !isSameDay(LastDailyCheck,timeNow))) {
 			dailyCheck=true;
 		}
 		if (dailyCheck) { //TODO: think if we want to send a messege to the deleted or not.
@@ -161,7 +161,7 @@ public class WaitListSingelton {
 	// input: Order to delete from the DB
 	// output: true if found the order on the waitlist and removed it, false if not.
 	// send to DB: order to remove from pending
-	private static boolean removePending(Order order) {
+	public static boolean removePending(Order order) {
 		int orderNum = order.getOrderNumber();
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("delete");

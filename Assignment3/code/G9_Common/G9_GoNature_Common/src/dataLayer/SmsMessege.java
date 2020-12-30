@@ -15,8 +15,8 @@ public class SmsMessege extends Messege{
 		return "To: " + to + "\n" + super.read();
 	}
 	
-	public SmsMessege replay(String to, String messege, Order order) {
-		SmsMessege replayMsg = new SmsMessege(to,messege,order);
+	public SmsMessege replay(String to, String messege) {
+		SmsMessege replayMsg = new SmsMessege(to,messege,this.getOrder());
 		replayMsg.setRepliedTo(this);
 		return replayMsg;
 	}

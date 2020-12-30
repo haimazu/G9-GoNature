@@ -19,7 +19,6 @@ import orderData.Order;
 // NOTE: this function calls to the waitlist to check if someone is waiting for the new spots avilable after the cancelation.
 public class CancelOrder {
 	public static void cancel(ArrayList<Object> recived, ConnectionToClient client) {
-		WaitingList waitlist = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
@@ -30,7 +29,7 @@ public class CancelOrder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		waitlist.pullFromWaitList(recived);
+		WaitingList.pullFromWaitList(recived);
 		addToDBCanceledOrder(data);
 	}
 

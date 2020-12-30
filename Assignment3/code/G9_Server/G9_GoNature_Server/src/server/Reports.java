@@ -196,7 +196,7 @@ public class Reports {
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
 		query1.add(
-				"from (select parkName,arrivedTime,visitorsNumber-amountArrived as visitorsNumber  from g9_gonature.orders where "
+				"(select parkName,arrivedTime,visitorsNumber-amountArrived as visitorsNumber  from g9_gonature.orders where "
 						+ dateCond
 						+ " AND visitorsNumber-amountArrived>0 union all select parkName,arrivedTime,visitorsNumber from g9_gonature.canceledorders where "
 						+ dateCond + ") t1 "); // table name
@@ -204,7 +204,7 @@ public class Reports {
 		query1.add("group by Day(arrivedTime),parkname"); // condition
 		query1.add("3"); // how many columns returned
 		System.out.println(query1.toString());
-		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.complexSelect(query1);
 		if (queryData.isEmpty()) {
 			// no canceled orders in this month
 			answer.add(new ArrayList<String>(Arrays.asList("Failed")));

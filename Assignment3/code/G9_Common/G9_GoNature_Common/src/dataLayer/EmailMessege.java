@@ -15,8 +15,8 @@ public class EmailMessege extends Messege{
 		return "To: " + to + "\n" + super.read();
 	}
 	
-	public EmailMessege replay(String to, String messege, Order order) {
-		EmailMessege replayMsg = new EmailMessege(to,messege,order);
+	public EmailMessege replay(String to, String messege) {
+		EmailMessege replayMsg = new EmailMessege(to,messege,this.getOrder());
 		replayMsg.setRepliedTo(this);
 		return replayMsg;
 	}

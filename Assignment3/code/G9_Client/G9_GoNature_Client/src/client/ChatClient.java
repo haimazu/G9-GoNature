@@ -115,7 +115,7 @@ public class ChatClient extends AbstractClient {
 				ParkManagerController.recivedFromserverEmployeeID((String)received.get(1));
 				break;
 			case "getCancellationReports":
-				DepartmentManagerController.receivedFromServerCancelReportsData(((ArrayList<ArrayList<String>>)received.get(1)), 																			((ArrayList<ArrayList<String>>)received.get(2)));
+				DepartmentManagerController.receivedFromServerCancelReportsData(((ArrayList<ArrayList<String>>)received.get(1)));
 				break;
 			case "PendingManagerRequests":
 				DepartmentManagerController.setDBList((ArrayList<ArrayList<String>>)received.get(1));
