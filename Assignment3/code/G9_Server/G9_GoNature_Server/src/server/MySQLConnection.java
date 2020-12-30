@@ -252,49 +252,7 @@ public class MySQLConnection {
 		String condition = data.get(3);
 		int replyColNum = Integer.parseInt(data.get(4));
 		ArrayList<ArrayList<String>> reply = new ArrayList<ArrayList<String>>();
-		String StatmentString = ("SELECT " + columns + " from " + dbScheme + "." + tableName + " " + condition);
-		try {
-			ResultSet rs = dbConn.createStatement().executeQuery(StatmentString);
-			while (rs.next()) {
-				ArrayList<String> row = new ArrayList<String>();
-				for (int i = 1; i < replyColNum + 1; i++) {
-					row.add(rs.getString(i));
-				}
-				reply.add(row);
-			}
-		} catch (Exception e) {
-			System.out.println("Oh no...\n" + e);
-			System.out.println(e.getStackTrace());
-			return null;
-		}
-		return reply;
-	}
-
-	// input: ArrayList of strings ->
-	// string in cell 0: command (in this case will always be "select")
-	// string in cell 1: table name to select from
-	// string in cell 2: columns that you want select to return (example: "*" for
-	// all, "ID,email" for those only two columns)
-	// string in cell 3: condition can contain a filter for a more refine search
-	// (example: "WHERE ID='1234'", "" if you don't want a filter)
-	// string in cell 4: the number of columns that you want select to return
-	// (important! provide a string of that number! i.e "7")
-	// NOTE: even if you don't want to filter you will need to provide an empty
-	// string on cell 3
-	// output: in case of success returns ArrayList that contains Arraylist of
-	// Strings ->
-	// each ArrayList of string represent a row in the DB replayed
-	// all the rows are packed together in an ArrayList that contains arraylist of
-	// strings
-	// in case of failure returns null
-	// TODO exactly as select function without the 'dbScheme' (need to think how to avoid duplication)
-	public static ArrayList<ArrayList<String>> complexSelect(ArrayList<String> data) {
-		String tableName = data.get(1);
-		String columns = data.get(2);
-		String condition = data.get(3);
-		int replyColNum = Integer.parseInt(data.get(4));
-		ArrayList<ArrayList<String>> reply = new ArrayList<ArrayList<String>>();
-		String StatmentString = ("SELECT " + columns + " from ");
+		String StatmentString = ("SELECT " + columns + " FROM ");
 		if (!data.get(0).equals("complexSelect"))
 			StatmentString += dbScheme + ".";
 		StatmentString += tableName + " " + condition;
