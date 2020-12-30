@@ -36,7 +36,7 @@ public class WaitingList {
 		if (exist.isEmpty()) { //if there is no another matching in the wait list
 			query.clear();
 			query.add("insert"); // command
-			query.add("waitingList"); // table name
+			query.add("waitinglist"); // table name
 			query.add(data.toStringForDB()); // values in query format
 			answer.add(MySQLConnection.insert(query)); //true if ok false if not
 		}

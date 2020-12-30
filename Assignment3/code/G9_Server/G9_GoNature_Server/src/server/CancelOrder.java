@@ -33,7 +33,6 @@ public class CancelOrder {
 		addToDBCanceledOrder(data);
 	}
 
-	/// not working!!
 	public static boolean deleteOrder(int orderNum) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("delete");

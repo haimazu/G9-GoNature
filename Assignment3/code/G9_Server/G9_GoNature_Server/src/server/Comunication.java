@@ -7,12 +7,12 @@ import orderData.Order;
 import simulations.Simulations;
 
 public class Comunication {
-	public static void sendNotification(String to, String messege, Order order) {
-		SmsMessege sms = new SmsMessege(to,messege,order);
-		EmailMessege email = new EmailMessege(to,messege,order);
+	public static void sendNotification(String messege, Order order) {
+		SmsMessege sms = new SmsMessege(order.getOrderPhone(),messege,order);
+		EmailMessege email = new EmailMessege(order.getOrderEmail(),messege,order);
 		//SIMULATION ONLY
-		Simulations.sendMailSimulation(email);
-		Simulations.sendSmsSimulation(sms);
+		Simulations.getSim().sendMailSimulation(email);
+		Simulations.getSim().sendSmsSimulation(sms);
 	}
 	
 	public static void replayCatcher(Messege msg) {

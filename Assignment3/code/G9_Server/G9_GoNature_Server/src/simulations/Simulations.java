@@ -4,22 +4,40 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 
 import dataLayer.EmailMessege;
 import dataLayer.Messege;
 import dataLayer.SmsMessege;
 import orderData.Order;
 import server.Comunication;
+import server.WaitListSingelton;
 
 //import com.mysql.cj.protocol.Message;
 
 //import orderData.Order;
 
 public class Simulations {
+	private static Simulations obj;
 	private static ArrayList<EmailMessege> recivedMails = new ArrayList<EmailMessege>();
 	private static ArrayList<SmsMessege> recivedSms = new ArrayList<SmsMessege>();
 	private static int choice;
 	private static int orderNum;
+	
+	//SingletonBuilder
+	private Simulations() {
+		// on start up do this
+	}
+
+	//Singleton, create one instance only
+	public static Simulations getSim() {
+		if (obj == null) {
+			if (obj == null) {
+				obj = new Simulations();// instance will be created at request time
+			}
+		}
+		return obj;
+	}
 	
 	public static void sendMailSimulation(EmailMessege email) {
 		recivedMails.add(email);

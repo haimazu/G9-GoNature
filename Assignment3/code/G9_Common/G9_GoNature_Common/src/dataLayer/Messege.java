@@ -9,7 +9,7 @@ import orderData.Order;
 public class Messege {
 	private String message;
 	private Date sentTime;
-	private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private ArrayList<Object> attachments;
 	private Order order;
 
@@ -34,6 +34,10 @@ public class Messege {
 
 	public Date getSentTime() {
 		return sentTime;
+	}
+	
+	public String getSentTimeDB() {
+		return formatter.format(sentTime);
 	}
 
 	public ArrayList<Object> getAttachments() {

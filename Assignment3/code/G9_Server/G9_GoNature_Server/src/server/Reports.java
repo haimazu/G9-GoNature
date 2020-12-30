@@ -50,10 +50,9 @@ public class Reports {
 	// [2] -> String endDate in a following date format: (YYYY-MM-DD)
 	// output: NONE
 	// send to client: Array list that contains:
-	// [0-n] -> Array list of string that contains: (n depends on number of entrys
-	// in the DB)
-	// [0] -> date and time of a capsule that was not full
-	// [1] -> Difference between max allowed and actual arrived
+	// 					[0-n] -> Array list of string that contains: (n depends on number of entrys in the DB)
+	// 							[0] -> date and time of a capsule that was not full
+	// 							[1] -> Difference between max allowed and actual arrived
 	@SuppressWarnings("unchecked")
 	public static void UsageReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);

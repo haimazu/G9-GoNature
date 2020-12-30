@@ -40,9 +40,9 @@ public class WaitListSingelton {
 	//send to client: SMS and Mail notification
 	public static void sendWaitlistNotification(Order order) {
 		String msg = "WaitlistNotification";
-		SmsMessege waitlistSms = new SmsMessege(order.getOrderPhone(), msg, order);
 		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), msg, order);
 		insertPending(waitlistMail);
+		Comunication.sendNotification(msg, order);
 		// send mail and sms notification
 	}
 	
@@ -56,7 +56,7 @@ public class WaitListSingelton {
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
 		Date LastPlusMinute = new Date(timeLastChecked.getTime()+60*1000);
-		if (LastPlusMinute.compareTo(timeNow)>=0){
+		if (LastPlusMinute.compareTo(timeNow)<=0){
 			ArrayList<ArrayList<String>> expired = selectExpiredPending(); //select all expired in pending
 			if (!expired.isEmpty()) { //if not empty
 				for (ArrayList<String> row : expired) { //for each expired order
@@ -72,7 +72,7 @@ public class WaitListSingelton {
 				}
 				ArrayList<String> query = new ArrayList<String>();
 				query.add("deleteCond");
-				query.add("pending");
+				query.add("pendingwaitlist");
 				query.add("timeSent <= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
 				MySQLConnection.deleteCond(query);
 			}
@@ -180,7 +180,7 @@ public class WaitListSingelton {
 	ArrayList<String> query = new ArrayList<String>();
 	query.add("insert"); // command
 	query.add("pendingwaitlist"); // table name
-	query.add(messege.getOrder().getOrderNumber() + ","+ messege.getSentTime()); // values in query format
+	query.add("'"+messege.getOrder().getOrderNumber()+"','"+messege.getSentTimeDB()+"'"); // values in query format
 	return MySQLConnection.insert(query);
 	}
 	
