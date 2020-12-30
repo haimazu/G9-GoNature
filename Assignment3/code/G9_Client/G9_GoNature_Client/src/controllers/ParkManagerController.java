@@ -24,6 +24,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
@@ -114,7 +119,8 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSubmitVisits;
-
+	@FXML
+	private Pane pnDashboard;
 	@FXML
 	private Label lblTitle1;
 
@@ -151,6 +157,24 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSetDisc1;
+
+	/* ------for charts----- */
+	@FXML
+	private BarChart<String, Double> bcVisitorsChart;
+	@FXML
+	private CategoryAxis xAxis;
+	@FXML
+	private NumberAxis yAxis;
+	@FXML
+	private JFXDatePicker dpFrom;
+	@FXML
+	private JFXDatePicker dpTo;
+	@FXML
+	private Button btnShow;
+	/*------------------------*/
+	
+	
+	
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
@@ -191,6 +215,38 @@ public class ParkManagerController implements Initializable {
 		ParkManagerController.parkName = parkName;
 	}
 
+	@FXML
+	void handleSideBarParkManager(ActionEvent event) {
+		if (event.getSource() == btnDashboard) {
+			lblTitle.setText("Dashboard");
+			pnDashboard.toFront();
+			setButtonPressed(btnDashboard);
+			setButtonReleased(btnVisits, btnUsage, btnMonthlyRevenue);
+		} else if (event.getSource() == btnVisits) {
+			lblTitle.setText("Visits Report");
+			pnVisits.toFront();
+			setButtonPressed(btnVisits);
+			setButtonReleased(btnDashboard, btnUsage, btnMonthlyRevenue);
+			setDatePickerInitialValues();
+		} else if (event.getSource() == btnUsage) {
+			lblTitle.setText("Cancels Report");
+			btnUsage.toFront();
+			setButtonPressed(btnUsage);
+			setButtonReleased(btnDashboard, btnVisits, btnMonthlyRevenue);
+		}
+	}
+
+	public void setButtonPressed(Button button) {
+		button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: brown;"
+				+ "-fx-border-width: 0px 0px 0px 3px;");
+	}
+
+	public void setButtonReleased(Button button, Button button1, Button button2) {
+		button.setStyle("-fx-background-color: transparent;");
+		button1.setStyle("-fx-background-color: transparent;");
+		button2.setStyle("-fx-background-color: transparent;");
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -203,6 +259,21 @@ public class ParkManagerController implements Initializable {
 		setDatePickerInitialValues();
 		RequestForEmployeeID();
 		presentParkDetails(park);
+		
+		/***visitors reports ***/
+		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
+		// listener for updating the date
+		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpFrom.setValue(newValue);
+		});
+
+		// plusMonths(1) to get the next month
+		// withDayOfMonth(1) to get the first day
+		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
+		// listener for updating the date
+		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpTo.setValue(newValue);
+		});
 	}
 
 	// dates method
@@ -356,10 +427,9 @@ public class ParkManagerController implements Initializable {
 
 		String discount = txtManageDsic.getText();
 
-		
-		if(!illegalValues(discount))
-			
-		 {
+		if (!illegalValuesForSubmitingDiscount(discount))
+
+		{
 			int integerDisc = Integer.parseInt(discount);
 			double discountInPrecents = integerDisc / 100.0;
 			if (integerDisc > 100)
@@ -377,8 +447,7 @@ public class ParkManagerController implements Initializable {
 				msg.add(Req);
 				ClientUI.sentToChatClient(msg);
 
-				if (requestAnswerFromServer) 
-				{
+				if (requestAnswerFromServer) {
 					alert.successAlert("Request Info",
 							"Your request was sent and pending for deapartment manager approval.");
 					btnSetDisc.setVisible(true);
@@ -387,8 +456,7 @@ public class ParkManagerController implements Initializable {
 					txtDateTo.setVisible(false);
 					btnSubmitDisc.setVisible(false);
 
-				} 
-				else {
+				} else {
 					alert.setAlert(
 							"You already reached maximum number of requests.\nIt is possible to have only one request of a type in a time.\nContact your department manager or try again later.");
 					btnSetDisc.setVisible(true);
@@ -411,8 +479,10 @@ public class ParkManagerController implements Initializable {
 		setDatePickerInitialValues();
 	}
 
-	public boolean illegalValues(String discount) throws ParseException {
-		if (DatesNotCorresponding()) {
+	public boolean illegalValuesForSubmitingDiscount(String discount) throws ParseException {
+		String datefrom=txtDateFrom.getValue().toString();
+		String dateto=txtDateTo.getValue().toString();
+		if (DatesNotCorresponding(datefrom, dateto)) {
 			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 			return true;
 		}
@@ -549,13 +619,13 @@ public class ParkManagerController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
-	public boolean DatesNotCorresponding() throws ParseException {
+	public boolean DatesNotCorresponding(String datefrom,String dateto) throws ParseException {
 		LocalDate from;
 		LocalDate to;
-
-		String[] fromarrsplitStrings = txtDateFrom.getValue().toString().split(" ");
+		
+		String[] fromarrsplitStrings = datefrom.split(" ");
 		String[] fromdatesplit = fromarrsplitStrings[0].split("-");
-		String[] toarrsplitStrings = txtDateTo.getValue().toString().split(" ");
+		String[] toarrsplitStrings = dateto.split(" ");
 		String[] todatesplit = toarrsplitStrings[0].split("-");
 		// [0]->year , [1]->month , [2]->day
 		from = LocalDate.of(Integer.parseInt(fromdatesplit[0]), Integer.parseInt(fromdatesplit[1]),
@@ -569,9 +639,43 @@ public class ParkManagerController implements Initializable {
 		return false;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void chart() {
+		xAxis = new CategoryAxis();
+		yAxis = new NumberAxis(0, 1000, 50);
+
+		bcVisitorsChart.getData().clear();
+		bcVisitorsChart.setAnimated(false);
+		bcVisitorsChart.setBarGap(0d);
+		bcVisitorsChart.setCategoryGap(2.0);
+
+		bcVisitorsChart.setTitle("Visitors segmentation by type");
+
+		Series<String, Double> regular = new Series<>();
+		Series<String, Double> member = new Series<>();
+		Series<String, Double> group = new Series<>();
+
+		for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
+			int i = date.getDayOfMonth();
+
+			regular.setName("regular");
+			// x = day of the month, y = sum 
+			regular.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
+
+			member.setName("member");
+			member.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
+
+			group.setName("group");
+			group.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
+		}
+
+		bcVisitorsChart.getData().addAll(regular, member, group);
+	}
+
 	@FXML
-	void visitsReport(ActionEvent event) {
-		pnVisits1.setVisible(false);
+	void showChart(ActionEvent event) throws ParseException {
+		if(DatesNotCorresponding(dpFrom.getValue().toString(), dpTo.getValue().toString()))
+			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 	}
 
 }

@@ -35,7 +35,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Pane>
-            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBarParkManager" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Dashboard" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="DASHBOARD" size="16" />
                </graphic>
@@ -43,7 +43,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnVisits" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#visitsReport" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Visits Report" textFill="WHITE">
+            <Button fx:id="btnVisits" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBarParkManager" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Visits Report" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="USERS" size="15" />
                </graphic>
@@ -51,7 +51,7 @@
                   <Insets left="12.0" />
                </padding>
             </Button>
-            <Button fx:id="btnUsage" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Usage Report" textFill="WHITE">
+            <Button fx:id="btnUsage" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="12.0" mnemonicParsing="false" onAction="#handleSideBarParkManager" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Usage Report" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="SORT" size="16" />
                </graphic>
@@ -59,7 +59,7 @@
                   <Insets left="14.0" />
                </padding>
             </Button>
-            <Button fx:id="btnMonthlyRevenue" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text=" Revenue Report" textFill="WHITE">
+            <Button fx:id="btnMonthlyRevenue" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="12.0" mnemonicParsing="false" onAction="#handleSideBarParkManager" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text=" Revenue Report" textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView glyphName="DOLLAR" size="16" />
                </graphic>
@@ -171,46 +171,12 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker editable="false" focusTraversable="false" layoutX="22.0" layoutY="72.0" promptText="From Date" />
-                  <JFXDatePicker editable="false" focusTraversable="false" layoutX="218.0" layoutY="72.0" promptText="To Date" />
-                  <Button focusTraversable="false" layoutX="422.0" layoutY="75.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Show" />
-                  <Label fx:id="lblTitle112" focusTraversable="false" layoutX="22.0" layoutY="150.0" styleClass="labelBold" text="Total Results:">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <TableView fx:id="tblHoursPerTypes" fixedCellSize="0.0" focusTraversable="false" layoutX="11.0" layoutY="199.0" prefHeight="84.0" prefWidth="596.0">
-                     <columns>
-                        <TableColumn prefWidth="75.0" text="Single">
-                           <columns>
-                              <TableColumn prefWidth="75.0" text="Entry" />
-                              <TableColumn prefWidth="75.0" text="Stay" />
-                           </columns>
-                        </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Private Groups">
-                           <columns>
-                              <TableColumn prefWidth="75.0" text="Entry" />
-                              <TableColumn prefWidth="75.0" text="Stay" />
-                           </columns>
-                        </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Organized Groups">
-                           <columns>
-                              <TableColumn prefWidth="75.0" text="Entry" />
-                              <TableColumn prefWidth="75.0" text="Stay" />
-                           </columns>
-                        </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Subscribers">
-                           <columns>
-                              <TableColumn prefWidth="75.0" text="Entry" />
-                              <TableColumn prefWidth="75.0" text="Stay" />
-                           </columns>
-                        </TableColumn>
-                     </columns>
-                  </TableView>
-                  <Button fx:id="btnReportView" focusTraversable="false" layoutX="534.0" layoutY="304.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" />
+                  <JFXDatePicker fx:id="dpFrom" editable="false" focusTraversable="false" layoutX="22.0" layoutY="72.0" promptText="From Date" />
+                  <JFXDatePicker fx:id="dpTo" editable="false" focusTraversable="false" layoutX="218.0" layoutY="72.0" promptText="To Date" />
+                  <Button fx:id="btnShow" focusTraversable="false" layoutX="422.0" layoutY="75.0" mnemonicParsing="false" onAction="#showChart" styleClass="btnSmallGreen" text="Show" />
                </children>
             </Pane>
-            <Pane fx:id="pnVisits1" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <JFXTextField fx:id="lblSetMax" focusTraversable="false" labelFloat="true" layoutX="63.0" layoutY="41.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" visible="false" />
                   <JFXTextField fx:id="txtManageDsic" focusTraversable="false" labelFloat="true" layoutX="345.0" layoutY="52.0" prefHeight="40.0" prefWidth="145.0" promptText="Manager Discount (%)" styleClass="txtField" visible="false" />
