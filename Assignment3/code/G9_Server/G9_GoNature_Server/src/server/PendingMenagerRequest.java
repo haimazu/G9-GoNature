@@ -17,17 +17,20 @@ public class PendingMenagerRequest {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : ??
 		answer.add(recived.get(0));
+
 		ManagerRequest mr = (ManagerRequest) recived.get(1);
-		if (mr.getRequesttype() != "discount") {
+		System.out.println(toStringForDB(mr));
+		if (!mr.getRequestType().equals("discount")) {
 			mr.setFromDate("01-01-00 00:00:00");
 			mr.setToDate("01-01-00 00:00:00");
 		}
+		System.out.println(toStringForDB(mr));
 		// select pending requests and to check if not more than 1 in every type
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
 		query1.add("pendingmanagerrequests"); // table name
 		query1.add("*"); // columns to select from
-		query1.add("WHERE requesttype='" + mr.getRequesttype() + "' AND employeeID='" + mr.getEmployeeID() + "'");
+		query1.add("WHERE requesttype='" + mr.getRequestType() + "' AND employeeID='" + mr.getEmployeeID() + "'");
 		query1.add("8");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
 		System.out.println(query1);
@@ -144,7 +147,7 @@ public class PendingMenagerRequest {
 	}
 
 	public static String toStringForDB(ManagerRequest mr) {
-		return "'" + mr.getEmployeeID() + "','" + mr.getRequesttype() + "','" + mr.getMaxCapacity() + "','"
+		return "'" + mr.getEmployeeID() + "','" + mr.getRequestType() + "','" + mr.getMaxCapacity() + "','"
 				+ mr.getOrdersCapacity() + "','" + mr.getDiscount() + "','" + mr.getFromDate() + "','" + mr.getToDate()
 				+ "','" + mr.getParkName() + "'";
 	}
