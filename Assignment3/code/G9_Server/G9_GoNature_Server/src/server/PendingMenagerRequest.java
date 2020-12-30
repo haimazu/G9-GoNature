@@ -163,12 +163,22 @@ public class PendingMenagerRequest {
 			ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
 			ManagerRequest mr = new ManagerRequest(queryData.get(0));
 			
+			ArrayList<String> query2 = new ArrayList<String>();
+			query2.add("insert"); // command
+			query2.add("discounts");
+			query2.add("");
+			
 		}
 
 	}
 
 	public static String toStringForDB(ManagerRequest mr) {
 		return "'" + mr.getEmployeeID() + "','" + mr.getRequestType() + "','" + mr.getMaxCapacity() + "','"
+				+ mr.getOrdersCapacity() + "','" + mr.getDiscount() + "','" + mr.getFromDate() + "','" + mr.getToDate()
+				+ "','" + mr.getParkName() + "'";
+	}
+	public static String toStringForDBEnteryandExit(ManagerRequest mr) {
+		return "'"  + mr.getRequestType() + "','" + mr.getMaxCapacity() + "','"
 				+ mr.getOrdersCapacity() + "','" + mr.getDiscount() + "','" + mr.getFromDate() + "','" + mr.getToDate()
 				+ "','" + mr.getParkName() + "'";
 	}
