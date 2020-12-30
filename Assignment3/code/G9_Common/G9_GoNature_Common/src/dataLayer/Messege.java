@@ -20,7 +20,7 @@ public class Messege {
 	}
 	
 	public String read() {
-		return ("sent time:" + formatter.format(sentTime) + "\n" +
+		return ("sent time: " + formatter.format(sentTime) + "\n" +
 				message + "\n");
 	}
 	

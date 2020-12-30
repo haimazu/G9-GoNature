@@ -8,14 +8,14 @@ public class SendMail2 {
 
     private static String USER_NAME = "gonature.g9";  // GMail user name (just the part before "@gmail.com")
     private static String PASSWORD = "Aa123456!"; // GMail password
-    private static String RECIPIENT = "row.e333555@gmail.com";
+    private static String RECIPIENT = "anastasia.kokin@e.braude.ac.il";
 
     public static void main(String[] args) {
         String from = USER_NAME;
         String pass = PASSWORD;
         String[] to = { RECIPIENT }; // list of recipient email addresses
-        String subject = "Java send mail example";
-        String body = "Welcome to JavaMail!";
+        String subject = "hello NASTYA";
+        String body = "this mail was sent from G9.GoNature Systems";
 
         sendFromGMail(from, pass, to, subject, body);
     }

@@ -28,4 +28,8 @@ public class SmsMessege extends Messege{
 	public void setRepliedTo(SmsMessege repliedTo) {
 		this.repliedTo = repliedTo;
 	}
+	
+	public String getTo() {
+		return to;
+	}
 }
