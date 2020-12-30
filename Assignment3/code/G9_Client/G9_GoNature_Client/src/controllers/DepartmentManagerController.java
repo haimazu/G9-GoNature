@@ -124,8 +124,9 @@ public class DepartmentManagerController implements Initializable {
 	private JFXDatePicker dateTo;
 
 	/***** Cancel Reports Variables *****/
-	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
-	private static ArrayList<Order> dismissedOrders = new ArrayList<>();
+//	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
+//	private static ArrayList<Order> dismissedOrders = new ArrayList<>();
+	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
 
 	/***** Dashboard Variables *****/
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
@@ -229,6 +230,11 @@ public class DepartmentManagerController implements Initializable {
 		}
 		iniailTabel();
 	}
+	
+	@FXML
+    void approveUsage(ActionEvent event) {
+
+    }
 
 	/**
 	 * button disapprove will not remove the row and will update the server will
@@ -305,7 +311,7 @@ public class DepartmentManagerController implements Initializable {
 		if (from.isBefore(to)) {
 			data.add(fromFormat);
 			data.add(toFormat);
-			// sendToServerArrayList(data);
+			sendToServerArrayList(data);
 
 			// show all data
 			chart();
@@ -365,16 +371,19 @@ public class DepartmentManagerController implements Initializable {
 	// output: list of cancelled orders:
 	// ArrayList<Object>: cell[0] list of cancelled orders
 	// cell[1] list of dismissed orders
-	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData,
-			ArrayList<ArrayList<String>> dismissData) {
-		for (ArrayList<String> cancel : cancelData) {
-			cancelledOrders.add(new CanceledReport(cancel));
-		}
-
-		for (ArrayList<String> dismiss : dismissData) {
-			dismissedOrders.add(new Order(dismiss));
-		}
+	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData) {
+		DepartmentManagerController.cancelledOrders = cancelData;
 	}
+//	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData,
+//			ArrayList<ArrayList<String>> dismissData) {
+//		for (ArrayList<String> cancel : cancelData) {
+//			cancelledOrders.add(new CanceledReport(cancel));
+//		}
+//
+//		for (ArrayList<String> dismiss : dismissData) {
+//			dismissedOrders.add(new Order(dismiss));
+//		}
+//	}
 
 	public static ArrayList<ArrayList<String>> getDBList() {
 		return DBList;
