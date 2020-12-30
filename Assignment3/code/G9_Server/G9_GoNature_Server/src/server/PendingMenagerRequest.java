@@ -153,9 +153,15 @@ public class PendingMenagerRequest {
 			query.add("pendingmanagerrequests");
 			query.add("employeeID");
 			query.add("employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
-		}
-		else {
-			
+		} else {
+			ArrayList<String> query1 = new ArrayList<String>();
+			query1.add("select"); // command
+			query1.add("pendingmanagerrequests"); // table name
+			query1.add("*"); // columns to select from
+			query1.add("WHERE employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
+			query1.add("8");
+			ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
+			ManagerRequest mr = new ManagerRequest(queryData.get(0));
 			
 		}
 

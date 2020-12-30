@@ -1,6 +1,7 @@
 package reportData;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ManagerRequest implements Serializable {
 
@@ -19,6 +20,17 @@ public class ManagerRequest implements Serializable {
 	String fromDate;
 	String toDate;
 	String parkName;
+
+	public ManagerRequest(ArrayList<String> ManagerRequestFromDB) {
+		this.employeeID = Integer.parseInt(ManagerRequestFromDB.get(0));
+		this.requestType = ManagerRequestFromDB.get(1);
+		this.maxCapacity = Integer.parseInt(ManagerRequestFromDB.get(2));
+		this.ordersCapacity = Integer.parseInt(ManagerRequestFromDB.get(3));
+		this.discount = ManagerRequestFromDB.get(4);
+		this.fromDate = ManagerRequestFromDB.get(5);
+		this.toDate = ManagerRequestFromDB.get(6);
+		this.parkName = ManagerRequestFromDB.get(7);
+	}
 
 	public ManagerRequest(int employeeID, String requestType, int maxCapacity, int ordersCapacity, String discount,
 			String fromDate, String toDate, String parkName) {

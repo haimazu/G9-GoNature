@@ -8,14 +8,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 
 public class TableViewSet {
-	
+
 	private String reqType;
 	private String reqDetails;
-	private CheckBox MarkCh;
 	private String ParkName;
 	private String idEmp;
-
-
+	private CheckBox MarkCh;
 
 	/**
 	 * @param parkName
@@ -30,8 +28,6 @@ public class TableViewSet {
 		this.MarkCh = new CheckBox();
 	}
 
-	
-	
 	/**
 	 * 
 	 */
@@ -41,43 +37,45 @@ public class TableViewSet {
 //		setReqDetails((String)arr.get(2));
 //		setmark((CheckBox)arr.get(3));
 //	}
-	
 
-
-
-	public String getParkName() 
-	{
+	public String getParkName() {
 		return ParkName;
 	}
+
 	public void setParkName(String parkName) {
 		ParkName = parkName;
 	}
+
 	public String getReqType() {
 		return reqType;
 	}
+
 	public void setReqType(String reqType) {
 		this.reqType = reqType;
 	}
+
 	public String getReqDetails() {
 		return reqDetails;
 	}
+
 	public void setReqDetails(String reqDetails) {
 		this.reqDetails = reqDetails;
 	}
+
 	public CheckBox getMarkCh() {
 		return MarkCh;
 	}
+
 	public void setMarkCh(CheckBox checkBox) {
 		this.MarkCh = checkBox;
 	}
+
 	public String getIdEmp() {
 		return idEmp;
 	}
+
 	public void setIdEmp(String idEmp) {
 		this.idEmp = idEmp;
 	}
 
-	
-	
-	
 }

@@ -208,8 +208,6 @@ public class Reports {
 		String startDate = dataFromClient.get(0);
 		String endDate = dataFromClient.get(1);
 		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
-
-		// pre-cancelled orders
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("complexSelect"); // command
 		query1.add(
