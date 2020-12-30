@@ -15,6 +15,7 @@ import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
+import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
 
 import client.ClientUI;
 import dataLayer.Park;
@@ -171,10 +172,19 @@ public class ParkManagerController implements Initializable {
 	private JFXDatePicker dpTo;
 	@FXML
 	private Button btnShow;
+	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
+
 	/*------------------------*/
 	
 	
 	
+	public static ArrayList<ArrayList<String>> getVisitorsReport() {
+		return visitorsReport;
+	}
+
+	public static void setVisitorsReport(ArrayList<ArrayList<String>> visitorsReport) {
+		ParkManagerController.visitorsReport = visitorsReport;
+	}
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
@@ -260,20 +270,20 @@ public class ParkManagerController implements Initializable {
 		RequestForEmployeeID();
 		presentParkDetails(park);
 		
-		/***visitors reports ***/
-		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
-		// listener for updating the date
-		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpFrom.setValue(newValue);
-		});
-
-		// plusMonths(1) to get the next month
-		// withDayOfMonth(1) to get the first day
-		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
-		// listener for updating the date
-		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpTo.setValue(newValue);
-		});
+//		/***visitors reports ***/
+//		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
+//		// listener for updating the date
+//		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
+//			dpFrom.setValue(newValue);
+//		});
+//
+//		// plusMonths(1) to get the next month
+//		// withDayOfMonth(1) to get the first day
+//		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
+//		// listener for updating the date
+//		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
+//			dpTo.setValue(newValue);
+//		});
 	}
 
 	// dates method
@@ -584,22 +594,7 @@ public class ParkManagerController implements Initializable {
 		lblPresentReservationCap.setText(String.valueOf(parkDetails.getMaxAmountOrders()));
 	}
 
-	public static void recivedFromserver(boolean answer) {
-		setRequestAnswerFromServer(answer);
-
-	}
-
-	public static void recivedFromserverParkDetails(Object object) {
-		if (object instanceof Park)
-			setPark((Park) object);
-		else
-			setPark(null);
-	}
-
-	public static void recivedFromserverEmployeeID(String answer) {
-		setEmpID(Integer.parseInt(answer));
-
-	}
+	
 
 	public void RequestForEmployeeID() {
 
@@ -638,44 +633,78 @@ public class ParkManagerController implements Initializable {
 
 		return false;
 	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void chart() {
-		xAxis = new CategoryAxis();
-		yAxis = new NumberAxis(0, 1000, 50);
-
-		bcVisitorsChart.getData().clear();
-		bcVisitorsChart.setAnimated(false);
-		bcVisitorsChart.setBarGap(0d);
-		bcVisitorsChart.setCategoryGap(2.0);
-
-		bcVisitorsChart.setTitle("Visitors segmentation by type");
-
-		Series<String, Double> regular = new Series<>();
-		Series<String, Double> member = new Series<>();
-		Series<String, Double> group = new Series<>();
-
-		for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
-			int i = date.getDayOfMonth();
-
-			regular.setName("regular");
-			// x = day of the month, y = sum 
-			regular.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
-
-			member.setName("member");
-			member.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
-
-			group.setName("group");
-			group.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
-		}
-
-		bcVisitorsChart.getData().addAll(regular, member, group);
-	}
+//
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	public void chart() {
+//		xAxis = new CategoryAxis();
+//		yAxis = new NumberAxis(0, 1000, 50);
+//
+//		bcVisitorsChart.getData().clear();
+//		bcVisitorsChart.setAnimated(false);
+//		bcVisitorsChart.setBarGap(0d);
+//		bcVisitorsChart.setCategoryGap(2.0);
+//
+//		bcVisitorsChart.setTitle("Visitors segmentation by type");
+//
+//		Series<String, Double> regular = new Series<>();
+//		Series<String, Double> member = new Series<>();
+//		Series<String, Double> group = new Series<>();
+//
+//		for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
+//			int i = date.getDayOfMonth();
+//
+//			regular.setName("regular");
+//			// x = day of the month, y = sum 
+//			regular.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
+//
+//			member.setName("member");
+//			member.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
+//
+//			group.setName("group");
+//			group.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
+//		}
+//
+//		bcVisitorsChart.getData().addAll(regular, member, group);
+//	}
 
 	@FXML
 	void showChart(ActionEvent event) throws ParseException {
-		if(DatesNotCorresponding(dpFrom.getValue().toString(), dpTo.getValue().toString()))
-			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
+//		ArrayList<Object> msg = new ArrayList<>();
+//		ArrayList<String> data = new ArrayList<>();
+//		if(DatesNotCorresponding(dpFrom.getValue().toString(), dpTo.getValue().toString()))
+//			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
+//		else {
+//			
+//			msg.add("overallVisitorsReport");
+//			data.add(getParkName());
+//			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//			data.add(dpTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//			msg.add(data);
+//			ClientUI.sentToChatClient(msg);
+//			
+//			chart();
+//		}
 	}
+	/*----received from server section ---*/
+	public static void recivedFromserver(boolean answer) {
+		setRequestAnswerFromServer(answer);
+
+	}
+
+	public static void recivedFromserverParkDetails(Object object) {
+		if (object instanceof Park)
+			setPark((Park) object);
+		else
+			setPark(null);
+	}
+
+	public static void recivedFromserverEmployeeID(String answer) {
+		setEmpID(Integer.parseInt(answer));
+
+	}
+//	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
+//		setVisitorsReport(visitorsReportAnswer);
+//
+//	}
 
 }

@@ -93,6 +93,10 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "requestForParkDetails" :
 			PendingMenagerRequest.getParkDetails(recived, client);
+			break;
+		case "overallVisitorsReport" :
+			Reports.OverallVisitorsReport(recived, client);
+			break;
 		default:
 			break;
 		}
