@@ -29,4 +29,6 @@ public class Comunication {
 		else
 			WaitListSingelton.getWaitlist().replayFromMail((EmailMessege)message);
 	}
+	
+	
 }

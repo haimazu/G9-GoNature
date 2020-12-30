@@ -294,7 +294,10 @@ public class MySQLConnection {
 		String condition = data.get(3);
 		int replyColNum = Integer.parseInt(data.get(4));
 		ArrayList<ArrayList<String>> reply = new ArrayList<ArrayList<String>>();
-		String StatmentString = ("SELECT " + columns + " from " + tableName + " " + condition);
+		String StatmentString = ("SELECT " + columns + " from ");
+		if (!data.get(0).equals("complexSelect"))
+			StatmentString += dbScheme + ".";
+		StatmentString += tableName + " " + condition;
 		try {
 			ResultSet rs = dbConn.createStatement().executeQuery(StatmentString);
 			while (rs.next()) {

@@ -56,7 +56,7 @@ public class WaitListSingelton {
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
 		Date LastPlusMinute = new Date(timeLastChecked.getTime()+60*1000);
-		if (LastPlusMinute.compareTo(timeNow)<=0){
+		if ((LastPlusMinute.compareTo(timeNow)<=0) || dailyCheck){
 			ArrayList<ArrayList<String>> expired = selectExpiredPending(); //select all expired in pending
 			if (!expired.isEmpty()) { //if not empty
 				for (ArrayList<String> row : expired) { //for each expired order
