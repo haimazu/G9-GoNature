@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
+import orderData.OrderType;
 import userData.Member;
 
 //executed by Nastya
@@ -38,6 +39,10 @@ public class NewMember {
 			query.add(queryToString(memb)); // values in query format
 			MySQLConnection.insert(query);
 			answer.add(true);
+			if (memb.getMemberOrderType() == OrderType.MEMBER)
+				answer.add("m" + memb.getMemberNumber());
+			if (memb.getMemberOrderType() == OrderType.GROUP)
+				answer.add("g" + memb.getMemberNumber());
 			if (cc != null) {
 				cc.setOrderNumber(Integer.parseInt(memb.getMemberID()));
 				boolean a = NewOrder.creditCardSave(cc);

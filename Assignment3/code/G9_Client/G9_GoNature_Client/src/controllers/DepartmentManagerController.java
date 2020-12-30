@@ -403,6 +403,12 @@ public class DepartmentManagerController implements Initializable {
 			} else {
 				universal.getData().add(new XYChart.Data(day + "/" + month, 0));
 			}
+			
+			if (disneyDate == 0 && jurasicDate == 0 && universalDate == 0) {
+				disney.getData().add(new XYChart.Data(day + "/" + month, 0));
+				jurasic.getData().add(new XYChart.Data(day + "/" + month, 0));
+				universal.getData().add(new XYChart.Data(day + "/" + month, 0));
+			}
 		}
 
 		bcCancells.getData().addAll(disney, jurasic, universal);

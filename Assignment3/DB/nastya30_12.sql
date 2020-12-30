@@ -100,6 +100,32 @@ LOCK TABLES `departmentmanager` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `discounts`
+--
+
+DROP TABLE IF EXISTS `discounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `discounts` (
+  `parkName` varchar(45) DEFAULT NULL,
+  `from` datetime DEFAULT NULL,
+  `to` datetime DEFAULT NULL,
+  `requestID` varchar(45) DEFAULT NULL,
+  `discountscol` varchar(45) NOT NULL,
+  PRIMARY KEY (`discountscol`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `discounts`
+--
+
+LOCK TABLES `discounts` WRITE;
+/*!40000 ALTER TABLE `discounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `discounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `employee`
 --
 
@@ -131,6 +157,32 @@ INSERT INTO `employee` VALUES ('bark','12345678','bar','katz',1,'bar@Nature.com'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `enteryandexit`
+--
+
+DROP TABLE IF EXISTS `enteryandexit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `enteryandexit` (
+  `orderNumber` int NOT NULL,
+  `timeEnter` datetime DEFAULT NULL,
+  `timeExit` datetime DEFAULT NULL,
+  `parkName` varchar(45) DEFAULT NULL,
+  `orderType` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`orderNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `enteryandexit`
+--
+
+LOCK TABLES `enteryandexit` WRITE;
+/*!40000 ALTER TABLE `enteryandexit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `enteryandexit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `member`
 --
 
@@ -157,7 +209,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (111111111,'rinat','students','1','972867648374','rinatbeeretz@haenglish.com','paypal','family',3),(222222222,'rinat','gabai','2','999777888','rinatGab@test.com','cash','single',1);
+INSERT INTO `member` VALUES (111111111,'rinat','students','1','972867648374','rinatbeeretz@haenglish.com','paypal','group',3),(222222222,'rinat','gabai','2','999777888','rinatGab@test.com','cash','member',1);
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +243,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES ('5','a@b.c','123123123','group',400,100,'jurasic','2021-01-02 12:00:00','1','123456','0',1111),('4','bar@kaz.com','0541234567','regular',7650,9000,'jurasic','2020-12-27 08:00:00','null','315818987','0',1119),('2','bar@kaz.com','0541234567','regular',7650,9000,'jurasic','2020-12-28 08:00:00','null','315818987','0',1120),('4','bar@kaz.com','0541234567','regular',7650,9000,'jurasic','2020-12-30 08:00:00','null','315818987','0',1124),('2','bar@kaz.com','0541234567','regular',170,200,'disney','2020-12-29 08:00:00','null','315818987','0',1125),('2','bar@kaz.com','0541234567','regular',170,200,'disney','2020-12-28 08:00:00','null','315818987','0',1126),('2','bar@kaz.com','0541234567','regular',170,200,'universal','2020-12-28 08:00:00','null','315818987','0',1127),('2','bar@kaz.com','0541234567','regular',170,200,'universal','2020-12-28 16:00:00','null','315818987','0',1128);
+INSERT INTO `orders` VALUES ('5','a@b.c','123123123','group',400,100,'jurasic','2021-01-02 12:00:00','1','123456','0',1111),('4','bar@kaz.com','0541234567','regular',7650,9000,'jurasic','2020-12-27 08:00:00','null','315818987','0',1119),('2','bar@kaz.com','0541234567','regular',7650,9000,'jurasic','2020-12-28 08:00:00','null','315818987','0',1120),('4','bar@kaz.com','0541234567','regular',7650,9000,'jurasic','2020-12-30 08:00:00','null','315818987','1',1124),('2','bar@kaz.com','0541234567','regular',170,200,'disney','2020-12-29 08:00:00','null','315818987','1',1125),('2','bar@kaz.com','0541234567','regular',170,200,'disney','2020-12-28 08:00:00','null','315818987','1',1126),('2','bar@kaz.com','0541234567','regular',170,200,'universal','2020-12-28 08:00:00','null','315818987','2',1127),('2','bar@kaz.com','0541234567','regular',170,200,'universal','2020-12-28 16:00:00','null','315818987','1',1128);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +301,7 @@ CREATE TABLE `pendingmanagerrequests` (
 
 LOCK TABLES `pendingmanagerrequests` WRITE;
 /*!40000 ALTER TABLE `pendingmanagerrequests` DISABLE KEYS */;
-INSERT INTO `pendingmanagerrequests` VALUES (0,'discount',0,0,'0.9','2020-12-26 00:00:00','2020-12-29 00:00:00','disney');
+INSERT INTO `pendingmanagerrequests` VALUES (12,'discount',0,0,'0.9','2020-12-30 00:00:00','2020-12-31 00:00:00','disney'),(12,'max_c',10000000,10,'','2001-01-00 00:00:00','2001-01-00 00:00:00','disney'),(12,'max_o',0,10,'','2001-01-00 00:00:00','2001-01-00 00:00:00','disney');
 /*!40000 ALTER TABLE `pendingmanagerrequests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,7 +387,7 @@ CREATE TABLE `waitinglist` (
 
 LOCK TABLES `waitinglist` WRITE;
 /*!40000 ALTER TABLE `waitinglist` DISABLE KEYS */;
-INSERT INTO `waitinglist` VALUES ('5','t@t.t','0546290290','group',500,400,'jurasic','2020-12-17 10:00:00','1','333555444','0',1101),('2','bar@kaz.com','0541234567','regular',170,200,'jurasic','2020-12-24 08:00:00','null','315818987','0',1113),('2','bar@kaz.com','0541234567','regular',170,200,'jurasic','2020-12-25 08:00:00','null','315818987','0',1115),('2','bar@kaz.com','0541234567','regular',170,200,'jurasic','2020-12-28 08:00:00','null','315818987','0',1121),('6','bar@kaz.com','0541234567','regular',510,600,'jurasic','2020-12-30 08:00:00','null','315818987','0',1126),('200','bar@kaz.com','0541234567','regular',17000,20000,'disney','2020-12-29 08:00:00','null','315818987','0',1127);
+INSERT INTO `waitinglist` VALUES ('6','bar@kaz.com','0541234567','regular',510,600,'jurasic','2020-12-30 08:00:00','null','315818987','0',1126);
 /*!40000 ALTER TABLE `waitinglist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -348,4 +400,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-26 21:07:41
+-- Dump completed on 2020-12-30 23:39:58
