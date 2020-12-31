@@ -68,9 +68,10 @@ public class WaitingListConfirmContoller {
 						"something went wrong, our code monkey has been notified and will work on the error, please try again shortly. ");
 			
 			Stage stage = (Stage) btnListMe.getScene().getWindow();
-			stage.close();
+			//stage.close();
+			Stage stage2 = (Stage) btnListMe.getScene().getWindow();
 			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
-			stage.setScene(new Scene(root));
+			stage2.setScene(new Scene(root));
 		}
 
 	}

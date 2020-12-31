@@ -30,8 +30,8 @@ public class WaitingListController implements Initializable {
 	@FXML
 	private Pane pnVerify;
 
-    @FXML
-    private Button btnContinue;
+	@FXML
+	private Button btnContinue;
 
 	@FXML
 	private Button btnHere;
@@ -64,26 +64,33 @@ public class WaitingListController implements Initializable {
 				return new DateCell() {
 					@Override
 					public void updateItem(LocalDate item, boolean empty) {
-
+						System.out.println("hello1");
+						System.out.println(arr);
 						for (String str : arr) {
 							super.updateItem(item, empty);
 							String[] arrDate = getDate(str, "Date");
 							LocalDate thisDate = LocalDate.of(Integer.parseInt(arrDate[0]),
 									Integer.parseInt(arrDate[1]), Integer.parseInt(arrDate[2]));
 							LocalDate today = LocalDate.now();
-							LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+							LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(),
+									today.getDayOfMonth());
+							System.out.println("hello2");
 							if (item.compareTo(thisDate) == 0) {
+								System.out.println("thisDate : " + thisDate);
+								setDisable(true);
+							} else if (item.compareTo(nextYear) > 0) {
+								System.out.println("nextYear : " + nextYear);
+								setDisable(true);
+							} else if (item.compareTo(today) < 0) {
+								System.out.println("today : " + today);
 								setDisable(true);
 							}
-							else if(item.compareTo(nextYear) > 0)
-								setDisable(true);
-							else if(item.compareTo(today) < 0)
-								setDisable(true);
 						}
 					}
 				};
 			}
 		};
+		System.out.println("hello3");
 		txtdate.setDayCellFactory(dayCellFactory);
 
 	}
@@ -108,13 +115,16 @@ public class WaitingListController implements Initializable {
 				count++;
 			} else {
 				if (TimesDates[0].equals(first[0])) {
+					System.out.println(TimesDates[0] + " " + first[0]);
 					count++;
 				} else {
-					count = 0;
-					rounds = 0;
+					first = TimesDates;
+					count = 1;
+					rounds = 1;
 					flag = 1;
 				}
 			}
+			System.out.println(count + " " +rounds );
 			if (flag != 1)
 				rounds++;
 			if (rounds == 3) {
@@ -126,6 +136,7 @@ public class WaitingListController implements Initializable {
 			}
 			flag = 0;
 		}
+		System.out.println("newArr : " + newArr);
 		this.nonReleventDates = newArr;
 
 	}
@@ -184,14 +195,14 @@ public class WaitingListController implements Initializable {
 		}
 	}
 
-    @FXML
-    void Continue(ActionEvent event) {
-    	anotherDates.add(txtdate.getValue());
-    	anotherDates.add(cbxArrivelTime.getValue());
-    	
-    	Stage stage2 = (Stage) btnContinue.getScene().getWindow();
+	@FXML
+	void Continue(ActionEvent event) {
+		anotherDates.add(txtdate.getValue());
+		anotherDates.add(cbxArrivelTime.getValue());
+
+		Stage stage2 = (Stage) btnContinue.getScene().getWindow();
 		stage2.close();
-    }
+	}
 
 	@FXML
 	void here(ActionEvent event) throws IOException {
@@ -217,12 +228,12 @@ public class WaitingListController implements Initializable {
 		this.time.add("12:00 - 16:00");
 		this.time.add("16:00 - 20:00");
 		cbxArrivelTime.setDisable(true);
-		
+
 		ArrayList<Object> sendServer = new ArrayList<>();
 		sendServer.add("checkFullDays");
 		sendServer.add(OrderController.getOrder());
 		ClientUI.sentToChatClient(sendServer);
-		
+		System.out.println("Dates: " + Dates);
 		setArrForDatePicker();
 		nonReleventDatesForCalender(nonReleventDates);
 		setArrForTime();

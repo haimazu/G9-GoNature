@@ -125,7 +125,8 @@ public class OrderController implements Initializable {
 	private static ArrayList<String> ParksNames = new ArrayList<>();
 	private static Order orderSuccess;
 	private static Order order;
-	private  ArrayList<Object> saveDetails= new ArrayList<>();
+	private static ArrayList<Object> saveDetails = new ArrayList<>();
+	private static int flagOrder=0;
 	private static String status = "not";
 	private static boolean faildDB = true;
 	private static boolean confirmOrder = false;
@@ -203,13 +204,7 @@ public class OrderController implements Initializable {
 			Node topNode = stackPanels.get(stackPanels.size() - 1);
 
 			if (topNode.getId().equals("pnOrder")) {// in order screen
-				saveDetails.add(txtmemberID.getText());
-				saveDetails.add(cbxParkName.getValue());
-				saveDetails.add(txtdate.getValue());
-				saveDetails.add(cbxArrivelTime.getValue());
-				saveDetails.add(txtVisitorsNumber.getText());
-				saveDetails.add(txtInvitingEmail.getText());
-				saveDetails.add(txtPhoneNum.getText());
+				saveOrder();
 				Stage stage = (Stage) btnBack.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 				stage.setScene(new Scene(root));
@@ -217,9 +212,25 @@ public class OrderController implements Initializable {
 				imgOrder.setImage(imgOrderEmpty);
 				pnOrder.toFront();
 			} else if (topNode.getId().equals("pnConfirmation")) {// in confirmation screen
-				pnPayment.toFront();
+				//pnPayment.toFront();
+				alert.successAlert("confirmation","You have new order : " +orderSuccess.getOrderNumber() + "\nThank you for ordering in Go - Nature" );
+				Stage stage = (Stage) btnBack.getScene().getWindow();
+				Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+				stage.setScene(new Scene(root));
 			}
 		}
+	}
+
+	public void saveOrder() {
+		this.flagOrder=1;
+		saveDetails.add(txtmemberID.getText());
+		saveDetails.add(cbxParkName.getValue());
+		saveDetails.add(txtdate.getValue());
+		saveDetails.add(cbxArrivelTime.getValue());
+		saveDetails.add(txtVisitorsNumber.getText());
+		saveDetails.add(txtInvitingEmail.getText());
+		saveDetails.add(txtPhoneNum.getText());
+
 	}
 
 	/**
@@ -287,7 +298,6 @@ public class OrderController implements Initializable {
 					+ getArrivalTime();
 			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					txtPhoneNum.getText(), cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
-			System.out.println(this.ID + " " + this.memberId);
 			msgNewOrderForServer.add(OrderController.order);
 			imgOrder.setImage(imgOrderFull);
 
@@ -309,8 +319,8 @@ public class OrderController implements Initializable {
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
 
-					this.txtprice.setText(String.valueOf(orderSuccess.getPrice())+  " ₪");
-					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()) +  " ₪");
+					this.txtprice.setText(String.valueOf(orderSuccess.getPrice()) + " ₪");
+					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()) + " ₪");
 					double value = (1 - (orderSuccess.getTotalPrice() / orderSuccess.getPrice())) * 100;
 					this.txtdDiscount.setText(String.format("%.1f", value) + "%");
 					this.txtVisitoramountPrice.setText(String.valueOf(orderSuccess.getVisitorsNumber()));
@@ -365,9 +375,6 @@ public class OrderController implements Initializable {
 	/*******************************
 	 * Code for tests and additions
 	 ****************************************/
-	
-	
-	
 
 	/**
 	 * 
@@ -416,7 +423,7 @@ public class OrderController implements Initializable {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		String email = txtInvitingEmail.getText();
 		String parkName = new String();
-		if(cbxParkName.getValue() != null)
+		if (cbxParkName.getValue() != null)
 			parkName = cbxParkName.getValue().toString();
 		String memberId = txtmemberID.getText();
 		String Phone = txtPhoneNum.getText();
@@ -480,8 +487,8 @@ public class OrderController implements Initializable {
 			return false;
 		}
 		if (validInput("memberId", txtmemberID.getText())) {
-			if(txtmemberID.getText().contains("g")) {
-				if(Integer.parseInt(txtVisitorsNumber.getText()) >15) {
+			if (txtmemberID.getText().contains("g")) {
+				if (Integer.parseInt(txtVisitorsNumber.getText()) > 15) {
 					alert.setAlert("An organized group is limited to 15 participants");
 					return false;
 				}
@@ -572,12 +579,11 @@ public class OrderController implements Initializable {
 	 * Done with the server
 	 **********************************************/
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
-		cbxArrivelTime.getSelectionModel().selectFirst();
-
+		
 		// user can choose to date only date today until next year.
 
 		txtdate.setDayCellFactory(picker -> new DateCell() {
@@ -588,19 +594,11 @@ public class OrderController implements Initializable {
 				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
 			}
 		});
-		// txtdate = new JFXDatePicker(LocalDate.now());
-		txtdate.setValue(LocalDate.now());
-
+		
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
-		//cbxParkName.getSelectionModel().selectFirst();
-
-		information.setTooltip(new Tooltip(
-				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
-		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
-
-		/*********** need to do this**** for save detail after fill **********/
-		if(!saveDetails.isEmpty()) {
-			System.out.println(saveDetails.toString());
+		
+		if(flagOrder==1) {
+			this.flagOrder=0;
 			txtmemberID.setText((String) saveDetails.get(0));
 			cbxParkName.setValue((String) saveDetails.get(1));
 			txtdate.setValue((LocalDate) saveDetails.get(2));
@@ -608,14 +606,37 @@ public class OrderController implements Initializable {
 			txtVisitorsNumber.setText((String) saveDetails.get(4));
 			txtInvitingEmail.setText((String) saveDetails.get(5));
 			txtPhoneNum.setText((String) saveDetails.get(6));
+			saveDetails.clear();
 		}
+		else {
+			cbxArrivelTime.getSelectionModel().selectFirst();
+			txtdate.setValue(LocalDate.now());
+		}
+		
 
-		/****************** for me ******************/
+
+
+
+		// txtdate = new JFXDatePicker(LocalDate.now());
+		
+
+
+		// cbxParkName.getSelectionModel().selectFirst();
+
+		information.setTooltip(new Tooltip(
+				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
+		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
+
+		/*********** need to do this**** for save detail after fill **********/
+
+
+
+	}
+
+	/****************** for me ******************/
 //		txtmemberID.setText("315818987");
 //		txtVisitorsNumber.setText("2");
 //		txtInvitingEmail.setText("bar@kaz.com");
 //		txtPhoneNum.setText("0541234567");
-
-	}
 
 }
