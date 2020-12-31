@@ -65,9 +65,9 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Separator layoutX="78.0" layoutY="328.0" prefHeight="3.0" prefWidth="113.0" />
-            <Label layoutX="196.0" layoutY="320.0" text="Or" />
-            <Separator layoutX="213.0" layoutY="328.0" prefHeight="3.0" prefWidth="113.0" />
+            <Separator layoutX="79.0" layoutY="317.0" prefHeight="3.0" prefWidth="113.0" />
+            <Label layoutX="197.0" layoutY="309.0" text="Or" />
+            <Separator layoutX="214.0" layoutY="317.0" prefHeight="3.0" prefWidth="113.0" />
             <Label focusTraversable="false" layoutX="115.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="188.0" styleClass="labelBold" text="Already have an order?" textAlignment="CENTER">
                <font>
                   <Font name="Ebrima Bold" size="16.0" />
