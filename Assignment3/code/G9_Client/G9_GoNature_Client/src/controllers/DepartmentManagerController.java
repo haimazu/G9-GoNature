@@ -127,6 +127,7 @@ public class DepartmentManagerController implements Initializable {
 //	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
 //	private static ArrayList<Order> dismissedOrders = new ArrayList<>();
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
+	private int index = 0;
 
 	/***** Dashboard Variables *****/
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
@@ -304,9 +305,6 @@ public class DepartmentManagerController implements Initializable {
 		LocalDate to = dpTo.getValue();
 		String toFormat = dateTimeFormatter.format(to);
 
-		System.out.println(fromFormat);
-		System.out.println(toFormat);
-
 		// good
 		if (from.isBefore(to)) {
 			data.add(fromFormat);
@@ -321,8 +319,6 @@ public class DepartmentManagerController implements Initializable {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chart() {		
 		int i, j = 0;
-		String day = "";
-		String month = "";
 		int disneyDate = 0;
 		int jurasicDate = 0;
 		int universalDate = 0;
@@ -346,72 +342,88 @@ public class DepartmentManagerController implements Initializable {
 		
 		//for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
 		//	i = date.getDayOfMonth();
-		for (j = 0; j < cancelledOrders.size(); j++) {
+		String minDateFormat = cancelledOrders.get(0).get(1).substring(0, 10);
+		String maxDateFormat = cancelledOrders.get(cancelledOrders.size() - 1).get(1).substring(0, 10);
+		LocalDate minDate = LocalDate.parse(minDateFormat);
+		LocalDate maxDate = LocalDate.parse(maxDateFormat);
+		int count = 0;
+		
+		for (LocalDate date = minDate; date.isBefore(maxDate.plusDays(1)); date = date.plusDays(1)) {
 			
-			if (!day.equals(cancelledOrders.get(j).get(1).substring(8, 10))) {
-				disneyDate = jurasicDate = universalDate = 0;
-				i = j + 1;
-				day = cancelledOrders.get(j).get(1).substring(8, 10);	
-				month = cancelledOrders.get(j).get(1).substring(5, 7);
-				
-				while (i < cancelledOrders.size()) {
-					if (day.equals(cancelledOrders.get(i).get(1).substring(8, 10)) &&
-						month.equals(cancelledOrders.get(i).get(1).substring(5, 7))) {
-						if (cancelledOrders.get(i).get(0).equals("disney")) {
-							disneyDate = i;
-						} else if (cancelledOrders.get(i).get(0).equals("jurasic")) {
-							jurasicDate = i;
-						} else if (cancelledOrders.get(i).get(0).equals("universal")) {
-							universalDate = i;
-						}
-					} else if (i >= j + 2) {
-						break;
-					}
-					i++;
-				}
-			} else {
+			count = checkIfExists(date);
+			if (count == 0) {
+				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 				continue;
+			}
+			
+			disneyDate = jurasicDate = universalDate = 0;
+			i = 0;
+				
+			while (i < count) {
+				if (cancelledOrders.get(index).get(0).equals("disney")) {
+					disneyDate = index;
+				} else if (cancelledOrders.get(index).get(0).equals("jurasic")) {
+					jurasicDate = index;
+				} else if (cancelledOrders.get(index).get(0).equals("universal")) {
+					universalDate = index;
+				}
+				index++;
+				i++;
 			}
 					
 			// parkName = Disney && same day in the month
 			if (cancelledOrders.get(j).get(0).equals("disney") && disneyDate == 0) {
 				// x = day of the month, y = sum of cancel
-				disney.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(j).get(2))));
+				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(j).get(2))));
 			} else if (disneyDate != 0) {
-				disney.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(disneyDate).get(2))));
+				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(disneyDate).get(2))));
 				disneyDate = 0;
 			} else {
-				disney.getData().add(new XYChart.Data(day + "/" + month, 0));
+				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 			}
 			
 			// parkName = Jurasic && same day in the month
 			if (cancelledOrders.get(j).get(0).equals("jurasic") && jurasicDate == 0) {
-				jurasic.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(j).get(2))));
+				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(j).get(2))));
 			} else if (jurasicDate != 0) {
-				jurasic.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(jurasicDate).get(2))));
+				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(jurasicDate).get(2))));
 				jurasicDate = 0;
 			} else {
-				jurasic.getData().add(new XYChart.Data(day + "/" + month, 0));
+				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 			}
 				
 			// parkName = Universal && same day in the month
 			if (cancelledOrders.get(j).get(0).equals("universal") && universalDate == 0) {
-				universal.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(j).get(2))));
+				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(j).get(2))));
 			} else if (universalDate != 0) {
-				universal.getData().add(new XYChart.Data(day + "/" + month, Double.parseDouble(cancelledOrders.get(universalDate).get(2))));
+				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(universalDate).get(2))));
 				universalDate = 0;
 			} else {
-				universal.getData().add(new XYChart.Data(day + "/" + month, 0));
-			}
-			
-			if (disneyDate == 0 && jurasicDate == 0 && universalDate == 0) {
-				disney.getData().add(new XYChart.Data(day + "/" + month, 0));
-				jurasic.getData().add(new XYChart.Data(day + "/" + month, 0));
-				universal.getData().add(new XYChart.Data(day + "/" + month, 0));
+				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 			}
 		}
 
 		bcCancells.getData().addAll(disney, jurasic, universal);
+	}
+	
+	public int checkIfExists(LocalDate date) {
+		int count = 0;
+		index = 0;
+		
+		for (int i = 0; i < cancelledOrders.size(); i++) {
+			String DateFormat = cancelledOrders.get(i).get(1).substring(0, 10);
+			LocalDate checkDate = LocalDate.parse(DateFormat);
+			if (date.equals(checkDate)) {
+				if (index != 0) {
+					index = i;
+				}
+				count++;
+			}
+		}
+		
+		return count;
 	}
 
 	// ArrayList<String> data, sending to the server to get data
