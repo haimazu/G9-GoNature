@@ -105,7 +105,7 @@
                <children>
                   <JFXDatePicker fx:id="dpFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
                   <JFXDatePicker fx:id="dpTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
-                  <BarChart fx:id="bcCancells" barGap="5.0" layoutX="10.0" layoutY="86.0" prefHeight="430.0" prefWidth="598.0">
+                  <BarChart fx:id="bcCancells" barGap="5.0" layoutX="1.0" layoutY="86.0" prefHeight="430.0" prefWidth="613.0">
                      <xAxis>
                         <CategoryAxis label="Day in month" side="BOTTOM" fx:id="xAxis">
                            <tickLabelFont>
@@ -125,7 +125,7 @@
                      </opaqueInsets>
                   </BarChart>
                   <Button fx:id="btnShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#show" styleClass="btnSmallGreen" text="Show" />
-                  <Button fx:id="btnPrint" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Print" />
+                  <Button fx:id="btnExport" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
                </children>
             </Pane>
             <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">

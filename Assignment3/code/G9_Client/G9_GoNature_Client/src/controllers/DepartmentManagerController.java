@@ -1,12 +1,30 @@
 package controllers;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Dictionary;
 import java.util.ResourceBundle;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXDatePicker;
 
 import client.ClientUI;
@@ -25,7 +43,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -34,8 +52,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import orderData.Order;
-import reportData.CanceledReport;
 import reportData.TableViewSet;
 
 public class DepartmentManagerController implements Initializable {
@@ -100,6 +116,8 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private Button btnShow;
 	@FXML
+	private Button btnExport;
+	@FXML
 	private Button btnLogout;
 
 	private static String firstName;
@@ -124,8 +142,6 @@ public class DepartmentManagerController implements Initializable {
 	private JFXDatePicker dateTo;
 
 	/***** Cancel Reports Variables *****/
-//	private static ArrayList<CanceledReport> cancelledOrders = new ArrayList<>();
-//	private static ArrayList<Order> dismissedOrders = new ArrayList<>();
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
 	private int index = 0;
 
@@ -133,6 +149,9 @@ public class DepartmentManagerController implements Initializable {
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
 	private int count = 0;
 
+	// this function managed the side bar
+	// input: button source that pressed
+	// output: switch to the relevant pane
 	@FXML
 	public void handleSideBar(ActionEvent event) {
 		if (event.getSource() == btnDashboard) {
@@ -159,18 +178,15 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	@FXML
-	void show(ActionEvent event) {
-		checkDate();
-	}
-
+	// input: none
+	// output: moving to 'login' screen
 	@FXML
 	void logout(ActionEvent event) throws IOException {
 		// Data fields
 		ArrayList<String> data = new ArrayList<String>();
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
-
+		
 		msg.add("updateLoggedIn");
 		// update as loggedin as logged out
 		data.add(LoginController.getUsername());
@@ -179,10 +195,116 @@ public class DepartmentManagerController implements Initializable {
 		msg.add(data);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
-
+		
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
+	}
+	
+	// checks if the date is correct and displays the chart if so
+	// input: from -> start date
+	//          to -> end date
+	// output: display the chart depending on the dates entered
+	@FXML
+	void show(ActionEvent event) {
+		ArrayList<String> data = new ArrayList<>();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		LocalDate from = dpFrom.getValue();
+		String fromFormat = dateTimeFormatter.format(from);
+
+		LocalDate to = dpTo.getValue();
+		
+		// good
+		if (from.isBefore(to) || from.isEqual(to)) {
+			String toFormat = dateTimeFormatter.format(to.plusDays(1));
+			data.add(fromFormat);
+			data.add(toFormat);
+			sendToServerArrayList(data);
+			
+			// show all data
+			chart();
+		}
+	}
+	
+	// creates a PDF file based on data retrieved from the DB
+	// input: from -> start date
+	//          to -> end date
+	//        ArrayList<ArrayList<String>> cancelledOrders, cells:
+	//                                     					cell [0]: parkName
+	//													    cell [1]: date of canceled/dismissed
+	//														cell [2]: amount
+	// output: PDF report with all the data shown in the chart
+	@FXML
+	void export(ActionEvent event) {
+		show(event);
+		
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+		String fromFormat = dateFormatter.format(dpFrom.getValue());
+		String toFormat = dateFormatter.format(dpTo.getValue());
+		
+		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
+		try {
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("CanceledReport.pdf")); 
+			document.open();
+			Image logo = Image.getInstance("E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+			logo.setAlignment(Element.ALIGN_CENTER);
+			document.add(logo);
+			
+			Paragraph title = new Paragraph("Cancellation/Dismissed Report\n", titleFont);
+			title.setAlignment(Element.ALIGN_CENTER);
+	        document.add(title);
+	        
+	        Paragraph date = new Paragraph(new Date().toString() + "\n\n");
+	        date.setAlignment(Element.ALIGN_CENTER);
+	        document.add(date);
+	        
+	        PdfPTable table = new PdfPTable(3);
+	        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+	        
+	        PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
+	        titleCell.setColspan(3);
+	        titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        titleCell.setBackgroundColor(BaseColor.GRAY);
+	        // the title of the table
+	        table.addCell(titleCell);
+	        
+	        PdfPCell parkName = new PdfPCell(new Paragraph("Park Name"));
+	        parkName.setColspan(1);
+	        parkName.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        parkName.setBackgroundColor(BaseColor.LIGHT_GRAY);
+	        table.addCell(parkName);
+	        
+	        PdfPCell missedTime = new PdfPCell(new Paragraph("Missed Time"));
+	        missedTime.setColspan(1);
+	        missedTime.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        missedTime.setBackgroundColor(BaseColor.LIGHT_GRAY);
+	        table.addCell(missedTime);
+	        
+	        PdfPCell amount = new PdfPCell(new Paragraph("Amount"));
+	        amount.setColspan(1);
+	        amount.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        amount.setBackgroundColor(BaseColor.LIGHT_GRAY);
+	        table.addCell(amount);
+	        	               
+	        for (int i = 0; i < cancelledOrders.size(); i++) {
+		        table.addCell(cancelledOrders.get(i).get(0));
+		        table.addCell(cancelledOrders.get(i).get(1));
+		        table.addCell(cancelledOrders.get(i).get(2));
+	        }
+	        document.add(table);
+	        
+	        Desktop.getDesktop().open(new File("CanceledReport.pdf"));
+	        
+	        document.close();
+	        writer.close();
+	             
+		} catch (Exception e) {
+			alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
+		}
 	}
 
 	public static String getFirstName() {
@@ -284,38 +406,31 @@ public class DepartmentManagerController implements Initializable {
 		TableDep.setItems(listForTable);
 	}
 
+	// set style for the pressed button
+	// input: the active button
+	// output: new style
 	public void setButtonPressed(Button button) {
 		button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: brown;"
 				+ "-fx-border-width: 0px 0px 0px 3px;");
 	}
 
+	// set style for the released buttons
+	// input: the inactive buttons
+	// output: removing the previous style
 	public void setButtonReleased(Button button, Button button1, Button button2) {
 		button.setStyle("-fx-background-color: transparent;");
 		button1.setStyle("-fx-background-color: transparent;");
 		button2.setStyle("-fx-background-color: transparent;");
 	}
 
-	public void checkDate() {
-		ArrayList<String> data = new ArrayList<>();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-		LocalDate from = dpFrom.getValue();
-		String fromFormat = dateTimeFormatter.format(from);
-
-		LocalDate to = dpTo.getValue();
-		String toFormat = dateTimeFormatter.format(to);
-
-		// good
-		if (from.isBefore(to)) {
-			data.add(fromFormat);
-			data.add(toFormat);
-			sendToServerArrayList(data);
-
-			// show all data
-			chart();
-		}
-	}
-
+	// displays the chart for the information retrieved from DB
+	// input: from -> start date
+	//          to -> end date
+	//        ArrayList<ArrayList<String>> cancelledOrders, cells:
+	//                                     					cell [0]: parkName
+	//													    cell [1]: date of canceled/dismissed
+	//														cell [2]: amount
+	// output: displays the data
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chart() {		
 		int i;
@@ -335,6 +450,10 @@ public class DepartmentManagerController implements Initializable {
 		bcCancells.setAnimated(false);
 		bcCancells.setBarGap(0d);
 		bcCancells.setCategoryGap(4.0);
+		
+		bcCancells.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
+		bcCancells.setPrefSize(613, 430);
+		bcCancells.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 
 		bcCancells.setTitle("Cancellation/Dismissed Reports");
 
@@ -406,6 +525,10 @@ public class DepartmentManagerController implements Initializable {
 		bcCancells.getData().addAll(disney, jurasic, universal);
 	}
 	
+	// checks if the date exists and saves the first position where it appears
+	// input: date to check
+	// output: - return the number of times he appears
+	// 		   - saves the first index where he appeared
 	public int checkIfExists(LocalDate date) {
 		int count = 0;
 		index = 0;
