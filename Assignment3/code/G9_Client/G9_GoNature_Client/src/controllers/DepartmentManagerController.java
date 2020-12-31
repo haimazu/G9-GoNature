@@ -207,7 +207,7 @@ public class DepartmentManagerController implements Initializable {
 
 	/**
 	 * button approve will remove the row and will update the table from DB will
-	 * send to server [0] - name mathod [1] - approve [2] - TabelViewSet
+	 * send to server array list of object [0] - name method [1] - string "approve" [2] -object of TabelViewSet
 	 * 
 	 * @param event
 	 */
@@ -239,7 +239,7 @@ public class DepartmentManagerController implements Initializable {
 
 	/**
 	 * button disapprove will not remove the row and will update the server will
-	 * send to server [0] - name method [1] - disapprove [2] - TabelViewSet
+	 * send to server  array list of Object : [0] - name method [1] -  string "disapprove" [2] - Object of TabelViewSet
 	 * 
 	 * @param event
 	 */
