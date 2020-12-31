@@ -318,10 +318,16 @@ public class DepartmentManagerController implements Initializable {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chart() {		
-		int i, j = 0;
+		int i;
 		int disneyDate = 0;
 		int jurasicDate = 0;
-		int universalDate = 0;
+		int universalDate = 0;		
+		int count = 0;
+		String minDateFormat = cancelledOrders.get(0).get(1).substring(0, 10);
+		String maxDateFormat = cancelledOrders.get(cancelledOrders.size() - 1).get(1).substring(0, 10);
+		LocalDate minDate = LocalDate.parse(minDateFormat);
+		LocalDate maxDate = LocalDate.parse(maxDateFormat);
+		
 		xAxis = new CategoryAxis();
 		yAxis = new NumberAxis(0, 1000, 50);
 
@@ -339,15 +345,7 @@ public class DepartmentManagerController implements Initializable {
 		disney.setName("Disney");
 		jurasic.setName("Jurasic");
 		universal.setName("Universal");
-		
-		//for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
-		//	i = date.getDayOfMonth();
-		String minDateFormat = cancelledOrders.get(0).get(1).substring(0, 10);
-		String maxDateFormat = cancelledOrders.get(cancelledOrders.size() - 1).get(1).substring(0, 10);
-		LocalDate minDate = LocalDate.parse(minDateFormat);
-		LocalDate maxDate = LocalDate.parse(maxDateFormat);
-		int count = 0;
-		
+
 		for (LocalDate date = minDate; date.isBefore(maxDate.plusDays(1)); date = date.plusDays(1)) {
 			
 			count = checkIfExists(date);
@@ -374,9 +372,9 @@ public class DepartmentManagerController implements Initializable {
 			}
 					
 			// parkName = Disney && same day in the month
-			if (cancelledOrders.get(j).get(0).equals("disney") && disneyDate == 0) {
+			if (cancelledOrders.get(0).get(0).equals("disney") && disneyDate == 0) {
 				// x = day of the month, y = sum of cancel
-				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(j).get(2))));
+				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(0).get(2))));
 			} else if (disneyDate != 0) {
 				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(disneyDate).get(2))));
 				disneyDate = 0;
@@ -385,8 +383,8 @@ public class DepartmentManagerController implements Initializable {
 			}
 			
 			// parkName = Jurasic && same day in the month
-			if (cancelledOrders.get(j).get(0).equals("jurasic") && jurasicDate == 0) {
-				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(j).get(2))));
+			if (cancelledOrders.get(0).get(0).equals("jurasic") && jurasicDate == 0) {
+				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(0).get(2))));
 			} else if (jurasicDate != 0) {
 				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(jurasicDate).get(2))));
 				jurasicDate = 0;
@@ -395,8 +393,8 @@ public class DepartmentManagerController implements Initializable {
 			}
 				
 			// parkName = Universal && same day in the month
-			if (cancelledOrders.get(j).get(0).equals("universal") && universalDate == 0) {
-				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(j).get(2))));
+			if (cancelledOrders.get(0).get(0).equals("universal") && universalDate == 0) {
+				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(0).get(2))));
 			} else if (universalDate != 0) {
 				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(universalDate).get(2))));
 				universalDate = 0;
@@ -411,12 +409,12 @@ public class DepartmentManagerController implements Initializable {
 	public int checkIfExists(LocalDate date) {
 		int count = 0;
 		index = 0;
-		
+
 		for (int i = 0; i < cancelledOrders.size(); i++) {
 			String DateFormat = cancelledOrders.get(i).get(1).substring(0, 10);
 			LocalDate checkDate = LocalDate.parse(DateFormat);
 			if (date.equals(checkDate)) {
-				if (index != 0) {
+				if (index == 0) {
 					index = i;
 				}
 				count++;
