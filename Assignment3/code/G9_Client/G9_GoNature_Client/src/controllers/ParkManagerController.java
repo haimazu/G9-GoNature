@@ -186,11 +186,34 @@ public class ParkManagerController implements Initializable {
 	/*------------------------*/
 
 	/* ----for usage chart----- */
-	
-	
-	
+
+	@FXML
+	private BarChart<?, ?> bcUsageChart;
+
+	@FXML
+	private CategoryAxis xAxisU;
+
+	@FXML
+	private NumberAxis yAxisU;
+	@FXML
+	private JFXDatePicker dpFromU;
+
+	@FXML
+	private JFXDatePicker dpToU;
+
+	@FXML
+	private Button showUsage;
+	private static ArrayList<ArrayList<String>> usageReport = new ArrayList<>();
 	/*-------------------------*/
-	
+
+	public static ArrayList<ArrayList<String>> getUsageReport() {
+		return usageReport;
+	}
+
+	public static void setUsageReport(ArrayList<ArrayList<String>> usageReport) {
+		ParkManagerController.usageReport = usageReport;
+	}
+
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
@@ -651,9 +674,10 @@ public class ParkManagerController implements Initializable {
 
 		return false;
 	}
-		/*------- visitors chart------------------*/
+
+	/*------- visitors chart------------------*/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void chart() throws ParseException {
+	public void chartVisitors() throws ParseException {
 		xAxis = new CategoryAxis();
 		yAxis = new NumberAxis(0, 20, 2);
 		bcVisitorsChart.getData().clear();
@@ -727,7 +751,7 @@ public class ParkManagerController implements Initializable {
 					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			ClientUI.sentToChatClient(msg);
 
-			chart();
+			chartVisitors();
 		}
 	}
 
@@ -795,11 +819,44 @@ public class ParkManagerController implements Initializable {
 		}
 	}
 
+	/*-------end of visitors report section --------*/
 	static void noDataTopresent() {
 		alert.setAlert("There is no Data to present for selected dates.");
 	}
-/*-------end of visitors report section --------*/
-	
+
+	/*-------usage report section --------*/
+	@FXML
+	void showUsage(ActionEvent event) throws ParseException {
+		ArrayList<Object> msg = new ArrayList<>();
+		ArrayList<String> data = new ArrayList<>();
+		if (DatesNotCorresponding(dpFromU.getValue().toString(), dpToU.getValue().toString()))
+			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
+		else {
+
+			msg.add("UsageReport");
+			data.add(getParkName());
+			data.add(dpFromU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			data.add(dpToU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			msg.add(data);
+			System.out.println("print message: " + msg);
+			System.out.println(
+					"print date to server : " + dpFromU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			ClientUI.sentToChatClient(msg);
+
+			chartUsage();
+		}
+		
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void chartUsage() throws ParseException {
+		
+		
+		
+		
+	}
+
+	/*-------end of usage report section --------*/
+
 	/*----received from server section ---*/
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
@@ -822,10 +879,19 @@ public class ParkManagerController implements Initializable {
 		if ((Object) visitorsReportAnswer instanceof String)
 			noDataTopresent();
 		else {
-		setVisitorsReport(visitorsReportAnswer);
-		System.out.print(visitorsReportAnswer);
+			setVisitorsReport(visitorsReportAnswer);
+
 		}
 
+	}
+
+	public static void recivedFromserverUsageReport(ArrayList<ArrayList<String>> usageReportAnswer) {
+		if ((Object) usageReportAnswer instanceof String)
+			noDataTopresent();
+		else {
+			setUsageReport(usageReportAnswer);
+			System.out.print(usageReportAnswer);
+		}
 	}
 
 }

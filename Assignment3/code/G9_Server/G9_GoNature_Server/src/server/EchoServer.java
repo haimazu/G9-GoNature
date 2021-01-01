@@ -99,6 +99,8 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "checkIfPending" : 
 			ExistingOrderCheck.checkIfPending(recived, client);
+		case "UsageReport" :
+			Reports.UsageReport(recived, client);
 		default:
 			break;
 		}
