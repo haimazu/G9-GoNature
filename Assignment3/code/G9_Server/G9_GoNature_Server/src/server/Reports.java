@@ -94,7 +94,7 @@ public class Reports {
 		query.clear();
 		query.add("select"); // select
 		query.add("park"); // tableName
-		query.add("maxVisitorsAmount"); // columns
+		query.add("maxVisitorAmount"); // columns
 		if (parkName.equals("all"))
 			query.add("WHERE " + dateCond); // condition
 		else
