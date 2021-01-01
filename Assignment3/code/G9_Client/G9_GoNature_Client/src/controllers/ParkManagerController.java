@@ -185,6 +185,12 @@ public class ParkManagerController implements Initializable {
 
 	/*------------------------*/
 
+	/* ----for usage chart----- */
+	
+	
+	
+	/*-------------------------*/
+	
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
@@ -645,7 +651,7 @@ public class ParkManagerController implements Initializable {
 
 		return false;
 	}
-
+		/*------- visitors chart------------------*/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chart() throws ParseException {
 		xAxis = new CategoryAxis();
@@ -792,7 +798,8 @@ public class ParkManagerController implements Initializable {
 	static void noDataTopresent() {
 		alert.setAlert("There is no Data to present for selected dates.");
 	}
-
+/*-------end of visitors report section --------*/
+	
 	/*----received from server section ---*/
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
