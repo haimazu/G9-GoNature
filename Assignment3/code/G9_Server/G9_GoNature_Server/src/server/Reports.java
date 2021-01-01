@@ -39,7 +39,7 @@ public class Reports {
 		query.add("select"); // command
 		query.add("orders"); // table name
 		query.add("orderType, SUM(amountArrived), arrivedTime"); // columns to select from
-		query.add("WHERE parkName='" + dataFromClient.get(0) + "' AND " + dateCond + "AND amountArrived >0 GROUP BY arrivedTime"); // condition
+		query.add("WHERE parkName='" + dataFromClient.get(0) + "' AND " + dateCond + "AND amountArrived >0 GROUP BY DAY(arrivedTime), orderType"); // condition
 		query.add("3"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
