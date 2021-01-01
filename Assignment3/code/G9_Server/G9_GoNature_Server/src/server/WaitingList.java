@@ -115,7 +115,6 @@ public class WaitingList {
 		WaitListSingelton.CancelWaitlist(firstInLineOrder);//delete from the waitlist
 		firstInLineOrder.setOrderNumber(Counter.getCounter().orderNum());// give ordernumber tag
 		NewOrder.insertNewOrder(firstInLineOrder); //add to orders on DB
-		
 		WaitListSingelton.sendWaitlistNotification(firstInLineOrder);//send notification
 		pullFromWaitList(recived); // try next one in line recursively
 		return true;

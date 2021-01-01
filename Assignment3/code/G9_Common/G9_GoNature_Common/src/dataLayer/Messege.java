@@ -39,6 +39,14 @@ public class Messege {
 	public String getSentTimeDB() {
 		return formatter.format(sentTime);
 	}
+	
+	public String getLimitForWaitlist() { //return send time plus 1 hour
+		return formatter.format(new Date(sentTime.getTime() + 60*60*1000));
+	}
+	
+	public String getLimitFor24 () { //return send time plus 2 hours
+		return formatter.format(new Date(sentTime.getTime() + 120*60*1000));
+	}
 
 	public ArrayList<Object> getAttachments() {
 		return attachments;
