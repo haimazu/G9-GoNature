@@ -806,11 +806,7 @@ public class ParkManagerController implements Initializable {
 		return cal.get(Calendar.DAY_OF_WEEK);
 	}
 
-	public String getDate(String date) {
-		String[] arrDateAndTime = date.split(" ");
-		String[] arrDate = arrDateAndTime[0].split("-");
-		return arrDateAndTime[0];
-	}
+	
 
 	public void resetWeekDayCounter() {
 
@@ -822,6 +818,11 @@ public class ParkManagerController implements Initializable {
 	/*-------end of visitors report section --------*/
 	static void noDataTopresent() {
 		alert.setAlert("There is no Data to present for selected dates.");
+	}
+	public String getDate(String date) {
+		String[] arrDateAndTime = date.split(" ");
+		String[] arrDate = arrDateAndTime[0].split("-");
+		return arrDateAndTime[0];
 	}
 
 	/*-------usage report section --------*/
@@ -845,14 +846,44 @@ public class ParkManagerController implements Initializable {
 
 			chartUsage();
 		}
-		
+
 	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartUsage() throws ParseException {
+		boolean count=false;
+		xAxisU = new CategoryAxis();
+		yAxisU = new NumberAxis(0, 20, 2);
+		bcUsageChart.getData().clear();
+		bcUsageChart.setAnimated(false);
+		bcUsageChart.setBarGap(0d);
+		bcUsageChart.setCategoryGap(4.0);
+
+		bcUsageChart.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
+		bcUsageChart.setPrefSize(613, 430);
+		bcUsageChart.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 		
+	
 		
+	
+		Series<String, Double> visit8_12 = new Series<>();
+		Series<String, Double> visit12_16 = new Series<>();
+		Series<String, Double> viit16_20 = new Series<>();
+
 		
+		for (LocalDate date = dpFromU.getValue(); date.isBefore(dpToU.getValue().plusDays(1)); date = date.plusDays(1)) {
+			
+			 count = checkIfExists(date);
+		}
 		
+	}
+	public  boolean checkIfExists (LocalDate date) {
+		String someDate;
+		for (ArrayList<String> arrayList : usageReport) {
+			someDate = getDate(arrayList.get(0)); 
+			Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(someDate);
+			if(date.isAfter(date1))
+		}
 	}
 
 	/*-------end of usage report section --------*/
