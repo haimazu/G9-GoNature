@@ -267,12 +267,10 @@ public class ManageOrderController implements Initializable {
 
 	@FXML
 	void confirmeArrival(ActionEvent event) {
-		// CHANGE THE BUTTONS
-	}
-
-	@FXML
-	void doNotconfirme(ActionEvent event) {
-		// CHANGE THE BUTTONS
+//		if (event.getSource() == btnconfirme)
+//			//a
+//			
+			
 	}
 
 }

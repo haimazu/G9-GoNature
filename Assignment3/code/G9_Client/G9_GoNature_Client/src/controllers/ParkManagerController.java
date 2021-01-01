@@ -3,15 +3,19 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
@@ -159,7 +163,7 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Button btnSetDisc1;
 
-	/* ------for charts----- */
+	/* ------for visitors chart----- */
 	@FXML
 	private BarChart<String, Double> bcVisitorsChart;
 	@FXML
@@ -173,18 +177,10 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Button btnShow;
 	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
+	private int[] weekDaysCounter = new int[8];
 
 	/*------------------------*/
-	
-	
-	
-	public static ArrayList<ArrayList<String>> getVisitorsReport() {
-		return visitorsReport;
-	}
 
-	public static void setVisitorsReport(ArrayList<ArrayList<String>> visitorsReport) {
-		ParkManagerController.visitorsReport = visitorsReport;
-	}
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
@@ -192,6 +188,14 @@ public class ParkManagerController implements Initializable {
 	private static boolean requestAnswerFromServer;
 	private static int empID = 0;
 	private static Park park;
+
+	public static ArrayList<ArrayList<String>> getVisitorsReport() {
+		return visitorsReport;
+	}
+
+	public static void setVisitorsReport(ArrayList<ArrayList<String>> visitorsReport) {
+		ParkManagerController.visitorsReport = visitorsReport;
+	}
 
 	public static Park getPark() {
 		return park;
@@ -248,7 +252,7 @@ public class ParkManagerController implements Initializable {
 			pnMonthlyRev.toFront();
 			setButtonPressed(btnMonthlyRevenue);
 			setButtonReleased(btnVisits, btnDashboard, btnUsage);
-			
+
 		}
 	}
 
@@ -275,21 +279,21 @@ public class ParkManagerController implements Initializable {
 		setDatePickerInitialValues();
 		RequestForEmployeeID();
 		presentParkDetails(park);
-		
-//		/***visitors reports ***/
-//		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
-//		// listener for updating the date
-//		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
-//			dpFrom.setValue(newValue);
-//		});
-//
-//		// plusMonths(1) to get the next month
-//		// withDayOfMonth(1) to get the first day
-//		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
-//		// listener for updating the date
-//		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
-//			dpTo.setValue(newValue);
-//		});
+
+		/*** visitors reports ***/
+		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
+		// listener for updating the date
+		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpFrom.setValue(newValue);
+		});
+
+		// plusMonths(1) to get the next month
+		// withDayOfMonth(1) to get the first day
+		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
+		// listener for updating the date
+		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpTo.setValue(newValue);
+		});
 	}
 
 	// dates method
@@ -496,8 +500,8 @@ public class ParkManagerController implements Initializable {
 	}
 
 	public boolean illegalValuesForSubmitingDiscount(String discount) throws ParseException {
-		String datefrom=txtDateFrom.getValue().toString();
-		String dateto=txtDateTo.getValue().toString();
+		String datefrom = txtDateFrom.getValue().toString();
+		String dateto = txtDateTo.getValue().toString();
 		if (DatesNotCorresponding(datefrom, dateto)) {
 			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 			return true;
@@ -600,8 +604,6 @@ public class ParkManagerController implements Initializable {
 		lblPresentReservationCap.setText(String.valueOf(parkDetails.getMaxAmountOrders()));
 	}
 
-	
-
 	public void RequestForEmployeeID() {
 
 		ArrayList<Object> msg = new ArrayList<>();
@@ -620,10 +622,10 @@ public class ParkManagerController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
-	public boolean DatesNotCorresponding(String datefrom,String dateto) throws ParseException {
+	public boolean DatesNotCorresponding(String datefrom, String dateto) throws ParseException {
 		LocalDate from;
 		LocalDate to;
-		
+
 		String[] fromarrsplitStrings = datefrom.split(" ");
 		String[] fromdatesplit = fromarrsplitStrings[0].split("-");
 		String[] toarrsplitStrings = dateto.split(" ");
@@ -675,22 +677,78 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void showChart(ActionEvent event) throws ParseException {
-//		ArrayList<Object> msg = new ArrayList<>();
-//		ArrayList<String> data = new ArrayList<>();
-//		if(DatesNotCorresponding(dpFrom.getValue().toString(), dpTo.getValue().toString()))
-//			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
-//		else {
-//			
-//			msg.add("overallVisitorsReport");
-//			data.add(getParkName());
-//			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-//			data.add(dpTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-//			msg.add(data);
-//			ClientUI.sentToChatClient(msg);
-//			
-//			chart();
-//		}
+		ArrayList<Object> msg = new ArrayList<>();
+		ArrayList<String> data = new ArrayList<>();
+		if (DatesNotCorresponding(dpFrom.getValue().toString(), dpTo.getValue().toString()))
+			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
+		else {
+
+			msg.add("overallVisitorsReport");
+			data.add(getParkName());
+			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			data.add(dpTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			msg.add(data);
+			// ClientUI.sentToChatClient(msg);
+			System.out.println("print message: " + msg);
+			chart();
+		}
 	}
+
+	void checkWeekDays() throws ParseException {
+		String someDate;
+		Date date1;
+
+		for (ArrayList<String> arrayList : visitorsReport) {
+			someDate = getDate(arrayList.get(2));
+			date1 = new SimpleDateFormat("yyyy-MM-dd").parse(someDate);
+			switch (getDayNumber(date1)) {
+			    // MON
+			case 1:
+				weekDaysCounter[2] += Integer.parseInt(arrayList.get(1));
+				break;
+			    // TUE
+			case 2:
+				weekDaysCounter[3] += Integer.parseInt(arrayList.get(1));
+				break;
+				// WED
+			case 3:
+				weekDaysCounter[4] += Integer.parseInt(arrayList.get(1));
+				break;
+				// THU
+			case 4:
+				weekDaysCounter[5] += Integer.parseInt(arrayList.get(1));
+				break;
+				// FRI
+			case 5:
+				weekDaysCounter[6] += Integer.parseInt(arrayList.get(1));
+				break;
+				// SAT
+			case 6:
+				weekDaysCounter[7] += Integer.parseInt(arrayList.get(1));
+				break;
+				// SUN
+			case 7:
+				weekDaysCounter[1] += Integer.parseInt(arrayList.get(1));
+				break;
+			default:
+				break;
+			}
+		}
+
+	}
+
+	public static int getDayNumber(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.DAY_OF_WEEK);
+	}
+
+	public String getDate(String date) {
+		String[] arrDateAndTime = date.split(" ");
+		String[] arrDate = arrDateAndTime[0].split("-");
+		return arrDateAndTime[0];
+	}
+
 	/*----received from server section ---*/
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
@@ -708,9 +766,10 @@ public class ParkManagerController implements Initializable {
 		setEmpID(Integer.parseInt(answer));
 
 	}
-//	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
-//		setVisitorsReport(visitorsReportAnswer);
-//
-//	}
+
+	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
+		setVisitorsReport(visitorsReportAnswer);
+
+	}
 
 }
