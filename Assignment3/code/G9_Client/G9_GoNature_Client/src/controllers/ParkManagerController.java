@@ -694,44 +694,46 @@ public class ParkManagerController implements Initializable {
 		}
 	}
 
-	void checkWeekDays() throws ParseException {
+	void checkWeekDays(String type) throws ParseException {
 		String someDate;
 		Date date1;
 
 		for (ArrayList<String> arrayList : visitorsReport) {
 			someDate = getDate(arrayList.get(2));
 			date1 = new SimpleDateFormat("yyyy-MM-dd").parse(someDate);
-			switch (getDayNumber(date1)) {
-			    // MON
-			case 1:
-				weekDaysCounter[2] += Integer.parseInt(arrayList.get(1));
-				break;
-			    // TUE
-			case 2:
-				weekDaysCounter[3] += Integer.parseInt(arrayList.get(1));
-				break;
+			if (type.equals(arrayList.get(0))) {
+				switch (getDayNumber(date1)) {
+				// MON
+				case 1:
+					weekDaysCounter[2] += Integer.parseInt(arrayList.get(1));
+					break;
+				// TUE
+				case 2:
+					weekDaysCounter[3] += Integer.parseInt(arrayList.get(1));
+					break;
 				// WED
-			case 3:
-				weekDaysCounter[4] += Integer.parseInt(arrayList.get(1));
-				break;
+				case 3:
+					weekDaysCounter[4] += Integer.parseInt(arrayList.get(1));
+					break;
 				// THU
-			case 4:
-				weekDaysCounter[5] += Integer.parseInt(arrayList.get(1));
-				break;
+				case 4:
+					weekDaysCounter[5] += Integer.parseInt(arrayList.get(1));
+					break;
 				// FRI
-			case 5:
-				weekDaysCounter[6] += Integer.parseInt(arrayList.get(1));
-				break;
+				case 5:
+					weekDaysCounter[6] += Integer.parseInt(arrayList.get(1));
+					break;
 				// SAT
-			case 6:
-				weekDaysCounter[7] += Integer.parseInt(arrayList.get(1));
-				break;
+				case 6:
+					weekDaysCounter[7] += Integer.parseInt(arrayList.get(1));
+					break;
 				// SUN
-			case 7:
-				weekDaysCounter[1] += Integer.parseInt(arrayList.get(1));
-				break;
-			default:
-				break;
+				case 7:
+					weekDaysCounter[1] += Integer.parseInt(arrayList.get(1));
+					break;
+				default:
+					break;
+				}
 			}
 		}
 
