@@ -256,7 +256,8 @@ public class DepartmentManagerController implements Initializable {
 
 		String fromFormat = dateFormatter.format(dpFrom.getValue());
 		String toFormat = dateFormatter.format(dpTo.getValue());
-		String fileNameDate = fileNameFormatter.format(dpFrom.getValue());
+		// the date it was created
+		String fileNameDate = fileNameFormatter.format(LocalDate.now());
 		
 		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
 		try {
