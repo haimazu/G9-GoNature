@@ -47,7 +47,11 @@ public class WaitingListConfirmContoller {
 	public static void setStatus(boolean status) {
 		WaitingListConfirmContoller.status = status;
 	}
-
+/**
+ * button ListMe - client's aprrove for enter to wait list
+ * @param event
+ * @throws IOException
+ */
 	@FXML
 	void listMe(ActionEvent event) throws IOException {
 		ArrayList<Object> msgWaitList = new ArrayList<>();
