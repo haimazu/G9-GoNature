@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.base.IFXLabelFloatControl;
 
 import client.ClientUI;
 import javafx.application.Platform;
@@ -49,6 +50,15 @@ public class WelcomeController implements Initializable {
 
 	private AlertController alert = new AlertController();
 	private static Order orderDetails;
+	private static boolean ispending;
+
+	public static boolean getisIspending() {
+		return ispending;
+	}
+
+	public static void setIspending(boolean ispending) {
+		WelcomeController.ispending = ispending;
+	}
 
 	@FXML
 	void login(ActionEvent event) throws IOException {
@@ -107,6 +117,18 @@ public class WelcomeController implements Initializable {
 //				}
 //			}
 			//System.out.println("after2");
+			
+			
+			//in addition check if this a pending visitor 
+
+			ArrayList<Object> msgPending = new ArrayList<>();
+			ArrayList<String> dataPending = new ArrayList<>();
+			msgPending.add("checkIfPending");
+			dataPending.add(orderNum);
+			msgPending.add(dataPending);
+			ClientUI.sentToChatClient(msgPending);
+			
+			
 			if (orderDetails == null) {
 				alert.setAlert("Failed, No such order.");
 				btnOrderNumber.setVisible(true);
@@ -147,6 +169,9 @@ public class WelcomeController implements Initializable {
 		else
 			setOrderDetails(null);
 		
+	}
+	public static void recevidFromServerisPending(boolean pending) {
+		ispending=pending;
 	}
 
 	public void start(Stage primaryStage) throws Exception {

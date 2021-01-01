@@ -45,13 +45,16 @@ public class ManageOrderController implements Initializable {
 	private Label lblOrderNum;
 	@FXML
 	private Label lblTime;
-
+    @FXML
+    private Label lblEditVisitors;
 	@FXML
 	private Label lblDiscount;
 
 	@FXML
 	private Label lblPayment;
 
+    @FXML
+    private Label lblYay;
 	@FXML
 	private Label lblTotal;
 	@FXML
@@ -67,6 +70,12 @@ public class ManageOrderController implements Initializable {
 	@FXML
 	private Button btnCancel;
 	@FXML
+	private Button btnNoconfirme;
+    @FXML
+    private Label lblEdit;
+	@FXML
+	private Button btnconfirme;
+	@FXML
 	private JFXTextField txtVisitorsNumber;
 
 	@FXML
@@ -79,6 +88,7 @@ public class ManageOrderController implements Initializable {
 	private static Order order = null;
 	private static boolean updated = false;
 	private static boolean canceled = false;
+
 	public static Order getOrder() {
 		return order;
 	}
@@ -124,27 +134,35 @@ public class ManageOrderController implements Initializable {
 	}
 
 	/*
-	 * input :
-	 * output : 
+	 * input : output :
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
-		txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
-		cbxArriveTime.getSelectionModel().selectFirst();
 		setOrder(WelcomeController.getOrderDetails());
 		presentOrderdetails(order);
+		if (!WelcomeController.getisIspending()) {
+			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
+			txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
+			cbxArriveTime.getSelectionModel().selectFirst();
 
-		txtdate.setDayCellFactory(picker -> new DateCell() {
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				LocalDate today = LocalDate.now();
-				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-			}
-		});
+			txtdate.setDayCellFactory(picker -> new DateCell() {
+				public void updateItem(LocalDate date, boolean empty) {
+					super.updateItem(date, empty);
+					LocalDate today = LocalDate.now();
+					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+				}
+			});
 
-		txtdate.setValue(LocalDate.now());
+			txtdate.setValue(LocalDate.now());
+		} else {
+			btnconfirme.setVisible(true);
+			btnNoconfirme.setVisible(true);
+			btnCancel.setVisible(false);
+			cbxArriveTime.setVisible(false);
+			lblEditVisitors.setVisible(false);
+			lblEdit.setVisible(false);
+		}
 	}
 
 	@FXML
@@ -156,16 +174,18 @@ public class ManageOrderController implements Initializable {
 
 	/*
 	 * input : non output : non send to server : Array list of objects : [0]->
-	 * string for server : editOrder , [1]-> updated order object , [2]-> old order object
+	 * string for server : editOrder , [1]-> updated order object , [2]-> old order
+	 * object
 	 */
 	@FXML
 	void update(ActionEvent event) {
 		Order sentOrder = new Order(order); // maybe a pointer ???
 		if (checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
-			//System.out.println(timeString[0]);
+			// System.out.println(timeString[0]);
 			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " 0"
-					+ timeString[0])+":00"; //need to be same format!!!/////////////////////////////////////////////////
+					+ timeString[0]) + ":00"; // need to be same
+												// format!!!/////////////////////////////////////////////////
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
 			int orderVisitorsNumber = sentOrder.getVisitorsNumber();
@@ -197,19 +217,18 @@ public class ManageOrderController implements Initializable {
 	}
 
 	@FXML
-    void cancelOrder(ActionEvent event) throws IOException {
+	void cancelOrder(ActionEvent event) throws IOException {
 		ArrayList<Object> msgForServer = new ArrayList<>();
 		msgForServer.add("cancelOrder");
 		msgForServer.add(order);
 		ClientUI.sentToChatClient(msgForServer);
-		if (canceled){
-			
+		if (canceled) {
+
 			alert.setAlert("Canceled succesful");
 			Stage stage = (Stage) btnBack.getScene().getWindow();
 			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 			stage.setScene(new Scene(root));
-		}
-		else
+		} else
 			alert.setAlert("Failed to cancel Order");
 	}
 
@@ -230,11 +249,9 @@ public class ManageOrderController implements Initializable {
 		}
 		return true;
 	}
-	
 
-	
 	public static void canceledOrderFromServer(boolean returned) {
-		canceled=returned;
+		canceled = returned;
 		order = null;
 	}
 
@@ -247,4 +264,15 @@ public class ManageOrderController implements Initializable {
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
 //		stage.setScene(new Scene(root));
 	}
+
+	@FXML
+	void confirmeArrival(ActionEvent event) {
+		// CHANGE THE BUTTONS
+	}
+
+	@FXML
+	void doNotconfirme(ActionEvent event) {
+		// CHANGE THE BUTTONS
+	}
+
 }

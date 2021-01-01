@@ -143,6 +143,7 @@ public class DepartmentManagerController implements Initializable {
 
 	/***** Cancel Reports Variables *****/
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
+	private static boolean error = false;
 	private int index = 0;
 
 	/***** Dashboard Variables *****/
@@ -215,15 +216,20 @@ public class DepartmentManagerController implements Initializable {
 
 		LocalDate to = dpTo.getValue();
 		
-		// good
+		// the dates are correct
 		if (from.isBefore(to) || from.isEqual(to)) {
 			String toFormat = dateTimeFormatter.format(to.plusDays(1));
 			data.add(fromFormat);
 			data.add(toFormat);
 			sendToServerArrayList(data);
 			
-			// show all data
-			chart();
+			if (!getError()) {
+				// show all data
+				chart();
+			} else {
+				alert.failedAlert("Failed", "There is no information on the dates you requested.");
+				bcCancells.getData().clear();
+			}
 		}
 	}
 	
@@ -241,12 +247,17 @@ public class DepartmentManagerController implements Initializable {
 		// call the function to fill the cancelledOrders data
 		show(event);
 		
+		if (getError()) {
+			return;
+		}
+		
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		String fromFormat = dateFormatter.format(dpFrom.getValue());
 		String toFormat = dateFormatter.format(dpTo.getValue());
-		String fileNameDate = fileNameFormatter.format(dpFrom.getValue());
+		// the date it was created
+		String fileNameDate = fileNameFormatter.format(LocalDate.now());
 		
 		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
 		try {
@@ -302,6 +313,8 @@ public class DepartmentManagerController implements Initializable {
 		        table.addCell(cancelledOrders.get(i).get(2));
 	        }
 	        document.add(table);
+	        
+	        alert.successAlert("Success", "The report was created successfully.");
 	        
 	        Desktop.getDesktop().open(new File("CanceledReport " + fileNameDate + ".pdf"));
 	        
@@ -574,18 +587,21 @@ public class DepartmentManagerController implements Initializable {
 	// ArrayList<Object>: cell[0] list of cancelled orders
 	// cell[1] list of dismissed orders
 	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData) {
-		DepartmentManagerController.cancelledOrders = cancelData;
+		if (cancelData.isEmpty()) {
+			setError(true);
+		} else {
+			setError(false);
+			DepartmentManagerController.cancelledOrders = cancelData;
+		}
 	}
-//	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData,
-//			ArrayList<ArrayList<String>> dismissData) {
-//		for (ArrayList<String> cancel : cancelData) {
-//			cancelledOrders.add(new CanceledReport(cancel));
-//		}
-//
-//		for (ArrayList<String> dismiss : dismissData) {
-//			dismissedOrders.add(new Order(dismiss));
-//		}
-//	}
+	
+	public static boolean getError() {
+		return error;
+	}
+
+	public static void setError(boolean error) {
+		DepartmentManagerController.error = error;
+	}
 
 	public static ArrayList<ArrayList<String>> getDBList() {
 		return DBList;

@@ -220,15 +220,9 @@ public class Reports {
 		query1.add("3"); // how many columns returned
 		System.out.println(query1.toString());
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
-		if (queryData.isEmpty()) {
-			// no canceled orders in this month
-			answer.add(new ArrayList<String>(Arrays.asList("Failed")));
-			EchoServer.sendToMyClient(answer, client);
-			return;
-		} else {
-			answer.add(queryData);
-			System.out.println(queryData);// **
-		}
+		
+		answer.add(queryData);
+		System.out.println(queryData);// **
 
 		EchoServer.sendToMyClient(answer, client);
 	}
