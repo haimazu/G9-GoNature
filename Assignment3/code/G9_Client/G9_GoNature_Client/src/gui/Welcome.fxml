@@ -66,7 +66,7 @@
                </effect>
             </Button>
             <Separator layoutX="79.0" layoutY="317.0" prefHeight="3.0" prefWidth="113.0" />
-            <Label layoutX="197.0" layoutY="309.0" text="Or" />
+            <Label layoutX="194.0" layoutY="306.0" text="Or" />
             <Separator layoutX="214.0" layoutY="317.0" prefHeight="3.0" prefWidth="113.0" />
             <Label focusTraversable="false" layoutX="115.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="188.0" styleClass="labelBold" text="Already have an order?" textAlignment="CENTER">
                <font>
@@ -88,7 +88,7 @@
             </Label>
             <Hyperlink focusTraversable="false" layoutX="230.0" layoutY="558.0" onAction="#login" text="Login">
                <font>
-                  <Font name="Ebrima" size="16.0" />
+                  <Font name="Ebrima" size="16.5" />
                </font>
             </Hyperlink>
             <JFXTextField fx:id="txtOrderNum" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="132.0" layoutY="391.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Order Number" styleClass="txtField" unFocusColor="#a3a3a3" visible="false">
