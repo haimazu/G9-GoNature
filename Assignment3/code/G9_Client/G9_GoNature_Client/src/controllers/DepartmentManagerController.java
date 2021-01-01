@@ -230,6 +230,8 @@ public class DepartmentManagerController implements Initializable {
 				alert.failedAlert("Failed", "There is no information on the dates you requested.");
 				bcCancells.getData().clear();
 			}
+		} else {
+			alert.failedAlert("Failed", "Start date cannot be greater than end date.");
 		}
 	}
 	
