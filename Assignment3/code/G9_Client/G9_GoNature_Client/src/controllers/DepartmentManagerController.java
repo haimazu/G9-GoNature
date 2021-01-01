@@ -231,23 +231,29 @@ public class DepartmentManagerController implements Initializable {
 	// input: from -> start date
 	//          to -> end date
 	//        ArrayList<ArrayList<String>> cancelledOrders, cells:
-	//                                     					cell [0]: parkName
-	//													    cell [1]: date of canceled/dismissed
-	//														cell [2]: amount
+	//                                     					cell [i][0]: parkName
+	//													    cell [i][1]: date of canceled/dismissed
+	//														cell [i][2]: amount
+	//														0 <= i <= cancelledOrders.size() - 1
 	// output: PDF report with all the data shown in the chart
 	@FXML
 	void export(ActionEvent event) {
+		// call the function to fill the cancelledOrders data
 		show(event);
 		
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		String fromFormat = dateFormatter.format(dpFrom.getValue());
 		String toFormat = dateFormatter.format(dpTo.getValue());
+		String fileNameDate = fileNameFormatter.format(dpFrom.getValue());
 		
 		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
 		try {
 			Document document = new Document();
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("CanceledReport.pdf")); 
+			// creates a report with the name ==> CanceledReport 'yyyy-MM-dd'.pdf
+			// the 'yyyy-MM-dd' is the date it was created
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("CanceledReport " + fileNameDate + ".pdf")); 
 			document.open();
 			Image logo = Image.getInstance("E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
 			logo.setAlignment(Element.ALIGN_CENTER);
@@ -297,7 +303,7 @@ public class DepartmentManagerController implements Initializable {
 	        }
 	        document.add(table);
 	        
-	        Desktop.getDesktop().open(new File("CanceledReport.pdf"));
+	        Desktop.getDesktop().open(new File("CanceledReport " + fileNameDate + ".pdf"));
 	        
 	        document.close();
 	        writer.close();
