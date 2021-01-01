@@ -31,8 +31,8 @@ public class Reports {
 		// cell 0: the service name
 		answer.add(recived.get(0));
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
-		String startDate = dataFromClient.get(0);
-		String endDate = dataFromClient.get(1);
+		String startDate = dataFromClient.get(1);
+		String endDate = dataFromClient.get(2);
 		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
 
 		ArrayList<String> query = new ArrayList<String>();

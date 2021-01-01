@@ -8,9 +8,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.PrimitiveIterator.OfDouble;
 
 import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
@@ -23,6 +25,7 @@ import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
 
 import client.ClientUI;
 import dataLayer.Park;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +38,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -177,14 +181,14 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Button btnShow;
 	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
-	private int[] weekDaysCounter = new int[8];
+	private double[] weekDaysCounter = new double[8];
 
 	/*------------------------*/
 
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
-	private AlertController alert = new AlertController();
+	private static AlertController alert = new AlertController();
 	private static boolean requestAnswerFromServer;
 	private static int empID = 0;
 	private static Park park;
@@ -643,36 +647,60 @@ public class ParkManagerController implements Initializable {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void chart() {
-//		xAxis = new CategoryAxis();
-//		yAxis = new NumberAxis(0, 1000, 50);
-//
-//		bcVisitorsChart.getData().clear();
-//		bcVisitorsChart.setAnimated(false);
-//		bcVisitorsChart.setBarGap(0d);
-//		bcVisitorsChart.setCategoryGap(2.0);
-//
-//		bcVisitorsChart.setTitle("Visitors segmentation by type");
-//
-//		Series<String, Double> regular = new Series<>();
-//		Series<String, Double> member = new Series<>();
-//		Series<String, Double> group = new Series<>();
-//
-//		for (LocalDate date = dpFrom.getValue(); date.isBefore(dpTo.getValue().plusDays(1)); date = date.plusDays(1)) {
-//			int i = date.getDayOfMonth();
-//
-//			regular.setName("regular");
-//			// x = day of the month, y = sum 
-//			regular.getData().add(new XYChart.Data(Integer.toString(i), 601.34));
-//
-//			member.setName("member");
-//			member.getData().add(new XYChart.Data(Integer.toString(i), 401.85));
-//
-//			group.setName("group");
-//			group.getData().add(new XYChart.Data(Integer.toString(i), 450.65));
-//		}
-//
-//		bcVisitorsChart.getData().addAll(regular, member, group);
+	public void chart() throws ParseException {
+		xAxis = new CategoryAxis();
+		yAxis = new NumberAxis(0, 20, 2);
+		bcVisitorsChart.getData().clear();
+		bcVisitorsChart.setAnimated(false);
+		bcVisitorsChart.setBarGap(0d);
+		bcVisitorsChart.setCategoryGap(4.0);
+
+		bcVisitorsChart.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
+		bcVisitorsChart.setPrefSize(613, 430);
+		bcVisitorsChart.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
+
+		bcVisitorsChart.setTitle("Visitors segmentation by type");
+		xAxis.setCategories(FXCollections.<String>observableArrayList(
+				Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")));
+
+		Series<String, Double> regular = new Series<>();
+		Series<String, Double> member = new Series<>();
+		Series<String, Double> group = new Series<>();
+
+		regular.setName("regular");
+		checkWeekDays("regular");
+
+		regular.getData().add(new XYChart.Data("Sunday", weekDaysCounter[1]));
+		regular.getData().add(new XYChart.Data("Monday", weekDaysCounter[2]));
+		regular.getData().add(new XYChart.Data("Tuesday", weekDaysCounter[3]));
+		regular.getData().add(new XYChart.Data("Wednesday", weekDaysCounter[4]));
+		regular.getData().add(new XYChart.Data("Thursday", weekDaysCounter[5]));
+		regular.getData().add(new XYChart.Data("Friday", weekDaysCounter[6]));
+		regular.getData().add(new XYChart.Data("Saturday", weekDaysCounter[7]));
+
+		member.setName("member");
+		checkWeekDays("member");
+
+		member.getData().add(new XYChart.Data("Sunday", weekDaysCounter[1]));
+		member.getData().add(new XYChart.Data("Monday", weekDaysCounter[2]));
+		member.getData().add(new XYChart.Data("Tuesday", weekDaysCounter[3]));
+		member.getData().add(new XYChart.Data("Wednesday", weekDaysCounter[4]));
+		member.getData().add(new XYChart.Data("Thursday", weekDaysCounter[5]));
+		member.getData().add(new XYChart.Data("Friday", weekDaysCounter[6]));
+		member.getData().add(new XYChart.Data("Saturday", weekDaysCounter[7]));
+
+		group.setName("group");
+		checkWeekDays("group");
+
+		group.getData().add(new XYChart.Data("Sunday", weekDaysCounter[1]));
+		group.getData().add(new XYChart.Data("Monday", weekDaysCounter[2]));
+		group.getData().add(new XYChart.Data("Tuesday", weekDaysCounter[3]));
+		group.getData().add(new XYChart.Data("Wednesday", weekDaysCounter[4]));
+		group.getData().add(new XYChart.Data("Thursday", weekDaysCounter[5]));
+		group.getData().add(new XYChart.Data("Friday", weekDaysCounter[6]));
+		group.getData().add(new XYChart.Data("Saturday", weekDaysCounter[7]));
+
+		bcVisitorsChart.getData().addAll(regular, member, group);
 	}
 
 	@FXML
@@ -688,8 +716,11 @@ public class ParkManagerController implements Initializable {
 			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			data.add(dpTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			msg.add(data);
-			// ClientUI.sentToChatClient(msg);
 			System.out.println("print message: " + msg);
+			System.out.println(
+					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			ClientUI.sentToChatClient(msg);
+
 			chart();
 		}
 	}
@@ -697,7 +728,7 @@ public class ParkManagerController implements Initializable {
 	void checkWeekDays(String type) throws ParseException {
 		String someDate;
 		Date date1;
-
+		resetWeekDayCounter();
 		for (ArrayList<String> arrayList : visitorsReport) {
 			someDate = getDate(arrayList.get(2));
 			date1 = new SimpleDateFormat("yyyy-MM-dd").parse(someDate);
@@ -705,31 +736,31 @@ public class ParkManagerController implements Initializable {
 				switch (getDayNumber(date1)) {
 				// MON
 				case 1:
-					weekDaysCounter[2] += Integer.parseInt(arrayList.get(1));
+					weekDaysCounter[2] += Double.parseDouble(arrayList.get(1));
 					break;
 				// TUE
 				case 2:
-					weekDaysCounter[3] += Integer.parseInt(arrayList.get(1));
+					weekDaysCounter[3] += Double.parseDouble(arrayList.get(1));
 					break;
 				// WED
 				case 3:
-					weekDaysCounter[4] += Integer.parseInt(arrayList.get(1));
+					weekDaysCounter[4] += Double.parseDouble(arrayList.get(1));
 					break;
 				// THU
 				case 4:
-					weekDaysCounter[5] += Integer.parseInt(arrayList.get(1));
+					weekDaysCounter[5] += Double.parseDouble(arrayList.get(1));
 					break;
 				// FRI
 				case 5:
-					weekDaysCounter[6] += Integer.parseInt(arrayList.get(1));
+					weekDaysCounter[6] += Double.parseDouble(arrayList.get(1));
 					break;
 				// SAT
 				case 6:
-					weekDaysCounter[7] += Integer.parseInt(arrayList.get(1));
+					weekDaysCounter[7] += Double.parseDouble(arrayList.get(1));
 					break;
 				// SUN
 				case 7:
-					weekDaysCounter[1] += Integer.parseInt(arrayList.get(1));
+					weekDaysCounter[1] += Double.parseDouble(arrayList.get(1));
 					break;
 				default:
 					break;
@@ -751,6 +782,17 @@ public class ParkManagerController implements Initializable {
 		return arrDateAndTime[0];
 	}
 
+	public void resetWeekDayCounter() {
+
+		for (int i = 0; i < this.weekDaysCounter.length; i++) {
+			weekDaysCounter[i] = 0;
+		}
+	}
+
+	static void noDataTopresent() {
+		alert.setAlert("There is no Data to present for selected dates.");
+	}
+
 	/*----received from server section ---*/
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
@@ -770,7 +812,12 @@ public class ParkManagerController implements Initializable {
 	}
 
 	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
+		if ((Object) visitorsReportAnswer instanceof String)
+			noDataTopresent();
+		else {
 		setVisitorsReport(visitorsReportAnswer);
+		System.out.print(visitorsReportAnswer);
+		}
 
 	}
 
