@@ -4,6 +4,9 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -174,9 +177,28 @@
                   <JFXDatePicker fx:id="dpFrom" editable="false" focusTraversable="false" layoutX="22.0" layoutY="72.0" promptText="From Date" />
                   <JFXDatePicker fx:id="dpTo" editable="false" focusTraversable="false" layoutX="218.0" layoutY="72.0" promptText="To Date" />
                   <Button fx:id="btnShow" focusTraversable="false" layoutX="422.0" layoutY="75.0" mnemonicParsing="false" onAction="#showChart" styleClass="btnSmallGreen" text="Show" />
+                  <BarChart fx:id="bcVisitorsChart" barGap="5.0" layoutX="-9.0" layoutY="116.0" prefHeight="430.0" prefWidth="613.0">
+                     <xAxis>
+                        <CategoryAxis label="day of week" side="BOTTOM" fx:id="xAxis">
+                           <tickLabelFont>
+                              <Font name="System Bold" size="11.0" />
+                           </tickLabelFont>
+                        </CategoryAxis>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis fx:id="yAxis" label="Amount" prefHeight="381.0" prefWidth="59.0" side="LEFT">
+                           <tickLabelFont>
+                              <Font name="System Bold" size="11.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </BarChart>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
                <children>
                   <JFXTextField fx:id="lblSetMax" focusTraversable="false" labelFloat="true" layoutX="63.0" layoutY="41.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" visible="false" />
                   <JFXTextField fx:id="txtManageDsic" focusTraversable="false" labelFloat="true" layoutX="345.0" layoutY="52.0" prefHeight="40.0" prefWidth="145.0" promptText="Manager Discount (%)" styleClass="txtField" visible="false" />
