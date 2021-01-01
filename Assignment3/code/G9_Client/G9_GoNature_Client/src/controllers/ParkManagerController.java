@@ -204,6 +204,10 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Button showUsage;
 	private static ArrayList<ArrayList<String>> usageReport = new ArrayList<>();
+	
+	private Series<String, Double> visit8_12 = new Series<>();
+	private Series<String, Double> visit12_16 = new Series<>();
+	private Series<String, Double> viit16_20 = new Series<>();
 	/*-------------------------*/
 
 	public static ArrayList<ArrayList<String>> getUsageReport() {
@@ -866,23 +870,35 @@ public class ParkManagerController implements Initializable {
 	
 		
 	
-		Series<String, Double> visit8_12 = new Series<>();
-		Series<String, Double> visit12_16 = new Series<>();
-		Series<String, Double> viit16_20 = new Series<>();
+//		Series<String, Double> visit8_12 = new Series<>();
+//		Series<String, Double> visit12_16 = new Series<>();
+//		Series<String, Double> viit16_20 = new Series<>();
 
 		
 		for (LocalDate date = dpFromU.getValue(); date.isBefore(dpToU.getValue().plusDays(1)); date = date.plusDays(1)) {
 			
-			 count = checkIfExists(date);
+			checkIfExists(date);
 		}
 		
 	}
-	public  boolean checkIfExists (LocalDate date) {
+	
+	public  void checkIfExists (LocalDate date) {
 		String someDate;
+		int flag=0;//for check if there is existing date
 		for (ArrayList<String> arrayList : usageReport) {
 			someDate = getDate(arrayList.get(0)); 
-			Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(someDate);
-			if(date.isAfter(date1))
+			LocalDate checkDate = LocalDate.parse(someDate);
+				if(arrayList.get(0).equals(date.toString() + " " + "08:00:00")) {
+					visit8_12.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(arrayList.get(1))));
+				}else if(arrayList.get(0).equals(date.toString() + " " + "12:00:00")) {
+					visit12_16.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(arrayList.get(1))));
+				}else if(arrayList.get(0).equals(date.toString() + " " + "16:00:00")) {
+					viit16_20.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(arrayList.get(1))));
+				}else {
+					 visit8_12.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),0));
+					 visit12_16.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),0));
+					 viit16_20.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),0));
+				}
 		}
 	}
 
