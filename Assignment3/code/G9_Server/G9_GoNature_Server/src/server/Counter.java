@@ -16,7 +16,7 @@ class Counter {
 		memCount = getLastNumber("member", "memberNumber") + 1;
 		waitlistNum = getLastNumber("waitinglist", "waitlistID") + 1;
 		cancelledCount = getLastNumber("canceledorders", "orderNumber") + 1;
-		discountsIDcount = getLastNumber("discounts", "requestID");
+		discountsIDcount = getLastNumber("discounts", "requestID") + 1;
 	}
 
 	public static Counter getCounter() {
