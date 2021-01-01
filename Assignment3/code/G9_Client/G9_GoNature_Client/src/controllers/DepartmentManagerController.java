@@ -313,6 +313,8 @@ public class DepartmentManagerController implements Initializable {
 	        }
 	        document.add(table);
 	        
+	        alert.successAlert("Success", "The report was created successfully.");
+	        
 	        Desktop.getDesktop().open(new File("CanceledReport " + fileNameDate + ".pdf"));
 	        
 	        document.close();
@@ -587,6 +589,7 @@ public class DepartmentManagerController implements Initializable {
 		if (cancelData.isEmpty()) {
 			setError(true);
 		} else {
+			setError(false);
 			DepartmentManagerController.cancelledOrders = cancelData;
 		}
 	}
