@@ -510,7 +510,7 @@ public class OrderController implements Initializable {
 	public static final Pattern VALIDEMAIL = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDAmountVisito = Pattern.compile("^[0-9]{0,3}$", Pattern.CASE_INSENSITIVE);
-	public static final Pattern VALIDMemberId = Pattern.compile("^[f,g]{1}[0-9]{5}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALIDMemberId = Pattern.compile("^[m,g]{1}[0-9]{5}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDID = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDPhone = Pattern.compile("^[0-9]{3}[0-9]{7}$", Pattern.CASE_INSENSITIVE);
 
