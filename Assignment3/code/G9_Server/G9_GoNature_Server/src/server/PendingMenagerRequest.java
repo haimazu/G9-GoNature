@@ -148,26 +148,80 @@ public class PendingMenagerRequest {
 		TableViewSet tsv = (TableViewSet) recived.get(1);
 		String yesno = (String) recived.get(2);
 		ArrayList<String> query = new ArrayList<String>();
+
+		query.add("deleteCond");
+		query.add("pendingmanagerrequests");
+		query.add("employeeID");
+		query.add("employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
+
 		if (yesno.equals("no")) {
-			query.add("deleteCond");
-			query.add("pendingmanagerrequests");
-			query.add("employeeID");
-			query.add("employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
-		} else {
+			answer.add(true);
+			EchoServer.sendToMyClient(answer, client);
+			return;
+		}
+
+		else {
 			ArrayList<String> query1 = new ArrayList<String>();
 			query1.add("select"); // command
 			query1.add("pendingmanagerrequests"); // table name
 			query1.add("*"); // columns to select from
 			query1.add("WHERE employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
 			query1.add("8");
-			ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
-			ManagerRequest mr = new ManagerRequest(queryData.get(0));
-			
-			ArrayList<String> query2 = new ArrayList<String>();
-			query2.add("insert"); // command
-			query2.add("discounts");
-			query2.add("");
-			
+			ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
+			ManagerRequest mr = new ManagerRequest(queryData1.get(0));
+
+			if (mr.getRequestType() == "discount") {
+				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < from"
+						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > to" + ")";
+				// search if the dates already exist
+				ArrayList<String> query2 = new ArrayList<String>();
+				query2.add("select"); // command
+				query2.add("discounts"); // table name
+				query2.add("*"); // columns returned
+				query2.add("WHERE parkName ='" + mr.getParkName() + "' AND '" + dateCond);
+				query2.add("5");
+				ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
+				if (!queryData2.isEmpty()) {
+					System.out.println("Already has discount on these dates!");
+					answer.add(false);
+					EchoServer.sendToMyClient(answer, client);
+					return;
+				}
+			} else {
+
+				ArrayList<String> query3 = new ArrayList<String>();
+				query3.add("insert"); // command
+				query3.add("discounts");
+				query3.add(toStringForDBDiscounts(mr));
+				answer.add(MySQLConnection.select(query3));
+				EchoServer.sendToMyClient(answer, client);
+				return;
+			}
+
+			if (mr.getRequestType() == "max_c") {
+				ArrayList<String> query2 = new ArrayList<String>();
+				query2.add("update"); // command
+				query2.add("park"); // table name
+				query2.add("maxVisitorAmount='" + mr.getMaxCapacity() + "'");
+				query2.add("parkName");
+				query2.add(mr.getParkName());
+				answer.add(MySQLConnection.update(query2));
+				System.out.println("max capacity updated");
+				EchoServer.sendToMyClient(answer, client);
+			}
+
+			if (mr.getRequestType() == "max_o") {
+				ArrayList<String> query2 = new ArrayList<String>();
+				query2.add("update"); // command
+				query2.add("park"); // table name
+				query2.add("maxAmountOrders='" + mr.getOrdersCapacity() + "'");
+				query2.add("parkName");
+				query2.add(mr.getParkName());
+				answer.add(MySQLConnection.update(query2));
+				System.out.println("max orders capacity updated");
+				EchoServer.sendToMyClient(answer, client);
+			}
+
 		}
 
 	}
@@ -177,10 +231,11 @@ public class PendingMenagerRequest {
 				+ mr.getOrdersCapacity() + "','" + mr.getDiscount() + "','" + mr.getFromDate() + "','" + mr.getToDate()
 				+ "','" + mr.getParkName() + "'";
 	}
-	public static String toStringForDBEnteryandExit(ManagerRequest mr) {
-		return "'"  + mr.getRequestType() + "','" + mr.getMaxCapacity() + "','"
-				+ mr.getOrdersCapacity() + "','" + mr.getDiscount() + "','" + mr.getFromDate() + "','" + mr.getToDate()
-				+ "','" + mr.getParkName() + "'";
+
+	public static String toStringForDBDiscounts(ManagerRequest mr) {
+
+		return "'" + mr.getParkName() + "','" + mr.getFromDate() + "','" + mr.getToDate() + "','"
+				+ Counter.getCounter().discountsIDcountNum() + "','" + mr.getParkName() + "'";
 	}
 
 }
