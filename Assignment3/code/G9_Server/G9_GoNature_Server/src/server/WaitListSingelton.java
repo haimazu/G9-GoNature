@@ -66,11 +66,11 @@ public class WaitListSingelton {
 	
 	//input: none
 	//output: none
-	//DB: 	delete (if found) expierd orders listed in pending (more than 1 hour)
-	//		delete (if found) expierd orders listed in waitlist (more than 24 hours)
+	//DB: 	delete (if found) expired orders listed in pending (more than 1 hour)
+	//		delete (if found) expired orders listed in waitlist (more than 24 hours)
 	//NOTE: the timeLastChecked mechanizem make sure that this function run not more than once per minute (to not overload the server and DB each time)
 	//		the LastDailyCheck mechanizem make sure that the function of deleting from the waitlist will not run more than once per day
-	//		the LastNightCheck mechanizem make sure that the function of sending tommorow notifications will not run more than once per day
+	//		the LastNightCheck mechanizem make sure that the function of sending tomorrow notifications will not run more than once per day
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
 		Date LastPlusMinute = new Date(timeLastChecked.getTime()+60*1000);
