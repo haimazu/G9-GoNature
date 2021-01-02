@@ -151,75 +151,86 @@ public class Reports {
 		String endDate = (String) dataFromClient.get(1);
 		String ot = (String) dataFromClient.get(2);
 		String dateCond = "timeEnter BETWEEN '" + startDate + "' AND '" + endDate + "'";
-		int[] temp = null;
+		int[] temp = new int[4];
 		int amountArrivedOverall = 0;
 		ArrayList<String> query1 = new ArrayList<String>();
-		query1.add("Select"); // command
+		query1.add("select"); // command
 		query1.add("enteryandexit"); // table name
 		query1.add("SUM(amountArrived)"); // columns to present
-		query1.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + "' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))< '01:00:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))>= '00:00:00'"); // condition
+		query1.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '01:00:00' "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '00:00:00'"); // condition
 		query1.add("1"); // how many columns returned
-		System.out.println(query1.toString());
-		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
-		if (!queryData.isEmpty()) {
-			temp[0] = Integer.parseInt(queryData.get(0).get(0));
+		System.out.println("1:" + query1.toString());
+		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
+		if (!(queryData1.get(0).get(0)==null)) {
+			System.out.println(queryData1);
+			temp[0] = Integer.parseInt(queryData1.get(0).get(0));
 			amountArrivedOverall += temp[0];
-			queryData.clear();
-		}
-
+		} else
+			temp[0] = 0;
+		
+		System.out.println(temp[0]);
+		
 		ArrayList<String> query2 = new ArrayList<String>();
-		query2.add("Select"); // command
+		query2.add("select"); // command
 		query2.add("enteryandexit"); // table name
 		query2.add("SUM(amountArrived)"); // columns to present
-		query2.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + "' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))< '02:00:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))>= '01:00:00'"); // condition
-		query1.add("1"); // how many columns returned
-		System.out.println(query1.toString());
-		queryData = MySQLConnection.select(query2);
-		if (!queryData.isEmpty()) {
-			temp[1] = Integer.parseInt(queryData.get(0).get(0));
+		query2.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '02:01:00' "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '01:00:00'"); // condition
+		query2.add("1"); // how many columns returned
+		System.out.println("2:" + query2.toString());
+		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
+		queryData2 = MySQLConnection.select(query2);
+		if (!(queryData2.get(0).get(0)==null)) {
+			System.out.println(queryData2);
+			temp[1] = Integer.parseInt(queryData2.get(0).get(0));
 			amountArrivedOverall += temp[1];
-			queryData.clear();
-		}
+		} else
+			temp[1] = 0;
 
 		ArrayList<String> query3 = new ArrayList<String>();
-		query3.add("Select"); // command
+		query3.add("select"); // command
 		query3.add("enteryandexit"); // table name
 		query3.add("SUM(amountArrived)"); // columns to present
-		query3.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + "' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))< '03:00:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))>= '02:00:00'"); // condition
-		query1.add("1"); // how many columns returned
-		System.out.println(query1.toString());
-		queryData = MySQLConnection.select(query3);
-		if (!queryData.isEmpty()) {
-			temp[2] = Integer.parseInt(queryData.get(0).get(0));
+		query3.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '03:01:00' "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '02:00:00'"); // condition
+		query3.add("1"); // how many columns returned
+		System.out.println("3:" + query3.toString());
+		ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
+		queryData3 = MySQLConnection.select(query3);
+		if (!(queryData3.get(0).get(0)==null)) {
+			System.out.println(queryData3);
+			temp[2] = Integer.parseInt(queryData3.get(0).get(0));
 			amountArrivedOverall += temp[2];
-			queryData.clear();
-		}
+		} else
+			temp[2] = 0;
 
 		ArrayList<String> query4 = new ArrayList<String>();
-		query4.add("Select"); // command
+		query4.add("select"); // command
 		query4.add("enteryandexit"); // table name
 		query4.add("SUM(amountArrived)"); // columns to present
-		query4.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + "' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))<= '04:00:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter))>= '03:00:00'"); // condition
-		query1.add("1"); // how many columns returned
-		System.out.println(query1.toString());
-		queryData = MySQLConnection.select(query4);
-		if (!queryData.isEmpty()) {
-			temp[3] = Integer.parseInt(queryData.get(0).get(0));
+		query4.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '04:01:00' "
+				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '03:00:00'"); // condition
+		query4.add("1"); // how many columns returned
+		System.out.println("4:" + query4.toString());
+		ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
+		queryData4 = MySQLConnection.select(query4);
+		if (!(queryData4.get(0).get(0)==null)) {
+			System.out.println(queryData4);
+			temp[3] = Integer.parseInt(queryData4.get(0).get(0));
 			amountArrivedOverall += temp[3];
-			queryData.clear();
-		}
+		} else
+			temp[3] = 0;
 
 		if (amountArrivedOverall != 0) {
 			for (int i = 0; i < temp.length; i++) {
+				System.out.println("arr [" + i + "]=" + (temp[i] / amountArrivedOverall) * 100);
 				answer.add((temp[i] / amountArrivedOverall) * 100);
+
 			}
 		}
 
