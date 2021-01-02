@@ -176,14 +176,14 @@ public class PendingMenagerRequest implements Serializable {
 
 			if (mr.getRequestType().equals("discount")) {
 				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
-						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to" + ")";
+						+ " OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to)";
 				System.out.println(dateCond);
 				// search if the dates already exist
 				ArrayList<String> query2 = new ArrayList<String>();
 				query2.add("select"); // command
 				query2.add("discounts"); // table name
 				query2.add("*"); // columns returned
-				query2.add("WHERE parkName ='" + mr.getParkName() + "' AND '" + dateCond);
+				query2.add("WHERE parkName ='" + mr.getParkName() + "' AND " + dateCond);
 				query2.add("5");
 				ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
 				if (!queryData2.isEmpty()) {
@@ -244,7 +244,7 @@ public class PendingMenagerRequest implements Serializable {
 	public static String toStringForDBDiscounts(ManagerRequest mr) {
 
 		return "'" + mr.getParkName() + "','" + mr.getFromDate() + "','" + mr.getToDate() + "','"
-				+ Counter.getCounter().discountsIDcountNum() + "','" + mr.getParkName() + "'";
+				+ Counter.getCounter().discountsIDcountNum() + "','" + mr.getDiscount() + "'";
 	}
 
 }
