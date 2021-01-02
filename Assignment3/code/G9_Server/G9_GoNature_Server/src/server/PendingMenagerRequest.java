@@ -197,6 +197,7 @@ public class PendingMenagerRequest implements Serializable {
 				query3.add("insert"); // command
 				query3.add("discounts");
 				query3.add(toStringForDBDiscounts(mr));
+				System.out.println("else of discount" + MySQLConnection.insert(query3));
 				answer.add(MySQLConnection.insert(query3));
 				EchoServer.sendToMyClient(answer, client);
 				return;
