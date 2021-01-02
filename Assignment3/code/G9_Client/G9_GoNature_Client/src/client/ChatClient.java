@@ -164,7 +164,7 @@ public class ChatClient extends AbstractClient {
 	}
 
 	/**
-	 * This method handles all data coming from the UI
+	 * This method handles all data coming from the UI.
 	 *
 	 * @param message The message from the UI.
 	 */

@@ -133,7 +133,7 @@
          <children>
             <Button fx:id="btnUpdate" focusTraversable="false" layoutX="129.0" layoutY="437.0" mnemonicParsing="false" onAction="#update" prefHeight="19.0" prefWidth="157.0" styleClass="btnNext" text="Update" />
             <Button fx:id="btnCancel" focusTraversable="false" layoutX="140.0" layoutY="538.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddleWideRed" text="Cancel Order" />
-            <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="130.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+            <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="131.0" layoutY="176.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="142.0" promptText="Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -150,7 +150,7 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label fx:id="lblEdit" layoutX="130.0" layoutY="337.0" styleClass="labelBold" text="Edit time:">
+            <Label fx:id="lblEdit" layoutX="130.0" layoutY="337.0" styleClass="labelBold" text="Edit time:" >
                <font>
                   <Font size="16.0" />
                </font></Label>
