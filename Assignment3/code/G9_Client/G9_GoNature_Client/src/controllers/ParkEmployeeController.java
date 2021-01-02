@@ -648,13 +648,13 @@ public class ParkEmployeeController implements Initializable {
 	//         otherwise false
 	public boolean checkDate() {
 		LocalDate arrivelDate = LocalDate.now();
-
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		
 		// "dd-MM-yyyy"
-		String currentDate = arrivelDate.getDayOfMonth() + "-" + arrivelDate.getMonthValue() + "-"
-				+ arrivelDate.getYear();
+		String currentDate = dateFormatter.format(arrivelDate);
 		String orderDate = lblDate.getText();
 
-		if (arrivelDate.equals(orderDate)) {
+		if (currentDate.equals(orderDate)) {
 			return true;
 		}
 
