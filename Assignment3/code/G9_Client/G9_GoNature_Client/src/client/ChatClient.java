@@ -122,13 +122,16 @@ public class ChatClient extends AbstractClient {
 				break;
 			case "updateAccessControl":
 				ParkEmployeeController.receivedFromServerUpdateStatus((boolean)received.get(1));
+				break;
 			case "requestForParkDetails" :
 				ParkManagerController.recivedFromserverParkDetails((Object)received.get(1));
 				break;
 			case "overallVisitorsReport" :
 				ParkManagerController.recivedFromserverVisitorsReport((ArrayList<ArrayList<String>>)received.get(1));
+				break;
 			case "checkIfPending":
 				ManageOrderController.recevidFromServerisPending((boolean)received.get(1));
+				break;
 			case "UsageReport":
 				ParkManagerController.recivedFromserverUsageReport((ArrayList<ArrayList<String>>)received.get(1));
 				break;
@@ -138,6 +141,15 @@ public class ChatClient extends AbstractClient {
 			case "removePendingsManagerReq":
 				System.out.println((boolean)received.get(1));
 				DepartmentManagerController.setData((boolean)received.get(1));
+				break;
+			case "getRegularsVisitorsData":
+				DepartmentManagerController.receivedFromServerRegularsVisitorsData((ArrayList<String>)received.get(1));
+				break;
+			case "getMembersVisitorsData":
+				DepartmentManagerController.receivedFromServerMembersVisitorsData((ArrayList<String>)received.get(1));
+				break;
+			case "getGroupsVisitorsData":
+				DepartmentManagerController.receivedFromServerGroupsVisitorsData((ArrayList<String>)received.get(1));
 				break;
 			default:
 			break;

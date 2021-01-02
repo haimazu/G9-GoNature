@@ -694,7 +694,7 @@ public class ParkEmployeeController implements Initializable {
 			if (arrivelHour == 12) {
 				return true;
 			}
-		} else if (currentHour >= 16 && currentHour < 22) {
+		} else if (currentHour >= 16 && currentHour < 20) {
 			timeFormat = " 16:00:00";//TODO
 			if (arrivelHour == 16) {
 				return true;
