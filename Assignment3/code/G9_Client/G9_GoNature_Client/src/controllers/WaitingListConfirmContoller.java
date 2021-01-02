@@ -7,14 +7,18 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.mysql.cj.xdevapi.Client;
 
 import client.ClientUI;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class WaitingListConfirmContoller {
 
@@ -47,11 +51,13 @@ public class WaitingListConfirmContoller {
 	public static void setStatus(boolean status) {
 		WaitingListConfirmContoller.status = status;
 	}
-/**
- * button ListMe - client's aprrove for enter to wait list
- * @param event
- * @throws IOException
- */
+
+	/**
+	 * button ListMe - client's aprrove for enter to wait list
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void listMe(ActionEvent event) throws IOException {
 		ArrayList<Object> msgWaitList = new ArrayList<>();
@@ -70,12 +76,19 @@ public class WaitingListConfirmContoller {
 			} else
 				alert.failedAlert("Failed!",
 						"something went wrong, our code monkey has been notified and will work on the error, please try again shortly. ");
+			if (alert.getResult().equals("OK")) {
 			
-			Stage stage = (Stage) btnListMe.getScene().getWindow();
-			//stage.close();
-			Stage stage2 = (Stage) btnListMe.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
-			stage2.setScene(new Scene(root));
+				Node node = (Node) event.getSource();
+				Stage stage = (Stage) node.getScene().getWindow();
+				Pane root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+				stage.setScene(new Scene(root));
+			}
+
+//			Stage stage = (Stage) btnListMe.getScene().getWindow();
+//
+//			Stage stage2 = (Stage) btnListMe.getScene().getWindow();
+//			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+//			stage2.setScene(new Scene(root));
 		}
 
 	}
