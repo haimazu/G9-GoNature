@@ -103,7 +103,7 @@ public class ChatClient extends AbstractClient {
 				WaitingListConfirmContoller.recivedfromWaitListServer((Object)received.get(1));
 				break;
 			case "newMembershipInsert":
-				ServiceRepresentativeController.receivedFromServerAddMemberStatus((boolean)received.get(1));
+				ServiceRepresentativeController.receivedFromServerAddMemberStatus((boolean)received.get(1),(String)received.get(2));
 				break;
 			case "checkFullDays":
 				WaitingListController.getListDatesServer(((ArrayList<String>)received.get(1)));
