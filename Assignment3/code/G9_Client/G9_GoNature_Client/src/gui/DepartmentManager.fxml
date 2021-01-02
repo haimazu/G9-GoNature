@@ -128,7 +128,7 @@
                   <Button fx:id="btnExport" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
                </children>
             </Pane>
-            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
+            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css" visible="false">
                <children>
                   <LineChart fx:id="lineChart" layoutX="67.0" layoutY="97.0" title="Usage">
                     <xAxis>
