@@ -19,7 +19,6 @@ import org.omg.CORBA.PRIVATE_MEMBER;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
 
 import client.ClientUI;
 import javafx.collections.FXCollections;
