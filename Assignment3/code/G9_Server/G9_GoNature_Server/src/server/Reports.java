@@ -62,7 +62,7 @@ public class Reports {
 	// input: array list of objects contains:
 	// [0] -> String "UsageReport"
 	// [1] -> Array list of String contains:
-	// [0] -> String parkName (if all parks should be "all")
+	// [0] -> String parkName
 	// [1] -> String startDate in a following date format: (YYYY-MM-DD)
 	// [2] -> String endDate in a following date format: (YYYY-MM-DD)
 	// output: NONE
@@ -75,7 +75,6 @@ public class Reports {
 	public static void UsageReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		ArrayList<Object> answer = new ArrayList<Object>();
-		ArrayList<String> notFullDaysRow = new ArrayList<String>();
 		ArrayList<ArrayList<String>> notFullDaysTable = new ArrayList<ArrayList<String>>();
 		answer.add(recived.get(0));
 		String parkName = dataFromClient.get(0);//// insert all for all parks
@@ -96,11 +95,9 @@ public class Reports {
 		query.add("select"); // select
 		query.add("park"); // tableName
 		query.add("maxVisitorAmount"); // columns
-		query.add("WHERE parkName= '" + parkName+"'"); // condition
+		query.add("WHERE parkName= '" + parkName + "'"); // condition
 		query.add("1"); // replyColNum
-		
-		
-		
+
 		ArrayList<ArrayList<String>> maxCapacityForPark = MySQLConnection.select(query);
 		System.out.println("here3");
 		System.out.println(maxCapacityForPark);
@@ -108,18 +105,18 @@ public class Reports {
 		for (ArrayList<String> row : parkSummedCapacityByCapsule) {
 			double capacityInCapsule = Double.parseDouble(row.get(1));
 			if (capacityInCapsule < maxCapacity) {
+				ArrayList<String> notFullDaysRow = new ArrayList<String>();
 				notFullDaysRow.add(row.get(0));
-				System.out.println("maxCapacity="+maxCapacity);
-				System.out.println("capacityInCapsule="+capacityInCapsule);
-				String dif=""+(maxCapacity - capacityInCapsule);
-				System.out.println("dif="+dif);
+				System.out.println("maxCapacity=" + maxCapacity);
+				System.out.println("capacityInCapsule=" + capacityInCapsule);
+				String dif = "" + (maxCapacity - capacityInCapsule);
+				System.out.println("dif=" + dif);
 				notFullDaysRow.add(dif);
 				System.out.println(notFullDaysRow);
 				notFullDaysTable.add(notFullDaysRow);
-				notFullDaysRow.clear();
 			}
 		}
-		
+
 		System.out.println("here4");
 		System.out.println(notFullDaysTable);
 		answer.add(notFullDaysTable);
