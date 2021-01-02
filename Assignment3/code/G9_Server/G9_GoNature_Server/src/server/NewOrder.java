@@ -1,13 +1,13 @@
 package server;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 import orderData.OrderType;
-//import server.WaitingList;
 import userData.Member;
 
 //executed by Nastya
@@ -56,11 +56,11 @@ public class NewOrder {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
-		answer.add(insertNewOrder(data)); ////////////////////////////////////////////ROI
+		answer.add(insertNewOrder(data)); //////////////////////////////////////////// ROI
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: order
+	// input: order object
 	//
 	// output: checks if u a member and return the member from DB
 	public static Member MemerCheck(Order ord) {
@@ -157,24 +157,46 @@ public class NewOrder {
 		return ord;
 	}
 
-	// input: order
+	// input: order object
 	//
 	// output: returns the current price of entry in the park with manger discount
 	// calculated
-	// selected in the order
 	public static int CurrentPriceInPark(Order ord) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		System.out.println(dtf.format(now));
+		ArrayList<String> query1 = new ArrayList<String>();
+		query1.add("select"); // command
+		query1.add("discounts"); // table name
+		query1.add("parkName,discountscol"); // columns to select from
+		query1.add("WHERE parkName='" + ord.getParkName() + "' AND discounts.from <= '" + now
+				+ "' AND discounts.to >= '" + now + "'"); // condition
+		query1.add("2"); // how many columns returned
+		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 
-		ArrayList<String> query = new ArrayList<String>();
-		query.add("select"); // command
-		query.add("park"); // table name
-		query.add("entryPrice,mangerDiscount"); // columns to select from
-		query.add("WHERE parkName='" + ord.getParkName() + "'"); // condition
-		query.add("2"); // how many columns returned
-
-		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+		ArrayList<String> query2 = new ArrayList<String>();
+		query2.add("select"); // command
+		query2.add("park"); // table name
+		query2.add("entryPrice,mangerDiscount"); // columns to select from
+		query2.add("WHERE parkName='" + ord.getParkName() + "'"); // condition
+		query2.add("2"); // how many columns returned
+		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
 		// returns the price of entry to the park with a manager discount
-		return Integer.parseInt(queryData.get(0).get(0)) * Integer.parseInt(queryData.get(0).get(1));
+
+		// if there is no change in discount
+		if (queryData1.get(0).get(1).equals(queryData2.get(0).get(1)))
+			return Integer.parseInt(queryData2.get(0).get(1));
+		// update the park table in DB with current discount
+		ArrayList<String> query3 = new ArrayList<String>();
+		query3.add("update");
+		query3.add("park");
+		query3.add("mangerDiscount= '" + " " + queryData2.get(0).get(1) + "'");
+		query3.add("parkName");
+		query3.add(ord.getParkName());
+		MySQLConnection.select(query3);
+		return Integer.parseInt(queryData2.get(0).get(0)) * Integer.parseInt(queryData1.get(0).get(1));
 	}
+
 
 	////////////// ********************* Park **************************************
 	// input: ArrayList<Object>, ConnectionToClient
@@ -209,12 +231,12 @@ public class NewOrder {
 		EchoServer.sendToMyClient(answer, client);
 
 	}
-	
+
 	// input: ArrayList<Object>,ConnectionToClient
 	// pulling details of a selected park from DB
 	// output: ArrayList<Object>=> cell[0] function name
-	// 							   cell[1] ArrayList<String> [0] orderNumber																
-	//												         [1] number of visitors to add
+	// cell[1] ArrayList<String> [0] orderNumber
+	// [1] number of visitors to add
 	@SuppressWarnings("unchecked")
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
@@ -261,17 +283,17 @@ public class NewOrder {
 				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
 	}
 
-	//input: Order to insert into the DB
-	//output: true if sussesful false if not
-	//send to DB: new order to list in
+	// input: Order to insert into the DB
+	// output: true if sussesful false if not
+	// send to DB: new order to list in
 	public static boolean insertNewOrder(Order order) {
-	ArrayList<String> query = new ArrayList<String>();
-	query.add("insert"); // command
-	query.add("orders"); // table name
-	query.add(order.toStringForDB()); // values in query format
-	return MySQLConnection.insert(query);
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("insert"); // command
+		query.add("orders"); // table name
+		query.add(order.toStringForDB()); // values in query format
+		return MySQLConnection.insert(query);
 	}
-	
+
 }
 
 // for backup

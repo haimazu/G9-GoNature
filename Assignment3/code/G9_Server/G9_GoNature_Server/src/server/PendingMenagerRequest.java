@@ -141,7 +141,7 @@ public class PendingMenagerRequest {
 	// cell[1] tabelViewSet object
 	// cell[2] yes/no
 	//
-	// output:
+	// output: ArrayList<Object>: cell[0] T/F
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
