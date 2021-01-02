@@ -1,5 +1,6 @@
 package server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import dataLayer.Park;
@@ -7,7 +8,7 @@ import ocsf.server.ConnectionToClient;
 import reportData.ManagerRequest;
 import reportData.TableViewSet;
 
-public class PendingMenagerRequest {
+public class PendingMenagerRequest implements Serializable {
 
 	// input: ArrayList<Object>: cell[0] name
 	// cell[1] ManagerRequest object
