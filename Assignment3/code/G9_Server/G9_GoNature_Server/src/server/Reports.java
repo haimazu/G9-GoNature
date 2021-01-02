@@ -79,40 +79,50 @@ public class Reports {
 		ArrayList<ArrayList<String>> notFullDaysTable = new ArrayList<ArrayList<String>>();
 		answer.add(recived.get(0));
 		String parkName = dataFromClient.get(0);//// insert all for all parks
-		String parkCond = " ";
-		// if (!parkName.equals("all"))
-		parkCond = "parkName=" + parkName + "' AND ";
 		String startDate = dataFromClient.get(1);
 		String endDate = dataFromClient.get(2);
-		String dateCond = "orders.arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
+		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
+		System.out.println("here1");
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // select
 		query.add("orders"); // tableName
 		query.add("arrivedTime,SUM(amountArrived) AS amountArrived"); // columns
-		query.add("WHERE " + parkCond + dateCond + " GROUP BY arrivedTime ORDER BY arrivedTime"); // condition
+		query.add("WHERE parkName='" + parkName + "' AND " + dateCond + " GROUP BY arrivedTime ORDER BY arrivedTime"); // condition
 		query.add("2"); // replyColNum
 		ArrayList<ArrayList<String>> parkSummedCapacityByCapsule = MySQLConnection.select(query);
+		System.out.println(parkSummedCapacityByCapsule);
+		System.out.println("here2");
 		query.clear();
 		query.add("select"); // select
 		query.add("park"); // tableName
 		query.add("maxVisitorAmount"); // columns
-//		if (parkName.equals("all"))
-//			query.add(""); // condition
-//		else
-		query.add("WHERE "+parkCond); // condition
+		query.add("WHERE parkName= '" + parkName+"'"); // condition
 		query.add("1"); // replyColNum
+		
+		
+		
 		ArrayList<ArrayList<String>> maxCapacityForPark = MySQLConnection.select(query);
+		System.out.println("here3");
+		System.out.println(maxCapacityForPark);
 		int maxCapacity = Integer.parseInt(maxCapacityForPark.get(0).get(0));
 		for (ArrayList<String> row : parkSummedCapacityByCapsule) {
 			double capacityInCapsule = Double.parseDouble(row.get(1));
 			if (capacityInCapsule < maxCapacity) {
 				notFullDaysRow.add(row.get(0));
-				notFullDaysRow.add(String.valueOf(maxCapacity - capacityInCapsule));
+				System.out.println("maxCapacity="+maxCapacity);
+				System.out.println("capacityInCapsule="+capacityInCapsule);
+				String dif=""+(maxCapacity - capacityInCapsule);
+				System.out.println("dif="+dif);
+				notFullDaysRow.add(dif);
+				System.out.println(notFullDaysRow);
 				notFullDaysTable.add(notFullDaysRow);
 				notFullDaysRow.clear();
 			}
 		}
-		answer.add(notFullDaysRow);
+		
+		System.out.println("here4");
+		System.out.println(notFullDaysTable);
+		answer.add(notFullDaysTable);
 		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {

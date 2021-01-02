@@ -146,16 +146,18 @@ public class PendingMenagerRequest implements Serializable {
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		TableViewSet tsv = (TableViewSet) recived.get(1);
+		ManagerRequest mr1 = (ManagerRequest) recived.get(1);
 		String yesno = (String) recived.get(2);
+		
+		//delete from pendingmanagerrequests
 		ArrayList<String> query = new ArrayList<String>();
-
 		query.add("deleteCond");
 		query.add("pendingmanagerrequests");
 		query.add("employeeID");
-		query.add("employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
-
+		query.add("employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
+		
 		if (yesno.equals("no")) {
+			MySQLConnection.select(query);
 			answer.add(true);
 			EchoServer.sendToMyClient(answer, client);
 			return;
@@ -166,11 +168,11 @@ public class PendingMenagerRequest implements Serializable {
 			query1.add("select"); // command
 			query1.add("pendingmanagerrequests"); // table name
 			query1.add("*"); // columns to select from
-			query1.add("WHERE employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
+			query1.add("WHERE employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
 			query1.add("8");
 			ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 			ManagerRequest mr = new ManagerRequest(queryData1.get(0));
-
+			MySQLConnection.select(query);
 			if (mr.getRequestType() == "discount") {
 				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
 						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to" + ")";
