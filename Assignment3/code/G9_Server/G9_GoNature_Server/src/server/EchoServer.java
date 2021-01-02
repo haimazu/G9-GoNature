@@ -103,6 +103,9 @@ public class EchoServer extends AbstractServer {
 			Reports.UsageReport(recived, client);
 		case "waitlistReplay":
 			Comunication.waitlistReplay(recived, client);
+		case "removePendingsManagerReq":
+			PendingMenagerRequest.deleteFromPending(recived, client);
+			break;
 		default:
 			break;
 		}

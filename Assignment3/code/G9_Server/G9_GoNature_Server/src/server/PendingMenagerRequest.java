@@ -148,14 +148,14 @@ public class PendingMenagerRequest implements Serializable {
 		answer.add(recived.get(0));
 		ManagerRequest mr1 = (ManagerRequest) recived.get(1);
 		String yesno = (String) recived.get(2);
-		
-		//delete from pendingmanagerrequests
+
+		// delete from pendingmanagerrequests
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("deleteCond");
 		query.add("pendingmanagerrequests");
 		query.add("employeeID");
 		query.add("employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
-		
+
 		if (yesno.equals("no")) {
 			MySQLConnection.select(query);
 			answer.add(true);
@@ -168,11 +168,12 @@ public class PendingMenagerRequest implements Serializable {
 			query1.add("select"); // command
 			query1.add("pendingmanagerrequests"); // table name
 			query1.add("*"); // columns to select from
-			query1.add("WHERE employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
+			query1.add(
+					"WHERE employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
 			query1.add("8");
 			ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 			ManagerRequest mr = new ManagerRequest(queryData1.get(0));
-			MySQLConnection.select(query);
+			MySQLConnection.deleteCond(query);
 			if (mr.getRequestType() == "discount") {
 				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
 						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to" + ")";
@@ -196,7 +197,7 @@ public class PendingMenagerRequest implements Serializable {
 				query3.add("insert"); // command
 				query3.add("discounts");
 				query3.add(toStringForDBDiscounts(mr));
-				answer.add(MySQLConnection.select(query3));
+				answer.add(MySQLConnection.insert(query3));
 				EchoServer.sendToMyClient(answer, client);
 				return;
 			}
@@ -220,6 +221,7 @@ public class PendingMenagerRequest implements Serializable {
 				query2.add("maxAmountOrders='" + mr.getOrdersCapacity() + "'");
 				query2.add("parkName");
 				query2.add(mr.getParkName());
+				System.out.println("im here 224");
 				answer.add(MySQLConnection.update(query2));
 				System.out.println("max orders capacity updated");
 				EchoServer.sendToMyClient(answer, client);

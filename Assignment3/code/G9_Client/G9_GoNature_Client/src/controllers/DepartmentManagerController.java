@@ -372,17 +372,17 @@ public class DepartmentManagerController implements Initializable {
 	 */
 	@FXML
 	void approve(ActionEvent event) {
+		System.out.println("here");
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
-				TableViewSet s= TableDep.getItems().get(i);
-				ManagerRequest mnData = new ManagerRequest(s.getParkName(),Integer.parseInt(s.getIdEmp()),s.getReqType());
+				TableViewSet s = TableDep.getItems().get(i);
+				ManagerRequest mnData = new ManagerRequest(s.getParkName(), Integer.parseInt(s.getIdEmp()),
+						s.getReqType());
 				data.add("removePendingsManagerReq");
 				data.add(mnData);
 				data.add("yes");
-				
-					ClientUI.sentToChatClient(data);
-
-
+				System.out.println("manager req: " + mnData);
+				ClientUI.sentToChatClient(data);
 				if (status)
 					TableDep.getItems().remove(TableDep.getItems().get(i));
 				else {
@@ -411,8 +411,9 @@ public class DepartmentManagerController implements Initializable {
 
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
-				TableViewSet s= TableDep.getItems().get(i);
-				ManagerRequest mnData = new ManagerRequest(s.getParkName(),Integer.parseInt(s.getIdEmp()),s.getReqType());
+				TableViewSet s = TableDep.getItems().get(i);
+				ManagerRequest mnData = new ManagerRequest(s.getParkName(), Integer.parseInt(s.getIdEmp()),
+						s.getReqType());
 				data.add("removePendingsManagerReq");
 				data.add(mnData);
 				data.add("no");
@@ -425,6 +426,7 @@ public class DepartmentManagerController implements Initializable {
 			}
 			data.clear();
 		}
+		iniailTabel();
 	}
 
 	public void addData(ArrayList<ArrayList<String>> al) {
@@ -433,8 +435,10 @@ public class DepartmentManagerController implements Initializable {
 		for (ArrayList<String> arrayList : al) {
 
 			if (arrayList.get(1).equals("discount")) {
-				str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + arrayList.get(5) + " - "
-						+ arrayList.get(6);
+				String [] FromDate = arrayList.get(5).split(" ");
+				String [] ToDate = arrayList.get(6).split(" ");
+				str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + FromDate[0] + " - "
+						+ ToDate[0];
 			} else if (arrayList.get(1).equals("max_c")) {
 				str = "Visitors Capacity : " + arrayList.get(2);
 			} else if (arrayList.get(1).equals("max_o")) {
