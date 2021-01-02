@@ -331,6 +331,8 @@ public class ServiceRepresentativeController implements Initializable {
 		ServiceRepresentativeController.status = status;
 	}
 
+	//receive from the server the status of the insert member 
+	//if true gets in addition the member number
 	public static void receivedFromServerAddMemberStatus(boolean status,String memberNum) {
 		if ((status)) {
 			setStatuss(status);// status=true
