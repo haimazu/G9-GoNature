@@ -178,7 +178,11 @@ public class ManageOrderController implements Initializable {
 			lblEdit.setVisible(false);
 		}
 	}
-
+/**
+ * button back
+ * @param event
+ * @throws IOException
+ */
 	@FXML
 	void back(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnBack.getScene().getWindow();
