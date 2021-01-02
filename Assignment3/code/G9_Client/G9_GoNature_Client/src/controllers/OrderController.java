@@ -126,7 +126,7 @@ public class OrderController implements Initializable {
 	private static Order orderSuccess;
 	private static Order order;
 	private static ArrayList<Object> saveDetails = new ArrayList<>();
-	private static int flagOrder=0;
+	private static int flagOrder = 0;
 	private static String status = "not";
 	private static boolean faildDB = true;
 	private static boolean confirmOrder = false;
@@ -212,8 +212,9 @@ public class OrderController implements Initializable {
 				imgOrder.setImage(imgOrderEmpty);
 				pnOrder.toFront();
 			} else if (topNode.getId().equals("pnConfirmation")) {// in confirmation screen
-				//pnPayment.toFront();
-				alert.successAlert("confirmation","You have new order : " +orderSuccess.getOrderNumber() + "\nThank you for ordering in Go - Nature" );
+				// pnPayment.toFront();
+				alert.successAlert("confirmation", "You have new order : " + orderSuccess.getOrderNumber()
+						+ "\nThank you for ordering in Go - Nature");
 				Stage stage = (Stage) btnBack.getScene().getWindow();
 				Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 				stage.setScene(new Scene(root));
@@ -222,7 +223,7 @@ public class OrderController implements Initializable {
 	}
 
 	public void saveOrder() {
-		this.flagOrder=1;
+		this.flagOrder = 1;
 		saveDetails.add(txtmemberID.getText());
 		saveDetails.add(cbxParkName.getValue());
 		saveDetails.add(txtdate.getValue());
@@ -375,6 +376,17 @@ public class OrderController implements Initializable {
 	/*******************************
 	 * Code for tests and additions
 	 ****************************************/
+/**
+ * from waiting list confirmation
+ * @throws IOException 
+ */
+	public void setWindows(boolean flag,Button btn) throws IOException {
+		if(flag) {
+			System.out.println("here");
+			Pane pane = FXMLLoader.load(getClass().getResource("/gui/Order.fxml"));
+
+		}
+	}
 
 	/**
 	 * 
@@ -581,9 +593,9 @@ public class OrderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
-		
+
 		// user can choose to date only date today until next year.
 
 		txtdate.setDayCellFactory(picker -> new DateCell() {
@@ -594,11 +606,11 @@ public class OrderController implements Initializable {
 				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
 			}
 		});
-		
+
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
-		
-		if(flagOrder==1) {
-			this.flagOrder=0;
+
+		if (flagOrder == 1) {
+			this.flagOrder = 0;
 			txtmemberID.setText((String) saveDetails.get(0));
 			cbxParkName.setValue((String) saveDetails.get(1));
 			txtdate.setValue((LocalDate) saveDetails.get(2));
@@ -607,19 +619,12 @@ public class OrderController implements Initializable {
 			txtInvitingEmail.setText((String) saveDetails.get(5));
 			txtPhoneNum.setText((String) saveDetails.get(6));
 			saveDetails.clear();
-		}
-		else {
+		} else {
 			cbxArrivelTime.getSelectionModel().selectFirst();
 			txtdate.setValue(LocalDate.now());
 		}
-		
-
-
-
 
 		// txtdate = new JFXDatePicker(LocalDate.now());
-		
-
 
 		// cbxParkName.getSelectionModel().selectFirst();
 
@@ -628,8 +633,6 @@ public class OrderController implements Initializable {
 		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
 
 		/*********** need to do this**** for save detail after fill **********/
-
-
 
 	}
 
