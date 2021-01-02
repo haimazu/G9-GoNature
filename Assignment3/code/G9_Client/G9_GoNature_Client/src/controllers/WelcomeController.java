@@ -50,15 +50,7 @@ public class WelcomeController implements Initializable {
 
 	private AlertController alert = new AlertController();
 	private static Order orderDetails;
-	private static boolean ispending;
-
-	public static boolean getisIspending() {
-		return ispending;
-	}
-
-	public static void setIspending(boolean ispending) {
-		WelcomeController.ispending = ispending;
-	}
+	
 
 	@FXML
 	void login(ActionEvent event) throws IOException {
@@ -119,12 +111,6 @@ public class WelcomeController implements Initializable {
 			//System.out.println("after2");
 			
 			
-			//in addition check if this a pending visitor 
-
-			ArrayList<Object> msgPending = new ArrayList<>();
-			msgPending.add("checkIfPending");
-			msgPending.add(orderNum);
-			ClientUI.sentToChatClient(msgPending);
 			
 			
 			if (orderDetails == null) {
@@ -169,9 +155,7 @@ public class WelcomeController implements Initializable {
 			setOrderDetails(null);
 		
 	}
-	public static void recevidFromServerisPending(boolean pending) {
-		setIspending(pending);
-	}
+	
 
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));

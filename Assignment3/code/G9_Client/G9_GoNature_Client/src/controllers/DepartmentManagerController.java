@@ -4,16 +4,12 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.ResourceBundle;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -22,26 +18,27 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXDatePicker;
 
 import client.ClientUI;
-import dataLayer.Park;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
@@ -105,7 +102,7 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private Button btnDisaprove;
 
-	/***** Cancel Reports *****/
+	/***** Cancel Report *****/
 	@FXML
 	private BarChart<String, Double> bcCancells;
 	@FXML
@@ -122,32 +119,28 @@ public class DepartmentManagerController implements Initializable {
 	private Button btnExport;
 	@FXML
 	private Button btnLogout;
-
-	private static String firstName;
-	private ArrayList<Object> data = new ArrayList<>();
-	private static boolean status;
-	private AlertController alert = new AlertController();
-
-	/********* Useage report *********/
+	
+	/***** Visits Report *****/
 	@FXML
-	private LineChart<?, ?> lineChart;
+    private PieChart pieRegular;
+    @FXML
+    private PieChart pieMember;
+    @FXML
+    private PieChart pieGroup;
+    @FXML
+    private Label lblRegular;
+    @FXML
+    private Label lblMember;
+    @FXML
+    private Label lblGroup;
 
-	@FXML
-	private CategoryAxis lineX;
-
-	@FXML
-	private NumberAxis lineY;
-
-	@FXML
-	private JFXDatePicker dateFrom;
-
-	@FXML
-	private JFXDatePicker dateTo;
 
 	/***** Global Variables *****/
+	private static String firstName;
+	private AlertController alert = new AlertController();
 	// private static Park parkDetails;
 
-	/***** Cancel Report Variables *****/
+	/***** Visits Report Variables *****/
 
 	/***** Cancel Report Variables *****/
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
@@ -155,7 +148,9 @@ public class DepartmentManagerController implements Initializable {
 	private int index = 0;
 
 	/***** Dashboard Variables *****/
+	private ArrayList<Object> data = new ArrayList<>();	
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
+	private static boolean status;
 	private int count = 0;
 
 	// this function managed the side bar
@@ -173,7 +168,6 @@ public class DepartmentManagerController implements Initializable {
 			pnVisits.toFront();
 			setButtonPressed(btnVisitsReport);
 			setButtonReleased(btnDashboard, btnCancelsReport, btnSettings);
-			setDatePickerInitialValues();
 		} else if (event.getSource() == btnCancelsReport) {
 			lblTitle.setText("Cancels Report");
 			pnCancels.toFront();
@@ -337,6 +331,57 @@ public class DepartmentManagerController implements Initializable {
 			alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
 		}
 	}
+	
+	@FXML
+	void showPieChart() {
+		// send to server - 
+		addPieChart(pieRegular, "Regular");
+		addPieChart(pieMember, "Member");
+		addPieChart(pieGroup, "Group");
+	}
+	
+	public void addPieChart(PieChart currentPie, String title) {
+		currentPie.getData().clear();
+		//Setting the length of the label line 
+		currentPie.setLabelLineLength(5);
+		currentPie.setClockwise(false);
+		currentPie.setAnimated(false);
+		currentPie.setLegendVisible(false);
+		
+		//currentPie.setTitle(title);
+		
+
+		switch (title) {
+			case "Regular":
+				//pieRegular.setLegendVisible(true);
+				lblRegular.setText("Regular");
+				break;
+			case "Member":
+				//pieMember.setLegendVisible(true);
+				lblMember.setText("Member");
+				break;
+			case "Group":
+				//pieGroup.setLegendVisible(true);
+				lblGroup.setText("Group");
+				break;
+			default:
+				return;
+		}
+		
+		ObservableList<PieChart.Data> visitorsData = FXCollections.observableArrayList(
+                new PieChart.Data("0-1 hours", 10),
+                new PieChart.Data("1-2 hours", 10),
+                new PieChart.Data("2-3 hours", 10),
+                new PieChart.Data("3-4 hours", 10));
+				
+		visitorsData.forEach(data ->
+        data.nameProperty().bind(Bindings.concat(
+        		data.getName(), " ", data.pieValueProperty(), "%")
+        		)
+		);
+		
+		currentPie.setData(visitorsData);
+	}
 
 	public static String getFirstName() {
 		return firstName;
@@ -356,11 +401,6 @@ public class DepartmentManagerController implements Initializable {
 
 	public static void setData(boolean status) {
 		setStatus(status);
-	}
-
-	@FXML
-	void approveUsage(ActionEvent event) {
-
 	}
 
 	/**
@@ -640,30 +680,6 @@ public class DepartmentManagerController implements Initializable {
 
 	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
 		DBList = dBList;
-	}
-
-	public void setDatePickerInitialValues() {
-		dateFrom.setDayCellFactory(picker -> new DateCell() {
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				LocalDate today = LocalDate.now();
-				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-			}
-		});
-
-		// txtDateFrom.setValue(LocalDate.now());
-		dateTo.setDayCellFactory(picker -> new DateCell() {
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				LocalDate today = LocalDate.now();
-				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-			}
-		});
-
-		// txtDateTo.setValue(LocalDate.now());
-
 	}
 
 	public void iniailTabel() {

@@ -370,3 +370,28 @@
 .btnConfirmArrival:pressed {
     -fx-effect: null;
 }
+
+/********** Pie Chart **********/
+.default-color0.chart-pie {
+	-fx-pie-color: #b3e6c9;
+}
+
+.default-color1.chart-pie {
+	-fx-pie-color: #58C88B;
+}
+
+.default-color2.chart-pie {
+	-fx-pie-color: #2E8B57;
+}
+
+.default-color3.chart-pie {
+	-fx-pie-color: #226842;
+}
+
+.chart-pie {
+	-fx-border-width: 0;
+}
+
+.chart-content{
+    -fx-padding :2;
+}
