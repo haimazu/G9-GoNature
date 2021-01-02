@@ -88,6 +88,8 @@ public class ManageOrderController implements Initializable {
 
 	@FXML
 	private JFXComboBox<String> cbxArriveTime;
+	private static boolean ispending;
+
 
 	private AlertController alert = new AlertController();
 	private static Order order = null;
@@ -110,7 +112,13 @@ public class ManageOrderController implements Initializable {
 	public static void setOrder(Order order) {
 		ManageOrderController.order = order;
 	}
+	public static boolean getisIspending() {
+		return ispending;
+	}
 
+	public static void setIspending(boolean ispending) {
+		ManageOrderController.ispending = ispending;
+	}
 	/*
 	 * input : received order object from server Output : non present on screen:
 	 * order details
@@ -153,8 +161,14 @@ public class ManageOrderController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		setOrder(WelcomeController.getOrderDetails());
+		ArrayList<Object> msgPending = new ArrayList<>();
+		msgPending.add("checkIfPending");
+		msgPending.add(order.getOrderNumber());
+		ClientUI.sentToChatClient(msgPending);
+	
+		
 		presentOrderdetails(order);
-		if (!WelcomeController.getisIspending()) {
+		if (!getisIspending()) {
 			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 			txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
 			cbxArriveTime.getSelectionModel().selectFirst();
@@ -295,10 +309,11 @@ public class ManageOrderController implements Initializable {
 
 	}
 
-	@FXML
+	
 	/*
 	 * NICE TO HAVE!!!!!!
 	 */
+	@FXML
 	void switchToMember(ActionEvent event) throws IOException {
 //		Stage stage = (Stage)lnkSwitch.getScene().getWindow();
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
@@ -345,6 +360,9 @@ public class ManageOrderController implements Initializable {
 			break;
 		}
 
+	}
+	public static void recevidFromServerisPending(boolean pending) {
+		setIspending(pending);
 	}
 
 }
