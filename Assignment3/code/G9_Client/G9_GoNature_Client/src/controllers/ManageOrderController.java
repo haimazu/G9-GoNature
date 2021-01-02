@@ -206,7 +206,7 @@ public class ManageOrderController implements Initializable {
 	 */
 	@FXML
 	void update(ActionEvent event) {
-		Order sentOrder = new Order(order); // maybe a pointer ???
+		Order sentOrder = new Order(order); 
 		if (checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
 			// System.out.println(timeString[0]);
@@ -237,10 +237,7 @@ public class ManageOrderController implements Initializable {
 	}
 
 	public static void updatedOrderFromServer(Object received) {
-		if (received instanceof Order) {
-			updated = true;
-		}
-		return;
+		updated = (boolean) received;
 	}
 
 	@FXML

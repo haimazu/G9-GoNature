@@ -18,7 +18,7 @@ import orderData.Order;
 //					[1] -> true if update sucsessful, false if not
 public class EditOrder {
 	public static void edit(ArrayList<Object> recived, ConnectionToClient client) {
-		WaitingList waitlist = new WaitingList();
+		WaitingList waitlist = new WaitingList(); //see if even needed
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order newOrder = (Order)recived.get(1);
@@ -91,7 +91,7 @@ public class EditOrder {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("update"); // command
 		query.add("orders"); // table name
-		query.add("beforeDiscountPrice='"+ order.getPrice() + "' AfterDiscountPrice='"+ order.getTotalPrice() + "'"); // values
+		query.add("beforeDiscountPrice='"+ order.getPrice() + "' ,afterDiscountPrice='"+ order.getTotalPrice() + "'"); // values
 		query.add("orderNumber"); // primaryKey
 		query.add(""+order.getOrderNumber()); // pkValue
 		return MySQLConnection.update(query);
