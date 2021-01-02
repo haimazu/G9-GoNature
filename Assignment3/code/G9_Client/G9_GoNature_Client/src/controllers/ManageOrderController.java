@@ -238,7 +238,7 @@ public class ManageOrderController implements Initializable {
 		ClientUI.sentToChatClient(msgForServer);
 		if (canceled) {
 
-			alert.successAlert("Canceled succesful","Canceled succesful");
+			alert.successAlert("Canceled succesful", "Canceled succesful");
 			Stage stage = (Stage) btnBack.getScene().getWindow();
 			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 			stage.setScene(new Scene(root));
@@ -309,16 +309,18 @@ public class ManageOrderController implements Initializable {
 			msg.add("no");
 		msg.add(order);
 		ClientUI.sentToChatClient(msg);
-		
+
 		switch (caseApproval) {
-		case 0:
+		case 0: {
 			alert.successAlert("Cancelation", "Thank you ! Canceled successful !");
 			Stage stage = (Stage) btnBack.getScene().getWindow();
 			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 			stage.setScene(new Scene(root));
 			break;
-		case 1:{
-			
+		}
+		case 1: 
+		{
+
 			alert.successAlert("Approval", "Thank you for your approval!");
 			btnconfirme.setVisible(false);
 			btnNoconfirme.setVisible(false);
@@ -327,7 +329,8 @@ public class ManageOrderController implements Initializable {
 			lblEditVisitors.setVisible(true);
 			lblEdit.setVisible(true);
 		}
-		case 2:{
+		case 2: 
+		{
 			alert.setAlert("Something went wrong..");
 			Stage stage1 = (Stage) btnBack.getScene().getWindow();
 			Parent root1 = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));

@@ -336,7 +336,7 @@ public class ServiceRepresentativeController implements Initializable {
 	public static void receivedFromServerAddMemberStatus(boolean status,String memberNum) {
 		if ((status)) {
 			setStatuss(status);// status=true
-			memberNumber=memberNum.substring(1);
+			memberNumber=memberNum;
 			System.out.println(memberNumber);
 		} else {
 			setStatuss(status);// status=false
