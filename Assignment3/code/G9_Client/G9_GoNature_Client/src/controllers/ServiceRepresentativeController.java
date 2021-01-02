@@ -37,7 +37,7 @@ public class ServiceRepresentativeController implements Initializable {
 
 	private static String firstName;
 	private static boolean status;
-
+	private static String memberNumber;
 	@FXML
 	private JFXTextField txtId;
 	@FXML
@@ -132,7 +132,7 @@ public class ServiceRepresentativeController implements Initializable {
 				ClientUI.sentToChatClient(msg);
 
 				if (getStatus()) {
-					alert.successAlert("Succesful", "A member add succesfuly");
+					alert.successAlert("Succesful", "A member add succesfuly, your member number is: "+memberNumber);
 					ClearFields();
 				} else
 					alert.setAlert("Failed! the member u trying to insert allready exist.");
@@ -156,7 +156,7 @@ public class ServiceRepresentativeController implements Initializable {
 				ClientUI.sentToChatClient(msg);
 
 				if (getStatus()) {
-					alert.successAlert("Succesful", "A member add succesfuly");
+					alert.successAlert("Succesful", "A member add succesfuly, your member number is: " +memberNumber);
 					ClearFields();
 				} else
 					alert.setAlert("Failed! the member u trying to insert allready exist.");
@@ -331,9 +331,11 @@ public class ServiceRepresentativeController implements Initializable {
 		ServiceRepresentativeController.status = status;
 	}
 
-	public static void receivedFromServerAddMemberStatus(boolean status) {
-		if (status) {
+	public static void receivedFromServerAddMemberStatus(boolean status,String memberNum) {
+		if ((status)) {
 			setStatuss(status);// status=true
+			memberNumber=memberNum.substring(1);
+			System.out.println(memberNumber);
 		} else {
 			setStatuss(status);// status=false
 		}
