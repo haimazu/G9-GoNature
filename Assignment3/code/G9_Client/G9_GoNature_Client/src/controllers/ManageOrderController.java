@@ -341,6 +341,7 @@ public class ManageOrderController implements Initializable {
 			cbxArriveTime.setVisible(true);
 			lblEditVisitors.setVisible(true);
 			lblEdit.setVisible(true);
+			break;
 		}
 		case 2: {
 			alert.setAlert("Something went wrong..");
