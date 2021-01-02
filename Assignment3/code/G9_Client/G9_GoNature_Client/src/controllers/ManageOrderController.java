@@ -12,9 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.imageio.stream.MemoryCacheImageInputStream;
+
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
 
 import client.ClientUI;
 import javafx.collections.FXCollections;
@@ -45,16 +50,16 @@ public class ManageOrderController implements Initializable {
 	private Label lblOrderNum;
 	@FXML
 	private Label lblTime;
-    @FXML
-    private Label lblEditVisitors;
+	@FXML
+	private Label lblEditVisitors;
 	@FXML
 	private Label lblDiscount;
 
 	@FXML
 	private Label lblPayment;
 
-    @FXML
-    private Label lblYay;
+	@FXML
+	private Label lblYay;
 	@FXML
 	private Label lblTotal;
 	@FXML
@@ -71,8 +76,8 @@ public class ManageOrderController implements Initializable {
 	private Button btnCancel;
 	@FXML
 	private Button btnNoconfirme;
-    @FXML
-    private Label lblEdit;
+	@FXML
+	private Label lblEdit;
 	@FXML
 	private Button btnconfirme;
 	@FXML
@@ -88,6 +93,15 @@ public class ManageOrderController implements Initializable {
 	private static Order order = null;
 	private static boolean updated = false;
 	private static boolean canceled = false;
+	private static int caseApproval = 0;
+
+	public static int getCaseApproval() {
+		return caseApproval;
+	}
+
+	public static void setCaseApproval(int caseApproval) {
+		ManageOrderController.caseApproval = caseApproval;
+	}
 
 	public static Order getOrder() {
 		return order;
@@ -224,7 +238,7 @@ public class ManageOrderController implements Initializable {
 		ClientUI.sentToChatClient(msgForServer);
 		if (canceled) {
 
-			alert.setAlert("Canceled succesful");
+			alert.successAlert("Canceled succesful","Canceled succesful");
 			Stage stage = (Stage) btnBack.getScene().getWindow();
 			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 			stage.setScene(new Scene(root));
@@ -255,6 +269,26 @@ public class ManageOrderController implements Initializable {
 		order = null;
 	}
 
+	/*
+	 * input : from server the arraylist of object : if obj contains only one cell -
+	 * the user preesed no- >present succssesful cancel message if true-> the user
+	 * approved -> present edit window if false -> somthing went wrong outut :non
+	 * int caseApproval : 0->pressed no 1->pressed yes 2->false ,something wrong
+	 */
+	public static void receviedFromserverArrivalConfirmation(ArrayList<Object> returned) {
+
+		if (returned.size() == 1)
+			setCaseApproval(0);
+
+		else {
+			if ((boolean) returned.get(1))
+				setCaseApproval(1);
+			else
+				setCaseApproval(2);
+		}
+
+	}
+
 	@FXML
 	/*
 	 * NICE TO HAVE!!!!!!
@@ -266,11 +300,44 @@ public class ManageOrderController implements Initializable {
 	}
 
 	@FXML
-	void confirmeArrival(ActionEvent event) {
-//		if (event.getSource() == btnconfirme)
-//			//a
-//			
+	void confirmeArrival(ActionEvent event) throws IOException {
+		ArrayList<Object> msg = new ArrayList<>();
+		msg.add("waitlistReplay");
+		if (event.getSource() == btnconfirme)
+			msg.add("yes");
+		if (event.getSource() == btnNoconfirme)
+			msg.add("no");
+		msg.add(order);
+		ClientUI.sentToChatClient(msg);
+		
+		switch (caseApproval) {
+		case 0:
+			alert.successAlert("Cancelation", "Thank you ! Canceled successful !");
+			Stage stage = (Stage) btnBack.getScene().getWindow();
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+			stage.setScene(new Scene(root));
+			break;
+		case 1:{
 			
+			alert.successAlert("Approval", "Thank you for your approval!");
+			btnconfirme.setVisible(false);
+			btnNoconfirme.setVisible(false);
+			btnCancel.setVisible(true);
+			cbxArriveTime.setVisible(true);
+			lblEditVisitors.setVisible(true);
+			lblEdit.setVisible(true);
+		}
+		case 2:{
+			alert.setAlert("Something went wrong..");
+			Stage stage1 = (Stage) btnBack.getScene().getWindow();
+			Parent root1 = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+			stage1.setScene(new Scene(root1));
+			break;
+		}
+		default:
+			break;
+		}
+
 	}
 
 }

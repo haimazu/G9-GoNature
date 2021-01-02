@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +54,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import reportData.ManagerRequest;
 import reportData.TableViewSet;
 
 public class DepartmentManagerController implements Initializable {
@@ -123,7 +125,7 @@ public class DepartmentManagerController implements Initializable {
 
 	private static String firstName;
 	private ArrayList<Object> data = new ArrayList<>();
-	private static String status;
+	private static boolean status;
 	private AlertController alert = new AlertController();
 
 	/********* Useage report *********/
@@ -141,10 +143,10 @@ public class DepartmentManagerController implements Initializable {
 
 	@FXML
 	private JFXDatePicker dateTo;
-	
+
 	/***** Global Variables *****/
-	//private static Park parkDetails;
-	
+	// private static Park parkDetails;
+
 	/***** Cancel Report Variables *****/
 
 	/***** Cancel Report Variables *****/
@@ -193,7 +195,7 @@ public class DepartmentManagerController implements Initializable {
 		ArrayList<String> data = new ArrayList<String>();
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
-		
+
 		msg.add("updateLoggedIn");
 		// update as loggedin as logged out
 		data.add(LoginController.getUsername());
@@ -202,15 +204,15 @@ public class DepartmentManagerController implements Initializable {
 		msg.add(data);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
-		
+
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
 	}
-	
+
 	// checks if the date is correct and displays the chart if so
 	// input: from -> start date
-	//          to -> end date
+	// to -> end date
 	// output: display the chart depending on the dates entered
 	@FXML
 	void show(ActionEvent event) {
@@ -221,14 +223,14 @@ public class DepartmentManagerController implements Initializable {
 		String fromFormat = dateTimeFormatter.format(from);
 
 		LocalDate to = dpTo.getValue();
-		
+
 		// the dates are correct
 		if (from.isBefore(to) || from.isEqual(to)) {
 			String toFormat = dateTimeFormatter.format(to.plusDays(1));
 			data.add(fromFormat);
 			data.add(toFormat);
 			sendToServerArrayList(data);
-			
+
 			if (!getError()) {
 				// show all data
 				barChart();
@@ -240,25 +242,25 @@ public class DepartmentManagerController implements Initializable {
 			alert.failedAlert("Failed", "Start date cannot be greater than end date.");
 		}
 	}
-	
+
 	// creates a PDF file based on data retrieved from the DB
 	// input: from -> start date
-	//          to -> end date
-	//        ArrayList<ArrayList<String>> cancelledOrders, cells:
-	//                                     					cell [i][0]: parkName
-	//													    cell [i][1]: date of canceled/dismissed
-	//														cell [i][2]: amount
-	//														0 <= i <= cancelledOrders.size() - 1
+	// to -> end date
+	// ArrayList<ArrayList<String>> cancelledOrders, cells:
+	// cell [i][0]: parkName
+	// cell [i][1]: date of canceled/dismissed
+	// cell [i][2]: amount
+	// 0 <= i <= cancelledOrders.size() - 1
 	// output: PDF report with all the data shown in the chart
 	@FXML
 	void export(ActionEvent event) {
 		// call the function to fill the cancelledOrders data
 		show(event);
-		
+
 		if (getError()) {
 			return;
 		}
-		
+
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -266,69 +268,71 @@ public class DepartmentManagerController implements Initializable {
 		String toFormat = dateFormatter.format(dpTo.getValue());
 		// the date it was created
 		String fileNameDate = fileNameFormatter.format(LocalDate.now());
-		
+
 		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
 		try {
 			Document document = new Document();
 			// creates a report with the name ==> CanceledReport 'yyyy-MM-dd'.pdf
 			// the 'yyyy-MM-dd' is the date it was created
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("CanceledReport " + fileNameDate + ".pdf")); 
+			PdfWriter writer = PdfWriter.getInstance(document,
+					new FileOutputStream("CanceledReport " + fileNameDate + ".pdf"));
 			document.open();
-			Image logo = Image.getInstance("E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+			Image logo = Image.getInstance(
+					"E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
 			logo.setAlignment(Element.ALIGN_CENTER);
 			document.add(logo);
-			
+
 			Paragraph title = new Paragraph("Cancellation/Dismissed Report\n", titleFont);
 			title.setAlignment(Element.ALIGN_CENTER);
-	        document.add(title);
-	        
-	        Paragraph date = new Paragraph(new Date().toString() + "\n\n");
-	        date.setAlignment(Element.ALIGN_CENTER);
-	        document.add(date);
-	        
-	        PdfPTable table = new PdfPTable(3);
-	        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-	        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-	        
-	        PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
-	        titleCell.setColspan(3);
-	        titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	        titleCell.setBackgroundColor(BaseColor.GRAY);
-	        // the title of the table
-	        table.addCell(titleCell);
-	        
-	        PdfPCell parkName = new PdfPCell(new Paragraph("Park Name"));
-	        parkName.setColspan(1);
-	        parkName.setHorizontalAlignment(Element.ALIGN_CENTER);
-	        parkName.setBackgroundColor(BaseColor.LIGHT_GRAY);
-	        table.addCell(parkName);
-	        
-	        PdfPCell missedTime = new PdfPCell(new Paragraph("Missed Time"));
-	        missedTime.setColspan(1);
-	        missedTime.setHorizontalAlignment(Element.ALIGN_CENTER);
-	        missedTime.setBackgroundColor(BaseColor.LIGHT_GRAY);
-	        table.addCell(missedTime);
-	        
-	        PdfPCell amount = new PdfPCell(new Paragraph("Amount"));
-	        amount.setColspan(1);
-	        amount.setHorizontalAlignment(Element.ALIGN_CENTER);
-	        amount.setBackgroundColor(BaseColor.LIGHT_GRAY);
-	        table.addCell(amount);
-	        	               
-	        for (int i = 0; i < cancelledOrders.size(); i++) {
-		        table.addCell(cancelledOrders.get(i).get(0));
-		        table.addCell(cancelledOrders.get(i).get(1));
-		        table.addCell(cancelledOrders.get(i).get(2));
-	        }
-	        document.add(table);
-	        
-	        alert.successAlert("Success", "The report was created successfully.");
-	        
-	        Desktop.getDesktop().open(new File("CanceledReport " + fileNameDate + ".pdf"));
-	        
-	        document.close();
-	        writer.close();
-	             
+			document.add(title);
+
+			Paragraph date = new Paragraph(new Date().toString() + "\n\n");
+			date.setAlignment(Element.ALIGN_CENTER);
+			document.add(date);
+
+			PdfPTable table = new PdfPTable(3);
+			table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+			PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
+			titleCell.setColspan(3);
+			titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			titleCell.setBackgroundColor(BaseColor.GRAY);
+			// the title of the table
+			table.addCell(titleCell);
+
+			PdfPCell parkName = new PdfPCell(new Paragraph("Park Name"));
+			parkName.setColspan(1);
+			parkName.setHorizontalAlignment(Element.ALIGN_CENTER);
+			parkName.setBackgroundColor(BaseColor.LIGHT_GRAY);
+			table.addCell(parkName);
+
+			PdfPCell missedTime = new PdfPCell(new Paragraph("Missed Time"));
+			missedTime.setColspan(1);
+			missedTime.setHorizontalAlignment(Element.ALIGN_CENTER);
+			missedTime.setBackgroundColor(BaseColor.LIGHT_GRAY);
+			table.addCell(missedTime);
+
+			PdfPCell amount = new PdfPCell(new Paragraph("Amount"));
+			amount.setColspan(1);
+			amount.setHorizontalAlignment(Element.ALIGN_CENTER);
+			amount.setBackgroundColor(BaseColor.LIGHT_GRAY);
+			table.addCell(amount);
+
+			for (int i = 0; i < cancelledOrders.size(); i++) {
+				table.addCell(cancelledOrders.get(i).get(0));
+				table.addCell(cancelledOrders.get(i).get(1));
+				table.addCell(cancelledOrders.get(i).get(2));
+			}
+			document.add(table);
+
+			alert.successAlert("Success", "The report was created successfully.");
+
+			Desktop.getDesktop().open(new File("CanceledReport " + fileNameDate + ".pdf"));
+
+			document.close();
+			writer.close();
+
 		} catch (Exception e) {
 			alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
 		}
@@ -342,21 +346,27 @@ public class DepartmentManagerController implements Initializable {
 		DepartmentManagerController.firstName = firstName;
 	}
 
-	public static String getStatus() {
+	public static boolean getStatus() {
 		return status;
 	}
 
-	public static void setStatus(String status) {
+	public static void setStatus(boolean status) {
 		DepartmentManagerController.status = status;
 	}
 
-	public static void setData(String status) {
+	public static void setData(boolean status) {
 		setStatus(status);
+	}
+
+	@FXML
+	void approveUsage(ActionEvent event) {
+
 	}
 
 	/**
 	 * button approve will remove the row and will update the table from DB will
-	 * send to server array list of object [0] - name method [1] - string "approve" [2] -object of TabelViewSet
+	 * send to server array list of object [0] - name method [1] - string "yes" [2]
+	 * -object of ManagerRequest
 	 * 
 	 * @param event
 	 */
@@ -364,31 +374,35 @@ public class DepartmentManagerController implements Initializable {
 	void approve(ActionEvent event) {
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
+				TableViewSet s= TableDep.getItems().get(i);
+				ManagerRequest mnData = new ManagerRequest(s.getParkName(),Integer.parseInt(s.getIdEmp()),s.getReqType());
 				data.add("removePendingsManagerReq");
-				data.add("approve");
-				data.add(TableDep.getItems().get(i));
-//				data.add(TableDep.getItems().get(i).getParkName());
-//				data.add(TableDep.getItems().get(i).getReqType());
-//				ClientUI.sentToChatClient(data);
+				data.add(mnData);
+				data.add("yes");
+				
+					ClientUI.sentToChatClient(data);
 
-//				if(status.equals("Success"))
-				TableDep.getItems().remove(TableDep.getItems().get(i));
-//				else
-//					alert.failedAlert("Failed", "Something went wrong, can't delete from DB - please try later");
+
+				if (status)
+					TableDep.getItems().remove(TableDep.getItems().get(i));
+				else {
+					if (TableDep.getItems().get(i).getReqType().equals("discount")) {
+						alert.failedAlert("Failed", "Already has discount on these dates!");
+					} else {
+						alert.failedAlert("Failed", "something went wrong, please try later again!");
+					}
+				}
+
 			}
 			data.clear();
 		}
 		iniailTabel();
 	}
-	
-	@FXML
-    void approveUsage(ActionEvent event) {
-
-    }
 
 	/**
 	 * button disapprove will not remove the row and will update the server will
-	 * send to server  array list of Object : [0] - name method [1] -  string "disapprove" [2] - Object of TabelViewSet
+	 * send to server array list of Object : [0] - name method [1] - string "no" [2]
+	 * - Object of ManagerRequest
 	 * 
 	 * @param event
 	 */
@@ -397,15 +411,16 @@ public class DepartmentManagerController implements Initializable {
 
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
+				TableViewSet s= TableDep.getItems().get(i);
+				ManagerRequest mnData = new ManagerRequest(s.getParkName(),Integer.parseInt(s.getIdEmp()),s.getReqType());
 				data.add("removePendingsManagerReq");
-				data.add("disapprove");
-				data.add(TableDep.getItems().get(i));
-//				data.add(TableDep.getItems().get(i).getParkName());
-//				data.add(TableDep.getItems().get(i).getReqType());
-//				ClientUI.sentToChatClient(data);
+				data.add(mnData);
+				data.add("no");
 
-//				if(!status.equals("Success"))
-//					alert.failedAlert("information", "We pass your decision to the park manager");
+				ClientUI.sentToChatClient(data);
+
+				if (status)
+					alert.failedAlert("information", "The request dissaprove");
 
 			}
 			data.clear();
@@ -452,24 +467,24 @@ public class DepartmentManagerController implements Initializable {
 
 	// displays the chart for the information retrieved from DB
 	// input: from -> start date
-	//          to -> end date
-	//        ArrayList<ArrayList<String>> cancelledOrders, cells:
-	//                                     					cell [0]: parkName
-	//													    cell [1]: date of canceled/dismissed
-	//														cell [2]: amount
+	// to -> end date
+	// ArrayList<ArrayList<String>> cancelledOrders, cells:
+	// cell [0]: parkName
+	// cell [1]: date of canceled/dismissed
+	// cell [2]: amount
 	// output: displays the data
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void barChart() {		
+	public void barChart() {
 		int i;
 		int disneyDate = 0;
 		int jurasicDate = 0;
-		int universalDate = 0;		
+		int universalDate = 0;
 		int count = 0;
 		String minDateFormat = cancelledOrders.get(0).get(1).substring(0, 10);
 		String maxDateFormat = cancelledOrders.get(cancelledOrders.size() - 1).get(1).substring(0, 10);
 		LocalDate minDate = LocalDate.parse(minDateFormat);
 		LocalDate maxDate = LocalDate.parse(maxDateFormat);
-		
+
 		xAxis = new CategoryAxis();
 		yAxis = new NumberAxis(0, 1000, 50);
 
@@ -477,7 +492,7 @@ public class DepartmentManagerController implements Initializable {
 		bcCancells.setAnimated(false);
 		bcCancells.setBarGap(0d);
 		bcCancells.setCategoryGap(4.0);
-		
+
 		bcCancells.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 		bcCancells.setPrefSize(613, 430);
 		bcCancells.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
@@ -487,13 +502,13 @@ public class DepartmentManagerController implements Initializable {
 		Series<String, Double> disney = new Series<>();
 		Series<String, Double> jurasic = new Series<>();
 		Series<String, Double> universal = new Series<>();
-		
+
 		disney.setName("Disney");
 		jurasic.setName("Jurasic");
 		universal.setName("Universal");
 
 		for (LocalDate date = minDate; date.isBefore(maxDate.plusDays(1)); date = date.plusDays(1)) {
-			
+
 			count = checkIfExists(date);
 			if (count == 0) {
 				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
@@ -501,10 +516,10 @@ public class DepartmentManagerController implements Initializable {
 				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 				continue;
 			}
-			
+
 			disneyDate = jurasicDate = universalDate = 0;
 			i = 0;
-				
+
 			while (i < count) {
 				if (cancelledOrders.get(index).get(0).equals("disney")) {
 					disneyDate = index;
@@ -516,33 +531,39 @@ public class DepartmentManagerController implements Initializable {
 				index++;
 				i++;
 			}
-					
+
 			// parkName = Disney && same day in the month
 			if (cancelledOrders.get(0).get(0).equals("disney") && disneyDate == 0) {
 				// x = day of the month, y = sum of cancel
-				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(0).get(2))));
+				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+						Double.parseDouble(cancelledOrders.get(0).get(2))));
 			} else if (disneyDate != 0) {
-				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(disneyDate).get(2))));
+				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+						Double.parseDouble(cancelledOrders.get(disneyDate).get(2))));
 				disneyDate = 0;
 			} else {
 				disney.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 			}
-			
+
 			// parkName = Jurasic && same day in the month
 			if (cancelledOrders.get(0).get(0).equals("jurasic") && jurasicDate == 0) {
-				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(0).get(2))));
+				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+						Double.parseDouble(cancelledOrders.get(0).get(2))));
 			} else if (jurasicDate != 0) {
-				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(jurasicDate).get(2))));
+				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+						Double.parseDouble(cancelledOrders.get(jurasicDate).get(2))));
 				jurasicDate = 0;
 			} else {
 				jurasic.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 			}
-				
+
 			// parkName = Universal && same day in the month
 			if (cancelledOrders.get(0).get(0).equals("universal") && universalDate == 0) {
-				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(0).get(2))));
+				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+						Double.parseDouble(cancelledOrders.get(0).get(2))));
 			} else if (universalDate != 0) {
-				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), Double.parseDouble(cancelledOrders.get(universalDate).get(2))));
+				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+						Double.parseDouble(cancelledOrders.get(universalDate).get(2))));
 				universalDate = 0;
 			} else {
 				universal.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
@@ -551,11 +572,11 @@ public class DepartmentManagerController implements Initializable {
 
 		bcCancells.getData().addAll(disney, jurasic, universal);
 	}
-	
+
 	// checks if the date exists and saves the first position where it appears
 	// input: date to check
 	// output: - return the number of times he appears
-	// 		   - saves the first index where he appeared
+	// - saves the first index where he appeared
 	public int checkIfExists(LocalDate date) {
 		int count = 0;
 		index = 0;
@@ -570,7 +591,7 @@ public class DepartmentManagerController implements Initializable {
 				count++;
 			}
 		}
-		
+
 		return count;
 	}
 
@@ -602,7 +623,7 @@ public class DepartmentManagerController implements Initializable {
 			DepartmentManagerController.cancelledOrders = cancelData;
 		}
 	}
-	
+
 	public static boolean getError() {
 		return error;
 	}
@@ -618,7 +639,7 @@ public class DepartmentManagerController implements Initializable {
 	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
 		DBList = dBList;
 	}
-	
+
 	public void setDatePickerInitialValues() {
 		dateFrom.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
@@ -629,7 +650,7 @@ public class DepartmentManagerController implements Initializable {
 			}
 		});
 
-		//txtDateFrom.setValue(LocalDate.now());
+		// txtDateFrom.setValue(LocalDate.now());
 		dateTo.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
@@ -639,7 +660,7 @@ public class DepartmentManagerController implements Initializable {
 			}
 		});
 
-		//txtDateTo.setValue(LocalDate.now());
+		// txtDateTo.setValue(LocalDate.now());
 
 	}
 
