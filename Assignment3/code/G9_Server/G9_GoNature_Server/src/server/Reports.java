@@ -170,8 +170,6 @@ public class Reports {
 		} else
 			temp[0] = 0;
 		
-		System.out.println(temp[0]);
-		
 		ArrayList<String> query2 = new ArrayList<String>();
 		query2.add("select"); // command
 		query2.add("enteryandexit"); // table name
