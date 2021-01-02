@@ -351,3 +351,22 @@
 .default-color2.chart-bar {
 	-fx-bar-fill: #226842;
 }
+
+/********** Edit Order Buttons **********/
+.btnConfirmArrival {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 329px;
+    -fx-pref-height: 135px;
+}
+
+.btnConfirmArrival:hover {
+	-fx-border-insets: -1 -1 -1 -1;
+	-fx-border-radius: 5px;
+	-fx-border-width: 2px;
+    -fx-border-color: white;
+}
+
+.btnConfirmArrival:pressed {
+    -fx-effect: null;
+}
