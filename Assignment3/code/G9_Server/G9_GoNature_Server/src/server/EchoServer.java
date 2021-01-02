@@ -109,6 +109,15 @@ public class EchoServer extends AbstractServer {
 		case "removePendingsManagerReq":
 			PendingMenagerRequest.deleteFromPending(recived, client);
 			break;
+		case "getRegularsVisitorsData":
+			Reports.VisitsReport(recived, client);
+			break;
+		case "getMembersVisitorsData":
+			Reports.VisitsReport(recived, client);
+			break;
+		case "getGroupsVisitorsData":
+			Reports.VisitsReport(recived, client);
+			break;
 		default:
 			break;
 		}

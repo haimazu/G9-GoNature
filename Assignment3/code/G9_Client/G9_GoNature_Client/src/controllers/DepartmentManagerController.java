@@ -348,19 +348,19 @@ public class DepartmentManagerController implements Initializable {
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("regular");
-			sendToServerArrayList("getVisitorsData", data);
+			sendToServerArrayList("getRegularsVisitorsData", data);
 			
 			data.clear();
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("member");
-			sendToServerArrayList("getVisitorsData", data);
+			sendToServerArrayList("getMembersVisitorsData", data);
 			
 			data.clear();
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("group");
-			sendToServerArrayList("getVisitorsData", data);
+			sendToServerArrayList("getGroupsVisitorsData", data);
 		}
 		
 		addPieChart(pieRegular, "Regular");
@@ -386,38 +386,49 @@ public class DepartmentManagerController implements Initializable {
 		currentPie.setAnimated(false);
 		currentPie.setLegendVisible(false);
 		
+		ObservableList<PieChart.Data> currentVisitorsData = null;
+		
 		//currentPie.setTitle(title);	
 
 		switch (title) {
 			case "Regular":
 				//pieRegular.setLegendVisible(true);
 				lblRegular.setText("Regular");
+				currentVisitorsData = FXCollections.observableArrayList(
+		                new PieChart.Data("0-1 hours", Double.parseDouble(regularVisitors.get(0))),
+		                new PieChart.Data("1-2 hours", Double.parseDouble(regularVisitors.get(1))),
+		                new PieChart.Data("2-3 hours", Double.parseDouble(regularVisitors.get(2))),
+		                new PieChart.Data("3-4 hours", Double.parseDouble(regularVisitors.get(3))));			
 				break;
 			case "Member":
 				//pieMember.setLegendVisible(true);
 				lblMember.setText("Member");
+				currentVisitorsData = FXCollections.observableArrayList(
+		                new PieChart.Data("0-1 hours", Double.parseDouble(memberVisitors.get(0))),
+		                new PieChart.Data("1-2 hours", Double.parseDouble(memberVisitors.get(1))),
+		                new PieChart.Data("2-3 hours", Double.parseDouble(memberVisitors.get(2))),
+		                new PieChart.Data("3-4 hours", Double.parseDouble(memberVisitors.get(3))));
 				break;
 			case "Group":
 				//pieGroup.setLegendVisible(true);
 				lblGroup.setText("Group");
+				currentVisitorsData = FXCollections.observableArrayList(
+		                new PieChart.Data("0-1 hours", Double.parseDouble(groupVisitors.get(0))),
+		                new PieChart.Data("1-2 hours", Double.parseDouble(groupVisitors.get(1))),
+		                new PieChart.Data("2-3 hours", Double.parseDouble(groupVisitors.get(2))),
+		                new PieChart.Data("3-4 hours", Double.parseDouble(groupVisitors.get(3))));
 				break;
 			default:
 				return;
 		}
 		
-		ObservableList<PieChart.Data> visitorsData = FXCollections.observableArrayList(
-                new PieChart.Data("0-1 hours", 10),
-                new PieChart.Data("1-2 hours", 10),
-                new PieChart.Data("2-3 hours", 10),
-                new PieChart.Data("3-4 hours", 10));
-				
-		visitorsData.forEach(data ->
+		currentVisitorsData.forEach(data ->
         data.nameProperty().bind(Bindings.concat(
         		data.getName(), " ", data.pieValueProperty(), "%")
         		)
 		);
 		
-		currentPie.setData(visitorsData);
+		currentPie.setData(currentVisitorsData);
 	}
 
 	public static String getFirstName() {
@@ -710,7 +721,7 @@ public class DepartmentManagerController implements Initializable {
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerRegularVisitorsData(ArrayList<String> data) {
+	public static void receivedFromServerRegularsVisitorsData(ArrayList<String> data) {
 		if (data.isEmpty()) {
 			setError(true);
 		} else {
@@ -726,7 +737,7 @@ public class DepartmentManagerController implements Initializable {
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerMemberVisitorsData(ArrayList<String> data) {
+	public static void receivedFromServerMembersVisitorsData(ArrayList<String> data) {
 		if (data.isEmpty()) {
 			setError(true);
 		} else {
@@ -742,7 +753,7 @@ public class DepartmentManagerController implements Initializable {
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerGroupVisitorsData(ArrayList<String> data) {
+	public static void receivedFromServerGroupsVisitorsData(ArrayList<String> data) {
 		if (data.isEmpty()) {
 			setError(true);
 		} else {
