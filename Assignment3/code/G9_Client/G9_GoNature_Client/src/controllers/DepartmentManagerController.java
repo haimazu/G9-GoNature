@@ -372,7 +372,6 @@ public class DepartmentManagerController implements Initializable {
 	 */
 	@FXML
 	void approve(ActionEvent event) {
-		System.out.println("here");
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
 				TableViewSet s = TableDep.getItems().get(i);
@@ -381,7 +380,6 @@ public class DepartmentManagerController implements Initializable {
 				data.add("removePendingsManagerReq");
 				data.add(mnData);
 				data.add("yes");
-				System.out.println("manager req: " + mnData);
 				ClientUI.sentToChatClient(data);
 				if (status)
 					TableDep.getItems().remove(TableDep.getItems().get(i));
