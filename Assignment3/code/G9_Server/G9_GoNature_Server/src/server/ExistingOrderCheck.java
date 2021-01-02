@@ -59,7 +59,7 @@ public class ExistingOrderCheck {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		ArrayList<String> query = new ArrayList<String>();
 		answer.add(recived.get(0));
-		String order = (String)recived.get(1);
+		String order = String.valueOf((int)recived.get(1));
 		query.add("select"); // command
 		query.add("pendingwaitlist"); // table name
 		query.add("*"); // columns to select from
