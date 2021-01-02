@@ -120,17 +120,18 @@ public class WelcomeController implements Initializable {
 			
 			
 			//in addition check if this a pending visitor 
-
-			ArrayList<Object> msgPending = new ArrayList<>();
-			ArrayList<String> dataPending = new ArrayList<>();
-			msgPending.add("checkIfPending");
-			dataPending.add(orderNum);
-			msgPending.add(dataPending);
-			ClientUI.sentToChatClient(msgPending);
+//
+//			ArrayList<Object> msgPending = new ArrayList<>();
+//			ArrayList<String> dataPending = new ArrayList<>();
+//			msgPending.add("checkIfPending");
+//			dataPending.add(orderNum);
+//			msgPending.add(dataPending);
+//			ClientUI.sentToChatClient(msgPending);
 			
 			
 			if (orderDetails == null) {
 				alert.setAlert("Failed, No such order.");
+				txtOrderNum.clear();
 				btnOrderNumber.setVisible(true);
 				btnGo.setVisible(false);
 				txtOrderNum.setVisible(false);
@@ -171,7 +172,7 @@ public class WelcomeController implements Initializable {
 		
 	}
 	public static void recevidFromServerisPending(boolean pending) {
-		ispending=pending;
+		setIspending(pending);
 	}
 
 	public void start(Stage primaryStage) throws Exception {
