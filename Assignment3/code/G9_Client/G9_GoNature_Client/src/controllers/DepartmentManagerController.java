@@ -28,6 +28,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXDatePicker;
 
 import client.ClientUI;
+import dataLayer.Park;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -140,8 +141,13 @@ public class DepartmentManagerController implements Initializable {
 
 	@FXML
 	private JFXDatePicker dateTo;
+	
+	/***** Global Variables *****/
+	//private static Park parkDetails;
+	
+	/***** Cancel Report Variables *****/
 
-	/***** Cancel Reports Variables *****/
+	/***** Cancel Report Variables *****/
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
 	private static boolean error = false;
 	private int index = 0;
@@ -225,7 +231,7 @@ public class DepartmentManagerController implements Initializable {
 			
 			if (!getError()) {
 				// show all data
-				chart();
+				barChart();
 			} else {
 				alert.failedAlert("Failed", "There is no information on the dates you requested.");
 				bcCancells.getData().clear();
@@ -453,7 +459,7 @@ public class DepartmentManagerController implements Initializable {
 	//														cell [2]: amount
 	// output: displays the data
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void chart() {		
+	public void barChart() {		
 		int i;
 		int disneyDate = 0;
 		int jurasicDate = 0;
