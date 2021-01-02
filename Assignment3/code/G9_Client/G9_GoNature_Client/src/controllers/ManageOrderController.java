@@ -319,7 +319,7 @@ public class ManageOrderController implements Initializable {
 		msg.add("waitlistReplay");
 		if (event.getSource() == btnconfirme)
 			msg.add("yes");
-		if (event.getSource() == btnNoconfirme)
+		else if (event.getSource() == btnNoconfirme)
 			msg.add("no");
 		msg.add(order);
 		ClientUI.sentToChatClient(msg);

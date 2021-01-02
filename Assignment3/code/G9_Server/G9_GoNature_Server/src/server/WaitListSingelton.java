@@ -139,7 +139,9 @@ public class WaitListSingelton {
 			return;
 		else {
 			for (ArrayList<String> row : queryData) {
-				send24HoursNotification(new Order(row));
+				Order order =  new Order(row);
+				if (!ExistingOrderCheck.checkIfPending(""+order.getOrderNumber()))
+					send24HoursNotification(order);
 			}
 		}
 	}
@@ -158,10 +160,17 @@ public class WaitListSingelton {
 	
 	//input: order calss of order to check
 	//output: true if limit has passed false if not
-	private static boolean limitReach(Order order) {
-		Date now = new Date();
-		Date limit = selectDateForPending(order);
-		if(limit.equals(null) || limit.compareTo(now) >= 0)
+	private static boolean limitReach(Order order) {		  
+		Date now = (Date) new Date();
+		Date limit = new Date (selectDateForPending(order).getTime());
+		//
+		//
+		int test3 = limit.compareTo(now);
+		boolean test = (limit.compareTo(now) <= 0);
+		boolean test2 = limit.equals(null);
+		//
+		//
+		if(limit.equals(null) || limit.compareTo(now) <= 0) //to<from: to.compareTo(from)<0
 			return false;
 		return true;
 	}

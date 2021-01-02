@@ -36,7 +36,7 @@ public class BarcodeSimulation {
 		return obj;
 	}
 
-	public static void loop() throws NumberFormatException, IOException {
+	public static void interactive() throws NumberFormatException, IOException {
 		listener = true;
 		System.out.print("========= Simulation ============ \n");
 		System.out.print("\nlistening for calls...\n");
@@ -87,7 +87,7 @@ public class BarcodeSimulation {
 			@Override
 			public void run() {
 				try {
-					getSim().loop();
+					getSim().interactive();
 				} catch (NumberFormatException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
