@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -646,13 +647,14 @@ public class ParkEmployeeController implements Initializable {
 	// output: return true if that's today's date
 	//         otherwise false
 	public boolean checkDate() {
-		LocalDateTime arrivelDate = LocalDateTime.now();
+		LocalDate arrivelDate = LocalDate.now();
+
 		// "dd-MM-yyyy"
 		String currentDate = arrivelDate.getDayOfMonth() + "-" + arrivelDate.getMonthValue() + "-"
 				+ arrivelDate.getYear();
 		String orderDate = lblDate.getText();
 
-		if (currentDate.equals(orderDate)) {
+		if (arrivelDate.equals(orderDate)) {
 			return true;
 		}
 
@@ -692,7 +694,7 @@ public class ParkEmployeeController implements Initializable {
 			if (arrivelHour == 12) {
 				return true;
 			}
-		} else if (currentHour >= 16 && currentHour < 20) {
+		} else if (currentHour >= 16 && currentHour < 22) {
 			timeFormat = " 16:00:00";//TODO
 			if (arrivelHour == 16) {
 				return true;
@@ -761,8 +763,8 @@ public class ParkEmployeeController implements Initializable {
 		ArrayList<String> data = new ArrayList<String>();
 
 		data.add(String.valueOf(orderNumber));
-		data.add(getParkName());
 		data.add(currentTime.format(dateAndTime));
+		data.add(getParkName());
 		data.add(orderType);
 
 		sendToServerArrayList("updateAccessControl", data);

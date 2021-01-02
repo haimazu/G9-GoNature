@@ -33,8 +33,8 @@ public class UpdateVisitorsNumber {
 
 	// input: cell [0]: case name updateAccessControl
 	//        cell [1]: cell 0: orderNumber
-	//        			cell 1: parkName
-	//        			cell 2: entryTime / exitTime
+	//        			cell 1: timeEnter / timeExit
+	//        			cell 2: parkName
 	//        			cell 3: orderType
 
 	// output: ArrayList<Object>=> cell[0] function name
@@ -46,15 +46,14 @@ public class UpdateVisitorsNumber {
 		// the service name : updateAccessControl
 		answer.add(recived.get(0)); 
 		// information depending on entry or exit status
-		ArrayList<String> data = (ArrayList<String>) recived.get(1);
-		
+		ArrayList<String> data = (ArrayList<String>) recived.get(1);	
 		ArrayList<String> query = new ArrayList<String>();
 		
 		// enter mode: we need to insert all 
 		if (!checkIfOrderNumberExists(data.get(0))) {
 			query.add("insert"); // command
-			query.add("accesscontrol"); // table name
-			query.add(data.get(0) + ", '" + data.get(1) + "', '" + data.get(2) + "', " + null + ", '" + data.get(3) + "'");
+			query.add("enteryandexit"); // table name
+			query.add(data.get(0) + ", '" + data.get(1) + "', '" + null + "', " + data.get(2) + ", '" + data.get(3) + "'");
 
 			answer.add(MySQLConnection.insert(query));
 			EchoServer.sendToMyClient(answer, client);
@@ -62,8 +61,8 @@ public class UpdateVisitorsNumber {
 		}
 		
 		query.add("update"); // command
-		query.add("accesscontrol"); // table name
-		query.add("exitTime = '" + data.get(2) + "'"); // columns to update	
+		query.add("enteryandexit"); // table name
+		query.add("timeEnter = '" + data.get(1) + "'"); // columns to update	
 		query.add("orderNumber"); // condition
 		query.add(data.get(0)); // orderNumber value
 

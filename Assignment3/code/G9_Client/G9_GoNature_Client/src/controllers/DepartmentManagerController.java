@@ -21,6 +21,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.languages.HebrewProcessor;
 import com.jfoenix.controls.JFXDatePicker;
 
 import client.ClientUI;
@@ -31,19 +32,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -110,17 +108,23 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private NumberAxis yAxis;
 	@FXML
-	private JFXDatePicker dpFrom;
+    private JFXDatePicker dpCancelFrom;
+    @FXML
+    private JFXDatePicker dpCancelTo;
 	@FXML
-	private JFXDatePicker dpTo;
-	@FXML
-	private Button btnShow;
+	private Button btnCancelShow;
 	@FXML
 	private Button btnExport;
 	@FXML
 	private Button btnLogout;
 	
 	/***** Visits Report *****/
+	@FXML
+    private JFXDatePicker dpVisitorsFrom;
+    @FXML
+    private JFXDatePicker dpVisitorsTo;
+    @FXML
+    private Button btnVisitorsShow;
 	@FXML
     private PieChart pieRegular;
     @FXML
@@ -141,6 +145,9 @@ public class DepartmentManagerController implements Initializable {
 	// private static Park parkDetails;
 
 	/***** Visits Report Variables *****/
+	private static ArrayList<String> regularVisitors = new ArrayList<>();
+	private static ArrayList<String> memberVisitors = new ArrayList<>();
+	private static ArrayList<String> groupVisitors = new ArrayList<>();
 
 	/***** Cancel Report Variables *****/
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
@@ -212,13 +219,13 @@ public class DepartmentManagerController implements Initializable {
 	void show(ActionEvent event) {
 		ArrayList<String> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+		
 		// the dates are correct
-		if (checkDate()) {
-			String fromFormat = dateTimeFormatter.format(dpFrom.getValue());
-			String toFormat = dateTimeFormatter.format(dpTo.getValue().plusDays(1));
+		if (checkDate(dpCancelFrom.getValue(), dpCancelTo.getValue().plusDays(1))) {
+			String fromFormat = dateTimeFormatter.format(dpCancelFrom.getValue());
+			String toFormat = dateTimeFormatter.format(dpCancelTo.getValue().plusDays(1));
 			data.add(fromFormat);
-			data.add(toFormat);
+			data.add(toFormat);			
 			sendToServerArrayList("getCancellationReports" ,data);
 
 			if (!getError()) {
@@ -230,6 +237,7 @@ public class DepartmentManagerController implements Initializable {
 			}
 		} else {
 			alert.failedAlert("Failed", "Start date cannot be greater than end date.");
+			bcCancells.getData().clear();
 		}
 	}
 
@@ -254,8 +262,8 @@ public class DepartmentManagerController implements Initializable {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		String fromFormat = dateFormatter.format(dpFrom.getValue());
-		String toFormat = dateFormatter.format(dpTo.getValue());
+		String fromFormat = dateFormatter.format(dpCancelFrom.getValue());
+		String toFormat = dateFormatter.format(dpCancelTo.getValue());
 		// the date it was created
 		String fileNameDate = fileNameFormatter.format(LocalDate.now());
 
@@ -334,9 +342,9 @@ public class DepartmentManagerController implements Initializable {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 		// the dates are correct
-		if (checkDate()) {
-			String fromFormat = dateTimeFormatter.format(dpFrom.getValue());
-			String toFormat = dateTimeFormatter.format(dpTo.getValue().plusDays(1));
+		if (checkDate(dpVisitorsFrom.getValue(), dpVisitorsTo.getValue().plusDays(1))) {
+			String fromFormat = dateTimeFormatter.format(dpVisitorsFrom.getValue());
+			String toFormat = dateTimeFormatter.format(dpVisitorsTo.getValue().plusDays(1));
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("regular");
@@ -360,14 +368,13 @@ public class DepartmentManagerController implements Initializable {
 		addPieChart(pieGroup, "Group");
 	}
 	
-	public boolean checkDate() {
-		LocalDate from = dpFrom.getValue();
-		LocalDate to = dpTo.getValue();
+	public boolean checkDate(LocalDate from, LocalDate to) {
 
 		// the dates are correct
 		if (from.isBefore(to) || from.isEqual(to)) {
 			return true;
 		}
+		
 		return false;
 	}
 	
@@ -379,8 +386,7 @@ public class DepartmentManagerController implements Initializable {
 		currentPie.setAnimated(false);
 		currentPie.setLegendVisible(false);
 		
-		//currentPie.setTitle(title);
-		
+		//currentPie.setTitle(title);	
 
 		switch (title) {
 			case "Regular":
@@ -696,6 +702,54 @@ public class DepartmentManagerController implements Initializable {
 			DepartmentManagerController.cancelledOrders = cancelData;
 		}
 	}
+	
+	// getting information from the server
+	// input: none
+	// output: list of regular visitors:
+	// ArrayList<Object>: cell[0] 0-1 hour
+	// 					  cell[1] 1-2 hours
+	//	 				  cell[2] 2-3 hours
+	//	  				  cell[3] 3-4 hours
+	public static void receivedFromServerRegularVisitorsData(ArrayList<String> data) {
+		if (data.isEmpty()) {
+			setError(true);
+		} else {
+			setError(false);
+			DepartmentManagerController.regularVisitors = data;
+		}
+	}
+	
+	// getting information from the server
+	// input: none
+	// output: list of members visitors:
+	// ArrayList<Object>: cell[0] 0-1 hour
+	// 					  cell[1] 1-2 hours
+	//	 				  cell[2] 2-3 hours
+	//	  				  cell[3] 3-4 hours
+	public static void receivedFromServerMemberVisitorsData(ArrayList<String> data) {
+		if (data.isEmpty()) {
+			setError(true);
+		} else {
+			setError(false);
+			DepartmentManagerController.memberVisitors = data;
+		}
+	}
+	
+	// getting information from the server
+	// input: none
+	// output: list of group visitors:
+	// ArrayList<Object>: cell[0] 0-1 hour
+	// 					  cell[1] 1-2 hours
+	//	 				  cell[2] 2-3 hours
+	//	  				  cell[3] 3-4 hours
+	public static void receivedFromServerGroupVisitorsData(ArrayList<String> data) {
+		if (data.isEmpty()) {
+			setError(true);
+		} else {
+			setError(false);
+			DepartmentManagerController.groupVisitors = data;
+		}
+	}
 
 	public static boolean getError() {
 		return error;
@@ -737,19 +791,34 @@ public class DepartmentManagerController implements Initializable {
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
 		mark.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("MarkCh"));
 
-		/***** Cancel Reports *****/
-		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
+		/***** Visitors Reports *****/
+		dpVisitorsFrom.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
-		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpFrom.setValue(newValue);
+		dpVisitorsFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpVisitorsFrom.setValue(newValue);
 		});
 
 		// plusMonths(1) to get the next month
 		// withDayOfMonth(1) to get the first day
-		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
+		dpVisitorsTo.setValue(dpVisitorsFrom.getValue().plusMonths(1).withDayOfMonth(1));
 		// listener for updating the date
-		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpTo.setValue(newValue);
+		dpVisitorsTo.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpVisitorsTo.setValue(newValue);
+		});
+		
+		/***** Cancel Reports *****/
+		dpCancelFrom.setValue(LocalDate.now().withDayOfMonth(1));
+		// listener for updating the date
+		dpCancelFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpCancelFrom.setValue(newValue);
+		});
+
+		// plusMonths(1) to get the next month
+		// withDayOfMonth(1) to get the first day
+		dpCancelTo.setValue(dpCancelFrom.getValue().plusMonths(1).withDayOfMonth(1));
+		// listener for updating the date
+		dpCancelTo.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpCancelTo.setValue(newValue);
 		});
 	}
 }
