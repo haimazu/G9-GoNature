@@ -6,54 +6,6 @@ import ocsf.server.ConnectionToClient;
 
 public class UpdateVisitorsNumber {
 
-	
-	//NOT IN A USE
-	// input: ArrayList<Object>,ConnectionToClient
-	// updates the MaxVisitorsNumber in Park table
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] T/F if update succeeded
-//	public static void MaxVisitorsNumberUpdate(ArrayList<Object> recived, ConnectionToClient client) {
-//
-//		ArrayList<Object> answer = new ArrayList<Object>();
-//		answer.add(recived.get(0));
-//		Park data = (Park) recived.get(1); // Park object received
-//
-//		ArrayList<String> query = new ArrayList<String>();
-//		query.add("update"); // command
-//		query.add("park"); // table name
-//		String value = "maxVisitorAmount='" + data.getMaximumCapacityInPark() + "'";
-//		query.add(value);
-//		query.add("parkName");
-//		query.add(data.getName());
-//
-//		answer.add(MySQLConnection.insert(query));
-//		EchoServer.sendToMyClient(answer, client);
-//
-//	}
-
-	// input: ArrayList<Object>,ConnectionToClient
-	// updates the MaxAmountOrders in Park table
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] T/F if update succeeded
-//	public static void MaxAmountOrdersUpdate(ArrayList<Object> recived, ConnectionToClient client) {
-//
-//		ArrayList<Object> answer = new ArrayList<Object>();
-//		answer.add(recived.get(0));
-//		Park data = (Park) recived.get(1); // Park object received
-//
-//		ArrayList<String> query = new ArrayList<String>();
-//		query.add("update"); // command
-//		query.add("park"); // table name
-//		String value = "maxAmountOrders='" + data.getMaxAmountOrders() + "'";
-//		query.add(value);
-//		query.add("parkName");
-//		query.add(data.getName());
-//
-//		answer.add(MySQLConnection.insert(query));
-//		EchoServer.sendToMyClient(answer, client);
-//
-//	}
-
 	// input: ArrayList<Object> cell [0]: parkName
 	// cell [1]: currentVisitoreAmount ,ConnectionToClient
 	// updates the ParkCurrentVisitors in Park table

@@ -188,7 +188,7 @@ public class ParkManagerController implements Initializable {
 	/* ----for usage chart----- */
 
 	@FXML
-	private BarChart<?, ?> bcUsageChart;
+	private BarChart<String, Double> bcUsageChart;
 
 	@FXML
 	private CategoryAxis xAxisU;
@@ -204,6 +204,10 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Button showUsage;
 	private static ArrayList<ArrayList<String>> usageReport = new ArrayList<>();
+
+	private Series<String, Double> visit8_12 = new Series<>();
+	private Series<String, Double> visit12_16 = new Series<>();
+	private Series<String, Double> viit16_20 = new Series<>();
 	/*-------------------------*/
 
 	public static ArrayList<ArrayList<String>> getUsageReport() {
@@ -326,6 +330,22 @@ public class ParkManagerController implements Initializable {
 		// listener for updating the date
 		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpTo.setValue(newValue);
+		});
+		
+		
+		/*** usage reports ***/
+		dpFromU.setValue(LocalDate.now().withDayOfMonth(1));
+		// listener for updating the date
+		dpFromU.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpFromU.setValue(newValue);
+		});
+
+		// plusMonths(1) to get the next month
+		// withDayOfMonth(1) to get the first day
+		dpToU.setValue(dpFromU.getValue().plusMonths(1).withDayOfMonth(1));
+		// listener for updating the date
+		dpToU.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpToU.setValue(newValue);
 		});
 	}
 
@@ -806,8 +826,6 @@ public class ParkManagerController implements Initializable {
 		return cal.get(Calendar.DAY_OF_WEEK);
 	}
 
-	
-
 	public void resetWeekDayCounter() {
 
 		for (int i = 0; i < this.weekDaysCounter.length; i++) {
@@ -819,6 +837,7 @@ public class ParkManagerController implements Initializable {
 	static void noDataTopresent() {
 		alert.setAlert("There is no Data to present for selected dates.");
 	}
+
 	public String getDate(String date) {
 		String[] arrDateAndTime = date.split(" ");
 		String[] arrDate = arrDateAndTime[0].split("-");
@@ -851,7 +870,7 @@ public class ParkManagerController implements Initializable {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartUsage() throws ParseException {
-		boolean count=false;
+		boolean count = false;
 		xAxisU = new CategoryAxis();
 		yAxisU = new NumberAxis(0, 20, 2);
 		bcUsageChart.getData().clear();
@@ -862,29 +881,54 @@ public class ParkManagerController implements Initializable {
 		bcUsageChart.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 		bcUsageChart.setPrefSize(613, 430);
 		bcUsageChart.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
-		
-	
-		
-	
-		Series<String, Double> visit8_12 = new Series<>();
-		Series<String, Double> visit12_16 = new Series<>();
-		Series<String, Double> viit16_20 = new Series<>();
 
-		
-		for (LocalDate date = dpFromU.getValue(); date.isBefore(dpToU.getValue().plusDays(1)); date = date.plusDays(1)) {
-			
-			 count = checkIfExists(date);
-		}
-		
-	}
-	public  boolean checkIfExists (LocalDate date) {
+//		Series<String, Double> visit8_12 = new Series<>();
+//		Series<String, Double> visit12_16 = new Series<>();
+//		Series<String, Double> viit16_20 = new Series<>();
 		String someDate;
-		for (ArrayList<String> arrayList : usageReport) {
-			someDate = getDate(arrayList.get(0)); 
-			Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(someDate);
-			if(date.isAfter(date1))
+
+		//for - that check every date if exist in usageReport and if it does it willl put in on the chart and then will remove it from the usageReport;
+		for (LocalDate date = dpFromU.getValue(); date.isBefore(dpToU.getValue().plusDays(1)); date = date.plusDays(1)) {
+			ArrayList<String> firstArrDate = usageReport.get(0);
+			String firstDate = usageReport.get(0).get(0);// first array
+			someDate = getDate(firstDate); // yyyy-mm-dd
+			LocalDate checkDate = LocalDate.parse(someDate);
+			if (date.equals(checkDate)) {
+				String dateTime_8 = date.toString() + " " + "08:00:00";
+				if (firstDate.equals(dateTime_8)) {
+					visit8_12.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+							Double.parseDouble(firstArrDate.get(1))));
+					usageReport.remove(firstDate);
+				} else
+					visit8_12.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+
+				String dateTime_12 = date.toString() + " " + "12:00:00";
+				if (firstDate.equals(dateTime_12)) {
+					visit12_16.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+							Double.parseDouble(firstArrDate.get(1))));
+					usageReport.remove(firstDate);
+				} else
+					visit12_16.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+
+				String dateTime_16 = date.toString() + " " + "16:00:00";
+				if (firstDate.equals(dateTime_12)) {
+					viit16_20.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+							Double.parseDouble(firstArrDate.get(1))));
+					usageReport.remove(firstDate);
+				} else
+					viit16_20.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+			} else {
+				visit8_12.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+				visit12_16.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+				viit16_20.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+			}
+
 		}
+		
+		bcUsageChart.getData().addAll(visit8_12, visit12_16, viit16_20);
+
 	}
+
 
 	/*-------end of usage report section --------*/
 

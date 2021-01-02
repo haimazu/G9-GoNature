@@ -169,12 +169,12 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="20.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
+                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="37.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
                      <font>
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="LabelCount" alignment="TOP_LEFT" layoutX="106.0" layoutY="20.0" prefHeight="26.0" prefWidth="16.0" styleClass="labelBold">
+                  <Label fx:id="LabelCount" alignment="TOP_LEFT" layoutX="106.0" layoutY="37.0" prefHeight="26.0" prefWidth="16.0" styleClass="labelBold">
                      <font>
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
@@ -186,6 +186,16 @@
                   </Label>
                   <Button fx:id="btnApprove" focusTraversable="false" layoutX="242.0" layoutY="444.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnMiddleButtons" text="approve" />
                   <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="334.0" layoutY="444.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" text="disapprove" />
+                  <Label layoutX="30.0" styleClass="labelBold" text="Visitors in the park">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCurrentVisitors" layoutX="176.0" layoutY="-2.0">
+                     <font>
+                        <Font name="Ebrima" size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </children>

@@ -39,7 +39,8 @@ public class Reports {
 		query.add("select"); // command
 		query.add("orders"); // table name
 		query.add("orderType, SUM(amountArrived), arrivedTime"); // columns to select from
-		query.add("WHERE parkName='" + dataFromClient.get(0) + "' AND " + dateCond + "AND amountArrived >0 GROUP BY DAY(arrivedTime), orderType"); // condition
+		query.add("WHERE parkName='" + dataFromClient.get(0) + "' AND " + dateCond
+				+ "AND amountArrived >0 GROUP BY DAY(arrivedTime), orderType"); // condition
 		query.add("3"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
@@ -79,11 +80,11 @@ public class Reports {
 		answer.add(recived.get(0));
 		String parkName = dataFromClient.get(0);//// insert all for all parks
 		String parkCond = " ";
-		if (!parkName.equals("all"))
-			parkCond = "parkName='" + parkName + "' AND ";
+		// if (!parkName.equals("all"))
+		parkCond = "parkName=" + parkName + "' AND ";
 		String startDate = dataFromClient.get(1);
 		String endDate = dataFromClient.get(2);
-		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
+		String dateCond = "orders.arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // select
 		query.add("orders"); // tableName
@@ -95,10 +96,10 @@ public class Reports {
 		query.add("select"); // select
 		query.add("park"); // tableName
 		query.add("maxVisitorAmount"); // columns
-		if (parkName.equals("all"))
-			query.add("WHERE " + dateCond); // condition
-		else
-			query.add("WHERE parkName='" + parkName + "' AND " + dateCond); // condition
+//		if (parkName.equals("all"))
+//			query.add(""); // condition
+//		else
+		query.add("WHERE "+parkCond); // condition
 		query.add("1"); // replyColNum
 		ArrayList<ArrayList<String>> maxCapacityForPark = MySQLConnection.select(query);
 		int maxCapacity = Integer.parseInt(maxCapacityForPark.get(0).get(0));
@@ -220,7 +221,7 @@ public class Reports {
 		query1.add("3"); // how many columns returned
 		System.out.println(query1.toString());
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
-		
+
 		answer.add(queryData);
 		System.out.println(queryData);// **
 

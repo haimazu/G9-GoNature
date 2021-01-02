@@ -1,5 +1,6 @@
 package server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import dataLayer.Park;
@@ -7,7 +8,7 @@ import ocsf.server.ConnectionToClient;
 import reportData.ManagerRequest;
 import reportData.TableViewSet;
 
-public class PendingMenagerRequest {
+public class PendingMenagerRequest implements Serializable {
 
 	// input: ArrayList<Object>: cell[0] name
 	// cell[1] ManagerRequest object
@@ -141,7 +142,7 @@ public class PendingMenagerRequest {
 	// cell[1] tabelViewSet object
 	// cell[2] yes/no
 	//
-	// output:
+	// output: ArrayList<Object>: cell[0] T/F
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -171,8 +172,8 @@ public class PendingMenagerRequest {
 			ManagerRequest mr = new ManagerRequest(queryData1.get(0));
 
 			if (mr.getRequestType() == "discount") {
-				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < from"
-						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > to" + ")";
+				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
+						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to" + ")";
 				// search if the dates already exist
 				ArrayList<String> query2 = new ArrayList<String>();
 				query2.add("select"); // command

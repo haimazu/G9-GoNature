@@ -101,6 +101,8 @@ public class EchoServer extends AbstractServer {
 			ExistingOrderCheck.checkIfPending(recived, client);
 		case "UsageReport" :
 			Reports.UsageReport(recived, client);
+		case "waitlistReplay":
+			Comunication.waitlistReplay(recived, client);
 		default:
 			break;
 		}
