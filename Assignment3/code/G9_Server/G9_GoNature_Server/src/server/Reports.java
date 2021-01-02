@@ -62,7 +62,7 @@ public class Reports {
 	// input: array list of objects contains:
 	// [0] -> String "UsageReport"
 	// [1] -> Array list of String contains:
-	// [0] -> String parkName (if all parks should be "all")
+	// [0] -> String parkName
 	// [1] -> String startDate in a following date format: (YYYY-MM-DD)
 	// [2] -> String endDate in a following date format: (YYYY-MM-DD)
 	// output: NONE
@@ -75,44 +75,51 @@ public class Reports {
 	public static void UsageReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		ArrayList<Object> answer = new ArrayList<Object>();
-		ArrayList<String> notFullDaysRow = new ArrayList<String>();
 		ArrayList<ArrayList<String>> notFullDaysTable = new ArrayList<ArrayList<String>>();
 		answer.add(recived.get(0));
 		String parkName = dataFromClient.get(0);//// insert all for all parks
-		String parkCond = " ";
-		// if (!parkName.equals("all"))
-		parkCond = "parkName=" + parkName + "' AND ";
 		String startDate = dataFromClient.get(1);
 		String endDate = dataFromClient.get(2);
-		String dateCond = "orders.arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
+		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
+		System.out.println("here1");
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // select
 		query.add("orders"); // tableName
 		query.add("arrivedTime,SUM(amountArrived) AS amountArrived"); // columns
-		query.add("WHERE " + parkCond + dateCond + " GROUP BY arrivedTime ORDER BY arrivedTime"); // condition
+		query.add("WHERE parkName='" + parkName + "' AND " + dateCond + " GROUP BY arrivedTime ORDER BY arrivedTime"); // condition
 		query.add("2"); // replyColNum
 		ArrayList<ArrayList<String>> parkSummedCapacityByCapsule = MySQLConnection.select(query);
+		System.out.println(parkSummedCapacityByCapsule);
+		System.out.println("here2");
 		query.clear();
 		query.add("select"); // select
 		query.add("park"); // tableName
 		query.add("maxVisitorAmount"); // columns
-//		if (parkName.equals("all"))
-//			query.add(""); // condition
-//		else
-		query.add("WHERE "+parkCond); // condition
+		query.add("WHERE parkName= '" + parkName + "'"); // condition
 		query.add("1"); // replyColNum
+
 		ArrayList<ArrayList<String>> maxCapacityForPark = MySQLConnection.select(query);
+		System.out.println("here3");
+		System.out.println(maxCapacityForPark);
 		int maxCapacity = Integer.parseInt(maxCapacityForPark.get(0).get(0));
 		for (ArrayList<String> row : parkSummedCapacityByCapsule) {
 			double capacityInCapsule = Double.parseDouble(row.get(1));
 			if (capacityInCapsule < maxCapacity) {
+				ArrayList<String> notFullDaysRow = new ArrayList<String>();
 				notFullDaysRow.add(row.get(0));
-				notFullDaysRow.add(String.valueOf(maxCapacity - capacityInCapsule));
+				System.out.println("maxCapacity=" + maxCapacity);
+				System.out.println("capacityInCapsule=" + capacityInCapsule);
+				String dif = "" + (maxCapacity - capacityInCapsule);
+				System.out.println("dif=" + dif);
+				notFullDaysRow.add(dif);
+				System.out.println(notFullDaysRow);
 				notFullDaysTable.add(notFullDaysRow);
-				notFullDaysRow.clear();
 			}
 		}
-		answer.add(notFullDaysRow);
+
+		System.out.println("here4");
+		System.out.println(notFullDaysTable);
+		answer.add(notFullDaysTable);
 		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {

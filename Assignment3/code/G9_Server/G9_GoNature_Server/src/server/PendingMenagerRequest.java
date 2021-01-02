@@ -146,16 +146,18 @@ public class PendingMenagerRequest implements Serializable {
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		TableViewSet tsv = (TableViewSet) recived.get(1);
+		ManagerRequest mr1 = (ManagerRequest) recived.get(1);
 		String yesno = (String) recived.get(2);
-		ArrayList<String> query = new ArrayList<String>();
 
+		// delete from pendingmanagerrequests
+		ArrayList<String> query = new ArrayList<String>();
 		query.add("deleteCond");
 		query.add("pendingmanagerrequests");
 		query.add("employeeID");
-		query.add("employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
+		query.add("employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
 
 		if (yesno.equals("no")) {
+			MySQLConnection.deleteCond(query);
 			answer.add(true);
 			EchoServer.sendToMyClient(answer, client);
 			return;
@@ -166,11 +168,12 @@ public class PendingMenagerRequest implements Serializable {
 			query1.add("select"); // command
 			query1.add("pendingmanagerrequests"); // table name
 			query1.add("*"); // columns to select from
-			query1.add("WHERE employeeID ='" + tsv.getIdEmp() + "' AND requesttype='" + tsv.getReqType() + "'");
+			query1.add(
+					"WHERE employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
 			query1.add("8");
 			ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 			ManagerRequest mr = new ManagerRequest(queryData1.get(0));
-
+			MySQLConnection.deleteCond(query);
 			if (mr.getRequestType() == "discount") {
 				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
 						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to" + ")";
@@ -194,7 +197,7 @@ public class PendingMenagerRequest implements Serializable {
 				query3.add("insert"); // command
 				query3.add("discounts");
 				query3.add(toStringForDBDiscounts(mr));
-				answer.add(MySQLConnection.select(query3));
+				answer.add(MySQLConnection.insert(query3));
 				EchoServer.sendToMyClient(answer, client);
 				return;
 			}
@@ -218,6 +221,7 @@ public class PendingMenagerRequest implements Serializable {
 				query2.add("maxAmountOrders='" + mr.getOrdersCapacity() + "'");
 				query2.add("parkName");
 				query2.add(mr.getParkName());
+				System.out.println("im here 224");
 				answer.add(MySQLConnection.update(query2));
 				System.out.println("max orders capacity updated");
 				EchoServer.sendToMyClient(answer, client);

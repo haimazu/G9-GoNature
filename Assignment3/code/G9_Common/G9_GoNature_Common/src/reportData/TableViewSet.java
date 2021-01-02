@@ -1,5 +1,6 @@
 package reportData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.jfoenix.controls.JFXCheckBox;
@@ -7,7 +8,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 
-public class TableViewSet {
+public class TableViewSet implements Serializable{
 
 	private String reqType;
 	private String reqDetails;

@@ -92,7 +92,7 @@ public class NewOrder {
 	//
 	// output: Order with updated totalPrice and price and orderType
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
-		int parkEnteryPrice = CurrentPriceInPark(ord);
+		double parkEnteryPrice = CurrentPriceInPark(ord);
 		int numberOfPeople;
 		if (occasional) {
 			numberOfPeople = ord.getAmountArrived();
@@ -161,10 +161,12 @@ public class NewOrder {
 	//
 	// output: returns the current price of entry in the park with manger discount
 	// calculated
-	public static int CurrentPriceInPark(Order ord) {
+	public static double CurrentPriceInPark(Order ord) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 		System.out.println(dtf.format(now));
+
+		// new park discount
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
 		query1.add("discounts"); // table name
@@ -172,31 +174,43 @@ public class NewOrder {
 		query1.add("WHERE parkName='" + ord.getParkName() + "' AND discounts.from <= '" + now
 				+ "' AND discounts.to >= '" + now + "'"); // condition
 		query1.add("2"); // how many columns returned
-		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
+		ArrayList<ArrayList<String>> newDiscountsQ = MySQLConnection.select(query1);
 
+		// current park discount
 		ArrayList<String> query2 = new ArrayList<String>();
 		query2.add("select"); // command
 		query2.add("park"); // table name
 		query2.add("entryPrice,mangerDiscount"); // columns to select from
 		query2.add("WHERE parkName='" + ord.getParkName() + "'"); // condition
 		query2.add("2"); // how many columns returned
-		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
+		ArrayList<ArrayList<String>> currentParkDiscountQ = MySQLConnection.select(query2);
+
 		// returns the price of entry to the park with a manager discount
+		System.out.println("current dis " + currentParkDiscountQ.get(0).get(1));
+		double discount = Double.parseDouble(currentParkDiscountQ.get(0).get(1));
+		if (!newDiscountsQ.isEmpty()) {
+			discount = Double.parseDouble(newDiscountsQ.get(0).get(1));
+			// if there is no change in discount
+			if (Double.parseDouble(currentParkDiscountQ.get(0).get(1)) == discount)
+				return Double.parseDouble(currentParkDiscountQ.get(0).get(0))
+						* Double.parseDouble(currentParkDiscountQ.get(0).get(1));
 
-		// if there is no change in discount
-		if (queryData1.get(0).get(1).equals(queryData2.get(0).get(1)))
-			return Integer.parseInt(queryData2.get(0).get(1));
-		// update the park table in DB with current discount
-		ArrayList<String> query3 = new ArrayList<String>();
-		query3.add("update");
-		query3.add("park");
-		query3.add("mangerDiscount= '" + " " + queryData2.get(0).get(1) + "'");
-		query3.add("parkName");
-		query3.add(ord.getParkName());
-		MySQLConnection.select(query3);
-		return Integer.parseInt(queryData2.get(0).get(0)) * Integer.parseInt(queryData1.get(0).get(1));
+			// update the park table in DB with current discount
+			ArrayList<String> query3 = new ArrayList<String>();
+			query3.add("update");
+			query3.add("park");
+			System.out.println(discount);
+			query3.add("mangerDiscount= '" + discount + "'");
+			query3.add("parkName");
+			query3.add(ord.getParkName());
+			System.out.println(query3);
+			boolean a;
+			a = MySQLConnection.update(query3);
+			System.out.println(a);
+		}
+
+		return Double.parseDouble(currentParkDiscountQ.get(0).get(0)) * discount;
 	}
-
 
 	////////////// ********************* Park **************************************
 	// input: ArrayList<Object>, ConnectionToClient

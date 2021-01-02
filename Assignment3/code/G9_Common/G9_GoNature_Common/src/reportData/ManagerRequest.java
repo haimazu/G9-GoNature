@@ -20,6 +20,12 @@ public class ManagerRequest implements Serializable {
 	String fromDate;
 	String toDate;
 	String parkName;
+	
+	public ManagerRequest(String parkName,int employeeID,String requestType ) {
+		this.parkName=parkName;
+		this.employeeID=employeeID;
+		this.requestType=requestType;
+	}
 
 	public ManagerRequest(ArrayList<String> ManagerRequestFromDB) {
 		this.employeeID = Integer.parseInt(ManagerRequestFromDB.get(0));
