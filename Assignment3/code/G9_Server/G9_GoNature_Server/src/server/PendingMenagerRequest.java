@@ -171,8 +171,8 @@ public class PendingMenagerRequest {
 			ManagerRequest mr = new ManagerRequest(queryData1.get(0));
 
 			if (mr.getRequestType() == "discount") {
-				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < from"
-						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > to" + ")";
+				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
+						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to" + ")";
 				// search if the dates already exist
 				ArrayList<String> query2 = new ArrayList<String>();
 				query2.add("select"); // command
