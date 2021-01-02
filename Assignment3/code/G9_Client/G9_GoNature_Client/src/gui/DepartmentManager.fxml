@@ -103,8 +103,8 @@
             </Pane>
             <Pane fx:id="pnCancels" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
-                  <JFXDatePicker fx:id="dpFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
-                  <JFXDatePicker fx:id="dpTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpCancelFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpCancelTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
                   <BarChart fx:id="bcCancells" barGap="5.0" layoutX="1.0" layoutY="86.0" prefHeight="430.0" prefWidth="613.0">
                      <xAxis>
                         <CategoryAxis label="Day in month" side="BOTTOM" fx:id="xAxis">
@@ -124,33 +124,33 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
-                  <Button fx:id="btnShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#show" styleClass="btnSmallGreen" text="Show" />
+                  <Button fx:id="btnCancelShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#show" styleClass="btnSmallGreen" text="Show" />
                   <Button fx:id="btnExport" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
                </children>
             </Pane>
             <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
-                  <JFXDatePicker fx:id="dpFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
-                  <JFXDatePicker fx:id="dpTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
-                  <Button fx:id="btnShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#showPieChart" styleClass="btnSmallGreen" text="Show" />
-                  <PieChart fx:id="pieRegular" layoutX="-12.0" layoutY="65.0" prefHeight="280.0" prefWidth="320.0" />
-                  <PieChart fx:id="pieMember" layoutX="304.0" layoutY="65.0" prefHeight="280.0" prefWidth="320.0" />
-                  <PieChart fx:id="pieGroup" layoutX="149.0" layoutY="286.0" prefHeight="280.0" prefWidth="320.0" />
+                  <JFXDatePicker fx:id="dpVisitorsFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpVisitorsTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
+                  <Button fx:id="btnVisitorsShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#showPieChart" styleClass="btnSmallGreen" text="Show" />
                   <Label fx:id="lblRegular" layoutX="116.0" layoutY="94.0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
+                  <PieChart fx:id="pieRegular" layoutX="-12.0" layoutY="65.0" prefHeight="280.0" prefWidth="320.0" />
                   <Label fx:id="lblMember" layoutX="434.0" layoutY="94.0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
+                  <PieChart fx:id="pieMember" layoutX="304.0" layoutY="65.0" prefHeight="280.0" prefWidth="320.0" />
                   <Label fx:id="lblGroup" layoutX="282.0" layoutY="315.0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
+                  <PieChart fx:id="pieGroup" layoutX="149.0" layoutY="286.0" prefHeight="280.0" prefWidth="320.0" />
                </children>
             </Pane>
             <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">

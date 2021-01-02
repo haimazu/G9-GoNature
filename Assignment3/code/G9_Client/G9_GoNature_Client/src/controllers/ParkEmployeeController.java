@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -646,10 +647,11 @@ public class ParkEmployeeController implements Initializable {
 	// output: return true if that's today's date
 	//         otherwise false
 	public boolean checkDate() {
-		LocalDateTime arrivelDate = LocalDateTime.now();
+		LocalDate arrivelDate = LocalDate.now();
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		
 		// "dd-MM-yyyy"
-		String currentDate = arrivelDate.getDayOfMonth() + "-" + arrivelDate.getMonthValue() + "-"
-				+ arrivelDate.getYear();
+		String currentDate = dateFormatter.format(arrivelDate);
 		String orderDate = lblDate.getText();
 
 		if (currentDate.equals(orderDate)) {
@@ -749,8 +751,8 @@ public class ParkEmployeeController implements Initializable {
 	
 	// ArrayList<String> data, sending to the server to update the access control
 	// input: on enter: cell 0: orderNumber
-	//        			cell 1: parkName
-	//        			cell 2: entryTime / exitTime
+	//        			cell 1: entryTime / exitTime
+	//        			cell 2: parkName
 	//        			cell 3: orderType
 	// output: message with the result of the update: true if success
 	//                                                false, otherwise
@@ -761,8 +763,8 @@ public class ParkEmployeeController implements Initializable {
 		ArrayList<String> data = new ArrayList<String>();
 
 		data.add(String.valueOf(orderNumber));
-		data.add(getParkName());
 		data.add(currentTime.format(dateAndTime));
+		data.add(getParkName());
 		data.add(orderType);
 
 		sendToServerArrayList("updateAccessControl", data);
