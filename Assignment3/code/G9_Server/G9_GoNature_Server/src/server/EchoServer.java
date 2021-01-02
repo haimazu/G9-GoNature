@@ -55,9 +55,9 @@ public class EchoServer extends AbstractServer {
 		case "order":
 			NewOrder.NewReservation(recived, client);
 			break;
-		case "checkValidOrderNum":
-			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
-			break;
+//		case "checkValidOrderNum":
+//			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
+//			break;
 		case "checkOrderForGo":
 			ExistingOrderCheck.checkOrderForGo(recived, client);
 			break;

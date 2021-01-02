@@ -87,8 +87,8 @@ public class ChatClient extends AbstractClient {
 			case "order":
 				OrderController.recivedFromServer((Object)received.get(1));
 				break;
-			case "checkValidOrderNum":
-				WelcomeController.recievedFromServerValidOrder((Object)received.get(1));
+			case "checkOrderForGo":
+				WelcomeController.recievedFromServerValidOrderAndPending((ArrayList<Object>)received);
 				break;
 			case "confirmOrder":
 				OrderController.recivedFromServerConfirmOrder((boolean)received.get(1));
@@ -129,13 +129,10 @@ public class ChatClient extends AbstractClient {
 			case "overallVisitorsReport" :
 				ParkManagerController.recivedFromserverVisitorsReport((ArrayList<ArrayList<String>>)received.get(1));
 				break;
-			case "checkIfPending":
-				ManageOrderController.recevidFromServerisPending((boolean)received.get(1));
-				break;
 			case "UsageReport":
 				ParkManagerController.recivedFromserverUsageReport((ArrayList<ArrayList<String>>)received.get(1));
 				break;
-			case "waitlistReplay"  :
+			case "waitlistReplay" :
 				ManageOrderController.receviedFromserverArrivalConfirmation((ArrayList<Object>)received);
 				break;
 			case "removePendingsManagerReq":

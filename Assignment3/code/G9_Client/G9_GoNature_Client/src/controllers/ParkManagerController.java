@@ -702,8 +702,8 @@ public class ParkManagerController implements Initializable {
 		yAxis = new NumberAxis(0, 20, 2);
 		bcVisitorsChart.getData().clear();
 		bcVisitorsChart.setAnimated(false);
-		bcVisitorsChart.setBarGap(0d);
-		bcVisitorsChart.setCategoryGap(4.0);
+		bcVisitorsChart.setBarGap(1.0d);
+		bcVisitorsChart.setCategoryGap(10.0);
 
 		bcVisitorsChart.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 		bcVisitorsChart.setPrefSize(613, 430);
@@ -755,25 +755,35 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void showChart(ActionEvent event) throws ParseException {
-		ArrayList<Object> msg = new ArrayList<>();
+		System.out.println("hihi1");
+		bcVisitorsChart.getData().clear();
+		
 		ArrayList<String> data = new ArrayList<>();
 		if (DatesNotCorresponding(dpFrom.getValue().toString(), dpTo.getValue().toString()))
 			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 		else {
-
-			msg.add("overallVisitorsReport");
+			System.out.println("hihi2");
 			data.add(getParkName());
 			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			data.add(dpTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			msg.add(data);
-			System.out.println("print message: " + msg);
+			data.add(dpTo.getValue().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			System.out.println("hihi3");
+			sendToServerArrayList(data);
 			System.out.println(
 					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			ClientUI.sentToChatClient(msg);
+			
 
 			chartVisitors();
 		}
 	}
+	public void sendToServerArrayList(ArrayList<String> data) {
+		ArrayList<Object> msg = new ArrayList<>();
+		msg.add("overallVisitorsReport");
+		msg.add(data);
+		
+		System.out.println("print message: " + msg);
+		ClientUI.sentToChatClient(msg);
+	}
+	
 
 	void checkWeekDays(String type) throws ParseException {
 		String someDate;
@@ -784,33 +794,33 @@ public class ParkManagerController implements Initializable {
 			date1 = new SimpleDateFormat("yyyy-MM-dd").parse(someDate);
 			if (type.equals(arrayList.get(0))) {
 				switch (getDayNumber(date1)) {
-				// MON
+				// SUN
 				case 1:
+					weekDaysCounter[1] += Double.parseDouble(arrayList.get(1));
+					break;
+				// MON
+				case 2:
 					weekDaysCounter[2] += Double.parseDouble(arrayList.get(1));
 					break;
 				// TUE
-				case 2:
+				case 3:
 					weekDaysCounter[3] += Double.parseDouble(arrayList.get(1));
 					break;
 				// WED
-				case 3:
+				case 4:
 					weekDaysCounter[4] += Double.parseDouble(arrayList.get(1));
 					break;
 				// THU
-				case 4:
+				case 5:
 					weekDaysCounter[5] += Double.parseDouble(arrayList.get(1));
 					break;
 				// FRI
-				case 5:
+				case 6:
 					weekDaysCounter[6] += Double.parseDouble(arrayList.get(1));
 					break;
 				// SAT
-				case 6:
-					weekDaysCounter[7] += Double.parseDouble(arrayList.get(1));
-					break;
-				// SUN
 				case 7:
-					weekDaysCounter[1] += Double.parseDouble(arrayList.get(1));
+					weekDaysCounter[7] += Double.parseDouble(arrayList.get(1));
 					break;
 				default:
 					break;
@@ -951,6 +961,7 @@ public class ParkManagerController implements Initializable {
 	}
 
 	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
+		setVisitorsReport(null);
 		if ((Object) visitorsReportAnswer instanceof String)
 			noDataTopresent();
 		else {
@@ -961,6 +972,7 @@ public class ParkManagerController implements Initializable {
 	}
 
 	public static void recivedFromserverUsageReport(ArrayList<ArrayList<String>> usageReportAnswer) {
+		setUsageReport(null);
 		if ((Object) usageReportAnswer instanceof String)
 			noDataTopresent();
 		else {

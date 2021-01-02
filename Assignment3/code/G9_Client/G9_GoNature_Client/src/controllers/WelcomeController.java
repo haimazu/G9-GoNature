@@ -50,8 +50,15 @@ public class WelcomeController implements Initializable {
 
 	private AlertController alert = new AlertController();
 	private static Order orderDetails;
-	
+	private static boolean ispending;
 
+	public static boolean getisIspending() {
+		return ispending;
+	}
+
+	public static void setIspending(boolean ispending) {
+		WelcomeController.ispending = ispending;
+	}
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		// switch scene to login
@@ -95,7 +102,7 @@ public class WelcomeController implements Initializable {
 			
 			ArrayList<Object> msg = new ArrayList<>();
 			ArrayList<String> data = new ArrayList<>();
-			msg.add("checkValidOrderNum");
+			msg.add("checkOrderForGo");
 			data.add(orderNum);
 			msg.add(data);
 			ClientUI.sentToChatClient(msg);
@@ -148,9 +155,11 @@ public class WelcomeController implements Initializable {
 		orderDetails = orderDetails2;
 	}
 
-	public static void recievedFromServerValidOrder(Object orderDetails) {
-		if (orderDetails instanceof Order)
-			setOrderDetails((Order)orderDetails);
+	public static void recievedFromServerValidOrderAndPending(ArrayList<Object> orderDetails) {
+		if (orderDetails.get(1) instanceof Order) {
+			setOrderDetails((Order)orderDetails.get(1));
+			setIspending((boolean)orderDetails.get(2));
+		}
 		else
 			setOrderDetails(null);
 		
