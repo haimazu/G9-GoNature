@@ -172,7 +172,7 @@ public class WelcomeController implements Initializable {
 	public static void recevidFromServerisPending(boolean pending) {
 		setIspending(pending);
 	}
-
+//
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		Scene scene = new Scene(root);
