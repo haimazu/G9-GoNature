@@ -184,8 +184,8 @@
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="242.0" layoutY="444.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnMiddleButtons" text="approve" />
-                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="334.0" layoutY="444.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" text="disapprove" />
+                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="205.0" layoutY="444.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnNext" text="approve" />
+                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="334.0" layoutY="444.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" styleClass="btnNext" text="disapprove" />
                   <Label layoutX="30.0" styleClass="labelBold" text="Visitors in the park">
                      <font>
                         <Font size="16.0" />
