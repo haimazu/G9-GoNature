@@ -153,7 +153,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <AnchorPane layoutY="88.0" prefHeight="361.0" prefWidth="482.0">
                      <children>
