@@ -190,7 +190,7 @@ public class NewOrder {
 		ArrayList<String> query3 = new ArrayList<String>();
 		query3.add("update");
 		query3.add("park");
-		query3.add("mangerDiscount= '" + " " + queryData2.get(0).get(1) + "'");
+		query3.add("mangerDiscount= '" + queryData2.get(0).get(1) + "'");
 		query3.add("parkName");
 		query3.add(ord.getParkName());
 		MySQLConnection.select(query3);
