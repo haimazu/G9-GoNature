@@ -120,13 +120,11 @@ public class WelcomeController implements Initializable {
 			
 			
 			//in addition check if this a pending visitor 
-//
-//			ArrayList<Object> msgPending = new ArrayList<>();
-//			ArrayList<String> dataPending = new ArrayList<>();
-//			msgPending.add("checkIfPending");
-//			dataPending.add(orderNum);
-//			msgPending.add(dataPending);
-//			ClientUI.sentToChatClient(msgPending);
+
+			ArrayList<Object> msgPending = new ArrayList<>();
+			msgPending.add("checkIfPending");
+			msgPending.add(orderNum);
+			ClientUI.sentToChatClient(msgPending);
 			
 			
 			if (orderDetails == null) {
