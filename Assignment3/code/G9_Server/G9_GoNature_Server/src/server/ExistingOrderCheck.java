@@ -75,13 +75,14 @@ public class ExistingOrderCheck {
 		// TODO Auto-generated method stub
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
+		String orderNum = ((ArrayList<String>)recived.get(1)).get(0);
 		ArrayList<ArrayList<String>> queryData = fechOrder(recived,"orders","orderNumber");
 		if (queryData.isEmpty()) {
 			answer.add("No such order");
 		} else {
 			Order kuku = new Order(queryData.get(0));
 			answer.add(kuku);
-			answer.add(checkIfPending((String)recived.get(1)));
+			answer.add(checkIfPending(orderNum));
 		}
 		EchoServer.sendToMyClient(answer, client);
 	}
