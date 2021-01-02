@@ -172,8 +172,7 @@ public class PendingMenagerRequest implements Serializable {
 			ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 			mr = new ManagerRequest(queryData1.get(0));
 			answer.add(MySQLConnection.deleteCond(query));
-			
-			
+
 			if (mr.getRequestType().equals("discount")) {
 				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
 						+ "      OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to" + ")";
@@ -201,6 +200,7 @@ public class PendingMenagerRequest implements Serializable {
 					EchoServer.sendToMyClient(answer, client);
 					return;
 				}
+
 			}
 
 			if (mr.getRequestType().equals("max_c")) {
