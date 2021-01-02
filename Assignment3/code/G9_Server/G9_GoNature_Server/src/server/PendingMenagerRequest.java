@@ -143,6 +143,7 @@ public class PendingMenagerRequest implements Serializable {
 	// cell[2] yes/no
 	//
 	// output: ArrayList<Object>: cell[0] T/F
+	//
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
