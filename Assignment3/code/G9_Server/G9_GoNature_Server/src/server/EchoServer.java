@@ -58,6 +58,9 @@ public class EchoServer extends AbstractServer {
 		case "checkValidOrderNum":
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 			break;
+		case "checkOrderForGo":
+			ExistingOrderCheck.checkOrderForGo(recived, client);
+			break;
 		case "confirmOrder":
 			NewOrder.queInsert(recived, client);
 			break;
@@ -97,12 +100,12 @@ public class EchoServer extends AbstractServer {
 		case "overallVisitorsReport" :
 			Reports.OverallVisitorsReport(recived, client);
 			break;
-		case "checkIfPending" : 
-			ExistingOrderCheck.checkIfPending(recived, client);
 		case "UsageReport" :
 			Reports.UsageReport(recived, client);
+			break;
 		case "waitlistReplay":
 			Comunication.waitlistReplay(recived, client);
+			break;
 		case "removePendingsManagerReq":
 			PendingMenagerRequest.deleteFromPending(recived, client);
 			break;

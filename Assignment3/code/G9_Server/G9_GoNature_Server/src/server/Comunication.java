@@ -42,7 +42,7 @@ public class Comunication {
 		String decide = (String)recived.get(1);
 		Order order = (Order)recived.get(2);
 		if (decide.equals("yes")) {
-			answer.add(WaitListSingelton.getWaitlist().replay(order)); //if true than less than limit was not reached
+			answer.add(WaitListSingelton.getWaitlist().orderConfirm(order)); //if true than less than limit was not reached
 		}
 		else if (decide.equals("no")) {
 			WaitListSingelton.getWaitlist().removePending(order);
