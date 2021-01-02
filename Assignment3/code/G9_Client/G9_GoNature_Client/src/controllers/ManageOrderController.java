@@ -178,11 +178,13 @@ public class ManageOrderController implements Initializable {
 			lblEdit.setVisible(false);
 		}
 	}
-/**
- * button back
- * @param event
- * @throws IOException
- */
+
+	/**
+	 * button back
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void back(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -322,8 +324,7 @@ public class ManageOrderController implements Initializable {
 			stage.setScene(new Scene(root));
 			break;
 		}
-		case 1: 
-		{
+		case 1: {
 
 			alert.successAlert("Approval", "Thank you for your approval!");
 			btnconfirme.setVisible(false);
@@ -333,8 +334,7 @@ public class ManageOrderController implements Initializable {
 			lblEditVisitors.setVisible(true);
 			lblEdit.setVisible(true);
 		}
-		case 2: 
-		{
+		case 2: {
 			alert.setAlert("Something went wrong..");
 			Stage stage1 = (Stage) btnBack.getScene().getWindow();
 			Parent root1 = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
