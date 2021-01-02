@@ -213,17 +213,13 @@ public class DepartmentManagerController implements Initializable {
 		ArrayList<String> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		LocalDate from = dpFrom.getValue();
-		String fromFormat = dateTimeFormatter.format(from);
-
-		LocalDate to = dpTo.getValue();
-
 		// the dates are correct
-		if (from.isBefore(to) || from.isEqual(to)) {
-			String toFormat = dateTimeFormatter.format(to.plusDays(1));
+		if (checkDate()) {
+			String fromFormat = dateTimeFormatter.format(dpFrom.getValue());
+			String toFormat = dateTimeFormatter.format(dpTo.getValue().plusDays(1));
 			data.add(fromFormat);
 			data.add(toFormat);
-			sendToServerArrayList(data);
+			sendToServerArrayList("getCancellationReports" ,data);
 
 			if (!getError()) {
 				// show all data
@@ -334,15 +330,50 @@ public class DepartmentManagerController implements Initializable {
 	
 	@FXML
 	void showPieChart() {
-		// send to server - 
+		ArrayList<String> data = new ArrayList<>();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		// the dates are correct
+		if (checkDate()) {
+			String fromFormat = dateTimeFormatter.format(dpFrom.getValue());
+			String toFormat = dateTimeFormatter.format(dpTo.getValue().plusDays(1));
+			data.add(fromFormat);
+			data.add(toFormat);
+			data.add("regular");
+			sendToServerArrayList("getVisitorsData", data);
+			
+			data.clear();
+			data.add(fromFormat);
+			data.add(toFormat);
+			data.add("member");
+			sendToServerArrayList("getVisitorsData", data);
+			
+			data.clear();
+			data.add(fromFormat);
+			data.add(toFormat);
+			data.add("group");
+			sendToServerArrayList("getVisitorsData", data);
+		}
+		
 		addPieChart(pieRegular, "Regular");
 		addPieChart(pieMember, "Member");
 		addPieChart(pieGroup, "Group");
 	}
 	
+	public boolean checkDate() {
+		LocalDate from = dpFrom.getValue();
+		LocalDate to = dpTo.getValue();
+
+		// the dates are correct
+		if (from.isBefore(to) || from.isEqual(to)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void addPieChart(PieChart currentPie, String title) {
 		currentPie.getData().clear();
-		//Setting the length of the label line 
+		// setting the length of the label line 
 		currentPie.setLabelLineLength(5);
 		currentPie.setClockwise(false);
 		currentPie.setAnimated(false);
@@ -642,10 +673,10 @@ public class DepartmentManagerController implements Initializable {
 	// [1] month
 	// [2] year
 	// output: none
-	public void sendToServerArrayList(ArrayList<String> date) {
+	public void sendToServerArrayList(String caseName, ArrayList<String> date) {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
-		msg.add("getCancellationReports");
+		msg.add(caseName);
 		// add date
 		msg.add(date);
 		// set up all the order details and the payment method
