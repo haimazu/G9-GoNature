@@ -131,6 +131,8 @@ public class ChatClient extends AbstractClient {
 				WelcomeController.recevidFromServerisPending((boolean)received.get(1));
 			case "UsageReport":
 				ParkManagerController.recivedFromserverUsageReport((ArrayList<ArrayList<String>>)received.get(1));
+			case "waitlistReplay"  :
+				ManageOrderController.receviedFromserverArrivalConfirmation((ArrayList<Object>)received);
 			default:
 			break;
 		}
