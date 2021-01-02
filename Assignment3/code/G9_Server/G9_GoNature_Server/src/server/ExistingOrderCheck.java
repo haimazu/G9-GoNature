@@ -68,8 +68,9 @@ public class ExistingOrderCheck {
 	//							[0] -> orderNumber
 	//output: NONE
 	//send to client: array list of object contains:
-	//					[0] -> Order Class if an order found, string "No such order" if not
-	//					[1] -> (if an order is found only) True if the order is in pendingwaitlist table
+	//					[0] -> String checkOrderForGo
+	//					[1] -> Order Class if an order found, string "No such order" if not
+	//					[2] -> (if an order is found only) True if the order is in pendingwaitlist table
 	public static void checkOrderForGo(ArrayList<Object> recived, ConnectionToClient client) {
 		// TODO Auto-generated method stub
 		ArrayList<Object> answer = new ArrayList<Object>();
