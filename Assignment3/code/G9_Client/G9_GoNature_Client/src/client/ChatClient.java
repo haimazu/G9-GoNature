@@ -128,7 +128,7 @@ public class ChatClient extends AbstractClient {
 			case "overallVisitorsReport" :
 				ParkManagerController.recivedFromserverVisitorsReport((ArrayList<ArrayList<String>>)received.get(1));
 			case "checkIfPending":
-				WelcomeController.recevidFromServerisPending((boolean)received.get(1));
+				ManageOrderController.recevidFromServerisPending((boolean)received.get(1));
 			case "UsageReport":
 				ParkManagerController.recivedFromserverUsageReport((ArrayList<ArrayList<String>>)received.get(1));
 				break;
