@@ -53,7 +53,7 @@ public class UpdateVisitorsNumber {
 		if (!checkIfOrderNumberExists(data.get(0))) {
 			query.add("insert"); // command
 			query.add("enteryandexit"); // table name
-			query.add(data.get(0) + ", '" + data.get(1) + "', '" + null + "', " + data.get(2) + ", '" + data.get(3) + "'");
+			query.add(data.get(0) + ", '" + data.get(1) + "', " + null + ", '" + data.get(2) + "', '" + data.get(3) + "'");
 
 			answer.add(MySQLConnection.insert(query));
 			EchoServer.sendToMyClient(answer, client);
@@ -62,7 +62,7 @@ public class UpdateVisitorsNumber {
 		
 		query.add("update"); // command
 		query.add("enteryandexit"); // table name
-		query.add("timeEnter = '" + data.get(1) + "'"); // columns to update	
+		query.add("timeExit = '" + data.get(1) + "'"); // columns to update	
 		query.add("orderNumber"); // condition
 		query.add(data.get(0)); // orderNumber value
 
@@ -76,7 +76,7 @@ public class UpdateVisitorsNumber {
 	public static boolean checkIfOrderNumberExists(String orderNumber) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
-		query.add("accesscontrol"); // table name
+		query.add("enteryandexit"); // table name
 		query.add("orderNumber"); // columns to select from
 		query.add("WHERE orderNumber = '" + orderNumber + "'"); // condition
 		query.add("1"); // how many columns returned

@@ -751,8 +751,8 @@ public class ParkEmployeeController implements Initializable {
 	
 	// ArrayList<String> data, sending to the server to update the access control
 	// input: on enter: cell 0: orderNumber
-	//        			cell 1: parkName
-	//        			cell 2: entryTime / exitTime
+	//        			cell 1: entryTime / exitTime
+	//        			cell 2: parkName
 	//        			cell 3: orderType
 	// output: message with the result of the update: true if success
 	//                                                false, otherwise
