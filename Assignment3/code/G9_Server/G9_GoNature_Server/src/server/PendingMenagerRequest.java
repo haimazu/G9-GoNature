@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import dataLayer.Park;
 import ocsf.server.ConnectionToClient;
 import reportData.ManagerRequest;
-import reportData.TableViewSet;
 
 public class PendingMenagerRequest implements Serializable {
 
