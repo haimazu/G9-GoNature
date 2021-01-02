@@ -146,9 +146,10 @@ public class Reports {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name :
 		answer.add(recived.get(0));
-		String startDate = (String) recived.get(1);
-		String endDate = (String) recived.get(2);
-		OrderType ot = (OrderType) recived.get(3);
+		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
+		String startDate = (String) dataFromClient.get(0);
+		String endDate = (String) dataFromClient.get(1);
+		String ot = (String) dataFromClient.get(2);
 		String dateCond = "timeEnter BETWEEN '" + startDate + "' AND '" + endDate + "'";
 		int[] temp = null;
 		int amountArrivedOverall = 0;
@@ -218,10 +219,10 @@ public class Reports {
 
 		if (amountArrivedOverall != 0) {
 			for (int i = 0; i < temp.length; i++) {
-				answer.add((temp[i]/amountArrivedOverall)*100);
+				answer.add((temp[i] / amountArrivedOverall) * 100);
 			}
 		}
-		
+
 		EchoServer.sendToMyClient(answer, client);
 	}
 
