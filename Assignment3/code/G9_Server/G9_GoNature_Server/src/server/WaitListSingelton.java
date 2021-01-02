@@ -212,6 +212,10 @@ public class WaitListSingelton {
 	//output: true if sussesful false if not
 	//send to DB: new order to list in pending
 	private static boolean insertPending(EmailMessege messege) {
+	String orderNum = String.valueOf(messege.getOrder().getOrderNumber());
+	if (ExistingOrderCheck.checkIfPending(orderNum)) {
+		return true; //already exist in the DB - avoid duplicates - for safety only 
+	}
 	ArrayList<String> query = new ArrayList<String>();
 	query.add("insert"); // command
 	query.add("pendingwaitlist"); // table name

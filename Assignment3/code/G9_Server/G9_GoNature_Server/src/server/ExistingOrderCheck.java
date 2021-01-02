@@ -51,7 +51,7 @@ public class ExistingOrderCheck {
 	
 	//input: order number as string
 	//output: boolean true if exist in pendingwaitlist false if not
-	private static boolean checkIfPending(String orderNum) {
+	public static boolean checkIfPending(String orderNum) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("pendingwaitlist"); // table name
