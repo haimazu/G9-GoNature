@@ -28,17 +28,20 @@ public class NewOrder {
 		// check if the capacity of orders is full
 		if ((!a.checkForAvailableSpots(recived))) {
 			answer.add("Failed");// need to enter waiting list
+			System.out.println("failed");
 			EchoServer.sendToMyClient(answer, client);
 		}
 
 		else {
-
+			System.out.println("check1");
 			data = totalPrice(data, memb, data.isOccasional());// updating the prices in the order
+			System.out.println(data);
 			///// Roi//////
 			data.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
-
+			System.out.println(data);
+			System.out.println("check2");
 			answer.add(data);
-
+			System.out.println(answer);
 			EchoServer.sendToMyClient(answer, client);
 		}
 
@@ -92,7 +95,10 @@ public class NewOrder {
 	//
 	// output: Order with updated totalPrice and price and orderType
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
+		System.out.println("total price enter");
 		double parkEnteryPrice = CurrentPriceInPark(ord);
+		System.out.println("CurrentPriceInPark exit");
+		System.out.println(parkEnteryPrice);
 		int numberOfPeople;
 		if (occasional) {
 			numberOfPeople = ord.getAmountArrived();
@@ -110,7 +116,7 @@ public class NewOrder {
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0)
 						ord.setTotalPrice(nonFamily * parkEnteryPrice
-								+ Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice * 0.8);
+								+ Double.parseDouble(memb.getMemberAmount()) * parkEnteryPrice * 0.8);
 					else
 						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8);
 					break;
@@ -126,6 +132,7 @@ public class NewOrder {
 			numberOfPeople = ord.getVisitorsNumber();
 			ord.setPrice(parkEnteryPrice * numberOfPeople);// full price for all
 			if (memb == null) { // if the order is not for a member
+				System.out.println("pre order regular type enter");
 				ord.setOrderType(OrderType.REGULAR);
 				ord.setTotalPrice(ord.getPrice() * 0.85);
 			} else {// if the order is for non-occasional member
@@ -133,6 +140,7 @@ public class NewOrder {
 				ord.setID(memb.getMemberID());
 				switch (memb.getMemberOrderType()) {
 				case MEMBER:
+					System.out.println("pre order member type enter");
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
@@ -145,15 +153,18 @@ public class NewOrder {
 					}
 					break;
 				case GROUP:
+					System.out.println("pre order group type enter");
+					System.out.println(ord.getPrice());
 					ord.setOrderType(OrderType.GROUP);
 					ord.setTotalPrice(ord.getPrice() * 0.75);
+					System.out.println(ord.getTotalPrice());
 					break;
 				default:
 					break;
 				}
 			}
 		}
-
+		System.out.println("finish price");
 		return ord;
 	}
 
@@ -170,32 +181,36 @@ public class NewOrder {
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
 		query1.add("discounts"); // table name
-		query1.add("parkName,discountscol"); // columns to select from
+		query1.add("parkName, discountscol"); // columns to select from
 		query1.add("WHERE parkName='" + ord.getParkName() + "' AND discounts.from <= '" + now
 				+ "' AND discounts.to >= '" + now + "'"); // condition
 		query1.add("2"); // how many columns returned
 		ArrayList<ArrayList<String>> newDiscountsQ = MySQLConnection.select(query1);
-
+		System.out.println(newDiscountsQ);
 		// current park discount
 		ArrayList<String> query2 = new ArrayList<String>();
 		query2.add("select"); // command
 		query2.add("park"); // table name
-		query2.add("entryPrice,mangerDiscount"); // columns to select from
+		query2.add("entryPrice, mangerDiscount"); // columns to select from
 		query2.add("WHERE parkName='" + ord.getParkName() + "'"); // condition
 		query2.add("2"); // how many columns returned
 		ArrayList<ArrayList<String>> currentParkDiscountQ = MySQLConnection.select(query2);
-
+		System.out.println(currentParkDiscountQ);
 		// returns the price of entry to the park with a manager discount
-		System.out.println("current dis " + currentParkDiscountQ.get(0).get(1));
+
 		double discount = Double.parseDouble(currentParkDiscountQ.get(0).get(1));
+		System.out.println("current dis " + discount);
 		if (!newDiscountsQ.isEmpty()) {
 			discount = Double.parseDouble(newDiscountsQ.get(0).get(1));
 			// if there is no change in discount
-			if (Double.parseDouble(currentParkDiscountQ.get(0).get(1)) == discount)
+			if (Double.parseDouble(currentParkDiscountQ.get(0).get(1)) == discount) {
+				System.out.println("current dis2 " + discount);
 				return Double.parseDouble(currentParkDiscountQ.get(0).get(0))
 						* Double.parseDouble(currentParkDiscountQ.get(0).get(1));
+			}
 
 			// update the park table in DB with current discount
+			System.out.println("update start");
 			ArrayList<String> query3 = new ArrayList<String>();
 			query3.add("update");
 			query3.add("park");
@@ -208,7 +223,7 @@ public class NewOrder {
 			a = MySQLConnection.update(query3);
 			System.out.println(a);
 		}
-
+		System.out.println("total price =" + discount * Double.parseDouble(currentParkDiscountQ.get(0).get(0)));
 		return Double.parseDouble(currentParkDiscountQ.get(0).get(0)) * discount;
 	}
 
@@ -298,7 +313,7 @@ public class NewOrder {
 	}
 
 	// input: Order to insert into the DB
-	// output: true if sussesful false if not
+	// output: true if successful false if not
 	// send to DB: new order to list in
 	public static boolean insertNewOrder(Order order) {
 		ArrayList<String> query = new ArrayList<String>();
