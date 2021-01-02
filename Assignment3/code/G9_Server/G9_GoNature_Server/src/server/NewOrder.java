@@ -92,7 +92,7 @@ public class NewOrder {
 	//
 	// output: Order with updated totalPrice and price and orderType
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
-		int parkEnteryPrice = CurrentPriceInPark(ord);
+		double parkEnteryPrice = CurrentPriceInPark(ord);
 		int numberOfPeople;
 		if (occasional) {
 			numberOfPeople = ord.getAmountArrived();
@@ -161,7 +161,7 @@ public class NewOrder {
 	//
 	// output: returns the current price of entry in the park with manger discount
 	// calculated
-	public static int CurrentPriceInPark(Order ord) {
+	public static double CurrentPriceInPark(Order ord) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 		System.out.println(dtf.format(now));
@@ -192,7 +192,8 @@ public class NewOrder {
 			discount = Double.parseDouble(newDiscountsQ.get(0).get(1));
 			// if there is no change in discount
 			if (Double.parseDouble(currentParkDiscountQ.get(0).get(1)) == discount)
-				return Integer.parseInt(currentParkDiscountQ.get(0).get(0)) * Integer.parseInt(currentParkDiscountQ.get(0).get(1));
+				return Double.parseDouble(currentParkDiscountQ.get(0).get(0))
+						* Double.parseDouble(currentParkDiscountQ.get(0).get(1));
 
 			// update the park table in DB with current discount
 			ArrayList<String> query3 = new ArrayList<String>();
@@ -208,7 +209,7 @@ public class NewOrder {
 			System.out.println(a);
 		}
 
-		return (int) (Integer.parseInt(currentParkDiscountQ.get(0).get(0)) * discount);
+		return Double.parseDouble(currentParkDiscountQ.get(0).get(0)) * discount;
 	}
 
 	////////////// ********************* Park **************************************

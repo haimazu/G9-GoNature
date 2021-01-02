@@ -157,7 +157,7 @@ public class PendingMenagerRequest implements Serializable {
 		query.add("employeeID ='" + mr1.getEmployeeID() + "' AND requesttype='" + mr1.getRequestType() + "'");
 
 		if (yesno.equals("no")) {
-			MySQLConnection.select(query);
+			MySQLConnection.deleteCond(query);
 			answer.add(true);
 			EchoServer.sendToMyClient(answer, client);
 			return;
