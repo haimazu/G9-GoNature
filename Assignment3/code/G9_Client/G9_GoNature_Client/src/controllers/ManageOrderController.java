@@ -341,6 +341,20 @@ public class ManageOrderController implements Initializable {
 			cbxArriveTime.setVisible(true);
 			lblEditVisitors.setVisible(true);
 			lblEdit.setVisible(true);
+			
+			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
+			txtVisitorsNumber.setText(String.valueOf(order.getVisitorsNumber()));
+			cbxArriveTime.getSelectionModel().selectFirst();
+
+			txtdate.setDayCellFactory(picker -> new DateCell() {
+				public void updateItem(LocalDate date, boolean empty) {
+					super.updateItem(date, empty);
+					LocalDate today = LocalDate.now();
+					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+				}
+			});
+			txtdate.setValue(LocalDate.now());
 			break;
 		}
 		case 2: {
