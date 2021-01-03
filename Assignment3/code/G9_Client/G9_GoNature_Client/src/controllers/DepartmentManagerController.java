@@ -145,9 +145,9 @@ public class DepartmentManagerController implements Initializable {
 	// private static Park parkDetails;
 
 	/***** Visits Report Variables *****/
-	private static ArrayList<String> regularVisitors = new ArrayList<>();
-	private static ArrayList<String> memberVisitors = new ArrayList<>();
-	private static ArrayList<String> groupVisitors = new ArrayList<>();
+	private static ArrayList<Double> regularVisitors = new ArrayList<>();
+	private static ArrayList<Double> memberVisitors = new ArrayList<>();
+	private static ArrayList<Double> groupVisitors = new ArrayList<>();
 
 	/***** Cancel Report Variables *****/
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
@@ -349,23 +349,24 @@ public class DepartmentManagerController implements Initializable {
 			data.add(toFormat);
 			data.add("regular");
 			sendToServerArrayList("getRegularsVisitorsData", data);
+			addPieChart(pieRegular, "Regular");
 			
-			data.clear();
-			data.add(fromFormat);
-			data.add(toFormat);
-			data.add("member");
-			sendToServerArrayList("getMembersVisitorsData", data);
-			
-			data.clear();
-			data.add(fromFormat);
-			data.add(toFormat);
-			data.add("group");
-			sendToServerArrayList("getGroupsVisitorsData", data);
+//			data.clear();
+//			data.add(fromFormat);
+//			data.add(toFormat);
+//			data.add("member");
+//			sendToServerArrayList("getMembersVisitorsData", data);
+//			
+//			data.clear();
+//			data.add(fromFormat);
+//			data.add(toFormat);
+//			data.add("group");
+//			sendToServerArrayList("getGroupsVisitorsData", data);
 		}
 		
-		addPieChart(pieRegular, "Regular");
-		addPieChart(pieMember, "Member");
-		addPieChart(pieGroup, "Group");
+		
+//		addPieChart(pieMember, "Member");
+//		addPieChart(pieGroup, "Group");
 	}
 	
 	public boolean checkDate(LocalDate from, LocalDate to) {
@@ -395,40 +396,40 @@ public class DepartmentManagerController implements Initializable {
 				//pieRegular.setLegendVisible(true);
 				lblRegular.setText("Regular");
 				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours", Double.parseDouble(regularVisitors.get(0))),
-		                new PieChart.Data("1-2 hours", Double.parseDouble(regularVisitors.get(1))),
-		                new PieChart.Data("2-3 hours", Double.parseDouble(regularVisitors.get(2))),
-		                new PieChart.Data("3-4 hours", Double.parseDouble(regularVisitors.get(3))));			
+		                new PieChart.Data("0-1 hours", regularVisitors.get(0)),
+		                new PieChart.Data("1-2 hours", regularVisitors.get(1)),
+		                new PieChart.Data("2-3 hours", regularVisitors.get(2)),
+		                new PieChart.Data("3-4 hours", regularVisitors.get(3)));			
 				break;
 			case "Member":
 				//pieMember.setLegendVisible(true);
 				lblMember.setText("Member");
 				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours", Double.parseDouble(memberVisitors.get(0))),
-		                new PieChart.Data("1-2 hours", Double.parseDouble(memberVisitors.get(1))),
-		                new PieChart.Data("2-3 hours", Double.parseDouble(memberVisitors.get(2))),
-		                new PieChart.Data("3-4 hours", Double.parseDouble(memberVisitors.get(3))));
+		                new PieChart.Data("0-1 hours", memberVisitors.get(0)),
+		                new PieChart.Data("1-2 hours", memberVisitors.get(1)),
+		                new PieChart.Data("2-3 hours", memberVisitors.get(2)),
+		                new PieChart.Data("3-4 hours", memberVisitors.get(3)));
 				break;
 			case "Group":
 				//pieGroup.setLegendVisible(true);
 				lblGroup.setText("Group");
 				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours", Double.parseDouble(groupVisitors.get(0))),
-		                new PieChart.Data("1-2 hours", Double.parseDouble(groupVisitors.get(1))),
-		                new PieChart.Data("2-3 hours", Double.parseDouble(groupVisitors.get(2))),
-		                new PieChart.Data("3-4 hours", Double.parseDouble(groupVisitors.get(3))));
+		                new PieChart.Data("0-1 hours", groupVisitors.get(0)),
+		                new PieChart.Data("1-2 hours", groupVisitors.get(1)),
+		                new PieChart.Data("2-3 hours", groupVisitors.get(2)),
+		                new PieChart.Data("3-4 hours", groupVisitors.get(3)));
 				break;
 			default:
 				return;
 		}
 		
-		currentVisitorsData.forEach(data ->
-        data.nameProperty().bind(Bindings.concat(
-        		data.getName(), " ", data.pieValueProperty(), "%")
-        		)
-		);
-		
-		currentPie.setData(currentVisitorsData);
+//		currentVisitorsData.forEach(data ->
+//        data.nameProperty().bind(Bindings.concat(
+//        		data.getName(), " ", data.pieValueProperty(), "%")
+//        		)
+//		);
+//		
+//		currentPie.setData(currentVisitorsData);
 	}
 
 	public static String getFirstName() {
@@ -721,13 +722,11 @@ public class DepartmentManagerController implements Initializable {
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerRegularsVisitorsData(ArrayList<String> data) {
-		if (data.isEmpty()) {
-			setError(true);
-		} else {
-			setError(false);
-			DepartmentManagerController.regularVisitors = data;
-		}
+	public static void receivedFromServerRegularsVisitorsData(double one, double two, double three, double four) {
+		DepartmentManagerController.regularVisitors.add(one);
+		DepartmentManagerController.regularVisitors.add(two);
+		DepartmentManagerController.regularVisitors.add(three);
+		DepartmentManagerController.regularVisitors.add(four);
 	}
 	
 	// getting information from the server
@@ -737,13 +736,11 @@ public class DepartmentManagerController implements Initializable {
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerMembersVisitorsData(ArrayList<String> data) {
-		if (data.isEmpty()) {
-			setError(true);
-		} else {
-			setError(false);
-			DepartmentManagerController.memberVisitors = data;
-		}
+	public static void receivedFromServerMembersVisitorsData(double one, double two, double three, double four) {
+		DepartmentManagerController.memberVisitors.add(one);
+		DepartmentManagerController.memberVisitors.add(two);
+		DepartmentManagerController.memberVisitors.add(three);
+		DepartmentManagerController.memberVisitors.add(four);
 	}
 	
 	// getting information from the server
@@ -753,13 +750,11 @@ public class DepartmentManagerController implements Initializable {
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerGroupsVisitorsData(ArrayList<String> data) {
-		if (data.isEmpty()) {
-			setError(true);
-		} else {
-			setError(false);
-			DepartmentManagerController.groupVisitors = data;
-		}
+	public static void receivedFromServerGroupsVisitorsData(double one, double two, double three, double four) {
+		DepartmentManagerController.groupVisitors.add(one);
+		DepartmentManagerController.groupVisitors.add(two);
+		DepartmentManagerController.groupVisitors.add(three);
+		DepartmentManagerController.groupVisitors.add(four);
 	}
 
 	public static boolean getError() {

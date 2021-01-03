@@ -140,13 +140,16 @@ public class ChatClient extends AbstractClient {
 				DepartmentManagerController.setData((boolean)received.get(1));
 				break;
 			case "getRegularsVisitorsData":
-				DepartmentManagerController.receivedFromServerRegularsVisitorsData((ArrayList<String>)received.get(1));
+				DepartmentManagerController.receivedFromServerRegularsVisitorsData((double)received.get(1), (double)received.get(2),
+																				   (double)received.get(3), (double)received.get(4));
 				break;
 			case "getMembersVisitorsData":
-				DepartmentManagerController.receivedFromServerMembersVisitorsData((ArrayList<String>)received.get(1));
+				DepartmentManagerController.receivedFromServerMembersVisitorsData(double)received.get(1), (double)received.get(2),
+				   																 (double)received.get(3), (double)received.get(4));
 				break;
 			case "getGroupsVisitorsData":
-				DepartmentManagerController.receivedFromServerGroupsVisitorsData((ArrayList<String>)received.get(1));
+				DepartmentManagerController.receivedFromServerGroupsVisitorsData(double)received.get(1), (double)received.get(2),
+				   														        (double)received.get(3), (double)received.get(4));
 				break;
 			default:
 			break;
