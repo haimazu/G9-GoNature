@@ -31,18 +31,22 @@ public class BarcodeSimulation {
 		return obj;
 	}
 	
-	public static Integer read(int key) {
+	public static String read(int key) {
 		switch (key) {
 		case 0:
-			return new SplittableRandom().nextInt(0, 1_001);
+			return "g"+String.valueOf(new SplittableRandom().nextInt(1_000, 5_001));
 		case 1:
-			return nextIn();
+			return "m"+String.valueOf(new SplittableRandom().nextInt(1_000, 5_001));
+		case 2:
+			return String.valueOf(new SplittableRandom().nextInt(1_000_000, 3_999_000));
+		case 4:
+			return String.valueOf(nextIn());
 		default:
 			return null;
 		}
 	}
 	
-	public static Integer nextIn() {
+	private static Integer nextIn() {
 		if (pool.isEmpty())
 			return null;
 		Integer ret = pool.get(0);
