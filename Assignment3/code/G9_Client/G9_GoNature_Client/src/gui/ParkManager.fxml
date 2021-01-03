@@ -147,9 +147,9 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="dpFromU" editable="false" focusTraversable="false" layoutX="39.0" layoutY="73.0" promptText="From Date" />
-                  <JFXDatePicker fx:id="dpToU" editable="false" focusTraversable="false" layoutX="235.0" layoutY="73.0" promptText="To Date" />
-                  <Button fx:id="showUsage" focusTraversable="false" layoutX="434.0" layoutY="75.0" mnemonicParsing="false" onAction="#showUsage" styleClass="btnSmallGreen" text="Show" />
+                  <JFXDatePicker fx:id="dpFromU" editable="false" focusTraversable="false" layoutX="39.0" layoutY="53.0" promptText="From Date" />
+                  <JFXDatePicker fx:id="dpToU" editable="false" focusTraversable="false" layoutX="235.0" layoutY="53.0" promptText="To Date" />
+                  <Button fx:id="showUsage" focusTraversable="false" layoutX="434.0" layoutY="55.0" mnemonicParsing="false" onAction="#showUsage" styleClass="btnSmallGreen" text="Show" />
                   <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true" visible="false">
                     <columns>
                       <TableColumn prefWidth="98.0" text="Entered" />
@@ -165,7 +165,7 @@
                   </Label>
                   <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" visible="false" />
                   <Button fx:id="btnReportView1" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" visible="false" />
-                  <BarChart fx:id="bcUsageChart" barGap="5.0" categoryGap="2.0" layoutY="116.0" prefHeight="430.0" prefWidth="613.0" title="Usage Rrport">
+                  <BarChart fx:id="bcUsageChart" barGap="5.0" categoryGap="2.0" layoutY="91.0" prefHeight="430.0" prefWidth="613.0" title="Usage Rrport">
                      <xAxis>
                         <CategoryAxis label="Dates" side="BOTTOM" fx:id="xAxisU">
                            <tickLabelFont>
@@ -174,7 +174,7 @@
                         </CategoryAxis>
                      </xAxis>
                      <yAxis>
-                        <NumberAxis fx:id="yAxisU" label="Amount" prefHeight="381.0" prefWidth="59.0" side="LEFT">
+                        <NumberAxis fx:id="yAxisU" label="free spots per capsule" prefHeight="381.0" prefWidth="59.0" side="LEFT">
                            <tickLabelFont>
                               <Font name="System Bold" size="11.0" />
                            </tickLabelFont>
@@ -186,7 +186,7 @@
                   </BarChart>
                </children>
             </Pane>
-            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
                <children>
                   <Label fx:id="lblTitle11" focusTraversable="false" layoutX="22.0" layoutY="13.0" styleClass="labelBold" text="Monthly report, segmented by type of visitors:">
                      <font>
@@ -205,7 +205,7 @@
                         </CategoryAxis>
                      </xAxis>
                      <yAxis>
-                        <NumberAxis fx:id="yAxis" label="Amount" prefHeight="381.0" prefWidth="59.0" side="LEFT">
+                        <NumberAxis fx:id="yAxis" label="amount" prefHeight="381.0" prefWidth="59.0" side="LEFT">
                            <tickLabelFont>
                               <Font name="System Bold" size="11.0" />
                            </tickLabelFont>
@@ -217,7 +217,7 @@
                   </BarChart>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
                <children>
                   <JFXTextField fx:id="lblSetMax" focusTraversable="false" labelFloat="true" layoutX="63.0" layoutY="41.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" visible="false" />
                   <JFXTextField fx:id="txtManageDsic" focusTraversable="false" labelFloat="true" layoutX="345.0" layoutY="52.0" prefHeight="40.0" prefWidth="145.0" promptText="Manager Discount (%)" styleClass="txtField" visible="false" />
