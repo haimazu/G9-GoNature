@@ -9,7 +9,8 @@ public class BarcodeSimulation {
 	
 	// SingletonBuilder
 	private BarcodeSimulation() {
-		pool.add("g1133");
+		pool = new ArrayList<String>();
+		pool.add("123456");
 		pool.add("m1132");
 		pool.add("123456789");
 		pool.add("112233441");

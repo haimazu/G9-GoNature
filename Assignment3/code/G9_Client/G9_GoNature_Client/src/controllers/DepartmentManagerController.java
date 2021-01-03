@@ -387,47 +387,36 @@ public class DepartmentManagerController implements Initializable {
 		currentPie.setLegendVisible(false);
 		
 		ObservableList<PieChart.Data> currentVisitorsData = null;
-		
-		//currentPie.setTitle(title);	
 
 		switch (title) {
 			case "Regular":
-				//pieRegular.setLegendVisible(true);
 				lblRegular.setText("Regular");
 				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours", regularVisitors.get(0)),
-		                new PieChart.Data("1-2 hours", regularVisitors.get(1)),
-		                new PieChart.Data("2-3 hours", regularVisitors.get(2)),
-		                new PieChart.Data("3-4 hours", regularVisitors.get(3)));			
+		                new PieChart.Data("0-1 hours, " + String.valueOf(regularVisitors.get(0) + "%"), regularVisitors.get(0)),
+		                new PieChart.Data("1-2 hours, " + String.valueOf(regularVisitors.get(1) + "%"), regularVisitors.get(1)),
+		                new PieChart.Data("2-3 hours, " + String.valueOf(regularVisitors.get(2) + "%"), regularVisitors.get(2)),
+		                new PieChart.Data("3-4 hours, " + String.valueOf(regularVisitors.get(3) + "%"), regularVisitors.get(3)));			
 				break;
 			case "Member":
-				//pieMember.setLegendVisible(true);
 				lblMember.setText("Member");
 				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours", memberVisitors.get(0)),
-		                new PieChart.Data("1-2 hours", memberVisitors.get(1)),
-		                new PieChart.Data("2-3 hours", memberVisitors.get(2)),
-		                new PieChart.Data("3-4 hours", memberVisitors.get(3)));
+		                new PieChart.Data("0-1 hours, " + String.valueOf(memberVisitors.get(0) + "%"), memberVisitors.get(0)),
+		                new PieChart.Data("1-2 hours, " + String.valueOf(memberVisitors.get(1) + "%"), memberVisitors.get(1)),
+		                new PieChart.Data("2-3 hours, " + String.valueOf(memberVisitors.get(2) + "%"), memberVisitors.get(2)),
+		                new PieChart.Data("3-4 hours, " + String.valueOf(memberVisitors.get(3) + "%"), memberVisitors.get(3)));
 				break;
 			case "Group":
-				//pieGroup.setLegendVisible(true);
 				lblGroup.setText("Group");
 				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours", groupVisitors.get(0)),
-		                new PieChart.Data("1-2 hours", groupVisitors.get(1)),
-		                new PieChart.Data("2-3 hours", groupVisitors.get(2)),
-		                new PieChart.Data("3-4 hours", groupVisitors.get(3)));
+		                new PieChart.Data("0-1 hours, " + String.valueOf(groupVisitors.get(0) + "%"), groupVisitors.get(0)),
+		                new PieChart.Data("1-2 hours, " + String.valueOf(groupVisitors.get(1) + "%"), groupVisitors.get(1)),
+		                new PieChart.Data("2-3 hours, " + String.valueOf(groupVisitors.get(2) + "%"), groupVisitors.get(2)),
+		                new PieChart.Data("3-4 hours, " + String.valueOf(groupVisitors.get(3) + "%"), groupVisitors.get(3)));
 				break;
 			default:
 				return;
 		}
-		
-		currentVisitorsData.forEach(data ->
-        data.nameProperty().bind(Bindings.concat(
-        		data.getName(), " ", data.pieValueProperty(), "%")
-        		)
-		);
-		
+
 		currentPie.setData(currentVisitorsData);
 	}
 
