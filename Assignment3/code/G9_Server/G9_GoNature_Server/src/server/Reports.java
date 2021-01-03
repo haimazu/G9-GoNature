@@ -163,13 +163,13 @@ public class Reports {
 		query1.add("1"); // how many columns returned
 		System.out.println("1:" + query1.toString());
 		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
-		if (!(queryData1.get(0).get(0)==null)) {
+		if (!(queryData1.get(0).get(0) == null)) {
 			System.out.println(queryData1);
 			temp[0] = Double.parseDouble(queryData1.get(0).get(0));
 			amountArrivedOverall += temp[0];
 		} else
 			temp[0] = 0;
-		
+
 		ArrayList<String> query2 = new ArrayList<String>();
 		query2.add("select"); // command
 		query2.add("enteryandexit"); // table name
@@ -180,7 +180,7 @@ public class Reports {
 		query2.add("1"); // how many columns returned
 		System.out.println("2:" + query2.toString());
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
-		if (!(queryData2.get(0).get(0)==null)) {
+		if (!(queryData2.get(0).get(0) == null)) {
 			System.out.println(queryData2);
 			temp[1] = Double.parseDouble(queryData2.get(0).get(0));
 			amountArrivedOverall += temp[1];
@@ -198,7 +198,7 @@ public class Reports {
 		System.out.println("3:" + query3.toString());
 		ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
 		System.out.println(queryData3);
-		if (!(queryData3.get(0).get(0)==null)) {
+		if (!(queryData3.get(0).get(0) == null)) {
 			temp[2] = Double.parseDouble(queryData3.get(0).get(0));
 			amountArrivedOverall += temp[2];
 		} else
@@ -215,7 +215,7 @@ public class Reports {
 		System.out.println("4:" + query4.toString());
 		ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
 		System.out.println(queryData1);
-		if (!(queryData4.get(0).get(0)==null)) {
+		if (!(queryData4.get(0).get(0) == null)) {
 			temp[3] = Double.parseDouble(queryData4.get(0).get(0));
 			amountArrivedOverall += temp[3];
 		} else
@@ -227,8 +227,8 @@ public class Reports {
 				answer.add((temp[i] / amountArrivedOverall) * 100);
 
 			}
-		}
-
+		} else
+			answer.add("empty");
 		EchoServer.sendToMyClient(answer, client);
 	}
 
