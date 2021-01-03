@@ -19,6 +19,7 @@ import org.omg.CORBA.PRIVATE_MEMBER;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
 
 import client.ClientUI;
 import javafx.collections.FXCollections;
@@ -151,9 +152,15 @@ public class ManageOrderController implements Initializable {
 	/*
 	 * input : output :
 	 */
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 		setOrder(WelcomeController.getOrderDetails());
+		String DateAndTime = order.getArrivedTime();
+		String[] splitDateAndTime = DateAndTime.split(" ");
+		String [] timeString =splitDateAndTime[1].split(":");
+		
 //		ArrayList<Object> msgPending = new ArrayList<>();
 //		msgPending.add("checkIfPending");
 //		msgPending.add(order.getOrderNumber());
@@ -164,18 +171,20 @@ public class ManageOrderController implements Initializable {
 		if (!WelcomeController.getisIspending()) {
 			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 			txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
-			cbxArriveTime.getSelectionModel().selectFirst();
+			switch(timeString[0])
+			{
+			case  "08" :
+				cbxArriveTime.getSelectionModel().select(0);
+				break;
+			case "12" :
+				cbxArriveTime.getSelectionModel().select(1);
+				break;
+			case "16" :
+				cbxArriveTime.getSelectionModel().select(2);
+				break;
+			}
+			txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
 
-			txtdate.setDayCellFactory(picker -> new DateCell() {
-				public void updateItem(LocalDate date, boolean empty) {
-					super.updateItem(date, empty);
-					LocalDate today = LocalDate.now();
-					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-				}
-			});
-
-			txtdate.setValue(LocalDate.now());
 		} else {
 			btnconfirme.setVisible(true);
 			btnNoconfirme.setVisible(true);
@@ -205,14 +214,12 @@ public class ManageOrderController implements Initializable {
 	 * object
 	 */
 	@FXML
-	void update(ActionEvent event) {
+	void update(ActionEvent event) throws IOException {
 		Order sentOrder = new Order(order); 
 		if (checkCurrentTime()) {
 			String[] timeString = cbxArriveTime.getValue().toString().split("-");
-			// System.out.println(timeString[0]);
 			String clientDateTime = (txtdate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " 0"
-					+ timeString[0]) + ":00"; // need to be same
-												// format!!!/////////////////////////////////////////////////
+					+ timeString[0]) + ":00"; 									
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
 			int orderVisitorsNumber = sentOrder.getVisitorsNumber();
@@ -225,7 +232,10 @@ public class ManageOrderController implements Initializable {
 				msgForServer.add(order);
 				ClientUI.sentToChatClient(msgForServer);
 				if (updated) {
-					alert.setAlert("Updated succesful");
+					alert.successAlert("Update information", "Updated succesful");
+					Stage stage = (Stage) btnBack.getScene().getWindow();
+					Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
+					stage.setScene(new Scene(root));
 				} else
 					// alertFailed
 					alert.setAlert("Updated failed");
@@ -367,5 +377,9 @@ public class ManageOrderController implements Initializable {
 
 	}
 	
-
+	public static LocalDate LOCAL_DATE (String dateString){
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	    LocalDate localDate = LocalDate.parse(dateString, formatter);
+	    return localDate;
+	}
 }
