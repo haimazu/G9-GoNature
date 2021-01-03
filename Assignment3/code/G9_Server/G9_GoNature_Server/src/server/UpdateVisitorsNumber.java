@@ -36,7 +36,7 @@ public class UpdateVisitorsNumber {
 	//        			cell 1: timeEnter / timeExit
 	//        			cell 2: parkName
 	//        			cell 3: orderType
-
+	//                  cell 4: amountArrived
 	// output: ArrayList<Object>=> cell[0] function name
 	// cell[1] T if update succeeded, F if not, Full if we can add more visitors
 	@SuppressWarnings("unchecked")
@@ -53,7 +53,8 @@ public class UpdateVisitorsNumber {
 		if (!checkIfOrderNumberExists(data.get(0))) {
 			query.add("insert"); // command
 			query.add("enteryandexit"); // table name
-			query.add(data.get(0) + ", '" + data.get(1) + "', " + null + ", '" + data.get(2) + "', '" + data.get(3) + "'");
+			query.add(data.get(0) + ", '" + data.get(1) + "', " + null + ", '" + 
+					  data.get(2) + "', '" + data.get(3) + "', " + data.get(4));
 
 			answer.add(MySQLConnection.insert(query));
 			EchoServer.sendToMyClient(answer, client);
