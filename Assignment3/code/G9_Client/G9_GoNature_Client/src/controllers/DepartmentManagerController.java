@@ -527,7 +527,7 @@ public class DepartmentManagerController implements Initializable {
 				double disc =Double.parseDouble(discString);
 				disc = (1-disc)*100;
 				//int discount =(1 - Integer.parseInt())*100;
-				str = "Discount : " + String.format("%.1f", disc) + "%.1f" + " in the following dates: " + FromDate[0] + " - "
+				str = "Discount : " + String.format("%.1f", disc) + "%" + " in the following dates: " + FromDate[0] + " - "
 						+ ToDate[0];
 			} else if (arrayList.get(1).equals("max_c")) {
 				str = "Visitors Capacity : " + arrayList.get(2);
