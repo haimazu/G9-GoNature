@@ -136,8 +136,7 @@ public class ChatClient extends AbstractClient {
 				ManageOrderController.receviedFromserverArrivalConfirmation((ArrayList<Object>)received);
 				break;
 			case "removePendingsManagerReq":
-				System.out.println((boolean)received.get(2));
-				DepartmentManagerController.setData((boolean)received.get(1));
+				DepartmentManagerController.setData((boolean)received.get(2));
 				break;
 			case "getRegularsVisitorsData":
 				DepartmentManagerController.receivedFromServerRegularsVisitorsData((double)received.get(1), (double)received.get(2),

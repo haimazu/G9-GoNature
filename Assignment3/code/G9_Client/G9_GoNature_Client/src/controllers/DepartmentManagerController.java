@@ -495,8 +495,11 @@ public class DepartmentManagerController implements Initializable {
 
 				ClientUI.sentToChatClient(data);
 
-				if (status)
-					alert.failedAlert("information", "The request dissaprove");
+				if (status) {
+					TableDep.getItems().remove(TableDep.getItems().get(i));
+					alert.setAlert("The request dissaprove");
+				}
+				
 
 			}
 			data.clear();
