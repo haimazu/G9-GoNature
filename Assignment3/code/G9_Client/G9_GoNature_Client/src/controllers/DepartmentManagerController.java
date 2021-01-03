@@ -349,24 +349,23 @@ public class DepartmentManagerController implements Initializable {
 			data.add(toFormat);
 			data.add("regular");
 			sendToServerArrayList("getRegularsVisitorsData", data);
-			addPieChart(pieRegular, "Regular");
+						
+			data.clear();
+			data.add(fromFormat);
+			data.add(toFormat);
+			data.add("member");
+			sendToServerArrayList("getMembersVisitorsData", data);
 			
-//			data.clear();
-//			data.add(fromFormat);
-//			data.add(toFormat);
-//			data.add("member");
-//			sendToServerArrayList("getMembersVisitorsData", data);
-//			
-//			data.clear();
-//			data.add(fromFormat);
-//			data.add(toFormat);
-//			data.add("group");
-//			sendToServerArrayList("getGroupsVisitorsData", data);
+			data.clear();
+			data.add(fromFormat);
+			data.add(toFormat);
+			data.add("group");
+			sendToServerArrayList("getGroupsVisitorsData", data);
 		}
 		
-		
-//		addPieChart(pieMember, "Member");
-//		addPieChart(pieGroup, "Group");
+		addPieChart(pieRegular, "Regular");
+		addPieChart(pieMember, "Member");
+		addPieChart(pieGroup, "Group");
 	}
 	
 	public boolean checkDate(LocalDate from, LocalDate to) {
@@ -423,13 +422,13 @@ public class DepartmentManagerController implements Initializable {
 				return;
 		}
 		
-//		currentVisitorsData.forEach(data ->
-//        data.nameProperty().bind(Bindings.concat(
-//        		data.getName(), " ", data.pieValueProperty(), "%")
-//        		)
-//		);
-//		
-//		currentPie.setData(currentVisitorsData);
+		currentVisitorsData.forEach(data ->
+        data.nameProperty().bind(Bindings.concat(
+        		data.getName(), " ", data.pieValueProperty(), "%")
+        		)
+		);
+		
+		currentPie.setData(currentVisitorsData);
 	}
 
 	public static String getFirstName() {
