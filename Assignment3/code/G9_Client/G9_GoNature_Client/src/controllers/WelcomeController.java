@@ -193,6 +193,7 @@ public class WelcomeController implements Initializable {
 					
 					System.out.println("emergency exit");
 					System.out.println(LoginController.getUsername() + " have been disconnected.");
+					LoginController.setUsername(null);
 				}
 				Platform.exit();
 				System.exit(0);
