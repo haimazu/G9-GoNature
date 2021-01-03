@@ -151,7 +151,7 @@ public class Reports {
 		String endDate = (String) dataFromClient.get(1);
 		String ot = (String) dataFromClient.get(2);
 		String dateCond = "timeEnter BETWEEN '" + startDate + "' AND '" + endDate + "'";
-		int[] temp = new int[4];
+		double[] temp = new double[4];
 		int amountArrivedOverall = 0;
 		ArrayList<String> query1 = new ArrayList<String>();
 		query1.add("select"); // command
@@ -165,7 +165,7 @@ public class Reports {
 		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 		if (!(queryData1.get(0).get(0)==null)) {
 			System.out.println(queryData1);
-			temp[0] = Integer.parseInt(queryData1.get(0).get(0));
+			temp[0] = Double.parseDouble(queryData1.get(0).get(0));
 			amountArrivedOverall += temp[0];
 		} else
 			temp[0] = 0;
@@ -180,10 +180,9 @@ public class Reports {
 		query2.add("1"); // how many columns returned
 		System.out.println("2:" + query2.toString());
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
-		queryData2 = MySQLConnection.select(query2);
 		if (!(queryData2.get(0).get(0)==null)) {
 			System.out.println(queryData2);
-			temp[1] = Integer.parseInt(queryData2.get(0).get(0));
+			temp[1] = Double.parseDouble(queryData2.get(0).get(0));
 			amountArrivedOverall += temp[1];
 		} else
 			temp[1] = 0;
@@ -198,10 +197,9 @@ public class Reports {
 		query3.add("1"); // how many columns returned
 		System.out.println("3:" + query3.toString());
 		ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
-		queryData3 = MySQLConnection.select(query3);
+		System.out.println(queryData3);
 		if (!(queryData3.get(0).get(0)==null)) {
-			System.out.println(queryData3);
-			temp[2] = Integer.parseInt(queryData3.get(0).get(0));
+			temp[2] = Double.parseDouble(queryData3.get(0).get(0));
 			amountArrivedOverall += temp[2];
 		} else
 			temp[2] = 0;
@@ -216,17 +214,16 @@ public class Reports {
 		query4.add("1"); // how many columns returned
 		System.out.println("4:" + query4.toString());
 		ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
-		queryData4 = MySQLConnection.select(query4);
+		System.out.println(queryData1);
 		if (!(queryData4.get(0).get(0)==null)) {
-			System.out.println(queryData4);
-			temp[3] = Integer.parseInt(queryData4.get(0).get(0));
+			temp[3] = Double.parseDouble(queryData4.get(0).get(0));
 			amountArrivedOverall += temp[3];
 		} else
 			temp[3] = 0;
 
 		if (amountArrivedOverall != 0) {
 			for (int i = 0; i < temp.length; i++) {
-				System.out.println("arr [" + i + "]=" + (temp[i] / amountArrivedOverall) * 100);
+				System.out.println("arr [" + i + "]=" + ((temp[i] / amountArrivedOverall) * 100));
 				answer.add((temp[i] / amountArrivedOverall) * 100);
 
 			}
