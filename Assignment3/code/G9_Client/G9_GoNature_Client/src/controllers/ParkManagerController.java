@@ -205,9 +205,9 @@ public class ParkManagerController implements Initializable {
 	private Button showUsage;
 	private static ArrayList<ArrayList<String>> usageReport = new ArrayList<>();
 
-	private Series<String, Double> visit8_12 = new Series<>();
-	private Series<String, Double> visit12_16 = new Series<>();
-	private Series<String, Double> viit16_20 = new Series<>();
+//	private Series<String, Double> visit8_12 = new Series<>();
+//	private Series<String, Double> visit12_16 = new Series<>();
+//	private Series<String, Double> viit16_20 = new Series<>();
 	/*-------------------------*/
 
 	public static ArrayList<ArrayList<String>> getUsageReport() {
@@ -331,8 +331,7 @@ public class ParkManagerController implements Initializable {
 		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpTo.setValue(newValue);
 		});
-		
-		
+
 		/*** usage reports ***/
 		dpFromU.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
@@ -755,35 +754,34 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void showChart(ActionEvent event) throws ParseException {
-		System.out.println("hihi1");
+
 		bcVisitorsChart.getData().clear();
-		
+
 		ArrayList<String> data = new ArrayList<>();
 		if (DatesNotCorresponding(dpFrom.getValue().toString(), dpTo.getValue().toString()))
 			alert.setAlert("You are trying to set incorrect dates!\nPlease try again");
 		else {
-			System.out.println("hihi2");
+
 			data.add(getParkName());
 			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			data.add(dpTo.getValue().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			System.out.println("hihi3");
+
 			sendToServerArrayList(data);
 			System.out.println(
 					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			
 
 			chartVisitors();
 		}
 	}
+
 	public void sendToServerArrayList(ArrayList<String> data) {
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("overallVisitorsReport");
 		msg.add(data);
-		
+
 		System.out.println("print message: " + msg);
 		ClientUI.sentToChatClient(msg);
 	}
-	
 
 	void checkWeekDays(String type) throws ParseException {
 		String someDate;
@@ -866,7 +864,7 @@ public class ParkManagerController implements Initializable {
 			msg.add("UsageReport");
 			data.add(getParkName());
 			data.add(dpFromU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			data.add(dpToU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			data.add(dpToU.getValue().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			msg.add(data);
 			System.out.println("print message: " + msg);
 			System.out.println(
@@ -885,46 +883,53 @@ public class ParkManagerController implements Initializable {
 		yAxisU = new NumberAxis(0, 20, 2);
 		bcUsageChart.getData().clear();
 		bcUsageChart.setAnimated(false);
-		bcUsageChart.setBarGap(0d);
-		bcUsageChart.setCategoryGap(4.0);
+		bcUsageChart.setBarGap(1d);
+		bcUsageChart.setCategoryGap(8.0);
 
 		bcUsageChart.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 		bcUsageChart.setPrefSize(613, 430);
 		bcUsageChart.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 
-//		Series<String, Double> visit8_12 = new Series<>();
-//		Series<String, Double> visit12_16 = new Series<>();
-//		Series<String, Double> viit16_20 = new Series<>();
+		Series<String, Double> visit8_12 = new Series<>();
+		Series<String, Double> visit12_16 = new Series<>();
+		Series<String, Double> viit16_20 = new Series<>();
 		String someDate;
+		ArrayList<String> firstArrDate;
+		String firstDate;
+		LocalDate checkDate =LocalDate.now();
+		// for - that check every date if exist in usageReport and if it does it willl
+		// put in on the chart and then will remove it from the usageReport;
+		for (LocalDate date = dpFromU.getValue(); date
+				.isBefore(dpToU.getValue().plusDays(1)); date = date.plusDays(1)) {
 
-		//for - that check every date if exist in usageReport and if it does it willl put in on the chart and then will remove it from the usageReport;
-		for (LocalDate date = dpFromU.getValue(); date.isBefore(dpToU.getValue().plusDays(1)); date = date.plusDays(1)) {
-			ArrayList<String> firstArrDate = usageReport.get(0);
-			String firstDate = usageReport.get(0).get(0);// first array
-			someDate = getDate(firstDate); // yyyy-mm-dd
-			LocalDate checkDate = LocalDate.parse(someDate);
-			if (date.equals(checkDate)) {
+			if (!usageReport.isEmpty()) {
+				firstArrDate = usageReport.get(0);
+				firstDate = usageReport.get(0).get(0);// first array
+				someDate = getDate(firstDate); // yyyy-mm-dd
+				checkDate = LocalDate.parse(someDate);
+			}
+			if (date.equals(checkDate) && (!usageReport.isEmpty())) {
 				String dateTime_8 = date.toString() + " " + "08:00:00";
-				if (firstDate.equals(dateTime_8)) {
+				if (usageReport.get(0).get(0).equals(dateTime_8)) {
 					visit8_12.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
-							Double.parseDouble(firstArrDate.get(1))));
-					usageReport.remove(firstDate);
+							Double.parseDouble(usageReport.get(0).get(1))));
+					usageReport.remove(0);
 				} else
 					visit8_12.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 
 				String dateTime_12 = date.toString() + " " + "12:00:00";
-				if (firstDate.equals(dateTime_12)) {
+				if ((!usageReport.isEmpty()) && usageReport.get(0).get(0).equals(dateTime_12)) {
 					visit12_16.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
-							Double.parseDouble(firstArrDate.get(1))));
-					usageReport.remove(firstDate);
+							Double.parseDouble(usageReport.get(0).get(1))));
+					usageReport.remove(0);
 				} else
 					visit12_16.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 
 				String dateTime_16 = date.toString() + " " + "16:00:00";
-				if (firstDate.equals(dateTime_12)) {
+				if ((!usageReport.isEmpty()) && usageReport.get(0).get(0).equals(dateTime_16)) {
 					viit16_20.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
-							Double.parseDouble(firstArrDate.get(1))));
-					usageReport.remove(firstDate);
+							Double.parseDouble(usageReport.get(0).get(1))));
+					usageReport.remove(0);
 				} else
 					viit16_20.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 			} else {
@@ -934,11 +939,12 @@ public class ParkManagerController implements Initializable {
 			}
 
 		}
-		
+		visit8_12.setName("8:00-12:00");
+		visit12_16.setName("12:00-16:00");
+		viit16_20.setName("16:00-20:00");
 		bcUsageChart.getData().addAll(visit8_12, visit12_16, viit16_20);
 
 	}
-
 
 	/*-------end of usage report section --------*/
 
