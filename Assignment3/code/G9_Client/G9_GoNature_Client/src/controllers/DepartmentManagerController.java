@@ -523,7 +523,8 @@ public class DepartmentManagerController implements Initializable {
 			if (arrayList.get(1).equals("discount")) {
 				String [] FromDate = arrayList.get(5).split(" ");
 				String [] ToDate = arrayList.get(6).split(" ");
-				str = "Discount : " + arrayList.get(4) + "%" + " in the following dates: " + FromDate[0] + " - "
+				double discount =(1 - Double.parseDouble(arrayList.get(4)))*100;
+				str = "Discount : " + discount + "%" + " in the following dates: " + FromDate[0] + " - "
 						+ ToDate[0];
 			} else if (arrayList.get(1).equals("max_c")) {
 				str = "Visitors Capacity : " + arrayList.get(2);
