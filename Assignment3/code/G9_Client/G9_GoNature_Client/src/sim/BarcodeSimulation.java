@@ -37,7 +37,7 @@ public class BarcodeSimulation {
 			return "m"+String.valueOf(new SplittableRandom().nextInt(1_000, 5_001));
 		case 2:
 			return String.valueOf(new SplittableRandom().nextInt(1_000_000, 3_999_000));
-		case 4:
+		case 3:
 			return nextIn();
 		default:
 			return null;
