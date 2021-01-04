@@ -149,6 +149,7 @@ public class DepartmentManagerController implements Initializable {
 	private static ArrayList<Double> regularVisitors = new ArrayList<>();
 	private static ArrayList<Double> memberVisitors = new ArrayList<>();
 	private static ArrayList<Double> groupVisitors = new ArrayList<>();
+	private static boolean isEmpty = false;
 
 	/***** Cancel Report Variables *****/
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
@@ -381,12 +382,21 @@ public class DepartmentManagerController implements Initializable {
 				ArrayList<Double> currentType = null;
 				
 				if (i == 0) {
+					if (regularVisitors.isEmpty()) {
+						continue;
+					}
 					type = "Regular";
 					currentType = regularVisitors;
 				} else if (i == 1) {
+					if (memberVisitors.isEmpty()) {
+						continue;
+					}
 					type = "Member";
 					currentType = memberVisitors;
 				} else if (i == 2) {
+					if (groupVisitors.isEmpty()) {
+						continue;
+					}
 					type = "Group";
 					currentType = groupVisitors;
 				}
@@ -394,8 +404,7 @@ public class DepartmentManagerController implements Initializable {
 				PdfPTable table = new PdfPTable(2);
 				table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-				
-		
+						
 				PdfPCell typeCell = new PdfPCell(new Paragraph(type));
 				typeCell.setColspan(2);
 				typeCell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -469,6 +478,12 @@ public class DepartmentManagerController implements Initializable {
 			data.add(toFormat);
 			data.add("regular");
 			sendToServerArrayList("getRegularsVisitorsData", data);
+			
+			if (!isEmpty()) {
+				lblRegular.setText("Regular");
+				addPieChart(pieRegular, "Regular");
+			}
+			setEmpty(false);
 						
 			data.clear();
 			data.add(fromFormat);
@@ -476,16 +491,24 @@ public class DepartmentManagerController implements Initializable {
 			data.add("member");
 			sendToServerArrayList("getMembersVisitorsData", data);
 			
+			if (!isEmpty()) {
+				lblRegular.setText("Member");
+				addPieChart(pieMember, "Member");
+			}
+			setEmpty(false);
+			
 			data.clear();
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("group");
 			sendToServerArrayList("getGroupsVisitorsData", data);
+			
+			if (!isEmpty()) {
+				lblRegular.setText("Group");
+				addPieChart(pieGroup, "Group");
+			}
+			setEmpty(false);
 		}
-		
-		addPieChart(pieRegular, "Regular");
-		addPieChart(pieMember, "Member");
-		addPieChart(pieGroup, "Group");
 	}
 	
 	// check that the inserted dates are correct
@@ -871,43 +894,58 @@ public class DepartmentManagerController implements Initializable {
 	// getting information from the server
 	// input: none
 	// output: list of regular visitors:
+	// if empty ==> String "empty", otherwise
 	// ArrayList<Object>: cell[0] 0-1 hour
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerRegularsVisitorsData(double one, double two, double three, double four) {
-		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
-		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
-		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
-		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(four)));
+	public static void receivedFromServerRegularsVisitorsData(ArrayList<Object> msgReceived) {
+		if (msgReceived.get(1) instanceof String) {
+			setEmpty(true);
+		} else if (msgReceived instanceof ArrayList) {
+			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
+			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
+			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
+			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
+		}
 	}
 	
 	// getting information from the server
 	// input: none
 	// output: list of members visitors:
+	// if empty ==> String "empty", otherwise
 	// ArrayList<Object>: cell[0] 0-1 hour
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerMembersVisitorsData(double one, double two, double three, double four) {
-		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
-		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
-		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
-		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(four)));
+	public static void receivedFromServerMembersVisitorsData(ArrayList<Object> msgReceived) {
+		if (msgReceived.get(1) instanceof String) {
+			setEmpty(true);
+		} else if (msgReceived instanceof ArrayList) {
+			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
+			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
+			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
+			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
+		}
 	}
 	
 	// getting information from the server
 	// input: none
 	// output: list of group visitors:
+	// if empty ==> String "empty", otherwise
 	// ArrayList<Object>: cell[0] 0-1 hour
 	// 					  cell[1] 1-2 hours
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
-	public static void receivedFromServerGroupsVisitorsData(double one, double two, double three, double four) {
-		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
-		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
-		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
-		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(four)));
+	public static void receivedFromServerGroupsVisitorsData(ArrayList<Object> msgReceived) {
+		if (msgReceived.get(1) instanceof String) {
+			setEmpty(true);
+		} else if (msgReceived instanceof ArrayList) {
+			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
+			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
+			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
+			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
+		}
 	}
 
 	public static boolean getError() {
@@ -916,6 +954,14 @@ public class DepartmentManagerController implements Initializable {
 
 	public static void setError(boolean error) {
 		DepartmentManagerController.error = error;
+	}
+
+	public static boolean isEmpty() {
+		return isEmpty;
+	}
+
+	public static void setEmpty(boolean isEmpty) {
+		DepartmentManagerController.isEmpty = isEmpty;
 	}
 
 	public static ArrayList<ArrayList<String>> getDBList() {
