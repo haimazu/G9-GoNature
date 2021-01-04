@@ -157,9 +157,7 @@ public class ManageOrderController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		setOrder(WelcomeController.getOrderDetails());
-		String DateAndTime = order.getArrivedTime();
-		String[] splitDateAndTime = DateAndTime.split(" ");
-		String [] timeString =splitDateAndTime[1].split(":");
+		
 		
 //		ArrayList<Object> msgPending = new ArrayList<>();
 //		msgPending.add("checkIfPending");
@@ -169,29 +167,32 @@ public class ManageOrderController implements Initializable {
 		
 		presentOrderdetails(order);
 		if (!WelcomeController.getisIspending()) {
-			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
-			txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
-			switch(timeString[0])
-			{
-			case  "08" :
-				cbxArriveTime.getSelectionModel().select(0);
-				break;
-			case "12" :
-				cbxArriveTime.getSelectionModel().select(1);
-				break;
-			case "16" :
-				cbxArriveTime.getSelectionModel().select(2);
-				break;
-			}
-			txtdate.setDayCellFactory(picker -> new DateCell() {
-				public void updateItem(LocalDate date, boolean empty) {
-					super.updateItem(date, empty);
-					LocalDate today = LocalDate.now();
-					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-				}
-			});
-			txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
+			updateDetailsFromOrder();
+			
+			
+//			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
+//			txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
+//			switch(timeString[0])
+//			{
+//			case  "08" :
+//				cbxArriveTime.getSelectionModel().select(0);
+//				break;
+//			case "12" :
+//				cbxArriveTime.getSelectionModel().select(1);
+//				break;
+//			case "16" :
+//				cbxArriveTime.getSelectionModel().select(2);
+//				break;
+//			}
+//			txtdate.setDayCellFactory(picker -> new DateCell() {
+//				public void updateItem(LocalDate date, boolean empty) {
+//					super.updateItem(date, empty);
+//					LocalDate today = LocalDate.now();
+//					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+//					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+//				}
+//			});
+//			txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
 
 		} else {
 			btnconfirme.setVisible(true);
@@ -201,6 +202,39 @@ public class ManageOrderController implements Initializable {
 			lblEditVisitors.setVisible(false);
 			lblEdit.setVisible(false);
 		}
+	}
+ /*
+  * input :non 
+  * output: non 
+  * description : the function sets default dada in the  appropriate fields for edit as the data received from the DB 
+  */
+	public void updateDetailsFromOrder() {
+		String DateAndTime = order.getArrivedTime();
+		String[] splitDateAndTime = DateAndTime.split(" ");
+		String [] timeString =splitDateAndTime[1].split(":");
+		cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
+		txtVisitorsNumber.setText(String.valueOf(order.getVisitorsNumber()));
+		switch(timeString[0])
+		{
+		case  "08" :
+			cbxArriveTime.getSelectionModel().select(0);
+			break;
+		case "12" :
+			cbxArriveTime.getSelectionModel().select(1);
+			break;
+		case "16" :
+			cbxArriveTime.getSelectionModel().select(2);
+			break;
+		}
+		txtdate.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+			}
+		});
+		txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
 	}
 
 	/**
@@ -357,19 +391,7 @@ public class ManageOrderController implements Initializable {
 			lblEditVisitors.setVisible(true);
 			lblEdit.setVisible(true);
 			
-			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
-			txtVisitorsNumber.setText(String.valueOf(order.getVisitorsNumber()));
-			cbxArriveTime.getSelectionModel().selectFirst();
-
-			txtdate.setDayCellFactory(picker -> new DateCell() {
-				public void updateItem(LocalDate date, boolean empty) {
-					super.updateItem(date, empty);
-					LocalDate today = LocalDate.now();
-					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-				}
-			});
-			txtdate.setValue(LocalDate.now());
+			updateDetailsFromOrder();
 			break;
 		}
 		case 2: {
@@ -384,7 +406,10 @@ public class ManageOrderController implements Initializable {
 		}
 
 	}
-	
+	/* input : date as a string 
+	 * output: the local date value of the string recieved
+	 * convert from string to local date 
+	 */
 	public static LocalDate LOCAL_DATE (String dateString){
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	    LocalDate localDate = LocalDate.parse(dateString, formatter);
