@@ -113,8 +113,6 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private Button btnCancelShow;
 	@FXML
-	private Button btnExport;
-	@FXML
 	private Button btnLogout;
 	
 	/***** Visits Report *****/
@@ -122,8 +120,6 @@ public class DepartmentManagerController implements Initializable {
     private JFXDatePicker dpVisitorsFrom;
     @FXML
     private JFXDatePicker dpVisitorsTo;
-    @FXML
-    private Button btnVisitorsShow;
 	@FXML
     private PieChart pieRegular;
     @FXML
@@ -143,6 +139,12 @@ public class DepartmentManagerController implements Initializable {
 	private AlertController alert = new AlertController();
 	// private static Park parkDetails;
 
+	/***** Dashboard Variables *****/
+	private ArrayList<Object> data = new ArrayList<>();	
+	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
+	private static boolean status;
+	private int count = 0;
+	
 	/***** Visits Report Variables *****/
 	private static ArrayList<Double> regularVisitors = new ArrayList<>();
 	private static ArrayList<Double> memberVisitors = new ArrayList<>();
@@ -153,12 +155,7 @@ public class DepartmentManagerController implements Initializable {
 	private static boolean error = false;
 	private int index = 0;
 
-	/***** Dashboard Variables *****/
-	private ArrayList<Object> data = new ArrayList<>();	
-	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
-	private static boolean status;
-	private int count = 0;
-
+	
 	// this function managed the side bar
 	// input: button source that pressed
 	// output: switch to the relevant pane
@@ -254,6 +251,7 @@ public class DepartmentManagerController implements Initializable {
 		// call the function to fill the cancelledOrders data
 		show(event);
 
+		// cancelledOrders is empty
 		if (getError()) {
 			return;
 		}
@@ -335,8 +333,130 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 	
+	// creates a PDF file based on data retrieved from the DB
+	// input: from -> start date
+	// to -> end date
+	// ArrayList<Double> regularVisitors/memberVisitors/groupVisitors, cells:
+	//	 				 cell [0]: percentage of visitors between the hours 0-1
+	//                   cell [1]: percentage of visitors between the hours 1-2
+	//                   cell [2]: percentage of visitors between the hours 2-3
+	//                   cell [3]: percentage of visitors between the hours 3-4
+	// output: PDF report with all the data shown in the chart
 	@FXML
-	void showPieChart() {
+	void exportPieChart(ActionEvent event) {
+		// call the function to fill the cancelledOrders data
+		showPieChart(event);
+	
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	
+		String fromFormat = dateFormatter.format(dpVisitorsFrom.getValue());
+		String toFormat = dateFormatter.format(dpVisitorsTo.getValue());
+		// the date it was created
+		String fileNameDate = fileNameFormatter.format(LocalDate.now());
+	
+		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
+		try {
+			Document document = new Document();
+			// creates a report with the name ==> VisitorsReport 'yyyy-MM-dd'.pdf
+			// the 'yyyy-MM-dd' is the date it was created
+			PdfWriter writer = PdfWriter.getInstance(document,
+					new FileOutputStream("VisitorsReport " + fileNameDate + ".pdf"));
+			document.open();
+			Image logo = Image.getInstance(
+					"E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+			logo.setAlignment(Element.ALIGN_CENTER);
+			document.add(logo);
+	
+			Paragraph title = new Paragraph("Visitors Report\n", titleFont);
+			title.setAlignment(Element.ALIGN_CENTER);
+			document.add(title);
+	
+			Paragraph date = new Paragraph(new Date().toString() + "\n\n");
+			date.setAlignment(Element.ALIGN_CENTER);
+			document.add(date);
+	
+			for (int i = 0; i < 3; i++) {
+				String type = "";
+				ArrayList<Double> currentType = null;
+				
+				PdfPTable table = new PdfPTable(2);
+				table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+				
+				if (i == 0) {
+					type = "Regular";
+					currentType = regularVisitors;
+				} else if (i == 1) {
+					type = "Member";
+					currentType = memberVisitors;
+				} else if (i == 2) {
+					type = "Group";
+					currentType = groupVisitors;
+				}
+		
+				PdfPCell typeCell = new PdfPCell(new Paragraph(type));
+				typeCell.setColspan(2);
+				typeCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				typeCell.setBackgroundColor(new BaseColor(46, 139, 87));
+				// the title of the table
+				table.addCell(typeCell);
+				
+				PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
+				titleCell.setColspan(2);
+				titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				titleCell.setBackgroundColor(BaseColor.GRAY);
+				// the title of the table
+				table.addCell(titleCell);
+		
+				PdfPCell hours = new PdfPCell(new Paragraph("Hours"));
+				hours.setColspan(1);
+				hours.setHorizontalAlignment(Element.ALIGN_CENTER);
+				hours.setBackgroundColor(BaseColor.LIGHT_GRAY);
+				table.addCell(hours);
+		
+				PdfPCell arrivalRates = new PdfPCell(new Paragraph("Arrival Rates"));
+				arrivalRates.setColspan(1);
+				arrivalRates.setHorizontalAlignment(Element.ALIGN_CENTER);
+				arrivalRates.setBackgroundColor(BaseColor.LIGHT_GRAY);
+				table.addCell(arrivalRates);
+		
+				table.addCell("0-1");
+				table.addCell(String.valueOf(currentType.get(0) + "%"));
+				table.addCell("1-2");
+				table.addCell(String.valueOf(currentType.get(1) + "%"));
+				table.addCell("2-3");
+				table.addCell(String.valueOf(currentType.get(2) + "%"));
+				table.addCell("3-4");
+				table.addCell(String.valueOf(currentType.get(3) + "%"));
+				
+				document.add(table);
+				document.add(new Paragraph("\n"));
+			}
+	
+			alert.successAlert("Success", "The report was created successfully.");
+	
+			Desktop.getDesktop().open(new File("VisitorsReport " + fileNameDate + ".pdf"));
+	
+			document.close();
+			writer.close();
+	
+		} catch (Exception e) {
+			alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
+		}
+	}
+	
+	// displays the chart for the information retrieved from DB
+	// input: from -> start date
+	// 		  to -> end date
+	// ArrayList<Double> regularVisitors/memberVisitors/groupVisitors, cells:
+	// 					 cell [0]: percentage of visitors between the hours 0-1
+	//                   cell [1]: percentage of visitors between the hours 1-2
+	//                   cell [2]: percentage of visitors between the hours 2-3
+	//                   cell [3]: percentage of visitors between the hours 3-4
+	// output: displays the data
+	@FXML
+	void showPieChart(ActionEvent event) {
 		ArrayList<String> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
@@ -367,6 +487,10 @@ public class DepartmentManagerController implements Initializable {
 		addPieChart(pieGroup, "Group");
 	}
 	
+	// check that the inserted dates are correct
+	// input: from -> start date
+	// 		  to -> end date
+	// output: T / F ==> if valid T, otherwise F
 	public boolean checkDate(LocalDate from, LocalDate to) {
 
 		// the dates are correct
@@ -377,6 +501,15 @@ public class DepartmentManagerController implements Initializable {
 		return false;
 	}
 	
+	// adding a specific chart
+	// input: PieChart currentPie - with the current pie chart we want to add
+	//		  String title - the case for this pie chart
+	// ArrayList<Double> currentPie, cells:
+	// 					 cell [0]: percentage of visitors between the hours 0-1
+	//                   cell [1]: percentage of visitors between the hours 1-2
+	//                   cell [2]: percentage of visitors between the hours 2-3
+	//                   cell [3]: percentage of visitors between the hours 3-4
+	// output: add the data
 	public void addPieChart(PieChart currentPie, String title) {
 		currentPie.getData().clear();
 		// setting the length of the label line 
