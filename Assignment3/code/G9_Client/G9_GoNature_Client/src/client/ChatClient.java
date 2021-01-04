@@ -85,6 +85,7 @@ public class ChatClient extends AbstractClient {
 				ParkEmployeeController.receivedFromServerUpdateStatus((boolean)received.get(1));
 				break;
 			case "order":
+				System.out.println("from chat client : " + (Object)received.get(1));
 				OrderController.recivedFromServer((Object)received.get(1));
 				break;
 			case "checkOrderForGo":

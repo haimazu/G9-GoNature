@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javax.swing.ButtonGroup;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -23,6 +25,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.languages.HebrewProcessor;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXToggleButton;
 
 import client.ClientUI;
 import javafx.beans.binding.Bindings;
@@ -45,6 +48,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -439,6 +443,23 @@ public class DepartmentManagerController implements Initializable {
 	public static void setData(boolean status) {
 		setStatus(status);
 	}
+	
+//	/**
+//	 * for CheckBox
+//	 */
+//	public void groupRadioButton() {
+//		ButtonGroup  group = new ButtonGroup();
+//		
+//		for (int i = 0; i < TableDep.getItems().size(); i++) {
+//			group.add(TableDep.getItems().get(i).getMarkCh());
+//				
+//			}
+//		}
+//		radioCash.setToggleGroup(group);
+//		radioCreditCard.setToggleGroup(group);
+//		radioPayPal.setToggleGroup(group);
+//	}
+
 
 	/**
 	 * button approve will remove the row and will update the table from DB will
@@ -457,7 +478,10 @@ public class DepartmentManagerController implements Initializable {
 				data.add("removePendingsManagerReq");
 				data.add(mnData);
 				data.add("yes");
+				System.out.println("before server");
 				ClientUI.sentToChatClient(data);
+				
+				System.out.println("pass server");
 				if (status)
 					TableDep.getItems().remove(TableDep.getItems().get(i));
 				else {

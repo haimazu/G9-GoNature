@@ -53,6 +53,7 @@ public class EchoServer extends AbstractServer {
 			NewOrder.queInsert(recived, client);
 			break;
 		case "order":
+			System.out.println("from echo server : " +recived);
 			NewOrder.NewReservation(recived, client);
 			break;
 //		case "checkValidOrderNum":

@@ -77,18 +77,15 @@ public class WaitingListConfirmContoller {
 				alert.failedAlert("Failed!",
 						"something went wrong, our code monkey has been notified and will work on the error, please try again shortly. ");
 			if (alert.getResult().equals("OK")) {
-			
-				Node node = (Node) event.getSource();
-				Stage stage = (Stage) node.getScene().getWindow();
-				Pane root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
-				stage.setScene(new Scene(root));
+				Stage stage = (Stage) btnListMe.getScene().getWindow();
+				OrderController ORC = Context.getInstance().getOrderC();
+				ORC.back(event);
+				stage.close();
+
+
 			}
 
-//			Stage stage = (Stage) btnListMe.getScene().getWindow();
-//
-//			Stage stage2 = (Stage) btnListMe.getScene().getWindow();
-//			Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
-//			stage2.setScene(new Scene(root));
+			
 		}
 
 	}
