@@ -134,6 +134,25 @@ public class OrderController implements Initializable {
 	private String ID = null;
 	private AlertController alert = new AlertController();
 
+	
+	public URL getLocation() {
+		return location;
+	}
+
+	public void setLocation(URL location) {
+		this.location = location;
+	}
+
+	public ResourceBundle getResources() {
+		return resources;
+	}
+
+	public void setResources(ResourceBundle resources) {
+		this.resources = resources;
+	}
+
+	private URL location;
+	private ResourceBundle resources;
 	/***************** Getters and Setters for statics *****************/
 
 	public static boolean isConfirmOrder() {
@@ -299,6 +318,8 @@ public class OrderController implements Initializable {
 					+ getArrivalTime();
 			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					txtPhoneNum.getText(), cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
+			System.out.println("order : " + OrderController.order);
+			
 			msgNewOrderForServer.add(OrderController.order);
 			imgOrder.setImage(imgOrderFull);
 
@@ -376,17 +397,7 @@ public class OrderController implements Initializable {
 	/*******************************
 	 * Code for tests and additions
 	 ****************************************/
-/**
- * from waiting list confirmation
- * @throws IOException 
- */
-	public void setWindows(boolean flag,Button btn) throws IOException {
-		if(flag) {
-			System.out.println("here");
-			Pane pane = FXMLLoader.load(getClass().getResource("/gui/Order.fxml"));
 
-		}
-	}
 
 	/**
 	 * 
@@ -593,7 +604,7 @@ public class OrderController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		Context.getInstance().setOrderC(this);
 		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
 
 		// user can choose to date only date today until next year.
@@ -608,8 +619,14 @@ public class OrderController implements Initializable {
 		});
 
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
+		
+		if(WaitingListController.getSetDateFromWaitList()==1) {
+			txtdate.setValue((LocalDate) WaitingListController.getAnotherDates().get(0));
+			cbxArrivelTime.setValue((String)  WaitingListController.getAnotherDates().get(1));
+			WaitingListController.setSetDateFromWaitList(0);
+		}
 
-		if (flagOrder == 1) {
+		else if (flagOrder == 1) {
 			this.flagOrder = 0;
 			txtmemberID.setText((String) saveDetails.get(0));
 			cbxParkName.setValue((String) saveDetails.get(1));

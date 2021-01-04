@@ -885,7 +885,7 @@ public class ParkManagerController implements Initializable {
 		bcUsageChart.setAnimated(false);
 		bcUsageChart.setBarGap(1d);
 		bcUsageChart.setCategoryGap(8.0);
-
+		
 		bcUsageChart.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 		bcUsageChart.setPrefSize(613, 430);
 		bcUsageChart.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);

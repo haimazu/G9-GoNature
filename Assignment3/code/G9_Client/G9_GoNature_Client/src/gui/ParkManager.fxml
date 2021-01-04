@@ -186,7 +186,7 @@
                   </BarChart>
                </children>
             </Pane>
-            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
+            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <Label fx:id="lblTitle11" focusTraversable="false" layoutX="22.0" layoutY="13.0" styleClass="labelBold" text="Monthly report, segmented by type of visitors:">
                      <font>
@@ -217,7 +217,7 @@
                   </BarChart>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <JFXTextField fx:id="lblSetMax" focusTraversable="false" labelFloat="true" layoutX="63.0" layoutY="41.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" visible="false" />
                   <JFXTextField fx:id="txtManageDsic" focusTraversable="false" labelFloat="true" layoutX="345.0" layoutY="52.0" prefHeight="40.0" prefWidth="145.0" promptText="Manager Discount (%)" styleClass="txtField" visible="false" />

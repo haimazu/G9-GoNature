@@ -46,6 +46,23 @@ public class WaitingListController implements Initializable {
 	private static ArrayList<String> time = new ArrayList<>();
 	private ArrayList<String> nonReleventDates = new ArrayList<>();
 	private static ArrayList<Object> anotherDates = new ArrayList<>();
+	private static int setDateFromWaitList=0;
+
+	public static int getSetDateFromWaitList() {
+		return setDateFromWaitList;
+	}
+
+	public static void setSetDateFromWaitList(int setDateFromWaitList) {
+		WaitingListController.setDateFromWaitList = setDateFromWaitList;
+	}
+
+	public static ArrayList<Object> getAnotherDates() {
+		return anotherDates;
+	}
+
+	public static void setAnotherDates(ArrayList<Object> anotherDates) {
+		WaitingListController.anotherDates = anotherDates;
+	}
 
 	public static ArrayList<String> getTime() {
 
@@ -192,15 +209,18 @@ public class WaitingListController implements Initializable {
 
 	@FXML
 	void Continue(ActionEvent event) {
+		WaitingListController.setSetDateFromWaitList(1);
 		anotherDates.add(txtdate.getValue());
 		anotherDates.add(cbxArrivelTime.getValue());
-
+		OrderController ORC = Context.getInstance().getOrderC();
+		ORC.initialize(ORC.getLocation(), ORC.getResources());
 		Stage stage2 = (Stage) btnContinue.getScene().getWindow();
 		stage2.close();
 	}
 
 	@FXML
 	void here(ActionEvent event) throws IOException {
+		WaitingListController.setSetDateFromWaitList(0);
 		Stage stage = new Stage();
 		Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingListConfirmation.fxml"));
 		Scene scene = new Scene(root);
@@ -230,7 +250,18 @@ public class WaitingListController implements Initializable {
 		ClientUI.sentToChatClient(sendServer);
 
 		setArrForDatePicker();
-		nonReleventDatesForCalender(nonReleventDates);
+		if (nonReleventDates.isEmpty()) {
+			txtdate.setDayCellFactory(picker -> new DateCell() {
+				public void updateItem(LocalDate date, boolean empty) {
+					super.updateItem(date, empty);
+					LocalDate today = LocalDate.now();
+					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+				}
+			});
+		} else {
+			nonReleventDatesForCalender(nonReleventDates);
+		}
 		setArrForTime();
 	}
 
