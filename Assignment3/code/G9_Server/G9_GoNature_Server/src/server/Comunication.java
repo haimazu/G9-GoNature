@@ -12,7 +12,7 @@ import orderData.Order;
 
 public class Comunication {
 	public static void sendNotification(String subject ,String messege, Order order) {
-		SmsMessege sms = new SmsMessege(order.getOrderPhone(),messege,order);
+		SmsMessege sms = new SmsMessege(order.getOrderPhone(),subject+"\n\n "+messege,order);
 		EmailMessege email = new EmailMessege(order.getOrderEmail(),subject,messege,order);
 		//SIMULATION ONLY
 		ExecutorService exec = Executors.newSingleThreadExecutor();

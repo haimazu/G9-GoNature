@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dataLayer.EmailMessege;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 
@@ -21,8 +22,8 @@ public class CancelOrder {
 	public static void cancel(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		Order data = (Order) recived.get(1); // order object received
-		answer.add(deleteOrder(data.getOrderNumber()));
+		Order order = (Order) recived.get(1); // order object received
+		answer.add(deleteOrder(order.getOrderNumber()));
 		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {
@@ -30,7 +31,14 @@ public class CancelOrder {
 			e.printStackTrace();
 		}
 		WaitingList.pullFromWaitList(recived);
-		addToDBCanceledOrder(data);
+		addToDBCanceledOrder(order);
+		String subject = "GoNature Cancelation Confirmation";
+		String body = "Oh boy, we hate to see you go..."
+				+ "\nWe would like to inform you that your order has been canceled"
+				+ "\nWe hope to see you again"
+				+ "\n\n" + order.messegeString();
+		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), subject, body, order);
+		Comunication.sendNotification(subject, body, order);
 	}
 
 	public static boolean deleteOrder(int orderNum) {

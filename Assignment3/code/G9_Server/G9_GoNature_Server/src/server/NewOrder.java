@@ -58,9 +58,15 @@ public class NewOrder {
 			creditCardSave((CreditCard) recived.get(2));
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		Order data = (Order) recived.get(1); // order object received
-		answer.add(insertNewOrder(data)); //////////////////////////////////////////// ROI
+		Order order = (Order) recived.get(1); // data object received
+		answer.add(insertNewOrder(order)); //////////////////////////////////////////// ROI
 		EchoServer.sendToMyClient(answer, client);
+		String subject = "GoNature Order Confirmation";
+		String messege = "order completed sucssesfuly!\n "
+				+ "dont forget to confirm you arrival 24 hours before the visit"
+				+ "\ndont worry, we will send you a reminder!"
+				+ "\nwe hope to see you soon!\n\n\n" + order.messegeString();
+		Comunication.sendNotification(subject, messege, order);
 	}
 
 	// input: order object

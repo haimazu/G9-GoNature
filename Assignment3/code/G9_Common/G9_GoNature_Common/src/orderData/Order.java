@@ -120,6 +120,20 @@ public class Order implements Serializable {
 					+ getAmountArrived() + "','"
 					+ getOrderNumber() + "'");
 	}
+	
+	public String messegeString() {
+		String details = "\n\tOrder Details:\n"
+				+ "Order Number:\t" + getOrderNumber()
+				+ "\nPark:\t\t\t" + getParkName()
+				+ "\nDate & Time:\t" + getArrivedTime()
+				+ "\nVisitors:\t\t" + getVisitorsNumber()
+				+ "\n\nPrice:\t\t" + getPrice() + "₪"
+				+ "\nDiscount:\t" + (getPrice()-getTotalPrice())/getPrice() + "%"
+				+ "\nTotal:\t\t" + getTotalPrice() +"₪"
+				+ "\n\nID:\t" + getID()
+				+ "\nContact Details:\t" + getOrderEmail() + "\t" + getOrderPhone();
+		return details;
+	}
 
 	// checks if the order is for occasional visitor
 	public boolean isOccasional() {

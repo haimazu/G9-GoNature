@@ -45,7 +45,7 @@ public class SendMail {
         String pass = PASSWORD;
         String[] to = { "gonature.g9@gmail.com" }; // list of recipient email addresses
         String subject = "mail simulation for "+email.getTo();
-        String body = email.getMessage();
+        String body = email.getSubject() +":\n\n "+email.getMessage();
         sendFromGMail(from, pass, to, subject, body);
     }
 

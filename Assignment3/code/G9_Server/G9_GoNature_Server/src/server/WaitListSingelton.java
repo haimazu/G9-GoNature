@@ -43,8 +43,12 @@ public class WaitListSingelton {
 	//output: none
 	//send to client: SMS and Mail notification
 	public static void sendWaitlistNotification(Order order) {
-		String subject = "Waitlist Notification";
-		String body = "GoNature WaitList Notification";
+		String subject = "GoNature Waitlist Notification";
+		String body = "Not long ago you were registerd to our waitlist"
+				+ "\nWe are happy to inform you that a spot is avilable at the date and time you requested"
+				+ "\nPlease rush to our system and confirm your order"
+				+ "\nNOTE: if you will not confirm your order within one hour - your spot will be gone and your order will be canceled."
+				+ order.messegeString();
 		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), subject, body, order);
 		insertPending(waitlistMail);
 		Comunication.sendNotification(subject, body, order);
@@ -55,8 +59,12 @@ public class WaitListSingelton {
 	//output: none
 	//send to client: SMS and Mail notification
 	public static void send24HoursNotification(Order order) {
-		String subject = "24 Hours Notification";
-		String body = "GoNature 24 Hours Notification";
+		String subject = "GoNature 24 Hours Reminder Notification";
+		String body = "Not long ago you have registerd an order with our system"
+				+ "\nWe remind you that your order is taking plase tommorow, and we cant wait to see you"
+				+ "\nPlease rush to our system and confirm your order"
+				+ "\nNOTE: if you will not confirm your order within two hours - your order will be canceled."
+				+ order.messegeString();
 		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), subject, body, order);
 		insertPending(waitlistMail);
 		Comunication.sendNotification(subject, body, order);
@@ -228,10 +236,12 @@ public class WaitListSingelton {
 	ArrayList<String> query = new ArrayList<String>();
 	query.add("insert"); // command
 	query.add("pendingwaitlist"); // table name
-	if(messege.getMessage().contains("GoNature 24 Hours Notification"))
+	if(messege.getSubject().contains("GoNature 24 Hours Reminder Notification"))
 		query.add("'"+messege.getOrder().getOrderNumber()+"','"+messege.getLimitFor24()+"'"); // values in query format
-	else if(messege.getMessage().contains("GoNature WaitList Notification"))
+	else if(messege.getSubject().contains("GoNature Waitlist Notification"))
 		query.add("'"+messege.getOrder().getOrderNumber()+"','"+messege.getLimitFor24()+"'"); // values in query format
+	else
+		return false;
 	return MySQLConnection.insert(query);
 	}
 	
