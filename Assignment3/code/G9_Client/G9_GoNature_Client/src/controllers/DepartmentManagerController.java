@@ -149,7 +149,6 @@ public class DepartmentManagerController implements Initializable {
 	private static ArrayList<Double> regularVisitors = new ArrayList<>();
 	private static ArrayList<Double> memberVisitors = new ArrayList<>();
 	private static ArrayList<Double> groupVisitors = new ArrayList<>();
-	private static boolean allZeros = false;
 
 	/***** Cancel Report Variables *****/
 	private static ArrayList<ArrayList<String>> cancelledOrders = new ArrayList<>();
@@ -381,10 +380,6 @@ public class DepartmentManagerController implements Initializable {
 				String type = "";
 				ArrayList<Double> currentType = null;
 				
-				PdfPTable table = new PdfPTable(2);
-				table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-				table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-				
 				if (i == 0) {
 					type = "Regular";
 					currentType = regularVisitors;
@@ -395,6 +390,11 @@ public class DepartmentManagerController implements Initializable {
 					type = "Group";
 					currentType = groupVisitors;
 				}
+				
+				PdfPTable table = new PdfPTable(2);
+				table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+				
 		
 				PdfPCell typeCell = new PdfPCell(new Paragraph(type));
 				typeCell.setColspan(2);
@@ -524,45 +524,38 @@ public class DepartmentManagerController implements Initializable {
 		switch (title) {
 			case "Regular":
 				lblRegular.setText("Regular");
-				if (allZeros) {
-					allZeros = false;
-					return;
-				}
-				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours, " + String.valueOf(regularVisitors.get(0) + "%"), regularVisitors.get(0)),
-		                new PieChart.Data("1-2 hours, " + String.valueOf(regularVisitors.get(1) + "%"), regularVisitors.get(1)),
-		                new PieChart.Data("2-3 hours, " + String.valueOf(regularVisitors.get(2) + "%"), regularVisitors.get(2)),
-		                new PieChart.Data("3-4 hours, " + String.valueOf(regularVisitors.get(3) + "%"), regularVisitors.get(3)));			
+				currentVisitorsData = FXCollections.observableArrayList(getChartData(regularVisitors));			
 				break;
 			case "Member":
 				lblMember.setText("Member");
-				if (allZeros) {
-					allZeros = false;
-					return;
-				}
-				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours, " + String.valueOf(memberVisitors.get(0) + "%"), memberVisitors.get(0)),
-		                new PieChart.Data("1-2 hours, " + String.valueOf(memberVisitors.get(1) + "%"), memberVisitors.get(1)),
-		                new PieChart.Data("2-3 hours, " + String.valueOf(memberVisitors.get(2) + "%"), memberVisitors.get(2)),
-		                new PieChart.Data("3-4 hours, " + String.valueOf(memberVisitors.get(3) + "%"), memberVisitors.get(3)));
+				currentVisitorsData = FXCollections.observableArrayList(getChartData(memberVisitors));
 				break;
 			case "Group":
 				lblGroup.setText("Group");
-				if (allZeros) {
-					allZeros = false;
-					return;
-				}
-				currentVisitorsData = FXCollections.observableArrayList(
-		                new PieChart.Data("0-1 hours, " + String.valueOf(groupVisitors.get(0) + "%"), groupVisitors.get(0)),
-		                new PieChart.Data("1-2 hours, " + String.valueOf(groupVisitors.get(1) + "%"), groupVisitors.get(1)),
-		                new PieChart.Data("2-3 hours, " + String.valueOf(groupVisitors.get(2) + "%"), groupVisitors.get(2)),
-		                new PieChart.Data("3-4 hours, " + String.valueOf(groupVisitors.get(3) + "%"), groupVisitors.get(3)));
+				currentVisitorsData = FXCollections.observableArrayList(getChartData(groupVisitors));
 				break;
 			default:
 				return;
 		}
 
 		currentPie.setData(currentVisitorsData);
+	}
+	
+	public ObservableList<PieChart.Data> getChartData(ArrayList<Double> currentList) {
+		
+		ObservableList<PieChart.Data> currentVisitorsData = FXCollections.observableArrayList();
+		
+		if (currentList.get(0) != 0) {
+			currentVisitorsData.add(new PieChart.Data("0-1 hours, " + String.valueOf(currentList.get(0) + "%"), currentList.get(0)));
+		} if (currentList.get(1) != 0) {
+			currentVisitorsData.add(new PieChart.Data("1-2 hours, " + String.valueOf(currentList.get(1) + "%"), currentList.get(1)));
+		} if (currentList.get(2) != 0) {
+			currentVisitorsData.add(new PieChart.Data("2-3 hours, " + String.valueOf(currentList.get(2) + "%"), currentList.get(2)));
+		} if (currentList.get(3) != 0) {
+			currentVisitorsData.add(new PieChart.Data("3-4 hours, " + String.valueOf(currentList.get(3) + "%"), currentList.get(3)));
+		}
+		
+		return currentVisitorsData;		
 	}
 
 	public static String getFirstName() {
@@ -883,9 +876,6 @@ public class DepartmentManagerController implements Initializable {
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
 	public static void receivedFromServerRegularsVisitorsData(double one, double two, double three, double four) {
-		if (one == 0 && two == 0 && three == 0 && four == 0) {
-			allZeros = true;
-		}
 		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
 		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
 		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
@@ -900,9 +890,6 @@ public class DepartmentManagerController implements Initializable {
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
 	public static void receivedFromServerMembersVisitorsData(double one, double two, double three, double four) {
-		if (one == 0 && two == 0 && three == 0 && four == 0) {
-			allZeros = true;
-		}
 		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
 		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
 		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
@@ -917,9 +904,6 @@ public class DepartmentManagerController implements Initializable {
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
 	public static void receivedFromServerGroupsVisitorsData(double one, double two, double three, double four) {
-		if (one == 0 && two == 0 && three == 0 && four == 0) {
-			allZeros = true;
-		}
 		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
 		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
 		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
