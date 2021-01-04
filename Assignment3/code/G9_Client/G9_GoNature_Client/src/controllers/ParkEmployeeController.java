@@ -133,6 +133,7 @@ public class ParkEmployeeController implements Initializable {
 	private static Order randomVisitorFakeOrderDetails;
 	private static Park parkDetails;
 	private static String error = "";
+	private static String entryAndExitStatus = "";
 
 	// input: none
 	// output: moving to 'login' screen
@@ -307,7 +308,7 @@ public class ParkEmployeeController implements Initializable {
 				orderStatus = true;
 				execEnter();	
 				/*** Exit ***/
-			} else {
+			} else if (radExit.isSelected()) {
 				execExit();
 			}
 		}	
@@ -935,6 +936,22 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
+	// acceptance status
+	// input: String status
+	// output: set entryAndExitStatus string with the following return
+	// 1. the visitors did not enter - Didn't enter
+	// 2. Entered (but didn't exit)
+	// 3. Leaved
+	public static void receivedFromEnterAndExitStatus(String status) {
+		if (status.equals("Didn't enter")) {
+			setEntryAndExitStatus("Didn't enter");
+		} else if (status.equals("Entered")) {
+			setEntryAndExitStatus("Entered");
+		} else if (status.equals("Leaved")) {
+			setEntryAndExitStatus("Leaved");
+		}
+	}
+	
 	public static String getFirstName() {
 		return firstName;
 	}
@@ -949,6 +966,14 @@ public class ParkEmployeeController implements Initializable {
 
 	public static void setError(String error) {
 		ParkEmployeeController.error = error;
+	}
+
+	public static String getEntryAndExitStatus() {
+		return entryAndExitStatus;
+	}
+
+	public static void setEntryAndExitStatus(String entryAndExitStatus) {
+		ParkEmployeeController.entryAndExitStatus = entryAndExitStatus;
 	}
 
 	public static Order getOrderDetails() {
@@ -1016,10 +1041,11 @@ public class ParkEmployeeController implements Initializable {
 	public void clearAllFields() {
 		alert.setResult("");
 		setError("");
+		setEntryAndExitStatus("");
 		txtIdOrMemberId.clear();
 		txtOrderNumber.clear();
-		lblOrderNumber.setText("");
 		txtVisitorsAmount.clear();
+		lblOrderNumber.setText("");
 		lblParkName.setText("");
 		lblDate.setText("");
 		lblTime.setText("");
@@ -1043,8 +1069,8 @@ public class ParkEmployeeController implements Initializable {
 	// output: screen changes
 	public void clearAllOrderFields() {
 		txtOrderNumber.clear();
-		lblOrderNumber.setText("");
 		txtVisitorsAmount.clear();
+		lblOrderNumber.setText("");
 		lblParkName.setText("");
 		lblDate.setText("");
 		lblTime.setText("");
@@ -1101,11 +1127,11 @@ public class ParkEmployeeController implements Initializable {
 			btnApprove.setDisable(false);
 			
 			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
-				if (!btnRandomVisitor.isVisible()) {
+				if (!btnRandomVisitor.isVisible() && !txtIdOrMemberId.getText().isEmpty()) {
 	 				// update random visitor prices
 					checkForExistingFakeOrders();
-				} else if (!btnManualAccess.isVisible()) {
-					printOrderDetails();
+				} else if (!txtOrderNumber.getText().isEmpty()) {
+					showDetails(null);
 				}
 			}
 			// \\d -> only digits
