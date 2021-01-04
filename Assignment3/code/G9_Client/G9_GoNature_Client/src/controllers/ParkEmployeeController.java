@@ -972,7 +972,6 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomDate.setVisible(true);
 		lblTimeTitle.setVisible(true);
 		lblRandomTime.setVisible(true);
-		//txtRandomVisitorsAmount.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
 		clearAllOrderFields();
 		
@@ -1027,12 +1026,10 @@ public class ParkEmployeeController implements Initializable {
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
-		//txtRandomVisitorsAmount.clear();
 		lblDateTitle.setVisible(false);
 		lblRandomDate.setVisible(false);
 		lblTimeTitle.setVisible(false);
 		lblRandomTime.setVisible(false);
-		//txtRandomVisitorsAmount.setVisible(false);
 		btnApprove.setDisable(true);
 		btnRandomVisitor.setVisible(true);
 		orderStatus = false;
@@ -1084,9 +1081,7 @@ public class ParkEmployeeController implements Initializable {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		dateAndTimeFormat = arrivelDate.format(formatter);
 		
-		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
-				+ "-" + arrivelDate.getMonthValue() 
-				+ "-" + arrivelDate.getYear());
+		lblRandomDate.setText(arrivelDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
 		/***** Barcode / Regular *****/
 		// force the field to be numeric only
@@ -1115,23 +1110,7 @@ public class ParkEmployeeController implements Initializable {
 			}
 		});
 
-		/***** Random *****/
-		// force the field to be numeric only
-//		txtRandomVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
-//			btnApprove.setDisable(false);
-//			
-//			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
-//				// update prices
-//				checkForExistingFakeOrders();
-//			}
-//			// \\d -> only digits
-//			// * -> escaped special characters
-//			if (!newValue.matches("\\d")) {
-//				// ^\\d -> everything that not a digit
-//				txtRandomVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
-//			}
-//		});
-		
+		/***** Random *****/	
 		// force the field to be numeric only
 		txtIdOrMemberId.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
