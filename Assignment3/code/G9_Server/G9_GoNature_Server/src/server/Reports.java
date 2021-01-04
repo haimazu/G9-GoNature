@@ -161,10 +161,17 @@ public class Reports {
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '01:00:00' "
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '00:00:00'"); // condition
 		query1.add("1"); // how many columns returned
-		System.out.println("1:" + query1.toString());
+		
+		
+		// System.out.println("1:" + query1.toString());
 		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
+		if(queryData1.get(0)==null) {
+			System.out.println("check");
+			EchoServer.sendToMyClient(answer, client);
+			return;
+		}
 		if (!(queryData1.get(0).get(0) == null)) {
-			System.out.println(queryData1);
+			System.out.println("1:" +queryData1);
 			temp[0] = Double.parseDouble(queryData1.get(0).get(0));
 			amountArrivedOverall += temp[0];
 		} else
@@ -178,10 +185,10 @@ public class Reports {
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '02:01:00' "
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '01:00:00'"); // condition
 		query2.add("1"); // how many columns returned
-		System.out.println("2:" + query2.toString());
+		// System.out.println("2:" + query2.toString());
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
 		if (!(queryData2.get(0).get(0) == null)) {
-			System.out.println(queryData2);
+			System.out.println("2:" + queryData2);
 			temp[1] = Double.parseDouble(queryData2.get(0).get(0));
 			amountArrivedOverall += temp[1];
 		} else
@@ -195,10 +202,10 @@ public class Reports {
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '03:01:00' "
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '02:00:00'"); // condition
 		query3.add("1"); // how many columns returned
-		System.out.println("3:" + query3.toString());
+		// System.out.println("3:" + query3.toString());
 		ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
-		System.out.println(queryData3);
 		if (!(queryData3.get(0).get(0) == null)) {
+			System.out.println("3:" + queryData3);
 			temp[2] = Double.parseDouble(queryData3.get(0).get(0));
 			amountArrivedOverall += temp[2];
 		} else
@@ -212,10 +219,10 @@ public class Reports {
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '04:01:00' "
 				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '03:00:00'"); // condition
 		query4.add("1"); // how many columns returned
-		System.out.println("4:" + query4.toString());
+		// System.out.println("4:" + query4.toString());
 		ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
-		System.out.println(queryData1);
 		if (!(queryData4.get(0).get(0) == null)) {
+			System.out.println("4:" + queryData4);
 			temp[3] = Double.parseDouble(queryData4.get(0).get(0));
 			amountArrivedOverall += temp[3];
 		} else

@@ -376,7 +376,7 @@ public class ParkEmployeeController implements Initializable {
 	public void execEnter() {
 		int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());	
 		
-		// check if the amount of "visitorsEntered" greater than the invitation.
+		// checks whether the number of visitors is greater than the number in the order
 		if (tooManyVisitors > Integer.parseInt(lblVisitorsNumber.getText())) {
 				
 			// check the available places in the park
@@ -468,7 +468,7 @@ public class ParkEmployeeController implements Initializable {
 					
 			// the visitors did not fulfilled the invitation
 			if (getError().equals("Failed")) {
-				alert.failedAlert("Failed", "The visitor/s did not enter.");
+				alert.failedAlert("Failed", "The visitor/s didn't enter.");
 				clearAllFields();
 				return;
 			}
@@ -481,7 +481,7 @@ public class ParkEmployeeController implements Initializable {
 				updateCurrentVisitors(updateCurrentVisitors);	
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
 			} 
-		// barcode / regular mode
+		// barcode / regular mode (with order)
 		} else {
 			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());	
 			
@@ -498,7 +498,9 @@ public class ParkEmployeeController implements Initializable {
 				// update current visitors
 				updateCurrentVisitors(updateCurrentVisitors);	
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
-			} 
+			} else {
+				alert.failedAlert("Failed", "The visitor/s in this invitation didn't enter.");
+			}
 		} 
 	}
 	
@@ -972,7 +974,6 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomDate.setVisible(true);
 		lblTimeTitle.setVisible(true);
 		lblRandomTime.setVisible(true);
-		//txtRandomVisitorsAmount.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
 		clearAllOrderFields();
 		
@@ -1027,12 +1028,10 @@ public class ParkEmployeeController implements Initializable {
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
-		//txtRandomVisitorsAmount.clear();
 		lblDateTitle.setVisible(false);
 		lblRandomDate.setVisible(false);
 		lblTimeTitle.setVisible(false);
 		lblRandomTime.setVisible(false);
-		//txtRandomVisitorsAmount.setVisible(false);
 		btnApprove.setDisable(true);
 		btnRandomVisitor.setVisible(true);
 		orderStatus = false;
@@ -1084,9 +1083,7 @@ public class ParkEmployeeController implements Initializable {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		dateAndTimeFormat = arrivelDate.format(formatter);
 		
-		lblRandomDate.setText(arrivelDate.getDayOfMonth() 
-				+ "-" + arrivelDate.getMonthValue() 
-				+ "-" + arrivelDate.getYear());
+		lblRandomDate.setText(arrivelDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
 		/***** Barcode / Regular *****/
 		// force the field to be numeric only
@@ -1103,9 +1100,13 @@ public class ParkEmployeeController implements Initializable {
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {	
 			btnApprove.setDisable(false);
 			
-			if (!newValue.isEmpty() && newValue.charAt(0) != '0' && !btnRandomVisitor.isVisible()) {
-				// update prices
-				checkForExistingFakeOrders();
+			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
+				if (!btnRandomVisitor.isVisible()) {
+	 				// update random visitor prices
+					checkForExistingFakeOrders();
+				} else if (!btnManualAccess.isVisible()) {
+					printOrderDetails();
+				}
 			}
 			// \\d -> only digits
 			// * -> escaped special characters
@@ -1115,23 +1116,7 @@ public class ParkEmployeeController implements Initializable {
 			}
 		});
 
-		/***** Random *****/
-		// force the field to be numeric only
-//		txtRandomVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
-//			btnApprove.setDisable(false);
-//			
-//			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
-//				// update prices
-//				checkForExistingFakeOrders();
-//			}
-//			// \\d -> only digits
-//			// * -> escaped special characters
-//			if (!newValue.matches("\\d")) {
-//				// ^\\d -> everything that not a digit
-//				txtRandomVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
-//			}
-//		});
-		
+		/***** Random *****/	
 		// force the field to be numeric only
 		txtIdOrMemberId.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);

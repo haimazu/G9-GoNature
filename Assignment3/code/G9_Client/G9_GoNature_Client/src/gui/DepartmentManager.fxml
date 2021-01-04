@@ -133,6 +133,7 @@
                   <JFXDatePicker fx:id="dpVisitorsFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
                   <JFXDatePicker fx:id="dpVisitorsTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
                   <Button fx:id="btnVisitorsShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#showPieChart" styleClass="btnSmallGreen" text="Show" />
+                  <Button fx:id="btnExportPieChart" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" onAction="#exportPieChart" styleClass="btnSmallGreen" text="Export" />
                   <Label fx:id="lblRegular" layoutX="116.0" layoutY="94.0">
                      <font>
                         <Font name="System Bold" size="18.0" />
