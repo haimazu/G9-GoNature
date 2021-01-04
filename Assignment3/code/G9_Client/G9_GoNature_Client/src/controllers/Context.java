@@ -7,7 +7,11 @@ public class Context {
 	private OrderController OrderC;
 	private WaitingListController WLC;
 	private WaitingListConfirmContoller WLCC;
+	private ParkManagerController PMC;
+	private ParkEmployeeController PEC;
 	
+
+
 	private final static Context instance = new Context();
 	  public static Context getInstance() {
 	    return instance;
@@ -32,7 +36,22 @@ public class Context {
 		WLCC = wLCC;
 	}
 	
+	public ParkManagerController getPMC() {
+		return PMC;
+	}
+
+	public void setPMC(ParkManagerController pMC) {
+		PMC = pMC;
+	}
 	
+
+	public ParkEmployeeController getPEC() {
+		return PEC;
+	}
+
+	public void setPEC(ParkEmployeeController pEC) {
+		PEC = pEC;
+	}
 	
 	  
 }

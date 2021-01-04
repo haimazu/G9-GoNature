@@ -1096,6 +1096,7 @@ public class ParkEmployeeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		Context.getInstance().setPEC(this);
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
 		setRandomModeOff();

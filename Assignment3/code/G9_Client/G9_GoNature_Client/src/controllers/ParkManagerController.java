@@ -326,7 +326,6 @@ public class ParkManagerController implements Initializable {
 		setParkName(LoginController.getParkName());
 		RequestForParkDetails();
 		setFirstName(LoginController.getFirstName());
-		System.out.println(getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 		lblParkName.setText(getParkName());
 
