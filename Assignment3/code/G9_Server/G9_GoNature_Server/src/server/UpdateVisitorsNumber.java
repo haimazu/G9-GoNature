@@ -29,6 +29,17 @@ public class UpdateVisitorsNumber {
 
 		answer.add(MySQLConnection.update(query));
 		EchoServer.sendToMyClient(answer, client);
+
+		//
+		///////////ROI//////////////////
+		//test this part to see if it works
+		//
+		//
+		ArrayList<Object> answer2 = new ArrayList<Object>();
+		answer2.add("VisitorsUpdateSendToAll");
+		answer2.add(data.get(0));//parkname
+		answer2.add(data.get(1));//updatedVisitorsNumber
+		EchoServer.sendToAll(answer2);
 	}
 
 	// input: cell [0]: case name updateAccessControl
@@ -140,7 +151,7 @@ public class UpdateVisitorsNumber {
 		// the service name : getParkDetails
 		answer.add(recived.get(0));
 		// the data that sent from the client
-		// cell 0: parkName
+		// cell 1: parkName
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
 		int visitorsToAddorRemove = Integer.parseInt(data.get(1));
 

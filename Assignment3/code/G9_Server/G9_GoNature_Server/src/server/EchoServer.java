@@ -10,10 +10,12 @@ import ocsf.server.ConnectionToClient;
 
 public class EchoServer extends AbstractServer {
 	private static ServerController control;
+	private static EchoServer self;
 
 	public EchoServer(int port, ServerController control) {
 		super(port);
 		EchoServer.control = control;
+		self=this;
 	}
 
 	@Override
@@ -130,6 +132,10 @@ public class EchoServer extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void sendToAll(ArrayList<Object> msg) {
+		self.sendToAllClients(msg);
 	}
 	
 	@Override
