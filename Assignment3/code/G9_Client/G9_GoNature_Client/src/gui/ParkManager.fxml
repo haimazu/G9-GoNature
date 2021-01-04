@@ -9,7 +9,6 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -80,27 +79,6 @@
             </Button>
          </children>
       </VBox>
-      <Pane layoutX="182.0" prefHeight="65.0" prefWidth="620.0" styleClass="pnRightTop" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0">
-         <children>
-            <Label fx:id="lblTitle" layoutX="21.0" layoutY="15.0" styleClass="labelBold" text="Dashboard">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label layoutX="418.0" layoutY="25.0" styleClass="labelBold" text="Welcome, ">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font></Label>
-            <Button fx:id="btnLogout" focusTraversable="false" layoutX="543.0" layoutY="20.0" mnemonicParsing="false" onAction="#logout" styleClass="btnSmallRed" text="Logout" />
-            <Separator layoutY="64.0" prefWidth="618.0" />
-            <Label fx:id="lblFirstNameTitle" layoutX="477.0" layoutY="25.0" styleClass="labelBold" />
-            <Label fx:id="lblParkName" layoutX="255.0" layoutY="17.0" styleClass="labelBold" textFill="SEAGREEN">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <StackPane layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
          <children>
             <Pane fx:id="pnSettings" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
@@ -120,10 +98,10 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker editable="false" focusTraversable="false" layoutX="39.0" layoutY="73.0" promptText="From Date" />
-                  <JFXDatePicker editable="false" focusTraversable="false" layoutX="235.0" layoutY="73.0" promptText="To Date" />
-                  <Button focusTraversable="false" layoutX="434.0" layoutY="75.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Show" />
-                  <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true">
+                  <JFXDatePicker fx:id="dpFromR" editable="false" focusTraversable="false" layoutX="39.0" layoutY="52.0" promptText="From Date" />
+                  <JFXDatePicker fx:id="dpToR" editable="false" focusTraversable="false" layoutX="235.0" layoutY="52.0" promptText="To Date" />
+                  <Button fx:id="btnShowReuvenue" focusTraversable="false" layoutX="434.0" layoutY="54.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Show" />
+                  <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true" visible="false">
                     <columns>
                       <TableColumn prefWidth="113.0" text="Financial Income" />
                       <TableColumn prefWidth="124.0" text="Financial Expences" />
@@ -131,13 +109,32 @@
                         <TableColumn prefWidth="97.0" text="Date" />
                     </columns>
                   </TableView>
-                  <Label fx:id="lblTitle11111" focusTraversable="false" layoutX="39.0" layoutY="268.0" styleClass="labelBold" text="Comments: ">
+                  <Label fx:id="lblTitle11111" focusTraversable="false" layoutX="39.0" layoutY="268.0" styleClass="labelBold" text="Comments: " visible="false">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" />
-                  <Button fx:id="btnReportView11" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" />
+                  <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" visible="false" />
+                  <Button fx:id="btnReportView11" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" visible="false" />
+                  <BarChart fx:id="bcRevenue" barGap="5.0" categoryGap="2.0" layoutY="88.0" prefHeight="430.0" prefWidth="613.0" title="Revenue Rrport">
+                     <xAxis>
+                        <CategoryAxis label="Dates" side="BOTTOM" fx:id="xAxisR">
+                           <tickLabelFont>
+                              <Font name="System Bold" size="11.0" />
+                           </tickLabelFont>
+                        </CategoryAxis>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis fx:id="yAxisR" label="amount" prefHeight="381.0" prefWidth="59.0" side="LEFT">
+                           <tickLabelFont>
+                              <Font name="System Bold" size="11.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </BarChart>
                </children>
             </Pane>
             <Pane fx:id="pnUsage" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">

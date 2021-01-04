@@ -205,9 +205,25 @@ public class ParkManagerController implements Initializable {
 	private Button showUsage;
 	private static ArrayList<ArrayList<String>> usageReport = new ArrayList<>();
 
-//	private Series<String, Double> visit8_12 = new Series<>();
-//	private Series<String, Double> visit12_16 = new Series<>();
-//	private Series<String, Double> viit16_20 = new Series<>();
+/*-----------for Revenue chart----------*/
+	
+    @FXML
+    private BarChart<?, ?> bcRevenue;
+
+    @FXML
+    private CategoryAxis xAxisR;
+
+    @FXML
+    private NumberAxis yAxisR;
+    
+    @FXML
+    private Button btnShowReuvenue;
+    
+    @FXML
+    private JFXDatePicker dpFromR;
+
+    @FXML
+    private JFXDatePicker dpToR;
 	/*-------------------------*/
 
 	public static ArrayList<ArrayList<String>> getUsageReport() {
@@ -346,6 +362,22 @@ public class ParkManagerController implements Initializable {
 		dpToU.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpToU.setValue(newValue);
 		});
+		
+		/*** revenue reports ***/
+		dpFromR.setValue(LocalDate.now().withDayOfMonth(1));
+		// listener for updating the date
+		dpFromR.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpFromR.setValue(newValue);
+		});
+
+		// plusMonths(1) to get the next month
+		// withDayOfMonth(1) to get the first day
+		dpToR.setValue(dpFromU.getValue().plusMonths(1).withDayOfMonth(1));
+		// listener for updating the date
+		dpToR.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpToR.setValue(newValue);
+		});
+		
 	}
 
 	// dates method
