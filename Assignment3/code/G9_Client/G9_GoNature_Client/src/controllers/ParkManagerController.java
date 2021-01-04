@@ -322,10 +322,11 @@ public class ParkManagerController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		Context.getInstance().setPMC(this);
 		setParkName(LoginController.getParkName());
 		RequestForParkDetails();
 		setFirstName(LoginController.getFirstName());
+		System.out.println(getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 		lblParkName.setText(getParkName());
 
@@ -372,7 +373,7 @@ public class ParkManagerController implements Initializable {
 
 		// plusMonths(1) to get the next month
 		// withDayOfMonth(1) to get the first day
-		dpToR.setValue(dpFromU.getValue().plusMonths(1).withDayOfMonth(1));
+		dpToR.setValue(dpFromR.getValue().plusMonths(1).withDayOfMonth(1));
 		// listener for updating the date
 		dpToR.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpToR.setValue(newValue);
