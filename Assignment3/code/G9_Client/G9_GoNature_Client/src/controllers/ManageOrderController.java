@@ -183,6 +183,14 @@ public class ManageOrderController implements Initializable {
 				cbxArriveTime.getSelectionModel().select(2);
 				break;
 			}
+			txtdate.setDayCellFactory(picker -> new DateCell() {
+				public void updateItem(LocalDate date, boolean empty) {
+					super.updateItem(date, empty);
+					LocalDate today = LocalDate.now();
+					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
+				}
+			});
 			txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
 
 		} else {
