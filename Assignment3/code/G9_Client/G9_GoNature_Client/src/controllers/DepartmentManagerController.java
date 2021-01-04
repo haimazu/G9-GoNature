@@ -943,6 +943,11 @@ public class DepartmentManagerController implements Initializable {
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
 		mark.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("MarkCh"));
+		
+//		parkName.setStyle( "-fx-alignment: CENTER;");
+//		requestType.setStyle( "-fx-alignment: CENTER;");
+//		requestDetails.setStyle( "-fx-alignment: CENTER;");
+//		mark.setStyle( "-fx-alignment: CENTER;");
 
 		/***** Visitors Reports *****/
 		dpVisitorsFrom.setValue(LocalDate.now().withDayOfMonth(1));

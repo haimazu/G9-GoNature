@@ -160,10 +160,10 @@
                      <children>
                         <TableView fx:id="TableDep" layoutX="2.0" layoutY="11.0" prefHeight="324.0" prefWidth="613.0" style="-fx-background-color: #FFFFF0;" stylesheets="@application.css">
                            <columns>
-                              <TableColumn fx:id="parkName" prefWidth="74.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #A98467;" text="Park Name" />
-                              <TableColumn fx:id="requestType" prefWidth="83.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #A98467;" text="Request Type" />
-                              <TableColumn fx:id="requestDetails" prefWidth="394.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #A98467;" text="Requset Details" />
-                              <TableColumn fx:id="mark" prefWidth="61.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #A98467;" text="mark" />
+                              <TableColumn fx:id="parkName" prefWidth="74.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Park Name" />
+                              <TableColumn fx:id="requestType" prefWidth="83.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Request Type" />
+                              <TableColumn fx:id="requestDetails" prefWidth="394.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Requset Details" />
+                              <TableColumn fx:id="mark" prefWidth="61.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="mark" />
                            </columns>
                         </TableView>
                      </children>

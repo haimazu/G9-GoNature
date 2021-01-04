@@ -318,7 +318,6 @@ public class OrderController implements Initializable {
 					+ getArrivalTime();
 			OrderController.order = new Order(Integer.parseInt(txtVisitorsNumber.getText()), txtInvitingEmail.getText(),
 					txtPhoneNum.getText(), cbxParkName.getValue().toString(), strDateTime, this.memberId, this.ID);
-			System.out.println("order : " + OrderController.order);
 			
 			msgNewOrderForServer.add(OrderController.order);
 			imgOrder.setImage(imgOrderFull);

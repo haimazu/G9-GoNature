@@ -239,9 +239,9 @@ public class WaitingListController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.time.clear();
-		this.time.add("08:00 - 12:00");
-		this.time.add("12:00 - 16:00");
-		this.time.add("16:00 - 20:00");
+		this.time.add("08:00-12:00");
+		this.time.add("12:00-16:00");
+		this.time.add("16:00-20:00");
 		cbxArrivelTime.setDisable(true);
 
 		ArrayList<Object> sendServer = new ArrayList<>();
