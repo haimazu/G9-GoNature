@@ -621,8 +621,8 @@ public class OrderController implements Initializable {
 		cbxParkName.setItems(FXCollections.observableArrayList(ParksNames));
 		
 		if(WaitingListController.getSetDateFromWaitList()==1) {
-			txtdate.setValue((LocalDate) WaitingListController.getAnotherDates().get(0));
-			cbxArrivelTime.setValue((String)  WaitingListController.getAnotherDates().get(1));
+			txtdate.setValue((LocalDate)WaitingListController.getAnotherDates().get(0));
+			cbxArrivelTime.setValue((String)WaitingListController.getAnotherDates().get(1));
 			WaitingListController.setSetDateFromWaitList(0);
 		}
 
