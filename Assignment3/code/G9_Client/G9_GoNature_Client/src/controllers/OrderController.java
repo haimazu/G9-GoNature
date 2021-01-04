@@ -605,7 +605,7 @@ public class OrderController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setOrderC(this);
-		cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
+		cbxArrivelTime.setItems(FXCollections.observableArrayList("08:00-12:00", "12:00-16:00", "16:00-20:00"));
 
 		// user can choose to date only date today until next year.
 
