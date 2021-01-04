@@ -223,7 +223,7 @@ public class ManageOrderController implements Initializable {
 			String orderDateTime = sentOrder.getArrivedTime();
 			int clientVisitorsNumber = Integer.parseInt(txtVisitorsNumber.getText());
 			int orderVisitorsNumber = sentOrder.getVisitorsNumber();
-			if ((!clientDateTime.equals(orderDateTime)) || (clientVisitorsNumber != orderVisitorsNumber)) {
+			if ((!clientDateTime.equals(orderDateTime)) || (clientVisitorsNumber != orderVisitorsNumber||!checkCurrentTime())) {
 				sentOrder.setArrivedTime(clientDateTime);
 				sentOrder.setVisitorsNumber(clientVisitorsNumber);
 				ArrayList<Object> msgForServer = new ArrayList<>();
