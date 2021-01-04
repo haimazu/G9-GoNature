@@ -5,13 +5,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
-
-import javax.swing.ButtonGroup;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -23,12 +22,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.languages.HebrewProcessor;
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXToggleButton;
 
 import client.ClientUI;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,7 +44,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -742,10 +737,10 @@ public class DepartmentManagerController implements Initializable {
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
 	public static void receivedFromServerRegularsVisitorsData(double one, double two, double three, double four) {
-		DepartmentManagerController.regularVisitors.add(one);
-		DepartmentManagerController.regularVisitors.add(two);
-		DepartmentManagerController.regularVisitors.add(three);
-		DepartmentManagerController.regularVisitors.add(four);
+		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
+		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
+		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
+		DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(four)));
 	}
 	
 	// getting information from the server
@@ -756,10 +751,10 @@ public class DepartmentManagerController implements Initializable {
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
 	public static void receivedFromServerMembersVisitorsData(double one, double two, double three, double four) {
-		DepartmentManagerController.memberVisitors.add(one);
-		DepartmentManagerController.memberVisitors.add(two);
-		DepartmentManagerController.memberVisitors.add(three);
-		DepartmentManagerController.memberVisitors.add(four);
+		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
+		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
+		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
+		DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(four)));
 	}
 	
 	// getting information from the server
@@ -770,10 +765,10 @@ public class DepartmentManagerController implements Initializable {
 	//	 				  cell[2] 2-3 hours
 	//	  				  cell[3] 3-4 hours
 	public static void receivedFromServerGroupsVisitorsData(double one, double two, double three, double four) {
-		DepartmentManagerController.groupVisitors.add(one);
-		DepartmentManagerController.groupVisitors.add(two);
-		DepartmentManagerController.groupVisitors.add(three);
-		DepartmentManagerController.groupVisitors.add(four);
+		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(one)));
+		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(two)));
+		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(three)));
+		DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format(four)));
 	}
 
 	public static boolean getError() {
