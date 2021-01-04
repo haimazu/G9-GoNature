@@ -89,6 +89,44 @@ public class UpdateVisitorsNumber {
 		
 		return true;
 	}
+	
+	// input: ArrayList<Object>,ConnectionToClient
+	// pulling details of a selected park from DB
+	// output: ArrayList<Object>=> cell[0] function name
+	// cell[1] ArrayList<String> [0] parkName
+	// [1] number of visitors to add
+	@SuppressWarnings("unchecked")
+	public static void getVisitorsEntryStatus(ArrayList<Object> recived, ConnectionToClient client) {
+		// query
+		ArrayList<Object> answer = new ArrayList<Object>();
+		// the service name : getVisitorsEntryStatus
+		answer.add(recived.get(0));
+		// the data that sent from the client
+		// cell 0: orderNumber
+		ArrayList<String> data = (ArrayList<String>) recived.get(1);
+		int orderNumber = Integer.parseInt(data.get(1));
+
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("enteryandexit"); // table name
+		query.add("*"); // columns to select from
+		query.add("WHERE orderNumber = '" + orderNumber + "'"); // condition
+		query.add("6"); // how many columns returned
+
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+
+		if (queryData.isEmpty()) {
+			answer.add("Didn't enter");
+		} else {
+			if (queryData.get(2) == null) {
+				answer.add("Entered");
+			} else {
+				answer.add("Leaved");
+			} 
+		}
+
+		EchoServer.sendToMyClient(answer, client);
+	}
 
 	// input: ArrayList<Object>,ConnectionToClient
 	// pulling details of a selected park from DB
@@ -128,5 +166,7 @@ public class UpdateVisitorsNumber {
 
 		EchoServer.sendToMyClient(answer, client);
 	}
+	
+	
 
 }
