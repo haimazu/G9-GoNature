@@ -7,8 +7,17 @@ import javax.mail.internet.*;
 import dataLayer.EmailMessege;
 import dataLayer.SmsMessege;
 
+/**
+* The SendMail program sends mails when necessary 
+*
+* @author Roi Amar 
+*/
 
 public class SendMail {
+
+	/**
+	 * simulations for sending email
+	 */
 
     private static String USER_NAME = "gonature.g9";  // GMail user name (just the part before "@gmail.com")
     private static String PASSWORD = "Aa123456!"; // GMail password
@@ -48,6 +57,14 @@ public class SendMail {
         String body = email.getSubject() +":\n\n "+email.getMessage();
         sendFromGMail(from, pass, to, subject, body);
     }
+
+    
+    /**
+	 * sending mails to customers via dedicated address
+	 * 
+	 * @param  String from, String pass, String[] to, String subject, String body
+	 * @exception AddressException, MessagingException
+	 */
 
     private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
         Properties props = System.getProperties();
