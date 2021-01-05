@@ -25,6 +25,7 @@ import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
 
 import client.ClientUI;
 import dataLayer.Park;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -337,7 +338,12 @@ public class ParkManagerController implements Initializable {
 	}
 
 	public void setUpdatedCurrentVisitors(String visitNum) {
-		lblCurrentVisitors.setText(visitNum);
+		//lblCurrentVisitors.setText(visitNum);
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+            	lblCurrentVisitors.setText(visitNum);
+            }
+        });
 	}
 
 	@Override
