@@ -10,12 +10,15 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
+import java.util.prefs.BackingStoreException;
 
 import javax.imageio.stream.MemoryCacheImageInputStream;
 
 import org.omg.CORBA.PRIVATE_MEMBER;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
@@ -114,9 +117,9 @@ public class ManageOrderController implements Initializable {
 	}
 
 	/*
-	 * input : received order object from server Output : non present on screen:
-	 * order details
-	 * 
+	 * input : received order object from server 
+	 * Output : non 
+	 * present on screen: order details
 	 */
 	void presentOrderdetails(Order details) {
 
@@ -150,7 +153,9 @@ public class ManageOrderController implements Initializable {
 	}
 
 	/*
-	 * input : output :
+	 * input : non
+	 * output :non 
+	 * description : presenting the details , initializing the fields with order details
 	 */
 	
 	@Override
@@ -168,31 +173,6 @@ public class ManageOrderController implements Initializable {
 		presentOrderdetails(order);
 		if (!WelcomeController.getisIspending()) {
 			updateDetailsFromOrder();
-			
-			
-//			cbxArriveTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
-//			txtVisitorsNumber.setText(String.valueOf(WelcomeController.getOrderDetails().getVisitorsNumber()));
-//			switch(timeString[0])
-//			{
-//			case  "08" :
-//				cbxArriveTime.getSelectionModel().select(0);
-//				break;
-//			case "12" :
-//				cbxArriveTime.getSelectionModel().select(1);
-//				break;
-//			case "16" :
-//				cbxArriveTime.getSelectionModel().select(2);
-//				break;
-//			}
-//			txtdate.setDayCellFactory(picker -> new DateCell() {
-//				public void updateItem(LocalDate date, boolean empty) {
-//					super.updateItem(date, empty);
-//					LocalDate today = LocalDate.now();
-//					LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
-//					setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
-//				}
-//			});
-//			txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
 
 		} else {
 			btnconfirme.setVisible(true);
@@ -237,9 +217,8 @@ public class ManageOrderController implements Initializable {
 		txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
 	}
 
-	/**
-	 * button back
-	 * 
+	/*
+	 * button back : return to previous screen 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -251,9 +230,9 @@ public class ManageOrderController implements Initializable {
 	}
 
 	/*
-	 * input : non output : non send to server : Array list of objects : [0]->
-	 * string for server : editOrder , [1]-> updated order object , [2]-> old order
-	 * object
+	 * input : non 
+	 * output : non 
+	 * send to server : Array list of objects : [0]-> string for server : editOrder , [1]-> updated order object , [2]-> old order object
 	 */
 	@FXML
 	void update(ActionEvent event) throws IOException {
@@ -308,7 +287,7 @@ public class ManageOrderController implements Initializable {
 			alert.setAlert("Failed to cancel Order");
 	}
 
-	/*
+	/*input : non, output: non
 	 * Do not allow to book a trip for a time that already passed today
 	 */
 	public boolean checkCurrentTime() {
@@ -325,7 +304,10 @@ public class ManageOrderController implements Initializable {
 		}
 		return true;
 	}
-
+/*	input : returned from server value - true if canceled , false - if not canceled  and an error ocured
+ * 	output: non
+ *
+ */
 	public static void canceledOrderFromServer(boolean returned) {
 		canceled = returned;
 		order = null;
@@ -361,7 +343,11 @@ public class ManageOrderController implements Initializable {
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
 //		stage.setScene(new Scene(root));
 	}
-
+/* uppon receving a message that there is free spot in the park or message to approve arrival on the next day
+ * confirme or cancel order 
+input : non 
+output :non 
+ */
 	@FXML
 	void confirmeArrival(ActionEvent event) throws IOException {
 		ArrayList<Object> msg = new ArrayList<>();
