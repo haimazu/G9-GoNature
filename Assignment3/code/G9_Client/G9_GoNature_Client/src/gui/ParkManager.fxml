@@ -121,7 +121,7 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Button fx:id="ShowReuvenue" focusTraversable="false" layoutX="430.0" layoutY="70.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Show" />
+                  <Button fx:id="ShowReuvenue" focusTraversable="false" layoutX="430.0" layoutY="70.0" mnemonicParsing="false" onAction="#ShowReuvenue" styleClass="btnSmallGreen" text="Show" />
                   <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true" visible="false">
                     <columns>
                       <TableColumn prefWidth="113.0" text="Financial Income" />
@@ -159,7 +159,7 @@
                   <JFXComboBox fx:id="cbxMounth" focusColor="SEAGREEN" focusTraversable="false" layoutX="142.0" layoutY="45.0" prefHeight="50.0" prefWidth="250.0" promptText="*Choose month" styleClass="txtField" unFocusColor="#a3a3a3" />
                </children>
             </Pane>
-            <Pane fx:id="pnUsage" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
+            <Pane fx:id="pnUsage" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css" visible="false">
                <children>
                   <Label fx:id="lblTitle111" focusTraversable="false" layoutX="39.0" layoutY="14.0" styleClass="labelBold" text="Usage Report - Park is not full:">
                      <font>
@@ -205,7 +205,7 @@
                   </BarChart>
                </children>
             </Pane>
-            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
                <children>
                   <Label fx:id="lblTitle11" focusTraversable="false" layoutX="22.0" layoutY="13.0" styleClass="labelBold" text="Monthly report, segmented by type of visitors:">
                      <font>
@@ -236,7 +236,7 @@
                   </BarChart>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
                <children>
                   <AnchorPane layoutX="61.0" layoutY="97.0" prefHeight="21.0" prefWidth="227.0" styleClass="pnAnchor" />
                   <AnchorPane layoutX="60.0" layoutY="119.0" prefHeight="65.0" prefWidth="227.0" styleClass="pnRightTop">
