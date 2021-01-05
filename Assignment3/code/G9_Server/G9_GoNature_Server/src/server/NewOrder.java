@@ -34,6 +34,13 @@ public class NewOrder {
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // order object received
 		Member memb = MemerCheck(data); // to check the member type by order
+		if (checkFake(data)) {
+			String fakeOrdNum = checkFakeExist(data);
+			if (fakeOrdNum!=null) {
+				answer.add(fakeOrdNum);
+				EchoServer.sendToMyClient(answer, client);
+			}
+		}
 
 		// check if the capacity of orders is full
 		if ((!a.checkForAvailableSpots(recived))) {
@@ -54,6 +61,37 @@ public class NewOrder {
 			EchoServer.sendToMyClient(answer, client);
 		}
 
+	}
+
+	//input: order Class
+	//NOTE: check if allready in the park by ID/MemberID and arriveTime
+	//output: True if allready in exist flase if not exist
+	private static String checkFakeExist(Order data) {
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("orders"); // table name
+		query.add("orderNumber"); // columns to select from
+		String cond = "";
+		if (data.getID() != null) {
+			cond += "WHERE ID='" + data.getID() + "' ";
+		} else if (data.getMemberId() != null) {
+			cond += "WHERE memberNumber='" + data.getMemberId() + "' ";
+		}
+		query.add(cond + "AND arrivedTime='" + data.getArrivedTime() + "'");
+		query.add("1"); // how many columns returned
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+		if (queryData.isEmpty())
+			return null;
+		return queryData.get(0).get(0); //return original order number
+	}
+
+	//input: order class 
+	//note: check if the order is "fake order" for random visitions
+	//output: true if fake false if not 
+	private static boolean checkFake(Order data) {
+		if (data.getOrderEmail()==null)
+			return true;
+		return false;
 	}
 
 	/**
