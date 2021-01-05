@@ -156,9 +156,9 @@
             </Pane>
             <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
-                  <AnchorPane layoutY="88.0" prefHeight="361.0" prefWidth="482.0">
+                  <AnchorPane layoutX="2.0" layoutY="168.0" prefHeight="250.0" prefWidth="615.0">
                      <children>
-                        <TableView fx:id="TableDep" layoutX="1.0" layoutY="110.0" prefHeight="217.0" prefWidth="618.0" style="-fx-background-color: #FFFFF0;" stylesheets="@application.css">
+                        <TableView fx:id="TableDep" layoutX="1.0" layoutY="59.0" prefHeight="218.0" prefWidth="613.0" style="-fx-background-color: #FFFFF0;" stylesheets="@application.css">
                            <columns>
                               <TableColumn fx:id="parkName" prefWidth="74.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Park Name" />
                               <TableColumn fx:id="requestType" prefWidth="83.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Request Type" />
@@ -166,16 +166,6 @@
                               <TableColumn fx:id="mark" prefWidth="61.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="mark" />
                            </columns>
                         </TableView>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="76.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
-                           <font>
-                              <Font name="Ebrima Bold" size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="LabelCount" alignment="TOP_LEFT" layoutX="106.0" layoutY="76.0" prefHeight="26.0" prefWidth="16.0" styleClass="labelBold">
-                           <font>
-                              <Font name="Ebrima Bold" size="20.0" />
-                           </font>
-                        </Label>
                      </children>
                   </AnchorPane>
                   <Label layoutX="26.0" layoutY="220.0" styleClass="labelBold" text="Last 10 reports:" visible="false">
@@ -183,18 +173,82 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
+                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="184.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
+                     <font>
+                        <Font name="Ebrima Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="LabelCount" alignment="TOP_LEFT" layoutX="106.0" layoutY="184.0" prefHeight="26.0" prefWidth="16.0" styleClass="labelBold">
+                     <font>
+                        <Font name="Ebrima Bold" size="20.0" />
+                     </font>
+                  </Label>
                   <Label alignment="TOP_LEFT" layoutX="38.0" layoutY="268.0" prefHeight="26.0" prefWidth="174.0" styleClass="labelBold" text="Reports" visible="false">
                      <font>
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="205.0" layoutY="444.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnNext" text="approve" />
-                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="334.0" layoutY="444.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" styleClass="btnNext" text="disapprove" />
-                  <TableView fx:id="TVisitors" layoutX="14.0" layoutY="16.0" prefHeight="145.0" prefWidth="193.0">
+                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="205.0" layoutY="466.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnNext" text="approve" />
+                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="334.0" layoutY="466.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" styleClass="btnNext" text="disapprove" />
+                  <Label fx:id="lblCurrentVisitors" layoutX="176.0" layoutY="-2.0">
+                     <font>
+                        <Font name="Ebrima" size="16.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="TVisitors" layoutX="20.0" layoutY="7.0" prefHeight="169.0" prefWidth="182.0" style="-fx-background-color: #FFFFF0; -fx-border-color: #deceb8;">
                     <columns>
-                      <TableColumn fx:id="visitorColumn" prefWidth="87.0" text="park name" />
-                      <TableColumn fx:id="amountColumn" prefWidth="105.0" text="current amount" />
+                      <TableColumn fx:id="visitorColumn" prefWidth="75.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Park Name" />
+                      <TableColumn fx:id="amountColumn" prefWidth="106.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Current Amount" />
                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+            <Pane fx:id="pnDashboard1" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+               <children>
+                  <AnchorPane layoutX="2.0" layoutY="168.0" prefHeight="250.0" prefWidth="615.0">
+                     <children>
+                        <TableView fx:id="TableDep1" layoutX="1.0" layoutY="59.0" prefHeight="218.0" prefWidth="613.0" style="-fx-background-color: #FFFFF0;" stylesheets="@application.css">
+                           <columns>
+                              <TableColumn fx:id="parkName1" prefWidth="74.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Park Name" />
+                              <TableColumn fx:id="requestType1" prefWidth="83.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Request Type" />
+                              <TableColumn fx:id="requestDetails1" prefWidth="394.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Requset Details" />
+                              <TableColumn fx:id="mark1" prefWidth="61.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="mark" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+                  <Label layoutX="26.0" layoutY="220.0" styleClass="labelBold" text="Last 10 reports:" visible="false">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="184.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
+                     <font>
+                        <Font name="Ebrima Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="LabelCount1" alignment="TOP_LEFT" layoutX="106.0" layoutY="184.0" prefHeight="26.0" prefWidth="16.0" styleClass="labelBold">
+                     <font>
+                        <Font name="Ebrima Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="TOP_LEFT" layoutX="38.0" layoutY="268.0" prefHeight="26.0" prefWidth="174.0" styleClass="labelBold" text="Reports" visible="false">
+                     <font>
+                        <Font name="Ebrima Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnApprove1" focusTraversable="false" layoutX="205.0" layoutY="466.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnNext" text="approve" />
+                  <Button fx:id="btnDisaprove1" focusTraversable="false" layoutX="334.0" layoutY="466.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" styleClass="btnNext" text="disapprove" />
+                  <Label fx:id="lblCurrentVisitors1" layoutX="176.0" layoutY="-2.0">
+                     <font>
+                        <Font name="Ebrima" size="16.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="TVisitors1" layoutX="20.0" layoutY="7.0" prefHeight="169.0" prefWidth="182.0" style="-fx-background-color: #FFFFF0; -fx-border-color: #deceb8;">
+                     <columns>
+                        <TableColumn fx:id="visitorColumn1" prefWidth="75.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Park Name" />
+                        <TableColumn fx:id="amountColumn1" prefWidth="106.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Current Amount" />
+                     </columns>
                   </TableView>
                </children>
             </Pane>

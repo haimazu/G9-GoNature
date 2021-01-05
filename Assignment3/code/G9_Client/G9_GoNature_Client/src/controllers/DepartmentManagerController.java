@@ -93,6 +93,7 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private TableColumn<TableViewSet, String> mark;
 	
+    
     @FXML
     private TableView<TableCurrentVisitors> TVisitors;
 
