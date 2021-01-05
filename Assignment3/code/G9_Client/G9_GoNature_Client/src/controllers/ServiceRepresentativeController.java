@@ -384,7 +384,7 @@ public class ServiceRepresentativeController implements Initializable {
 	}
 
 	/**
-	 * @param receive from the server the status of the member addition and the member number
+	 *receive from the server the status of the member addition and the member number
 	 **/
 
 	public static void receivedFromServerAddMemberStatus(boolean status,String memberNum) {
