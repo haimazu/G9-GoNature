@@ -24,23 +24,27 @@ public class Comunication {
 	 * 
 	 * @param String subject, String message, Order object
 	 */
-
 	public static void sendNotification(String subject, String messege, Order order) {
 		SmsMessege sms = new SmsMessege(order.getOrderPhone(), subject + "\n\n " + messege, order);
 		EmailMessege email = new EmailMessege(order.getOrderEmail(), subject, messege, order);
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new Runnable() {
-
-			/**
-			 * here will be the simulation for the sending
-			 */
-			@Override
-			public void run() {
-				// SIMULATION ONLY
-				SendMail.simulateMail(email);
-				SendMail.simulateSms(sms);
-			}
-		});
+		if (!order.getOrderEmail().equals(null)) { //email null means random visitor
+			exec.execute(new Runnable() {
+	
+				/**
+				 * here is the simulation for the sending
+				 */
+				@Override
+				public void run() {
+					// SIMULATION ONLY
+					SendMail.simulateMail(email);
+					SendMail.simulateSms(sms);
+				}
+				/**
+				 * here will be the not simulated method for the sending
+				 */
+			});
+		}
 	}
 
 	/**
