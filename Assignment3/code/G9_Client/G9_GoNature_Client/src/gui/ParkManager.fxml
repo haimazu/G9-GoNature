@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
@@ -120,9 +121,7 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="dpFromR" editable="false" focusTraversable="false" layoutX="39.0" layoutY="52.0" promptText="From Date" />
-                  <JFXDatePicker fx:id="dpToR" editable="false" focusTraversable="false" layoutX="235.0" layoutY="52.0" promptText="To Date" />
-                  <Button fx:id="ShowReuvenue" focusTraversable="false" layoutX="434.0" layoutY="54.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Show" />
+                  <Button fx:id="ShowReuvenue" focusTraversable="false" layoutX="430.0" layoutY="70.0" mnemonicParsing="false" styleClass="btnSmallGreen" text="Show" />
                   <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true" visible="false">
                     <columns>
                       <TableColumn prefWidth="113.0" text="Financial Income" />
@@ -138,7 +137,7 @@
                   </Label>
                   <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" visible="false" />
                   <Button fx:id="btnReportView11" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" visible="false" />
-                  <BarChart fx:id="bcRevenue" barGap="5.0" categoryGap="2.0" layoutY="88.0" prefHeight="430.0" prefWidth="613.0" title="Revenue Rrport">
+                  <BarChart fx:id="bcRevenue" barGap="5.0" categoryGap="2.0" layoutY="101.0" prefHeight="430.0" prefWidth="613.0" title="Revenue Rrport">
                      <xAxis>
                         <CategoryAxis label="Dates" side="BOTTOM" fx:id="xAxisR">
                            <tickLabelFont>
@@ -157,6 +156,7 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
+                  <JFXComboBox fx:id="cbxMounth" focusColor="SEAGREEN" focusTraversable="false" layoutX="142.0" layoutY="45.0" prefHeight="50.0" prefWidth="250.0" promptText="*Choose month" styleClass="txtField" unFocusColor="#a3a3a3" />
                </children>
             </Pane>
             <Pane fx:id="pnUsage" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
