@@ -6,51 +6,60 @@ import ocsf.server.ConnectionToClient;
 import orderData.Order;
 import userData.Member;
 
+/**
+ * The WaitingList program handles the waiting list functions
+ *
+ * @author
+ */
+
 public class WaitingList {
-	
-	// input: ArrayList of Objects:
-	// in cell 0: String "enterTheWaitList"
-	// in cell 1: Order class of a given order to put in the wait list
-	//
-	// output: NONE. send to client: ArrayList of Objects:
-	// in cell 0: String ""
-	// in cell 1: boolean ->
-	// true if entry sucsseful
-	// false if not
+
+	/**
+	 * enters an order to a waiting list
+	 * 
+	 * @param ArrayList of Objects: cell [0]: String "enterTheWaitList", cell [1]:
+	 *                  Order class of a given order to put in the wait list
+	 * @return send to client: ArrayList of Objects: cell [0]: String "", cell [1]:
+	 *         boolean -> true if entry successful false if not
+	 */
+
 	public static void enterTheWaitList(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order data = (Order) recived.get(1); // credit card object received
 		ArrayList<String> query = new ArrayList<String>();
 		Member mem = NewOrder.MemerCheck(data);
-		if (mem!=null)
+		if (mem != null)
 			data.setMemberId(mem.getMemberID());
 		data = NewOrder.totalPrice(data, mem, false);
 		data.setOrderNumber(Counter.getCounter().waitlistNum());
 		query.add("select"); // command
 		query.add("waitingList"); // table name
 		query.add("*");
-		query.add("WHERE ID='" + data.getID() + "' AND arrivedTime='" + data.getArrivedTime() + "' And parkName='" + data.getParkName() + "'");
+		query.add("WHERE ID='" + data.getID() + "' AND arrivedTime='" + data.getArrivedTime() + "' And parkName='"
+				+ data.getParkName() + "'");
 		query.add("12");
 		ArrayList<ArrayList<String>> exist = MySQLConnection.select(query);
-		if (exist.isEmpty()) { //if there is no another matching in the wait list
+		if (exist.isEmpty()) { // if there is no another matching in the wait list
 			query.clear();
 			query.add("insert"); // command
 			query.add("waitinglist"); // table name
 			query.add(data.toStringForDB()); // values in query format
-			answer.add(MySQLConnection.insert(query)); //true if ok false if not
-		}
-		else
-			answer.add("alreadyExist"); //alreadyExist if already in the list
+			answer.add(MySQLConnection.insert(query)); // true if ok false if not
+		} else
+			answer.add("alreadyExist"); // alreadyExist if already in the list
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: ArrayList of Objects:
-	// in cell 0: String "checkForAvailableSpots"
-	// in cell 1: Order class of a given order to check if it can fit
-	//
-	// output: True -> if there are available spots at the given park at the given time
-	// False -> if there are no spots available
+	/**
+	 * function that checks if there are available spots in the park
+	 * 
+	 * @param ArrayList of Objects: cell [0]: String "checkForAvailableSpots" cell,
+	 *                  [1]: Order class of a given order to check if it can fit
+	 * @return True -> if there are available spots at the given park at the given
+	 *         time, False -> if there are no spots available
+	 */
+
 	public static boolean checkForAvailableSpots(ArrayList<Object> recived) {
 		Order order = (Order) recived.get(1);
 		String parkName = order.getParkName();
@@ -72,7 +81,7 @@ public class WaitingList {
 		query = new ArrayList<String>();
 		query.add("select");
 		query.add("park");
-		if(order.isOccasional())
+		if (order.isOccasional())
 			query.add("maxVisitorAmount");
 		else
 			query.add("maxOrderVisitorsAmount");
@@ -85,15 +94,16 @@ public class WaitingList {
 		return true;
 	}
 
-	// NOTE: this function should be called after an order has been canceled by a
-	// user
-	// input: ArrayList of Objects:
-	// 			in cell 0: String "pullFromWaitList"
-	// 			in cell 1: Order class of a given order that has been canceled
-	//
-	// output:
+	/**
+	 * this function called after an order has been canceled by a user and delete
+	 * the order from the waiting list
+	 * 
+	 * @param input: ArrayList of Objects: cell [0]: String "pullFromWaitList", cell
+	 *               [1]: Order class of a given order that has been canceled
+	 * @return T/F
+	 */
 	public static boolean pullFromWaitList(ArrayList<Object> recived) {
-		Order order = (Order) recived.get(1); //been deleted
+		Order order = (Order) recived.get(1); // been deleted
 		String parkName = order.getParkName();
 		String arrivedTime = order.getArrivedTime();
 		ArrayList<String> query = new ArrayList<String>();
@@ -108,18 +118,16 @@ public class WaitingList {
 		ArrayList<String> firstInLine = waitingInLineArr.get(0); // first in line
 		Order firstInLineOrder = new Order(firstInLine);
 		ArrayList<Object> arrayForSpots = new ArrayList<Object>();
-		arrayForSpots.add("");//fix
+		arrayForSpots.add("");// fix
 		arrayForSpots.add(firstInLineOrder);
-		if (!checkForAvailableSpots(arrayForSpots))//if we dont have avilable spots
+		if (!checkForAvailableSpots(arrayForSpots))// if we don't have available spots
 			return false; // no space for the first in line
-		WaitListSingelton.CancelWaitlist(firstInLineOrder);//delete from the waitlist
+		WaitListSingelton.CancelWaitlist(firstInLineOrder);// delete from the waitlist
 		firstInLineOrder.setOrderNumber(Counter.getCounter().orderNum());// give ordernumber tag
-		NewOrder.insertNewOrder(firstInLineOrder); //add to orders on DB
-		WaitListSingelton.sendWaitlistNotification(firstInLineOrder);//send notification
+		NewOrder.insertNewOrder(firstInLineOrder); // add to orders on DB
+		WaitListSingelton.sendWaitlistNotification(firstInLineOrder);// send notification
 		pullFromWaitList(recived); // try next one in line recursively
 		return true;
 	}
-	
-	
-	
+
 }
