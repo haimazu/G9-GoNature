@@ -6,25 +6,24 @@ import java.util.ArrayList;
 import dataLayer.EmailMessege;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
+
 /**
-* The CancelOrder program canceling an existing order and deleting it from the DB
-*
-* @author  Roi Amar & Anastasia Kokin
-*/
+ * The CancelOrder program canceling an existing order and deleting it from the
+ * DB
+ *
+ * @author Roi Amar & Anastasia Kokin
+ */
 
 public class CancelOrder {
-	
-	//input: ArrayList of Objects:
-	// in cell 0: String "cancelOrder"
-	// in cell 1: Order class of a given order to cancel
-	//
-	// output: NONE.
-	// send to client: ArrayList of Objects:
-	// in cell 0: String "cancelOrder"
-	// in cell 1: boolean ->
-	// true if entry sucsseful
-	// false if not
-	// NOTE: this function calls to the waitlist to check if someone is waiting for the new spots avilable after the cancelation.
+
+	/**
+	 * sends to client ArrayList of Objects: in cell 0: String "cancelOrder" in cell
+	 * 1: boolean -> true if entry successful false if not
+	 * 
+	 * @param ArrayList of Objects: in cell [0]: String "cancelOrder" in cell, [1]:
+	 *                  Order class of a given order to cancel
+	 * @exception IOException
+	 */
 	public static void cancel(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -33,20 +32,24 @@ public class CancelOrder {
 		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		WaitingList.pullFromWaitList(recived);
 		addToDBCanceledOrder(order);
 		String subject = "GoNature Cancelation Confirmation";
 		String body = "Oh boy, we hate to see you go..."
-				+ "\nWe would like to inform you that your order has been canceled"
-				+ "\nWe hope to see you again"
+				+ "\nWe would like to inform you that your order has been canceled" + "\nWe hope to see you again"
 				+ "\n\n" + order.messegeString();
 		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), subject, body, order);
 		Comunication.sendNotification(subject, body, order);
 	}
 
+	/**
+	 * deleting an order from DB
+	 * 
+	 * @param orderNum
+	 * @return T/F
+	 */
 	public static boolean deleteOrder(int orderNum) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("delete");
@@ -56,10 +59,11 @@ public class CancelOrder {
 		return MySQLConnection.delete(query);
 	}
 
-	// Nastya
-	// input:Order obj
-	// inserting cancelled orders into 'canceledorders' table in DB
-	// output: nada
+	/**
+	 * inserting cancelled orders into 'canceledorders' table in DB
+	 * 
+	 * @param Order object
+	 */
 	public static void addToDBCanceledOrder(Order ord) {
 		ord.setOrderNumber(Counter.getCounter().cancelledCountNum());
 		ArrayList<String> query = new ArrayList<String>();

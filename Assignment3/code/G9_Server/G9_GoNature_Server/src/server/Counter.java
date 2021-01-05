@@ -2,7 +2,13 @@ package server;
 
 import java.util.ArrayList;
 
-//singleton counter
+/**
+ * The Counter program generates unique numbers to insert in DB as primary keys
+ *
+ * @author Roi Amar, Anastasia Kokin
+ * 
+ */
+
 class Counter {
 	private static Counter obj;
 	private static int count;
@@ -48,6 +54,12 @@ class Counter {
 		return discountsIDcount++;
 	}
 
+	/**
+	 * Finds the number that symbols the last unique number in DB 
+	 * 
+	 * @param String tableName, String Column 
+	 * @return Integer 
+	 */
 	private int getLastNumber(String tableName, String Col) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
@@ -58,7 +70,7 @@ class Counter {
 		ArrayList<ArrayList<String>> lastNum = MySQLConnection.select(query);
 		if (lastNum.isEmpty())
 			return 1111;
-		System.out.println( "counter: "+ lastNum.get(0).get(0));
+		System.out.println("counter: " + lastNum.get(0).get(0));
 		return Integer.parseInt(lastNum.get(0).get(0));
 	}
 }
