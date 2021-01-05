@@ -218,8 +218,8 @@ public class ChatClient extends AbstractClient {
 		}
 
 		if (Context.getInstance().getPEC() != null) {
-			if (Context.getInstance().getPMC().getParkName().equals(parkName))
-				Context.getInstance().getPMC().setCurrentVisitors(updatedVisitorsNumber);
+			if (Context.getInstance().getPEC().getParkName().equals(parkName))
+				Context.getInstance().getPEC().setCurrentVisitors(updatedVisitorsNumber);
 		}
 
 		if (Context.getInstance().getDMC() != null) {
