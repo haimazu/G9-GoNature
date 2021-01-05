@@ -1060,7 +1060,7 @@ public class ParkManagerController implements Initializable {
 		// put in on the chart and then will remove it from the usageReport;
 		for (LocalDate date = fromDate; date
 				.isBefore(toDate.plusDays(1)); date = date.plusDays(1)) {
-
+			System.out.println(date);
 			if (!revReport.isEmpty()) {
 				firstArrIncome = revReport.get(0);
 				firstDate = usageReport.get(0).get(1);// first array
@@ -1074,6 +1074,9 @@ public class ParkManagerController implements Initializable {
 			} else
 				DailyRevenue.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 		}
+		
+		DailyRevenue.setName("income");
+		bcUsageChart.getData().addAll(DailyRevenue);
 
 	}
 
