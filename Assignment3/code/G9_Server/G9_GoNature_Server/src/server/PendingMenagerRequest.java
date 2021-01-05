@@ -8,25 +8,23 @@ import ocsf.server.ConnectionToClient;
 import reportData.ManagerRequest;
 
 /**
-* The PendingMenagerRequest program deals with managers requests
-*
-* @author  Anastasia Kokin
-*/
-
-
+ * The PendingMenagerRequest program deals with managers requests
+ *
+ * @author Anastasia Kokin
+ */
 
 public class PendingMenagerRequest implements Serializable {
 
-    /**
+	/**
 	 * Inserts To Pending table in DB
 	 * 
-	 * @param  ArrayList<Object>: cell[0] name, cell[1] ManagerRequest object
+	 * @param ArrayList<Object>: cell[0] name, cell[1] ManagerRequest object
 	 * @return ArrayList<Object>: cell[0] name ,cell[1] T/F
 	 */
 	public static void InsertToPending(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name 
+		// the service name
 		answer.add(recived.get(0));
 
 		ManagerRequest mr = (ManagerRequest) recived.get(1);
@@ -68,11 +66,18 @@ public class PendingMenagerRequest implements Serializable {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: ArrayList<Object>: cell[0] name
-	// cell[1] user_name
-	// cell[2] password
-	// select the emloyeeID by his user name and password
+	// input:
+	//
 	// output:F if no such employee OR employeeID
+
+	/**
+	 * select the emloyeeID by his user name and password
+	 * 
+	 * @param ArrayList<Object>: cell[0] name, cell[1] user_name, cell[2]
+	 *                           password @return ArrayList<Object>: cell[0] name,
+	 *                           cell[1] false if no such employee OR
+	 *                           employeeID @exception
+	 */
 	public static void employeeNumberSet(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -98,12 +103,13 @@ public class PendingMenagerRequest implements Serializable {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: ArrayList<Object>: cell[0] func_name
-	// cell[1]: ArrayList<String> cell[0] park name
-	// ,ConnectionToClient
-	// pulling details of a selected park from DB
-	// output:ArrayList<Object> cell[0] func_name
-	// cell[1] Park Object
+	/**
+	 * pulling details of a selected park from DB
+	 * 
+	 * @param ArrayList<Object>: cell[0] func_name, cell[1]: ArrayList<String>
+	 *                           cell[0] park name, ConnectionToClient
+	 * @return ArrayList<Object> cell[0] func_name, cell[1] Park Object
+	 */
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -125,15 +131,16 @@ public class PendingMenagerRequest implements Serializable {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// for bar with love
-	// input: ArrayList<Object>: cell[0] name
-	//
-	// output:ArrayList<ArrayList<String>> of all Items in pending manager request
-	// table
+	/**
+	 * pulls all items from pending manager request
+	 * 
+	 * @param ArrayList<Object>: cell[0] name @return ArrayList<ArrayList<String>>
+	 *                           of all items in pending manager request @exception
+	 */
 	public static void pendingManagerRequestAllItems(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : ??
+		// the service name
 		answer.add(recived.get(0));
 		// select pending requests and to check if not more than 1 in every type
 		ArrayList<String> query1 = new ArrayList<String>();
@@ -147,50 +154,54 @@ public class PendingMenagerRequest implements Serializable {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: ArrayList<Object>: 	cell[0] -> String removePendingsManagerReq
-	//								cell[1] -> ArrayList<ArrayList<Object>> ->
-	//										cell[0-n] -> ArrayList<Object> ->
-	//												 cell[0] ManagerRequest object
-	//												 cell[1] yes/no
-	//
-	// output: ArrayList<Object>: cell[0] T/F
-	//
+	/**
+	 * deletes approved and disapproved managers requests and executes them in their
+	 * DB
+	 * 
+	 * @param ArrayList<Object>: cell[0] -> String removePendingsManagerReq cell[1]
+	 *                           -> ArrayList<ArrayList<Object>> -> cell[0-n] ->
+	 *                           ArrayList<Object> -> cell[0] ManagerRequest object
+	 *                           cell[1] yes/no
+	 * @return ArrayList<Object>: cell[0] calling function name, cell[1] T/F
+	 */
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		ArrayList<ArrayList<Object>> reqTable = (ArrayList<ArrayList<Object>>)recived.get(1);
+		ArrayList<ArrayList<Object>> reqTable = (ArrayList<ArrayList<Object>>) recived.get(1);
 		for (ArrayList<Object> req : reqTable) {
-				
+
 			ManagerRequest mr = (ManagerRequest) recived.get(1);
 			String yesno = (String) recived.get(2);
-	
+
 			// delete from pendingmanagerrequests
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("deleteCond");
 			query.add("pendingmanagerrequests");
 			query.add("employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
-			
+
 			if (yesno.equals("no")) {
 				answer.add(MySQLConnection.deleteCond(query));
 				answer.add(true);
 				EchoServer.sendToMyClient(answer, client);
 				return;
 			}
-	
+
 			else {
 				ArrayList<String> query1 = new ArrayList<String>();
 				query1.add("select"); // command
 				query1.add("pendingmanagerrequests"); // table name
 				query1.add("*"); // columns to select from
-				query1.add("WHERE employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
+				query1.add(
+						"WHERE employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
 				query1.add("8");
 				ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 				mr = new ManagerRequest(queryData1.get(0));
 				answer.add(MySQLConnection.deleteCond(query));
-	
+
 				if (mr.getRequestType().equals("discount")) {
-					String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
-							+ " OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to)";
+					String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate()
+							+ "') < discounts.from" + " OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate()
+							+ "') > discounts.to)";
 					System.out.println(dateCond);
 					// search if the dates already exist
 					ArrayList<String> query2 = new ArrayList<String>();
@@ -206,22 +217,20 @@ public class PendingMenagerRequest implements Serializable {
 						EchoServer.sendToMyClient(answer, client);
 						return;
 					} else {
-	
+
 						ArrayList<String> query3 = new ArrayList<String>();
 						query3.add("insert"); // command
 						query3.add("discounts");
 						query3.add(toStringForDBDiscounts(mr));
 						answer.add(MySQLConnection.insert(query3));
-	//					EchoServer.sendToMyClient(answer, client);
-	//					return;
 						break;
 					}
-	
+
 				}
-	
+
 				if (mr.getRequestType().equals("max_c")) {
 					answer.add(MySQLConnection.deleteCond(query));
-	
+
 					ArrayList<String> query2 = new ArrayList<String>();
 					query2.add("update"); // command
 					query2.add("park"); // table name
@@ -229,11 +238,11 @@ public class PendingMenagerRequest implements Serializable {
 					query2.add("parkName");
 					query2.add(mr.getParkName());
 					answer.add(MySQLConnection.update(query2));
-	//				System.out.println("max capacity updated");
-	//				EchoServer.sendToMyClient(answer, client);
+					// System.out.println("max capacity updated");
+					// EchoServer.sendToMyClient(answer, client);
 					break;
 				}
-	
+
 				if (mr.getRequestType().equals("max_o")) {
 					answer.add(MySQLConnection.deleteCond(query));
 					ArrayList<String> query2 = new ArrayList<String>();
@@ -243,23 +252,35 @@ public class PendingMenagerRequest implements Serializable {
 					query2.add("parkName");
 					query2.add(mr.getParkName());
 					answer.add(MySQLConnection.update(query2));
-	//				System.out.println("max orders capacity updated");
-	//				EchoServer.sendToMyClient(answer, client);
+					// System.out.println("max orders capacity updated");
+					// EchoServer.sendToMyClient(answer, client);
 					break;
 				}
-	
+
 			}
 		}
 		EchoServer.sendToMyClient(answer, client);
 
 	}
 
+	/**
+	 * toString in use for ManagerRequest query
+	 * 
+	 * @param ManagerRequest
+	 * @return String
+	 */
 	public static String toStringForDB(ManagerRequest mr) {
 		return "'" + mr.getEmployeeID() + "','" + mr.getRequestType() + "','" + mr.getMaxCapacity() + "','"
 				+ mr.getOrdersCapacity() + "','" + mr.getDiscount() + "','" + mr.getFromDate() + "','" + mr.getToDate()
 				+ "','" + mr.getParkName() + "'";
 	}
 
+	/**
+	 * toString in use for Discounts query
+	 * 
+	 * @param ManagerRequest
+	 * @return String
+	 */
 	public static String toStringForDBDiscounts(ManagerRequest mr) {
 
 		return "'" + mr.getParkName() + "','" + mr.getFromDate() + "','" + mr.getToDate() + "','"
