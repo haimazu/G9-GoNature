@@ -244,10 +244,10 @@
                         <Font name="Ebrima" size="16.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="TVisitors1" layoutX="20.0" layoutY="7.0" prefHeight="169.0" prefWidth="182.0" style="-fx-background-color: #FFFFF0; -fx-border-color: #deceb8;">
+                  <TableView fx:id="TVisitors" layoutX="20.0" layoutY="7.0" prefHeight="169.0" prefWidth="182.0" style="-fx-background-color: #FFFFF0; -fx-border-color: #deceb8;">
                      <columns>
-                        <TableColumn fx:id="visitorColumn1" prefWidth="75.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Park Name" />
-                        <TableColumn fx:id="amountColumn1" prefWidth="106.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Current Amount" />
+                        <TableColumn fx:id="visitorColumn" prefWidth="75.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Park Name" />
+                        <TableColumn fx:id="amountColumn" prefWidth="106.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Current Amount" />
                      </columns>
                   </TableView>
                </children>

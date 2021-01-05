@@ -93,6 +93,7 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private TableColumn<TableViewSet, String> mark;
 	
+
     
     @FXML
     private TableView<TableCurrentVisitors> TVisitors;
@@ -101,7 +102,7 @@ public class DepartmentManagerController implements Initializable {
     private TableColumn<TableCurrentVisitors, String> visitorColumn;
 
     @FXML
-    private TableColumn<TableCurrentVisitors, String> amountColumn;
+    private TableColumn <TableCurrentVisitors, String> amountColumn;
 
 	@FXML
 	private Label LabelCount;
@@ -1008,6 +1009,7 @@ public class DepartmentManagerController implements Initializable {
 		ObservableList<TableCurrentVisitors> listForTable = FXCollections.observableArrayList();
 
 		for (ArrayList<String> arrayList : parkDetails) {
+			System.out.println(arrayList.get(0)+" "+arrayList.get(1) + " / " + arrayList.get(2));
 			TableCurrentVisitors TVV = new TableCurrentVisitors(arrayList.get(0),arrayList.get(1) + " / " + arrayList.get(2));
 			listForTable.add(TVV);
 		}
