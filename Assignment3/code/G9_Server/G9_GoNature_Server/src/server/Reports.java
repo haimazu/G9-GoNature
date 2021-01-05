@@ -286,11 +286,11 @@ public class Reports {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
 		query.add("orders");
-		query.add("SUM(afterDiscountPrice)");
-		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2) + "' AND amountArrived > 0");
-		query.add("1");
+		query.add("arrivedTime, SUM(afterDiscountPrice)");
+		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2) + "' AND amountArrived > 0 GROUP BY arrivedTime");
+		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		answer.add(queryData.get(0).get(0));
+		answer.add(queryData.get(0));
 		System.out.println("revenues on these dates are : " + queryData);
 		EchoServer.sendToMyClient(answer, client);
 	}
