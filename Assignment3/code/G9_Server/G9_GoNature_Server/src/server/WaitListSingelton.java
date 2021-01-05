@@ -45,7 +45,6 @@ public class WaitListSingelton {
 		return obj;
 	}
 
-
 	/**
 	 * function that sends notifications to the client (SMS and Mail notification)
 	 * 
@@ -66,14 +65,10 @@ public class WaitListSingelton {
 		// send mail and sms notification
 	}
 
-	// input: order that is pulled from the waitlist
-	// output: none
-	// send to client: SMS and Mail notification
 	/**
+	 * send to client: SMS and Mail notification
 	 * 
-	 * 
-	 * @param  
-	 * @return 
+	 * @param order object (that is pulled from the waitlist)
 	 */
 	public static void send24HoursNotification(Order order) {
 		String subject = "GoNature 24 Hours Reminder Notification";
@@ -88,16 +83,18 @@ public class WaitListSingelton {
 		// send mail and sms notification
 	}
 
-	// input: none
-	// output: none
-	// DB: delete (if found) expired orders listed in pending (more than 1 hour)
-	// delete (if found) expired orders listed in waitlist (more than 24 hours)
-	// NOTE: the timeLastChecked mechanizem make sure that this function run not
-	// more than once per minute (to not overload the server and DB each time)
-	// the LastDailyCheck mechanizem make sure that the function of deleting from
-	// the waitlist will not run more than once per day
-	// the LastNightCheck mechanizem make sure that the function of sending tomorrow
-	// notifications will not run more than once per day
+	/**
+	 * 
+	 * DB: delete (if found) expired orders listed in pending (more than 1 hour)
+	 * delete (if found) expired orders listed in waitlist (more than 24 hours)
+	 * NOTE: the timeLastChecked mechanizem make sure that this function run not
+	 * more than once per minute (to not overload the server and DB each time) the
+	 * LastDailyCheck mechanizem make sure that the function of deleting from the
+	 * waitlist will not run more than once per day the LastNightCheck mechanizem
+	 * make sure that the function of sending tomorrow notifications will not run
+	 * more than once per day
+	 */
+
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
 		Date LastPlusMinute = new Date(timeLastChecked.getTime() + 60 * 1000);
@@ -153,10 +150,11 @@ public class WaitListSingelton {
 		}
 	}
 
-	// input: NONE
-	// output: NONE
-	// DB: select all orders that are due tommorow
-	// NOTE: send notifications to all orders that are due tommorow
+	/**
+	 * DB: select all orders that are due tomorrow NOTE: send notifications to all
+	 * orders that are due tomorrow
+	 */
+
 	private static void notificationsForTommorowTravelers() {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -176,8 +174,14 @@ public class WaitListSingelton {
 		}
 	}
 
-	// input: two dates
-	// output: true if the two dates are on the same day, false if not
+	/**
+	 *
+	 * the function returns true if the two dates are on the same day, false if not
+	 * 
+	 * @param two dates
+	 * @return true if the two dates are on the same day, false if not
+	 */
+
 	private static boolean isSameDay(Date date1, Date date2) {
 		Calendar calendar1 = Calendar.getInstance();
 		calendar1.setTime(date1);
@@ -188,26 +192,32 @@ public class WaitListSingelton {
 				&& calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
 	}
 
-	// input: order calss of order to check
-	// output: true if limit has passed false if not
+	/**
+	 * check if the limit has been reached
+	 * 
+	 * @param Order object
+	 * @return T\F
+	 */
+
 	private static boolean limitReach(Order order) {
 		Date now = (Date) new Date();
 		Date limit = new Date(selectDateForPending(order).getTime());
-		//
-		//
+
 		int test3 = limit.compareTo(now);
 		boolean test = (limit.compareTo(now) <= 0);
 		boolean test2 = limit.equals(null);
-		//
-		//
+
 		if (limit.equals(null) || limit.compareTo(now) <= 0) // to<from: to.compareTo(from)<0
 			return false;
 		return true;
 	}
 
-	// input: Order class that wants to confirm arrivel
-	// output: true if time replayed has not reached the limit false if limit has
-	// reached
+	/**
+	 * true if time replayed has not reached the limit false if limit has reached
+	 * 
+	 * @param Order object
+	 * @return T/F
+	 */
 	public static boolean orderConfirm(Order order) {
 		if (limitReach(order)) {
 			removePending(order);
@@ -216,9 +226,13 @@ public class WaitListSingelton {
 		return false;
 	}
 
-	// input: order class of the order to cancel
-	// output: true if found the order on the waitlist and removed it, false if not.
-	// DB: delete the waitlist entry of that order if found
+	/**
+	 * true if found the order on the waitlist and removed it, false if not. // DB:
+	 * delete the waitlist entry of that order if found
+	 * 
+	 * @param Order Object
+	 * @return T/F
+	 */
 	public static boolean CancelWaitlist(Order recived) {
 		int orderNum = recived.getOrderNumber();
 		ArrayList<String> query = new ArrayList<String>();
@@ -231,9 +245,13 @@ public class WaitListSingelton {
 		return true;
 	}
 
-	// input: Order to delete from the DB
-	// output: true if found the order on the waitlist and removed it, false if not.
-	// send to DB: order to remove from pending
+	/**
+	 * true if found the order on the waitlist and removed it, false if not. // send
+	 * to DB: order to remove from pending
+	 * 
+	 * @param Order object
+	 * @return T/F
+	 */
 	public static boolean removePending(Order order) {
 		int orderNum = order.getOrderNumber();
 		ArrayList<String> query = new ArrayList<String>();
@@ -246,9 +264,14 @@ public class WaitListSingelton {
 		return true;
 	}
 
-	// input: Order to insert into the DB
-	// output: true if sussesful false if not
-	// send to DB: new order to list in pending
+	/**
+	 * Order to insert into the DB. true if successful false if not send to DB: new
+	 * order to list in pending
+	 * 
+	 * @param EmailMessege
+	 * @return T/F
+	 */
+
 	private static boolean insertPending(EmailMessege messege) {
 		String orderNum = String.valueOf(messege.getOrder().getOrderNumber());
 		if (ExistingOrderCheck.checkIfPending(orderNum)) {
@@ -273,6 +296,13 @@ public class WaitListSingelton {
 	// input: Order to insert into the DB
 	// output: Array list of array list of strings that contains the expired entrys
 	// in pending
+	/**
+	 * g
+	 * 
+	 * @param ArrayList<String>>
+	 * @return Array list of array list of strings that contains the expired entrys
+	 *         in pending
+	 */
 	private static ArrayList<ArrayList<String>> selectExpiredPending() {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command

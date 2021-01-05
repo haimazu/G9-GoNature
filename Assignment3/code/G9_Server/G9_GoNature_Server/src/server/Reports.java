@@ -271,7 +271,9 @@ public class Reports {
 	 * 
 	 * @param ArrayList<Object>: cell[0] name, cell[1] start date, cell[2] end date
 	 *                           cell[3] park name ,ConnectionToClient
-	 * @returnArrayList<Object>: cell[0] func_name, cell[1] String of sum
+	 * @returnArrayList<Object>: cell[0] func_name, cell[1] ArrayList<String>
+	 *                           cell[0] Date and time cell[1] amount of money
+	 *                           earned
 	 */
 
 	public static void incomesReport(ArrayList<Object> recived, ConnectionToClient client) {
@@ -287,7 +289,8 @@ public class Reports {
 		query.add("select");
 		query.add("orders");
 		query.add("arrivedTime, SUM(afterDiscountPrice)");
-		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2) + "' AND amountArrived > 0 GROUP BY arrivedTime");
+		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2)
+				+ "' AND amountArrived > 0 GROUP BY arrivedTime");
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData.get(0));
