@@ -998,7 +998,7 @@ public class DepartmentManagerController implements Initializable {
 	}
 	
 	public void iniailTabelVisitors() {
-	
+		TVisitors.setEditable(true);
 		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("ParkNameVis"));
 		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("CurrentAmount"));
 		
@@ -1009,8 +1009,8 @@ public class DepartmentManagerController implements Initializable {
 		ObservableList<TableCurrentVisitors> listForTable = FXCollections.observableArrayList();
 
 		for (ArrayList<String> arrayList : parkDetails) {
-			System.out.println(arrayList.get(0)+" "+arrayList.get(1) + " / " + arrayList.get(2));
 			TableCurrentVisitors TVV = new TableCurrentVisitors(arrayList.get(0),arrayList.get(1) + " / " + arrayList.get(2));
+			TVV.setMaxVisitors(arrayList.get(2));
 			listForTable.add(TVV);
 		}
 
@@ -1019,9 +1019,11 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void setCurrentVisitors(ArrayList<Object> arr) {
-		for (int i = 0; i < TableDep.getItems().size(); i++) {
+		System.out.println("from server" + arr.get(2));
+		for (int i = 0; i < TVisitors.getItems().size(); i++) {
 			if (TVisitors.getItems().get(i).getParkNameVis().equals((String)arr.get(1))) {
-				TVisitors.getItems().get(i).setCurrentAmount((String) arr.get(2));
+				TVisitors.edit(i, amountColumn);
+				TVisitors.getItems().get(i).setCurrentAmount((String) arr.get(2)+ " / " + TVisitors.getItems().get(i).getMaxVisitors());
 			}
 		}
 	}

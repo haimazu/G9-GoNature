@@ -7,7 +7,11 @@ public class TableCurrentVisitors {
 	
 	private String ParkNameVis;
 	private String CurrentAmount;
+	private String MaxVisitors;
 	
+
+
+
 	/**
 	 * @param parkName
 	 * @param currentAmount
@@ -32,5 +36,13 @@ public class TableCurrentVisitors {
 		CurrentAmount = currentAmount;
 	}
 
+	public String getMaxVisitors() {
+		return MaxVisitors;
+	}
+
+
+	public void setMaxVisitors(String maxVisitors) {
+		MaxVisitors = maxVisitors;
+	}
 	
 }
