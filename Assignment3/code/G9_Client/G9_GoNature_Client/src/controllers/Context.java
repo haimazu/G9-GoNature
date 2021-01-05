@@ -10,7 +10,6 @@ public class Context {
 	private ParkManagerController PMC;
 	private ParkEmployeeController PEC;
 	private DepartmentManagerController DMC;
-	
 
 
 	private final static Context instance = new Context();
@@ -45,7 +44,6 @@ public class Context {
 		PMC = pMC;
 	}
 	
-
 	public ParkEmployeeController getPEC() {
 		return PEC;
 	}
