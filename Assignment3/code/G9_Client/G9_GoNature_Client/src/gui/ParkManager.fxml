@@ -238,6 +238,44 @@
             </Pane>
             <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
+                  <AnchorPane layoutX="61.0" layoutY="97.0" prefHeight="21.0" prefWidth="227.0" styleClass="pnAnchor" />
+                  <AnchorPane layoutX="60.0" layoutY="119.0" prefHeight="65.0" prefWidth="227.0" styleClass="pnRightTop">
+                     <children>
+                        <Label fx:id="lblPresentMaxVis" layoutX="43.0" layoutY="12.0" prefHeight="41.0" prefWidth="135.0" style="-fx-font-size: 32;" styleClass="labelBold">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="60.0" layoutY="243.0" prefHeight="65.0" prefWidth="227.0" styleClass="pnRightTop">
+                     <children>
+                        <Label fx:id="lblPresentReservationCap" layoutX="45.0" layoutY="12.0" prefHeight="41.0" prefWidth="135.0" style="-fx-font-size: 32;" styleClass="labelBold">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="60.0" layoutY="362.0" prefHeight="65.0" prefWidth="227.0" styleClass="pnRightTop">
+                     <children>
+                        <Label fx:id="lblPresentDisc" layoutX="43.0" layoutY="12.0" prefHeight="41.0" prefWidth="135.0" style="-fx-font-size: 32;" styleClass="labelBold">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="61.0" layoutY="220.0" prefHeight="21.0" prefWidth="227.0" styleClass="pnAnchor" />
+                  <AnchorPane layoutX="60.0" layoutY="339.0" prefHeight="21.0" prefWidth="227.0" styleClass="pnAnchor" />
+                  <Label fx:id="lblCurrentVisitors" layoutX="417.0" layoutY="29.0" prefHeight="25.0" prefWidth="45.0" styleClass="labelBold">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <AnchorPane prefHeight="31.0" prefWidth="70.0" styleClass="pnRightTop" />
+                     </graphic>
+                  </Label>
                   <JFXTextField fx:id="lblSetMax" focusTraversable="false" labelFloat="true" layoutX="352.0" layoutY="92.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" />
                   <JFXTextField fx:id="txtManageDsic" focusTraversable="false" labelFloat="true" layoutX="302.0" layoutY="311.0" prefHeight="40.0" prefWidth="145.0" promptText="Manager Discount (%)" styleClass="txtField" visible="false" />
                   <Button fx:id="btnSubmitVisits" focusTraversable="false" layoutX="390.0" layoutY="143.0" mnemonicParsing="false" onAction="#submitVisitorsCapacity" styleClass="btnMiddle" text="Submit" />
@@ -252,32 +290,17 @@
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Label layoutX="18.0" layoutY="341.0" styleClass="labelBold" text="Current discount :">
+                  <Label layoutX="108.0" layoutY="340.0" styleClass="labelBold" text="Current discount :">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblPresentDisc" layoutX="67.0" layoutY="368.0" prefHeight="21.0" prefWidth="45.0" styleClass="labelBold">
+                  <Label layoutX="69.0" layoutY="97.0" styleClass="labelBold" text="Maximum visitors capacity: ">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="14.0" layoutY="102.0" styleClass="labelBold" text="Maximum visitors capacity : ">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblPresentMaxVis" layoutX="63.0" layoutY="131.0" prefHeight="25.0" prefWidth="45.0" styleClass="labelBold">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="14.0" layoutY="220.0" styleClass="labelBold" text="Maximum capacity by orders   : ">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblPresentReservationCap" layoutX="66.0" layoutY="251.0" prefHeight="21.0" prefWidth="45.0" styleClass="labelBold">
+                  <Label layoutX="61.0" layoutY="220.0" styleClass="labelBold" text="Maximum capacity by orders: ">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -290,7 +313,7 @@
                         <DropShadow />
                      </effect>
                   </Button>
-                  <ImageView fitHeight="105.0" fitWidth="175.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="105.0" fitWidth="175.0" layoutX="11.0" layoutY="431.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@park_minimal_nobg_500.png" />
                      </image>
@@ -305,12 +328,7 @@
                   </Button>
                   <JFXTextField fx:id="txtMaxcapByorder" focusTraversable="false" labelFloat="true" layoutX="352.0" layoutY="210.0" prefHeight="40.0" prefWidth="145.0" promptText="Max Visitors Amount" styleClass="txtField" visible="false" />
                   <Button fx:id="btnSubmitCapacityByorder" focusTraversable="false" layoutX="391.0" layoutY="268.0" mnemonicParsing="false" onAction="#submitVisitorsCapacityByorder" styleClass="btnMiddle" text="Submit" visible="false" />
-                  <Label fx:id="lblVisitorsnumber" layoutX="11.0" layoutY="33.0" styleClass="labelBold" text="Current visitors number in the park :">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblCurrentVisitors" layoutX="295.0" layoutY="31.0" prefHeight="25.0" prefWidth="45.0" styleClass="labelBold">
+                  <Label fx:id="lblVisitorsnumber" layoutX="133.0" layoutY="31.0" styleClass="labelBold" text="Current visitors number in the park:">
                      <font>
                         <Font size="16.0" />
                      </font>
