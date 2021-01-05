@@ -4,9 +4,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.ToDoubleBiFunction;
+
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+import javax.tools.Tool;
+
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
+import com.sun.javafx.webkit.ThemeClientImpl;
 
 import client.ClientUI;
 import dataLayer.CreditCard;
@@ -25,6 +33,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import orderData.OrderType;
 import userData.Member;
+
+/**
+*
+*controller that gets the new member details
+*
+* @author  Hodaya Mekonen
+*/
 
 public class ServiceRepresentativeController implements Initializable {
 
@@ -59,6 +74,10 @@ public class ServiceRepresentativeController implements Initializable {
 	@FXML
 	private Button btnCreditCard;
 
+	/**
+	 * Allows the user to log out and returns the user to the login page
+	 **/
+
 	@FXML
 	void logout(ActionEvent event) throws IOException {
 		// Data fields
@@ -80,8 +99,15 @@ public class ServiceRepresentativeController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
+	/**
+	 * a function to add a new Member and credit card data, sends to the server the details
+	 *  and gets answer according to the action status success or fail and the member number.
+	 * 
+	 * @param ActionEvent
+	 **/
+
 	@FXML
-	// add a new Member data into the db
+	//
 	void addMember(ActionEvent event) {
 
 		String id = txtId.getText();
@@ -165,6 +191,12 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 
 	}
+	
+	/**
+	 * allows the user to open the credit card details page 
+	 *
+	 * @param ActionEvent
+	 **/
 
 	@FXML
 	void creditCard(ActionEvent event) throws IOException {
@@ -185,7 +217,11 @@ public class ServiceRepresentativeController implements Initializable {
 
 	}
 
-	// check valid input for first and last name
+	/**
+	 * check valid input for first and last name       
+	 * @return  true if the input is correct false otherwise
+	 **/
+
 	public boolean validFirstLastNameInput() {
 
 		if (txtFirstName.getText().length() < 3 || txtLastName.getText().length() < 3) {
@@ -195,8 +231,11 @@ public class ServiceRepresentativeController implements Initializable {
 
 		return true;
 	}
-
-	// check valid input for id
+	
+	/**
+	 * check valid input for id            
+	 * @return  true if the input is correct false otherwise
+	 **/
 	public boolean validIdInput() {
 
 		if (txtId.getText().length() != 9) {
@@ -207,8 +246,12 @@ public class ServiceRepresentativeController implements Initializable {
 
 		return true;
 	}
-
-	// check valid input for phoneNumber
+	
+	/**
+	 * check valid input for phoneNumber        
+	 * @return  true if the input is correct false otherwise
+	 **/
+	
 	public boolean validPhoneNumberInput() {
 
 		if (txtPhoneNumber.getText().length() != 10) {
@@ -217,8 +260,12 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
-
-	// check valid input for email
+	
+	/**
+	 *  check valid input for email          
+	 * @return  true if the input is correct false otherwise
+	 **/
+	
 	public boolean validEmailInput() {
 
 		if (!(txtEmail.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))) {
@@ -227,7 +274,7 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
-
+	
 	public void ClearFields() {
 
 		txtId.clear();
@@ -238,7 +285,8 @@ public class ServiceRepresentativeController implements Initializable {
 		txtPhoneNumber.clear();
 
 	}
-
+	
+	
 	public static String getFirstName() {
 		return firstName;
 	}
@@ -247,6 +295,10 @@ public class ServiceRepresentativeController implements Initializable {
 		ServiceRepresentativeController.firstName = firstName;
 	}
 
+	/**
+	 * Initializing and force each of the fields according to the Required templates 
+	 **/
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -331,8 +383,10 @@ public class ServiceRepresentativeController implements Initializable {
 		ServiceRepresentativeController.status = status;
 	}
 
-	//receive from the server the status of the insert member 
-	//if true gets in addition the member number
+	/**
+	 * @param receive from the server the status of the member addition and the member number
+	 **/
+
 	public static void receivedFromServerAddMemberStatus(boolean status,String memberNum) {
 		if ((status)) {
 			setStatuss(status);// status=true
