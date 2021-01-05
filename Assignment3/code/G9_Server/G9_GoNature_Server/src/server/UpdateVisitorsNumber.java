@@ -183,12 +183,9 @@ public class UpdateVisitorsNumber {
 	public static void getParkNamesAndAmountVisitorsCurrentlyInThePark(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : getParkDetails
+		// the service name : getParkNamesAndAmountVisitorsCurrentlyInThePark
 		answer.add(recived.get(0));
 		// the data that sent from the client
-		// cell 1: parkName
-		ArrayList<String> data = (ArrayList<String>) recived.get(1);
-		int visitorsToAddorRemove = Integer.parseInt(data.get(1));
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
