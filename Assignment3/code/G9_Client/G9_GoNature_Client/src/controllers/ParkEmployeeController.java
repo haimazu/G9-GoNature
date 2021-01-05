@@ -1093,6 +1093,10 @@ public class ParkEmployeeController implements Initializable {
 		orderStatus = false;
 		approveIsPressed = false;
 	}
+	
+	public void setCurrentVisitors(ArrayList<Object> arr) {
+		
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

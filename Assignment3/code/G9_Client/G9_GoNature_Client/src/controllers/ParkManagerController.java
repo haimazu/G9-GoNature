@@ -319,6 +319,10 @@ public class ParkManagerController implements Initializable {
 		button1.setStyle("-fx-background-color: transparent;");
 		button2.setStyle("-fx-background-color: transparent;");
 	}
+	
+	public void setCurrentVisitors(ArrayList<Object> arr) {
+		
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

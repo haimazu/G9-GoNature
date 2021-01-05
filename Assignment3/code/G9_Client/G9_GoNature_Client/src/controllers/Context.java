@@ -9,6 +9,7 @@ public class Context {
 	private WaitingListConfirmContoller WLCC;
 	private ParkManagerController PMC;
 	private ParkEmployeeController PEC;
+	private DepartmentManagerController DMC;
 	
 
 
@@ -52,7 +53,14 @@ public class Context {
 	public void setPEC(ParkEmployeeController pEC) {
 		PEC = pEC;
 	}
-	
+
+	public DepartmentManagerController getDMC() {
+		return DMC;
+	}
+
+	public void setDMC(DepartmentManagerController dMC) {
+		DMC = dMC;
+	}
 	  
 }
 

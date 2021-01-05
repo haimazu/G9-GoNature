@@ -147,6 +147,9 @@ public class ChatClient extends AbstractClient {
 			case "getGroupsVisitorsData":
 				DepartmentManagerController.receivedFromServerGroupsVisitorsData((ArrayList<Object>)received);
 				break;
+			case "VisitorsUpdateSendToAll":
+				ChatClient.sendToAllEmployee(received);
+				break;
 			default:
 			break;
 		}
@@ -198,6 +201,23 @@ public class ChatClient extends AbstractClient {
 //			System.out.println("something went wrong");
 //		}
 
+	}
+	
+	
+	public static void sendToAllEmployee(ArrayList<Object> arr) {
+		
+		if(Context.getInstance().getPMC() != null) {
+			Context.getInstance().getPMC(). setCurrentVisitors(arr);
+		}
+		
+		if(Context.getInstance().getPEC() != null) {
+			
+		}
+		
+		if(Context.getInstance().getDMC() != null) {
+			
+		}
+		
 	}
 
 	/**

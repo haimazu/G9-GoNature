@@ -107,32 +107,31 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private NumberAxis yAxis;
 	@FXML
-    private JFXDatePicker dpCancelFrom;
-    @FXML
-    private JFXDatePicker dpCancelTo;
+	private JFXDatePicker dpCancelFrom;
+	@FXML
+	private JFXDatePicker dpCancelTo;
 	@FXML
 	private Button btnCancelShow;
 	@FXML
 	private Button btnLogout;
-	
+
 	/***** Visits Report *****/
 	@FXML
-    private JFXDatePicker dpVisitorsFrom;
-    @FXML
-    private JFXDatePicker dpVisitorsTo;
+	private JFXDatePicker dpVisitorsFrom;
 	@FXML
-    private PieChart pieRegular;
-    @FXML
-    private PieChart pieMember;
-    @FXML
-    private PieChart pieGroup;
-    @FXML
-    private Label lblRegular;
-    @FXML
-    private Label lblMember;
-    @FXML
-    private Label lblGroup;
-
+	private JFXDatePicker dpVisitorsTo;
+	@FXML
+	private PieChart pieRegular;
+	@FXML
+	private PieChart pieMember;
+	@FXML
+	private PieChart pieGroup;
+	@FXML
+	private Label lblRegular;
+	@FXML
+	private Label lblMember;
+	@FXML
+	private Label lblGroup;
 
 	/***** Global Variables *****/
 	private static String firstName;
@@ -140,11 +139,11 @@ public class DepartmentManagerController implements Initializable {
 	// private static Park parkDetails;
 
 	/***** Dashboard Variables *****/
-	private ArrayList<Object> data = new ArrayList<>();	
+	private ArrayList<Object> data = new ArrayList<>();
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
 	private static boolean status;
 	private int count = 0;
-	
+
 	/***** Visits Report Variables *****/
 	private static ArrayList<Double> regularVisitors = new ArrayList<>();
 	private static ArrayList<Double> memberVisitors = new ArrayList<>();
@@ -156,7 +155,6 @@ public class DepartmentManagerController implements Initializable {
 	private static boolean error = false;
 	private int index = 0;
 
-	
 	// this function managed the side bar
 	// input: button source that pressed
 	// output: switch to the relevant pane
@@ -216,14 +214,14 @@ public class DepartmentManagerController implements Initializable {
 	void show(ActionEvent event) {
 		ArrayList<String> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
+
 		// the dates are correct
 		if (checkDate(dpCancelFrom.getValue(), dpCancelTo.getValue().plusDays(1))) {
 			String fromFormat = dateTimeFormatter.format(dpCancelFrom.getValue());
 			String toFormat = dateTimeFormatter.format(dpCancelTo.getValue().plusDays(1));
 			data.add(fromFormat);
-			data.add(toFormat);			
-			sendToServerArrayList("getCancellationReports" ,data);
+			data.add(toFormat);
+			sendToServerArrayList("getCancellationReports", data);
 
 			if (!getError()) {
 				// show all data
@@ -333,29 +331,29 @@ public class DepartmentManagerController implements Initializable {
 			alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
 		}
 	}
-	
+
 	// creates a PDF file based on data retrieved from the DB
 	// input: from -> start date
 	// to -> end date
 	// ArrayList<Double> regularVisitors/memberVisitors/groupVisitors, cells:
-	//	 				 cell [0]: percentage of visitors between the hours 0-1
-	//                   cell [1]: percentage of visitors between the hours 1-2
-	//                   cell [2]: percentage of visitors between the hours 2-3
-	//                   cell [3]: percentage of visitors between the hours 3-4
+	// cell [0]: percentage of visitors between the hours 0-1
+	// cell [1]: percentage of visitors between the hours 1-2
+	// cell [2]: percentage of visitors between the hours 2-3
+	// cell [3]: percentage of visitors between the hours 3-4
 	// output: PDF report with all the data shown in the chart
 	@FXML
 	void exportPieChart(ActionEvent event) {
 		// call the function to fill the cancelledOrders data
 		showPieChart(event);
-	
+
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	
+
 		String fromFormat = dateFormatter.format(dpVisitorsFrom.getValue());
 		String toFormat = dateFormatter.format(dpVisitorsTo.getValue());
 		// the date it was created
 		String fileNameDate = fileNameFormatter.format(LocalDate.now());
-	
+
 		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
 		try {
 			Document document = new Document();
@@ -368,19 +366,19 @@ public class DepartmentManagerController implements Initializable {
 					"E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
 			logo.setAlignment(Element.ALIGN_CENTER);
 			document.add(logo);
-	
+
 			Paragraph title = new Paragraph("Visitors Report\n", titleFont);
 			title.setAlignment(Element.ALIGN_CENTER);
 			document.add(title);
-	
+
 			Paragraph date = new Paragraph(new Date().toString() + "\n\n");
 			date.setAlignment(Element.ALIGN_CENTER);
 			document.add(date);
-	
+
 			for (int i = 0; i < 3; i++) {
 				String type = "";
 				ArrayList<Double> currentType = null;
-				
+
 				if (i == 0) {
 					if (regularVisitors.isEmpty()) {
 						continue;
@@ -400,37 +398,37 @@ public class DepartmentManagerController implements Initializable {
 					type = "Group";
 					currentType = groupVisitors;
 				}
-				
+
 				PdfPTable table = new PdfPTable(2);
 				table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-						
+
 				PdfPCell typeCell = new PdfPCell(new Paragraph(type));
 				typeCell.setColspan(2);
 				typeCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				typeCell.setBackgroundColor(new BaseColor(46, 139, 87));
 				// the title of the table
 				table.addCell(typeCell);
-				
+
 				PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
 				titleCell.setColspan(2);
 				titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				titleCell.setBackgroundColor(BaseColor.GRAY);
 				// the title of the table
 				table.addCell(titleCell);
-		
+
 				PdfPCell hours = new PdfPCell(new Paragraph("Hours"));
 				hours.setColspan(1);
 				hours.setHorizontalAlignment(Element.ALIGN_CENTER);
 				hours.setBackgroundColor(BaseColor.LIGHT_GRAY);
 				table.addCell(hours);
-		
+
 				PdfPCell arrivalRates = new PdfPCell(new Paragraph("Arrival Rates"));
 				arrivalRates.setColspan(1);
 				arrivalRates.setHorizontalAlignment(Element.ALIGN_CENTER);
 				arrivalRates.setBackgroundColor(BaseColor.LIGHT_GRAY);
 				table.addCell(arrivalRates);
-		
+
 				table.addCell("0-1");
 				table.addCell(String.valueOf(currentType.get(0) + "%"));
 				table.addCell("1-2");
@@ -439,37 +437,37 @@ public class DepartmentManagerController implements Initializable {
 				table.addCell(String.valueOf(currentType.get(2) + "%"));
 				table.addCell("3-4");
 				table.addCell(String.valueOf(currentType.get(3) + "%"));
-				
+
 				document.add(table);
 				document.add(new Paragraph("\n"));
 			}
-	
+
 			alert.successAlert("Success", "The report was created successfully.");
-	
+
 			Desktop.getDesktop().open(new File("VisitorsReport " + fileNameDate + ".pdf"));
-	
+
 			document.close();
 			writer.close();
-	
+
 		} catch (Exception e) {
 			alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
 		}
 	}
-	
+
 	// displays the chart for the information retrieved from DB
 	// input: from -> start date
-	// 		  to -> end date
+	// to -> end date
 	// ArrayList<Double> regularVisitors/memberVisitors/groupVisitors, cells:
-	// 					 cell [0]: percentage of visitors between the hours 0-1
-	//                   cell [1]: percentage of visitors between the hours 1-2
-	//                   cell [2]: percentage of visitors between the hours 2-3
-	//                   cell [3]: percentage of visitors between the hours 3-4
+	// cell [0]: percentage of visitors between the hours 0-1
+	// cell [1]: percentage of visitors between the hours 1-2
+	// cell [2]: percentage of visitors between the hours 2-3
+	// cell [3]: percentage of visitors between the hours 3-4
 	// output: displays the data
 	@FXML
 	void showPieChart(ActionEvent event) {
 		ArrayList<String> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
+
 		// the dates are correct
 		if (checkDate(dpVisitorsFrom.getValue(), dpVisitorsTo.getValue().plusDays(1))) {
 			String fromFormat = dateTimeFormatter.format(dpVisitorsFrom.getValue());
@@ -478,31 +476,31 @@ public class DepartmentManagerController implements Initializable {
 			data.add(toFormat);
 			data.add("regular");
 			sendToServerArrayList("getRegularsVisitorsData", data);
-			
+
 			if (!isEmpty()) {
 				lblRegular.setText("Regular");
 				addPieChart(pieRegular, "Regular");
 			}
 			setEmpty(false);
-						
+
 			data.clear();
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("member");
 			sendToServerArrayList("getMembersVisitorsData", data);
-			
+
 			if (!isEmpty()) {
 				lblRegular.setText("Member");
 				addPieChart(pieMember, "Member");
 			}
 			setEmpty(false);
-			
+
 			data.clear();
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("group");
 			sendToServerArrayList("getGroupsVisitorsData", data);
-			
+
 			if (!isEmpty()) {
 				lblRegular.setText("Group");
 				addPieChart(pieGroup, "Group");
@@ -510,10 +508,10 @@ public class DepartmentManagerController implements Initializable {
 			setEmpty(false);
 		}
 	}
-	
+
 	// check that the inserted dates are correct
 	// input: from -> start date
-	// 		  to -> end date
+	// to -> end date
 	// output: T / F ==> if valid T, otherwise F
 	public boolean checkDate(LocalDate from, LocalDate to) {
 
@@ -521,64 +519,71 @@ public class DepartmentManagerController implements Initializable {
 		if (from.isBefore(to) || from.isEqual(to)) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	// adding a specific chart
 	// input: PieChart currentPie - with the current pie chart we want to add
-	//		  String title - the case for this pie chart
+	// String title - the case for this pie chart
 	// ArrayList<Double> currentPie, cells:
-	// 					 cell [0]: percentage of visitors between the hours 0-1
-	//                   cell [1]: percentage of visitors between the hours 1-2
-	//                   cell [2]: percentage of visitors between the hours 2-3
-	//                   cell [3]: percentage of visitors between the hours 3-4
+	// cell [0]: percentage of visitors between the hours 0-1
+	// cell [1]: percentage of visitors between the hours 1-2
+	// cell [2]: percentage of visitors between the hours 2-3
+	// cell [3]: percentage of visitors between the hours 3-4
 	// output: add the data
 	public void addPieChart(PieChart currentPie, String title) {
 		currentPie.getData().clear();
-		// setting the length of the label line 
+		// setting the length of the label line
 		currentPie.setLabelLineLength(5);
 		currentPie.setClockwise(false);
 		currentPie.setAnimated(false);
 		currentPie.setLegendVisible(false);
-		
+
 		ObservableList<PieChart.Data> currentVisitorsData = null;
 
 		switch (title) {
-			case "Regular":
-				lblRegular.setText("Regular");
-				currentVisitorsData = FXCollections.observableArrayList(getChartData(regularVisitors));			
-				break;
-			case "Member":
-				lblMember.setText("Member");
-				currentVisitorsData = FXCollections.observableArrayList(getChartData(memberVisitors));
-				break;
-			case "Group":
-				lblGroup.setText("Group");
-				currentVisitorsData = FXCollections.observableArrayList(getChartData(groupVisitors));
-				break;
-			default:
-				return;
+		case "Regular":
+			lblRegular.setText("Regular");
+			currentVisitorsData = FXCollections.observableArrayList(getChartData(regularVisitors));
+			break;
+		case "Member":
+			lblMember.setText("Member");
+			currentVisitorsData = FXCollections.observableArrayList(getChartData(memberVisitors));
+			break;
+		case "Group":
+			lblGroup.setText("Group");
+			currentVisitorsData = FXCollections.observableArrayList(getChartData(groupVisitors));
+			break;
+		default:
+			return;
 		}
 
 		currentPie.setData(currentVisitorsData);
 	}
-	
+
 	public ObservableList<PieChart.Data> getChartData(ArrayList<Double> currentList) {
-		
+
 		ObservableList<PieChart.Data> currentVisitorsData = FXCollections.observableArrayList();
-		
+
 		if (currentList.get(0) != 0) {
-			currentVisitorsData.add(new PieChart.Data("0-1 hours, " + String.valueOf(currentList.get(0) + "%"), currentList.get(0)));
-		} if (currentList.get(1) != 0) {
-			currentVisitorsData.add(new PieChart.Data("1-2 hours, " + String.valueOf(currentList.get(1) + "%"), currentList.get(1)));
-		} if (currentList.get(2) != 0) {
-			currentVisitorsData.add(new PieChart.Data("2-3 hours, " + String.valueOf(currentList.get(2) + "%"), currentList.get(2)));
-		} if (currentList.get(3) != 0) {
-			currentVisitorsData.add(new PieChart.Data("3-4 hours, " + String.valueOf(currentList.get(3) + "%"), currentList.get(3)));
+			currentVisitorsData.add(
+					new PieChart.Data("0-1 hours, " + String.valueOf(currentList.get(0) + "%"), currentList.get(0)));
 		}
-		
-		return currentVisitorsData;		
+		if (currentList.get(1) != 0) {
+			currentVisitorsData.add(
+					new PieChart.Data("1-2 hours, " + String.valueOf(currentList.get(1) + "%"), currentList.get(1)));
+		}
+		if (currentList.get(2) != 0) {
+			currentVisitorsData.add(
+					new PieChart.Data("2-3 hours, " + String.valueOf(currentList.get(2) + "%"), currentList.get(2)));
+		}
+		if (currentList.get(3) != 0) {
+			currentVisitorsData.add(
+					new PieChart.Data("3-4 hours, " + String.valueOf(currentList.get(3) + "%"), currentList.get(3)));
+		}
+
+		return currentVisitorsData;
 	}
 
 	public static String getFirstName() {
@@ -600,7 +605,7 @@ public class DepartmentManagerController implements Initializable {
 	public static void setData(boolean status) {
 		setStatus(status);
 	}
-	
+
 //	/**
 //	 * for CheckBox
 //	 */
@@ -616,7 +621,6 @@ public class DepartmentManagerController implements Initializable {
 //		radioCreditCard.setToggleGroup(group);
 //		radioPayPal.setToggleGroup(group);
 //	}
-
 
 	/**
 	 * button approve will remove the row and will update the table from DB will
@@ -637,7 +641,7 @@ public class DepartmentManagerController implements Initializable {
 				data.add("yes");
 				System.out.println("before server");
 				ClientUI.sentToChatClient(data);
-				
+
 				System.out.println("pass server");
 				if (status)
 					TableDep.getItems().remove(TableDep.getItems().get(i));
@@ -680,7 +684,6 @@ public class DepartmentManagerController implements Initializable {
 					TableDep.getItems().remove(TableDep.getItems().get(i));
 					alert.setAlert("The request dissaprove");
 				}
-				
 
 			}
 			data.clear();
@@ -694,14 +697,14 @@ public class DepartmentManagerController implements Initializable {
 		for (ArrayList<String> arrayList : al) {
 
 			if (arrayList.get(1).equals("discount")) {
-				String [] FromDate = arrayList.get(5).split(" ");
-				String [] ToDate = arrayList.get(6).split(" ");
+				String[] FromDate = arrayList.get(5).split(" ");
+				String[] ToDate = arrayList.get(6).split(" ");
 				String discString = arrayList.get(4);
-				double disc =Double.parseDouble(discString);
-				disc = (1-disc)*100;
-				//int discount =(1 - Integer.parseInt())*100;
-				str = "Discount : " + String.format("%.1f", disc) + "%" + " in the following dates: " + FromDate[0] + " - "
-						+ ToDate[0];
+				double disc = Double.parseDouble(discString);
+				disc = (1 - disc) * 100;
+				// int discount =(1 - Integer.parseInt())*100;
+				str = "Discount : " + String.format("%.1f", disc) + "%" + " in the following dates: " + FromDate[0]
+						+ " - " + ToDate[0];
 			} else if (arrayList.get(1).equals("max_c")) {
 				str = "Visitors Capacity : " + arrayList.get(2);
 			} else if (arrayList.get(1).equals("max_o")) {
@@ -890,61 +893,73 @@ public class DepartmentManagerController implements Initializable {
 			DepartmentManagerController.cancelledOrders = cancelData;
 		}
 	}
-	
+
 	// getting information from the server
 	// input: none
 	// output: list of regular visitors:
 	// if empty ==> String "empty", otherwise
 	// ArrayList<Object>: cell[0] 0-1 hour
-	// 					  cell[1] 1-2 hours
-	//	 				  cell[2] 2-3 hours
-	//	  				  cell[3] 3-4 hours
+	// cell[1] 1-2 hours
+	// cell[2] 2-3 hours
+	// cell[3] 3-4 hours
 	public static void receivedFromServerRegularsVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
-			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
-			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
-			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
-			DepartmentManagerController.regularVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
+			DepartmentManagerController.regularVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
+			DepartmentManagerController.regularVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
+			DepartmentManagerController.regularVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
+			DepartmentManagerController.regularVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
 		}
 	}
-	
+
 	// getting information from the server
 	// input: none
 	// output: list of members visitors:
 	// if empty ==> String "empty", otherwise
 	// ArrayList<Object>: cell[0] 0-1 hour
-	// 					  cell[1] 1-2 hours
-	//	 				  cell[2] 2-3 hours
-	//	  				  cell[3] 3-4 hours
+	// cell[1] 1-2 hours
+	// cell[2] 2-3 hours
+	// cell[3] 3-4 hours
 	public static void receivedFromServerMembersVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
-			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
-			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
-			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
-			DepartmentManagerController.memberVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
+			DepartmentManagerController.memberVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
+			DepartmentManagerController.memberVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
+			DepartmentManagerController.memberVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
+			DepartmentManagerController.memberVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
 		}
 	}
-	
+
 	// getting information from the server
 	// input: none
 	// output: list of group visitors:
 	// if empty ==> String "empty", otherwise
 	// ArrayList<Object>: cell[0] 0-1 hour
-	// 					  cell[1] 1-2 hours
-	//	 				  cell[2] 2-3 hours
-	//	  				  cell[3] 3-4 hours
+	// cell[1] 1-2 hours
+	// cell[2] 2-3 hours
+	// cell[3] 3-4 hours
 	public static void receivedFromServerGroupsVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
-			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
-			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
-			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
-			DepartmentManagerController.groupVisitors.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
+			DepartmentManagerController.groupVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
+			DepartmentManagerController.groupVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(2))));
+			DepartmentManagerController.groupVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(3))));
+			DepartmentManagerController.groupVisitors
+					.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(4))));
 		}
 	}
 
@@ -973,6 +988,7 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void iniailTabel() {
+		Context.getInstance().setDMC(this);
 		DBList.clear();
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("PendingManagerRequests");
@@ -981,6 +997,10 @@ public class DepartmentManagerController implements Initializable {
 		count = DBList.size();
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
+	}
+
+	public void setCurrentVisitors(ArrayList<Object> arr) {
+
 	}
 
 	@Override
@@ -995,7 +1015,7 @@ public class DepartmentManagerController implements Initializable {
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
 		mark.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("MarkCh"));
-		
+
 //		parkName.setStyle( "-fx-alignment: CENTER;");
 //		requestType.setStyle( "-fx-alignment: CENTER;");
 //		requestDetails.setStyle( "-fx-alignment: CENTER;");
@@ -1015,7 +1035,7 @@ public class DepartmentManagerController implements Initializable {
 		dpVisitorsTo.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpVisitorsTo.setValue(newValue);
 		});
-		
+
 		/***** Cancel Reports *****/
 		dpCancelFrom.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
