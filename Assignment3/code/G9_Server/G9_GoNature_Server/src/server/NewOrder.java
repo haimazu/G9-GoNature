@@ -61,11 +61,9 @@ public class NewOrder {
 	 * function that called when we want to insert a new order and credit card into
 	 * the DB
 	 * 
-	 * @author: Roi Amar
 	 * @param cell[0] function name cell[1] order object cell[2] credit card
-	 *                object/null (ÎÏ ‰input)
-	 * @return T/F (Ù‰ Î˙Â· Ó‰ ‰È‰ ‰output)
-	 * @exception : ‡Ì È˘
+	 *                object/null
+	 * @return T/F
 	 * 
 	 **/
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
@@ -75,7 +73,7 @@ public class NewOrder {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order order = (Order) recived.get(1); // data object received
-		answer.add(insertNewOrder(order)); //////////////////////////////////////////// ROI
+		answer.add(insertNewOrder(order));
 		EchoServer.sendToMyClient(answer, client);
 		String subject = "GoNature Order Confirmation";
 		String messege = "order completed sucssesfuly!\n "
@@ -85,9 +83,14 @@ public class NewOrder {
 		Comunication.sendNotification(subject, messege, order);
 	}
 
-	// input: order object
-	//
-	// output: checks if u a member and return the member from DB
+	/**
+	 * Checks if you are a member
+	 * 
+	 * @param order object
+	 * @return member/null
+	 * 
+	 **/
+
 	public static Member MemerCheck(Order ord) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -113,9 +116,14 @@ public class NewOrder {
 	}
 
 	///////////// ************************* price *****************************
-	// input: Order with empty totalPrice & price & orderType, a Member
-	//
-	// output: Order with updated totalPrice and price and orderType
+
+	/**
+	 * function that calculates the price for an order and puts it into Order object
+	 * 
+	 * @param Order with empty totalPrice , price , orderType, a Member
+	 * @return Order with updated totalPrice and price and orderType
+	 **/
+
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
 		System.out.println("total price enter");
 		double parkEnteryPrice = CurrentPriceInPark(ord);
@@ -190,10 +198,13 @@ public class NewOrder {
 		return ord;
 	}
 
-	// input: order object
-	//
-	// output: returns the current price of entry in the park with manger discount
-	// calculated
+	/**
+	 * calculates and return current price of entry in the park with manger discount
+	 * calculated
+	 * 
+	 * @param Order object
+	 * @return entry price
+	 **/
 	public static double CurrentPriceInPark(Order ord) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
@@ -253,9 +264,13 @@ public class NewOrder {
 	}
 
 	////////////// ********************* Park **************************************
-	// input: ArrayList<Object>, ConnectionToClient
-	//
-	// output: returns to client side with a list of parks names from DB
+
+	/**
+	 * function to pull parks names from DB
+	 * 
+	 * @param ArrayList<Object>, ConnectionToClient
+	 * @return a list of parks names from DB
+	 **/
 	public static void parksNames(ArrayList<Object> recived, ConnectionToClient client) {
 
 		// the returned values stored here
@@ -286,12 +301,14 @@ public class NewOrder {
 
 	}
 
-	// input: ArrayList<Object>,ConnectionToClient
-	// pulling details of a selected park from DB
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] ArrayList<String> [0] orderNumber
-	// [1] number of visitors to add
-	@SuppressWarnings("unchecked")
+	/**
+	 * updating column amountArrived in order table for an order
+	 * 
+	 * @param ArrayList<Object> cell[0]: calling function name ,ConnectionToClient
+	 * @return ArrayList<Object>=> cell[0] function name, cell[1]: ArrayList<String>
+	 *         [0] orderNumber, [1] number of visitors to add
+	 **/
+
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -318,9 +335,14 @@ public class NewOrder {
 	}
 
 	////// ************credit card****************************************
-	// input: object credit card
-	//
-	// output: T\F if success
+	
+	
+	/**
+	 * inserts a new credit card in DB
+	 * 
+	 * @param CreditCard object
+	 * @return T\F
+	 **/
 	public static Boolean creditCardSave(CreditCard cc) {
 
 		ArrayList<String> query = new ArrayList<String>();
@@ -331,15 +353,26 @@ public class NewOrder {
 		return MySQLConnection.insert(query); // returns T\F
 	}
 
-	// in use for CreditCardSave query
+	/**
+	 * toString in use for CreditCardSave query
+	 * 
+	 * @param CreditCard
+	 * @return String
+	 **/
 	public static String toStringForCreditCardSave(CreditCard data) {
 		return "'" + data.getCardNumber() + "','" + data.getCardHolderName() + "','" + data.getExpirationDate() + "','"
 				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
 	}
 
-	// input: Order to insert into the DB
-	// output: true if successful false if not
-	// send to DB: new order to list in
+	
+	/**
+	 * sending to DB: new order to list in
+	 * 
+	 * @param  Order Object to insert into the DB
+	 * @return true if successful false if not
+	 * @exception 
+	 **/
+
 	public static boolean insertNewOrder(Order order) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("insert"); // command
