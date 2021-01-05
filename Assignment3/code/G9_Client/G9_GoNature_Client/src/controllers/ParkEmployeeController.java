@@ -127,7 +127,6 @@ public class ParkEmployeeController implements Initializable {
 	private String dateAndTimeFormat = "";
 	private boolean orderStatus = false;
 	private boolean approveIsPressed = false;
-	private boolean createFakeOrder = false;
 	private static String firstName;
 	private static String parkName;
 	private static Order orderDetails;
@@ -647,10 +646,9 @@ public class ParkEmployeeController implements Initializable {
 	    }
 	            
 	    // create new order for the random visitors (add to DB only if pressed 'Approve')
-	    if (approveIsPressed && createFakeOrder) {
+	    if (approveIsPressed) {
 	        sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
 	        approveIsPressed = false;
-	        createFakeOrder = false;
 	    }
 	    
 	    lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
