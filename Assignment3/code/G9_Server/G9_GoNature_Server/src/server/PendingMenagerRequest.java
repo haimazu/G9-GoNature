@@ -138,7 +138,7 @@ public class PendingMenagerRequest implements Serializable {
 	}
 
 	// input: ArrayList<Object>: cell[0] name
-	// cell[1] tabelViewSet object
+	// cell[1] ManagerRequest object
 	// cell[2] yes/no
 	//
 	// output: ArrayList<Object>: cell[0] T/F
@@ -149,12 +149,13 @@ public class PendingMenagerRequest implements Serializable {
 		ManagerRequest mr = (ManagerRequest) recived.get(1);
 		String yesno = (String) recived.get(2);
 
+		
 		// delete from pendingmanagerrequests
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("deleteCond");
 		query.add("pendingmanagerrequests");
 		query.add("employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
-
+		
 		if (yesno.equals("no")) {
 			answer.add(MySQLConnection.deleteCond(query));
 			answer.add(true);
