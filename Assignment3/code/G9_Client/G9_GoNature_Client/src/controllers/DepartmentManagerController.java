@@ -25,6 +25,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXDatePicker;
 
 import client.ClientUI;
+import dataLayer.TableCurrentVisitors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -91,6 +92,15 @@ public class DepartmentManagerController implements Initializable {
 	private TableColumn<TableViewSet, String> requestDetails;
 	@FXML
 	private TableColumn<TableViewSet, String> mark;
+	
+    @FXML
+    private TableView<TableCurrentVisitors> TVisitors;
+
+    @FXML
+    private TableColumn<TableCurrentVisitors, String> visitorColumn;
+
+    @FXML
+    private TableColumn<TableCurrentVisitors, String> amountColumn;
 
 	@FXML
 	private Label LabelCount;
@@ -136,7 +146,9 @@ public class DepartmentManagerController implements Initializable {
 	/***** Global Variables *****/
 	private static String firstName;
 	private AlertController alert = new AlertController();
-	// private static Park parkDetails;
+	private static ArrayList<ArrayList<String>> parkDetails;
+
+
 
 	/***** Dashboard Variables *****/
 	private ArrayList<Object> data = new ArrayList<>();
@@ -656,7 +668,7 @@ public class DepartmentManagerController implements Initializable {
 			}
 			data.clear();
 		}
-		iniailTabel();
+		iniailTabelPending();
 	}
 
 	/**
@@ -688,7 +700,7 @@ public class DepartmentManagerController implements Initializable {
 			}
 			data.clear();
 		}
-		iniailTabel();
+		iniailTabelPending();
 	}
 
 	public void addData(ArrayList<ArrayList<String>> al) {
@@ -971,8 +983,8 @@ public class DepartmentManagerController implements Initializable {
 		DBList = dBList;
 	}
 
-	public void iniailTabel() {
-		Context.getInstance().setDMC(this);
+	public void iniailTabelPending() {
+
 		DBList.clear();
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("PendingManagerRequests");
@@ -982,18 +994,58 @@ public class DepartmentManagerController implements Initializable {
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
 	}
+	
+	public void iniailTabelVisitors() {
+	
+		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("ParkNameVis"));
+		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("CurrentAmount"));
+		
+		ArrayList<Object> answer =new ArrayList<>();
+		answer.add("parkDateilsForDepartment");
+		ClientUI.sentToChatClient(answer);
+		
+		ObservableList<TableCurrentVisitors> listForTable = FXCollections.observableArrayList();
+
+		for (ArrayList<String> arrayList : parkDetails) {
+			TableCurrentVisitors TVV = new TableCurrentVisitors(arrayList.get(0),arrayList.get(1) + " / " + arrayList.get(2));
+			listForTable.add(TVV);
+		}
+
+		TVisitors.setItems(listForTable);
+			
+	}
 
 	public void setCurrentVisitors(ArrayList<Object> arr) {
-
+		for (int i = 0; i < TableDep.getItems().size(); i++) {
+			if (TVisitors.getItems().get(i).getParkNameVis().equals((String)arr.get(1))) {
+				TVisitors.getItems().get(i).setCurrentAmount((String) arr.get(2));
+			}
+		}
+	}
+	
+	public static void setParkDetails(ArrayList<ArrayList<String>> Parks) {
+		DepartmentManagerController.parkDetails=Parks;
+	}
+	
+	public static ArrayList<ArrayList<String>> getParkDetails() {
+		return parkDetails;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		
+		Context.getInstance().setDMC(this);
+		
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
+		
 
-		iniailTabel();
+		iniailTabelVisitors();
+		
+		
+
+		iniailTabelPending();
 
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));

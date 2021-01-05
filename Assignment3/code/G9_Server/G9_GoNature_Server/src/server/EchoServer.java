@@ -120,6 +120,8 @@ public class EchoServer extends AbstractServer {
 		case "getGroupsVisitorsData":
 			Reports.VisitsReport(recived, client);
 			break;
+		case "parkDateilsForDepartment":
+			UpdateVisitorsNumber.getParkNamesAndAmountVisitorsCurrentlyInThePark(recived, client);
 		default:
 			break;
 		}

@@ -153,6 +153,9 @@ public class ChatClient extends AbstractClient {
 		case "VisitorsUpdateSendToAll":
 			ChatClient.sendToAllEmployee(received);
 			break;
+		case "parkDateilsForDepartment":
+			DepartmentManagerController.setParkDetails((ArrayList<ArrayList<String>>) received.get(1));
+			break;
 		default:
 			break;
 		}
@@ -215,7 +218,8 @@ public class ChatClient extends AbstractClient {
 		}
 
 		if (Context.getInstance().getPEC() != null) {
-			Context.getInstance().getPEC().setCurrentVisitors(arr);
+			if (Context.getInstance().getPMC().getParkName().equals(parkName))
+				Context.getInstance().getPMC().setCurrentVisitors(updatedVisitorsNumber);
 		}
 
 		if (Context.getInstance().getDMC() != null) {

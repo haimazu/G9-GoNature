@@ -805,6 +805,12 @@ public class ParkEmployeeController implements Initializable {
 				+ parkDetails.getMaximumCapacityInPark());
 	}
 	
+public void setCurrentVisitors(String visitNum) {
+	lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
+			+ String.valueOf(visitNum + "/" 
+			+ parkDetails.getMaximumCapacityInPark()));
+	}
+	
 	// prints order data
 	// input: order
 	// output: prints the order data 
@@ -1094,13 +1100,12 @@ public class ParkEmployeeController implements Initializable {
 		approveIsPressed = false;
 	}
 	
-	public void setCurrentVisitors(ArrayList<Object> arr) {
-		
-	}
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setPEC(this);
+		
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
 		setRandomModeOff();
