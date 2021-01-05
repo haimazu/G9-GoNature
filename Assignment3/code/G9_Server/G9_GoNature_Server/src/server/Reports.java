@@ -295,8 +295,8 @@ public class Reports {
 		query.add("orders");
 		query.add("arrivedTime, SUM(afterDiscountPrice) AS price");
 		query.add("WHERE parkName='"+ parkName +"' AND (arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "') GROUP BY day(arrivedTime) order by day(arrivedTime)");
-		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2)
-				+ "' AND amountArrived > 0 GROUP BY arrivedTime ORDER BY arrivedTime");
+//		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2)
+//				+ "' AND amountArrived > 0 GROUP BY arrivedTime ORDER BY arrivedTime");
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData.get(0));
