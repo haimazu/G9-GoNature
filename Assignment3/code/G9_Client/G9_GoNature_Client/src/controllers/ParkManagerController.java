@@ -166,6 +166,11 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSetDisc1;
+    @FXML
+    private Label lblVisitorsnumber;
+
+    @FXML
+    private Label lblCurrentVisitors;
 
 	/* ------for visitors chart----- */
 	@FXML
@@ -320,8 +325,8 @@ public class ParkManagerController implements Initializable {
 		button2.setStyle("-fx-background-color: transparent;");
 	}
 	
-	public void setCurrentVisitors(ArrayList<Object> arr) {
-		
+	public void setCurrentVisitors(String visitNum) {
+		lblCurrentVisitors.setText(visitNum);
 	}
 
 	@Override
