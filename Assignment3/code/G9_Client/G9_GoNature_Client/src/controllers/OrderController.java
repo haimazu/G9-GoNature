@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -46,9 +47,12 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import orderData.Order;
 
-/*
- *  This controller include all three screen of success order
- */
+/**
+*  controller include all three screen of success order
+*
+* @author  
+*/
+
 public class OrderController implements Initializable {
 	/********* Pane **************/
 	@FXML
@@ -203,18 +207,13 @@ public class OrderController implements Initializable {
 		ParksNames = parksNames;
 	}
 
-	/*************************************
-	 * my Code
-	 *******************************************************/
-
-	/************** code for buttons - JAVAFX ********************/
-
 	/**
-	 * button for forward to the screen before
-	 * 
-	 * @param event
-	 * @throws IOException
+	 * function for the back button
+	 * Checks which window you are currently in and goes back to the previous page
+	 * @param ActionEvent
+	 * @exception IOException
 	 */
+	
 	@FXML
 	void back(ActionEvent event) throws IOException {
 		ObservableList<Node> stackPanels = this.pnStackOrder.getChildren();
@@ -240,6 +239,10 @@ public class OrderController implements Initializable {
 			}
 		}
 	}
+	
+	/**
+	 * save the order details
+	 */
 
 	public void saveOrder() {
 		this.flagOrder = 1;
@@ -256,7 +259,7 @@ public class OrderController implements Initializable {
 	/**
 	 * clear all fields in order screen
 	 * 
-	 * @param event
+	 * @param ActionEvent
 	 */
 	@FXML
 	void clear(ActionEvent event) {
@@ -268,9 +271,8 @@ public class OrderController implements Initializable {
 
 	/**
 	 * radio button for open screen creditCard
-	 * 
-	 * @param event
-	 * @throws IOException
+	 * @param ActionEvent
+	 * @exception IOException
 	 */
 	@FXML
 	void crditCardClick(ActionEvent event) throws IOException {
@@ -280,14 +282,11 @@ public class OrderController implements Initializable {
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.show();
-//		pnPayment.setDisable(true);
-//		pnOrder.setDisable(true);
 
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
-//				pnPayment.setDisable(false);
-//				pnOrder.setDisable(false);
+
 				radioCash.setSelected(true);
 
 			}
@@ -304,7 +303,7 @@ public class OrderController implements Initializable {
 	 * are correct - if so, send them to server Or if there is no place will open
 	 * the waiting list screen
 	 * 
-	 * @param event
+	 * @param ActionEvent
 	 * @throws IOException
 	 */
 	@FXML
@@ -376,7 +375,13 @@ public class OrderController implements Initializable {
 			this.ID = null;
 		}
 	}
-
+	
+	/**
+	 * returns to the home page
+	 * @param ActionEvent
+	 * @throws IOException
+	 */
+	
 	@FXML
 	void home(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnHere.getScene().getWindow();
@@ -398,10 +403,12 @@ public class OrderController implements Initializable {
 	 ****************************************/
 
 
+	
 	/**
-	 * 
-	 * @return what the payment mathod the user choose
+	 * Checks which payment method the user has selected and returns a string accordingly            
+	 * @return the payment method that the user choose 
 	 */
+
 	public String paymentChosen() {
 		if (radioCash.isSelected())
 			return "Cash";
@@ -421,9 +428,11 @@ public class OrderController implements Initializable {
 	}
 
 	/**
+	 * Checks if the fields are empty for the payment screen              
+	 * @return true if the fields are not empty ,false otherwise
 	 * 
-	 * @return true if the fields are not empty
 	 */
+
 	public boolean checkNotEmptyFieldsPaymentScreen() {
 
 		if (!(radioCash.isSelected() || radioCreditCard.isSelected() || radioPayPal.isSelected())) {
@@ -438,9 +447,11 @@ public class OrderController implements Initializable {
 	}
 
 	/**
+	 * Checks if the fields are empty for the order screen              
+	 * @return true if the fields are not empty ,false otherwise
 	 * 
-	 * @return true if the user fill all the fields
 	 */
+
 	public boolean checkNotEmptyFields() {
 		String visitorsNumber = txtVisitorsNumber.getText();
 		String email = txtInvitingEmail.getText();
@@ -449,7 +460,7 @@ public class OrderController implements Initializable {
 			parkName = cbxParkName.getValue().toString();
 		String memberId = txtmemberID.getText();
 		String Phone = txtPhoneNum.getText();
-//		System.out.println(visitorsNumber + " " + email + " " + parkName + " " + memberId + " " + Phone);
+
 		if (visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || memberId.isEmpty()
 				|| Phone.isEmpty()) {
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
@@ -459,10 +470,10 @@ public class OrderController implements Initializable {
 	}
 
 	/**
-	 * check only for reservation for today
-	 * 
-	 * @return true if the reservation is in the correct time
+	 * Checks whether the time selected on today's date is relevant to placing an order
+	 * @return true if the reservation is in the correct time ,false otherwise 
 	 */
+	
 	public boolean checkCurrentTime() {
 		LocalDate date = txtdate.getValue();
 		String[] arrSplit = cbxArrivelTime.getValue().toString().split("-");
@@ -472,29 +483,28 @@ public class OrderController implements Initializable {
 		LocalTime now = LocalTime.now();
 		if (date.compareTo(LocalDate.now()) == 0 && now.compareTo(arrivalTime) >= 0) {
 			alert.setAlert("You're trying to book for a time that has already passed. Please select a future time\r\n");
-//			if(now.compareTo(arrivalTime)>=)
-//			cbxArrivelTime.setItems(FXCollections.observableArrayList("8:00-12:00", "12:00-16:00", "16:00-20:00"));
-//			cbxArrivelTime.getSelectionModel().selectFirst();
+
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * for create the string to the DB
-	 * 
-	 * @param time
-	 * @return The start time of the reservation
+	 * creates a string for the DB according to cbxArrivelTime
+	 * @return string of the reservation time
 	 */
+	
 	public String getArrivalTime() {
 		String[] array = cbxArrivelTime.getValue().toString().split("-");
 		return array[0];
 	}
 
 	/**
+	 *  checks valid input           
+	 * @return true if all the field are correct ,false otherwise
 	 * 
-	 * @return true if all the field are correct
-	 */
+	 **/
+
 	public boolean checkCorrectFields() {
 		if (!validInput("email", txtInvitingEmail.getText())) {
 			alert.setAlert("Invalid email address");
@@ -537,11 +547,12 @@ public class OrderController implements Initializable {
 	public static final Pattern VALIDPhone = Pattern.compile("^[0-9]{3}[0-9]{7}$", Pattern.CASE_INSENSITIVE);
 
 	/**
-	 * 
-	 * @param nameMathod
+	 * checks valid input for each nameMathod according to relevant the pattern
+	 * @param String nameMathod and txt
 	 * @param txt
-	 * @return true if the pattern are cerrect
+	 * @return true if the pattern are correct ,false otherwise
 	 */
+	
 	public static boolean validInput(String nameMathod, String txt) {
 		Matcher matcher = null;
 		if (nameMathod.equals("email")) {
@@ -560,11 +571,16 @@ public class OrderController implements Initializable {
 	/**********************
 	 * Methods that get answer from server
 	 *************************************/
+	
 	/**
-	 * recived from server : Object Order / String / Boolean
+	 * Receives from the server the status of the action, if it is success Receives 
+	 * success message and an object of order ,else receives a failure message
 	 * 
-	 * @param newOrder
+	 * @param Object              
+	 * @return  Object Order / String / Boolean
+	 * 
 	 */
+
 	public static void recivedFromServer(Object newOrder) {
 		if (newOrder instanceof String) {
 			String status = (String) newOrder;
@@ -579,20 +595,19 @@ public class OrderController implements Initializable {
 	}
 
 	/**
-	 * return list of all the parks names
-	 * 
-	 * @param parks
-	 */
+	 * return the list of all the parks names
+	 * @param ArrayList<String> of parks
+	 **/
+
 	public static void recivedFromServerParksNames(ArrayList<String> parks) {
 		setParksNames(parks);
 	}
 
 	/**
 	 * return true if the user is confirm the order and the server success to enter
-	 * the db
-	 * 
-	 * @param msg
-	 */
+	 * @param boolean msg  
+	 **/
+
 	public static void recivedFromServerConfirmOrder(boolean msg) {
 		setConfirmOrder(msg);
 	}
@@ -600,7 +615,10 @@ public class OrderController implements Initializable {
 	/***************************************
 	 * Done with the server
 	 **********************************************/
-
+	
+	/**
+	 * Initialize the fields according to the actions performed by the user
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setOrderC(this);
@@ -640,9 +658,6 @@ public class OrderController implements Initializable {
 			txtdate.setValue(LocalDate.now());
 		}
 
-		// txtdate = new JFXDatePicker(LocalDate.now());
-
-		// cbxParkName.getSelectionModel().selectFirst();
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
@@ -652,10 +667,6 @@ public class OrderController implements Initializable {
 
 	}
 
-	/****************** for me ******************/
-//		txtmemberID.setText("315818987");
-//		txtVisitorsNumber.setText("2");
-//		txtInvitingEmail.setText("bar@kaz.com");
-//		txtPhoneNum.setText("0541234567");
+
 
 }
