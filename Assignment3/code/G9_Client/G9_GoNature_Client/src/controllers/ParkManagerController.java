@@ -224,11 +224,16 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private NumberAxis yAxisR;
 
-	@FXML
-	private JFXComboBox<String> cbxMounth;
+//	@FXML
+//	private JFXComboBox<String> cbxMounth;
 
 	@FXML
 	private Button btnShowReuvenue;
+	
+	private JFXComboBox<String> cbxExpiryMonth;
+
+	@FXML
+	private JFXComboBox<String> cbxExpiryYear;
 
 	/*-------------------------*/
 
@@ -392,14 +397,28 @@ public class ParkManagerController implements Initializable {
 		});
 
 		/***** Revenue report *********/
-		//the park meneger can get reports just one year back 
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		ArrayList<String> months = new ArrayList<>();
-		for(int i=1; i<=12;i++ ) {
-			months.add(i+"/"+year);
-		}
+//		//the park meneger can get reports just one year back 
+//		int year = Calendar.getInstance().get(Calendar.YEAR);
+//		ArrayList<String> months = new ArrayList<>();
+//		for(int i=1; i<=12;i++ ) {
+//			months.add(i+"/"+year);
+//		}
+//		
+//		cbxMounth.setItems(FXCollections.observableArrayList(months));
 		
-		cbxMounth.setItems(FXCollections.observableArrayList(months));
+		ArrayList<String> mounthArr = new ArrayList<>();
+
+		for (int i = 1; i <= 12; i++) {
+			mounthArr.add(String.valueOf(i));
+		}
+		cbxExpiryMonth.setItems(FXCollections.observableArrayList(mounthArr));
+		cbxExpiryMonth.getSelectionModel().selectFirst();
+		ArrayList<String> yearArr = new ArrayList<>();
+		for (int i = 2021; i <= 2031; i++) {
+			yearArr.add(String.valueOf(i));
+		}
+		cbxExpiryYear.setItems(FXCollections.observableArrayList(yearArr));
+		cbxExpiryYear.getSelectionModel().selectFirst();
 
 	}
 
