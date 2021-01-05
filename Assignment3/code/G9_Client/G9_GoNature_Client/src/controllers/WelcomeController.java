@@ -34,6 +34,11 @@ import javafx.stage.WindowEvent;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import orderData.Order;
 
+/*
+* Controller responsible for the welcome screen 
+* @author  Haim Azulay Rinat Stoudenets
+*/
+
 public class WelcomeController implements Initializable {
 	@FXML
 	private StackPane pnWelcomeStack;
@@ -59,6 +64,12 @@ public class WelcomeController implements Initializable {
 	public static void setIspending(boolean ispending) {
 		WelcomeController.ispending = ispending;
 	}
+	
+    /*
+	 * Moves the screen to the login window
+	 * @param ActionEvent
+	 */
+
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		// switch scene to login
@@ -68,6 +79,11 @@ public class WelcomeController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
+	 /*
+	  * Moves the screen to the Order window
+	  * @param ActionEvent
+	  */
+	
 	@FXML
 	void orderNow(ActionEvent event) throws IOException {
 		Pane pane = FXMLLoader.load(getClass().getResource("/gui/Order.fxml"));
@@ -75,6 +91,12 @@ public class WelcomeController implements Initializable {
 		pnWelcomeRight.getChildren().setAll(pane);
 	}
 
+
+	 /*
+	  * change the button "continue with order number" to a text field to insert a order number
+	  * @param ActionEvent
+	  */
+	
 	@FXML
 	void orderNumber(ActionEvent event) {
 		btnOrderNumber.setVisible(false);
@@ -82,15 +104,17 @@ public class WelcomeController implements Initializable {
 		txtOrderNum.setVisible(true);
 	}
 
+	
 	/*
-	 input : non 
-	 output : non 
-	 send to server : array list of object : [0]->string :checkValidOrderNum [1]->array list of string with order number
-	 returned from server : in case of success order object with order details , in case of failure - null
-	 check if order number inserted by user exist , and it arrival time didn't already pass
-	 present info alerts accordingly
-	 
-	 **/
+	 * check if order number inserted by user exist , and it arrival time didn't already pass
+	 * present info alerts accordingly
+	 * 
+	 * @param ActionEvent
+	 *                
+	 * @return in case of success order object with order details , in case of failure - null 
+	 * 
+	 */
+
 	@FXML
 	void go(ActionEvent event) throws IOException, ParseException {
 		String orderNum = txtOrderNum.getText().toString();
@@ -107,19 +131,7 @@ public class WelcomeController implements Initializable {
 			msg.add(data);
 			ClientUI.sentToChatClient(msg);
 			
-//			for (int i=0;i<5;i++) {
-//				try {
-//					TimeUnit.SECONDS.sleep(1);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-			//System.out.println("after2");
-			
-			
-			
-			
+
 			if (orderDetails == null) {
 				alert.setAlert("Failed, No such order.");
 				txtOrderNum.clear();
@@ -154,7 +166,11 @@ public class WelcomeController implements Initializable {
 	public static void setOrderDetails(Order orderDetails2) {
 		orderDetails = orderDetails2;
 	}
-
+	
+	/*
+	 *receive from the server order details
+	 */
+	
 	public static void recievedFromServerValidOrderAndPending(ArrayList<Object> orderDetails) {
 		if (orderDetails.get(1) instanceof Order) {
 			setOrderDetails((Order)orderDetails.get(1));
@@ -165,6 +181,12 @@ public class WelcomeController implements Initializable {
 		
 	}
 	
+	/*
+	 * 
+	 * Updates the user's login status if necessary by the server 
+	 * @param Stage            
+	 * 
+	 */
 
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
@@ -208,7 +230,14 @@ public class WelcomeController implements Initializable {
 		ClientUI.sentToChatClient(parkNamesArr);
 	}
 	
-	
+	/*
+	 * Checks whether the entry time of the order number you want to edit is relevant 
+	 * to the current time
+	 * 
+	 * @exception ParseException
+	 * 
+	 */
+
 	public boolean arrivalTimePassed() throws ParseException
 	{
 		LocalDate now = LocalDate.now();
