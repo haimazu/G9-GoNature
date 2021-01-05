@@ -31,23 +31,23 @@ public class UpdateVisitorsNumber {
 		EchoServer.sendToMyClient(answer, client);
 
 		//
-		///////////ROI//////////////////
-		//test this part to see if it works
+		/////////// ROI//////////////////
+		// test this part to see if it works
 		//
 		//
 		ArrayList<Object> answer2 = new ArrayList<Object>();
 		answer2.add("VisitorsUpdateSendToAll");
-		answer2.add(data.get(0));//parkname
-		answer2.add(data.get(1));//updatedVisitorsNumber
+		answer2.add(data.get(0));// parkname
+		answer2.add(data.get(1));// updatedVisitorsNumber
 		EchoServer.sendToAll(answer2);
 	}
 
 	// input: cell [0]: case name updateAccessControl
-	//        cell [1]: cell 0: orderNumber
-	//        			cell 1: timeEnter / timeExit
-	//        			cell 2: parkName
-	//        			cell 3: orderType
-	//                  cell 4: amountArrived
+	// cell [1]: cell 0: orderNumber
+	// cell 1: timeEnter / timeExit
+	// cell 2: parkName
+	// cell 3: orderType
+	// cell 4: amountArrived
 	// output: ArrayList<Object>=> cell[0] function name
 	// cell[1] T if update succeeded, F if not, Full if we can add more visitors
 	@SuppressWarnings("unchecked")
@@ -55,33 +55,33 @@ public class UpdateVisitorsNumber {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : updateAccessControl
-		answer.add(recived.get(0)); 
+		answer.add(recived.get(0));
 		// information depending on entry or exit status
-		ArrayList<String> data = (ArrayList<String>) recived.get(1);	
+		ArrayList<String> data = (ArrayList<String>) recived.get(1);
 		ArrayList<String> query = new ArrayList<String>();
-		
-		// enter mode: we need to insert all 
+
+		// enter mode: we need to insert all
 		if (!checkIfOrderNumberExists(data.get(0))) {
 			query.add("insert"); // command
 			query.add("enteryandexit"); // table name
-			query.add(data.get(0) + ", '" + data.get(1) + "', " + null + ", '" + 
-					  data.get(2) + "', '" + data.get(3) + "', " + data.get(4));
+			query.add(data.get(0) + ", '" + data.get(1) + "', " + null + ", '" + data.get(2) + "', '" + data.get(3)
+					+ "', " + data.get(4));
 
 			answer.add(MySQLConnection.insert(query));
 			EchoServer.sendToMyClient(answer, client);
 			return;
 		}
-		
+
 		query.add("update"); // command
 		query.add("enteryandexit"); // table name
-		query.add("timeExit = '" + data.get(1) + "'"); // columns to update	
+		query.add("timeExit = '" + data.get(1) + "'"); // columns to update
 		query.add("orderNumber"); // condition
 		query.add(data.get(0)); // orderNumber value
 
 		answer.add(MySQLConnection.update(query));
 		EchoServer.sendToMyClient(answer, client);
 	}
-	
+
 	// check if the order number exists in the table access control
 	// input: orderNumber
 	// output: T / F ==> if the order number exists
@@ -96,11 +96,11 @@ public class UpdateVisitorsNumber {
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty()) {
 			return false;
-		} 
-		
+		}
+
 		return true;
 	}
-	
+
 	// input: ArrayList<Object>,ConnectionToClient
 	// pulling details of a selected park from DB
 	// output: ArrayList<Object>=> cell[0] function name
@@ -133,7 +133,7 @@ public class UpdateVisitorsNumber {
 				answer.add("Entered");
 			} else {
 				answer.add("Leaved");
-			} 
+			}
 		}
 
 		EchoServer.sendToMyClient(answer, client);
@@ -177,8 +177,29 @@ public class UpdateVisitorsNumber {
 
 		EchoServer.sendToMyClient(answer, client);
 	}
+
 	
-	
-	
+	//nastya
+	public static void getParkNamesAndAmountVisitorsCurrentlyInThePark(ArrayList<Object> recived, ConnectionToClient client) {
+		// query
+		ArrayList<Object> answer = new ArrayList<Object>();
+		// the service name : getParkDetails
+		answer.add(recived.get(0));
+		// the data that sent from the client
+		// cell 1: parkName
+		ArrayList<String> data = (ArrayList<String>) recived.get(1);
+		int visitorsToAddorRemove = Integer.parseInt(data.get(1));
+
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("park"); // table name
+		query.add("parkName, currentVisitoreAmount"); // columns to select from
+		query.add(""); // condition
+		query.add("2"); // how many columns returned
+
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+		answer.add(queryData);
+		EchoServer.sendToMyClient(answer, client);
+	}
 
 }
