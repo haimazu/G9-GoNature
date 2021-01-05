@@ -42,6 +42,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import orderData.Order;
@@ -141,7 +142,8 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private JFXDatePicker txtDateTo;
-
+	@FXML
+	private AnchorPane lblCurrentVisitorsInthePark;
 	@FXML
 	private Button btnSetDisc;
 
@@ -151,7 +153,6 @@ public class ParkManagerController implements Initializable {
 	private Button btnSetMaxByOrder;
 	@FXML
 	private Label lblPresentDisc;
-
 	@FXML
 	private Label lblPresentMaxVis;
 
@@ -166,11 +167,11 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private Button btnSetDisc1;
-    @FXML
-    private Label lblVisitorsnumber;
+	@FXML
+	private Label lblVisitorsnumber;
 
-    @FXML
-    private Label lblCurrentVisitors;
+	@FXML
+	private Label lblCurrentVisitors;
 
 	/* ------for visitors chart----- */
 	@FXML
@@ -210,25 +211,25 @@ public class ParkManagerController implements Initializable {
 	private Button showUsage;
 	private static ArrayList<ArrayList<String>> usageReport = new ArrayList<>();
 
-/*-----------for Revenue chart----------*/
-	
-    @FXML
-    private BarChart<?, ?> bcRevenue;
+	/*-----------for Revenue chart----------*/
 
-    @FXML
-    private CategoryAxis xAxisR;
+	@FXML
+	private BarChart<?, ?> bcRevenue;
 
-    @FXML
-    private NumberAxis yAxisR;
-    
-    @FXML
-    private Button btnShowReuvenue;
-    
-    @FXML
-    private JFXDatePicker dpFromR;
+	@FXML
+	private CategoryAxis xAxisR;
 
-    @FXML
-    private JFXDatePicker dpToR;
+	@FXML
+	private NumberAxis yAxisR;
+
+	@FXML
+	private Button btnShowReuvenue;
+
+	@FXML
+	private JFXDatePicker dpFromR;
+
+	@FXML
+	private JFXDatePicker dpToR;
 	/*-------------------------*/
 
 	public static ArrayList<ArrayList<String>> getUsageReport() {
@@ -242,10 +243,20 @@ public class ParkManagerController implements Initializable {
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
+	private static String currentVisitors;
+
 	private static AlertController alert = new AlertController();
 	private static boolean requestAnswerFromServer;
 	private static int empID = 0;
 	private static Park park;
+
+	public static String getCurrentVisitors() {
+		return currentVisitors;
+	}
+
+	public static void setCurrentVsitors(String curr) {
+		ParkManagerController.currentVisitors = curr;
+	}
 
 	public static ArrayList<ArrayList<String>> getVisitorsReport() {
 		return visitorsReport;
@@ -324,19 +335,21 @@ public class ParkManagerController implements Initializable {
 		button1.setStyle("-fx-background-color: transparent;");
 		button2.setStyle("-fx-background-color: transparent;");
 	}
-	
-	public void setCurrentVisitors(String visitNum) {
+
+	public void setUpdatedCurrentVisitors(String visitNum) {
 		lblCurrentVisitors.setText(visitNum);
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setPMC(this);
+
 		setParkName(LoginController.getParkName());
 		RequestForParkDetails();
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 		lblParkName.setText(getParkName());
+		lblCurrentVisitors.setText(String.valueOf(park.getCurrentAmount()));
 
 		setDatePickerInitialValues();
 		RequestForEmployeeID();
@@ -371,7 +384,7 @@ public class ParkManagerController implements Initializable {
 		dpToU.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpToU.setValue(newValue);
 		});
-		
+
 		/*** revenue reports ***/
 		dpFromR.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
@@ -386,7 +399,7 @@ public class ParkManagerController implements Initializable {
 		dpToR.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpToR.setValue(newValue);
 		});
-		
+
 	}
 
 	// dates method
@@ -926,7 +939,7 @@ public class ParkManagerController implements Initializable {
 		bcUsageChart.setAnimated(false);
 		bcUsageChart.setBarGap(1d);
 		bcUsageChart.setCategoryGap(8.0);
-		
+
 		bcUsageChart.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
 		bcUsageChart.setPrefSize(613, 430);
 		bcUsageChart.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
@@ -937,7 +950,7 @@ public class ParkManagerController implements Initializable {
 		String someDate;
 		ArrayList<String> firstArrDate;
 		String firstDate;
-		LocalDate checkDate =LocalDate.now();
+		LocalDate checkDate = LocalDate.now();
 		// for - that check every date if exist in usageReport and if it does it willl
 		// put in on the chart and then will remove it from the usageReport;
 		for (LocalDate date = dpFromU.getValue(); date
