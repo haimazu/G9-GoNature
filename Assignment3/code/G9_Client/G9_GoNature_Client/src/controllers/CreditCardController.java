@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
@@ -22,6 +24,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -29,6 +32,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import orderData.Order;
+
+/**
+* 
+*
+* @author Bar Katz
+*/
 
 public class CreditCardController implements Initializable {
 
@@ -57,15 +66,17 @@ public class CreditCardController implements Initializable {
 
 	private static CreditCard details;
 
-	private Order myOrder = OrderController.getOrderSuccess();
-
-	private static Boolean paymentStatus = false;
-
 	private AlertController alert = new AlertController();
+	
+	/**
+	 * Saves the user's credit card information
+	 * @param ActionEvent
+	 * @exception IOException
+	 * 
+	 */
 
 	@FXML
 	void save(ActionEvent event) throws IOException {
-		ArrayList<Object> msgEditPaymentForServer = new ArrayList<>();
 		if (checkNotEmptyCardFields() && chechCorrectfeilds()) {
 			dateCC = cbxExpiryMonth.getValue().toString() + "/" + cbxExpiryYear.getValue().toString();
 
@@ -80,31 +91,13 @@ public class CreditCardController implements Initializable {
 						Integer.parseInt(txtCVV.getText()), 0);
 
 			}
-//			msgEditPaymentForServer.add("orderPaymentMathod");
-//			msgEditPaymentForServer.add(details);
 
-//			ClientUI.sentToChatClient(msgEditPaymentForServer);
-
-//			if (this.getPaymentStatus()) {
 			Stage stage = (Stage) btnSave.getScene().getWindow();
 			 stage.close();
-
-//			}
 
 		}
 	}
 
-//	public static void recivedFromServerSuccessPayment(boolean status) {
-//		setPaymentStatus(status);
-//	}
-//
-//	public static boolean getPaymentStatus() {
-//		return paymentStatus;
-//	}
-//
-//	public static void setPaymentStatus(boolean paymentStatus) {
-//		CreditCardController.paymentStatus = paymentStatus;
-//	}
 
 	public static CreditCard getDetails() {
 		return details;
@@ -114,18 +107,26 @@ public class CreditCardController implements Initializable {
 		CreditCardController.details = details;
 	}
 
+	/**
+	 * patterns:
+	 */
+	
 	public static final Pattern VALIDCVV = Pattern.compile("^[0-9]{3}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDCardNumber = Pattern.compile("^[0-9]{16}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDName = Pattern.compile("^[A-Za-z]{1,10}+ [A-Za-z]{1,10}$",
 			Pattern.CASE_INSENSITIVE);
 
+	/**
+	 * Checks that all fields of credit card details are not empty         
+	 * @return true if not empty, else false
+	 */
+
 	public boolean checkNotEmptyCardFields() {
 		String CardNum = txtCardNumber.getText();
 		String CVC = txtCVV.getText();
 		String CardName = txtHolderName.getText();
-//		String mount = cbxExpiryMonth.getValue().toString();
-//		String year = cbxExpiryYear.getValue().toString();
-		if (CardName.isEmpty() || CVC.isEmpty() || CardName.isEmpty()) {
+
+		if (CardNum.isEmpty() || CVC.isEmpty() || CardName.isEmpty()) {
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 			return false;
 		}
@@ -133,7 +134,13 @@ public class CreditCardController implements Initializable {
 		return true;
 	}
 
-	// check valid input
+	/**
+	 * checks valid input for each nameMathod according to relevant the pattern
+	 * @param String nameMathod and txt
+	 * @param txt
+	 * @return true if the pattern are correct ,false otherwise
+	 */
+	
 	public static boolean validInput(String nameMathod, String txt) {
 		Matcher matcher = null;
 		if (nameMathod.equals("CardNumber")) {
@@ -145,6 +152,11 @@ public class CreditCardController implements Initializable {
 		}
 		return matcher.find();
 	}
+	
+	/**
+	 * checks valid input for each fields according to relevant the pattern, if false return alert message
+	 * @return true if input is correct ,false otherwise
+	 */
 
 	public boolean chechCorrectfeilds() {
 		if (!validInput("CardNumber", txtCardNumber.getText())) {
@@ -160,6 +172,9 @@ public class CreditCardController implements Initializable {
 		return true;
 	}
 
+	/**
+	 * Initialize all the fields 
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ArrayList<String> mounthArr = new ArrayList<>();
