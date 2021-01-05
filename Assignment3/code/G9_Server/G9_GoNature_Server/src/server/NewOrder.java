@@ -21,10 +21,10 @@ public class NewOrder {
 	/**
 	 * inserting a new reservation in order table in DB
 	 * 
-	 * @param ArrayList<Object>: cell[0] function name // cell[1] order object
+	 * @param ArrayList<Object>: cell[0] function name, cell[1] order object
 	 *                           ,ConnectionToClient
 	 * 
-	 * @return ArrayList<Object>=> cell[0] function name // cell[1] Order object
+	 * @return none. sends to client :ArrayList<Object>=> cell[0] function name, cell[1] Order object
 	 *         with updated cells: price ,totalPrice
 	 * 
 	 **/
@@ -46,7 +46,6 @@ public class NewOrder {
 			System.out.println("check1");
 			data = totalPrice(data, memb, data.isOccasional());// updating the prices in the order
 			System.out.println(data);
-			///// Roi//////
 			data.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
 			System.out.println(data);
 			System.out.println("check2");
@@ -68,12 +67,18 @@ public class NewOrder {
 	 **/
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		System.out.println("queInsert start");
-		if (recived.get(2) != null)
-			creditCardSave((CreditCard) recived.get(2));
+
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		Order order = (Order) recived.get(1); // data object received
+		Order order = (Order) recived.get(1); 
 		answer.add(insertNewOrder(order));
+		
+		if (recived.get(2) != null) {
+			CreditCard cc=(CreditCard) recived.get(2);
+			cc.setOrderNumber(order.getOrderNumber());
+			creditCardSave(cc);
+		}
+
 		EchoServer.sendToMyClient(answer, client);
 		String subject = "GoNature Order Confirmation";
 		String messege = "order completed sucssesfuly!\n "
@@ -81,6 +86,21 @@ public class NewOrder {
 				+ "\ndont worry, we will send you a reminder!" + "\nwe hope to see you soon!\n\n\n"
 				+ order.messegeString();
 		Comunication.sendNotification(subject, messege, order);
+	}
+	
+	/**
+	 * sending to DB: new order to list in
+	 * 
+	 * @param Order Object to insert into the DB
+	 * @return true if successful false if not
+	 **/
+
+	public static boolean insertNewOrder(Order order) {
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("insert"); // command
+		query.add("orders"); // table name
+		query.add(order.toStringForDB()); // values in query format
+		return MySQLConnection.insert(query);
 	}
 
 	/**
@@ -335,8 +355,7 @@ public class NewOrder {
 	}
 
 	////// ************credit card****************************************
-	
-	
+
 	/**
 	 * inserts a new credit card in DB
 	 * 
@@ -350,13 +369,13 @@ public class NewOrder {
 		query.add("creditcard"); // table name
 		query.add(toStringForCreditCardSave(cc)); // values in query format
 
-		return MySQLConnection.insert(query); // returns T\F
+		return MySQLConnection.insert(query);
 	}
 
 	/**
 	 * toString in use for CreditCardSave query
 	 * 
-	 * @param CreditCard
+	 * @param CreditCard , order number
 	 * @return String
 	 **/
 	public static String toStringForCreditCardSave(CreditCard data) {
@@ -364,21 +383,6 @@ public class NewOrder {
 				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
 	}
 
-	
-	/**
-	 * sending to DB: new order to list in
-	 * 
-	 * @param  Order Object to insert into the DB
-	 * @return true if successful false if not
-	 * @exception 
-	 **/
 
-	public static boolean insertNewOrder(Order order) {
-		ArrayList<String> query = new ArrayList<String>();
-		query.add("insert"); // command
-		query.add("orders"); // table name
-		query.add(order.toStringForDB()); // values in query format
-		return MySQLConnection.insert(query);
-	}
 
 }

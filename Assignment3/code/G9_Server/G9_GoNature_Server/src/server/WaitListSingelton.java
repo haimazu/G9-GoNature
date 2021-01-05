@@ -9,6 +9,12 @@ import dataLayer.Messege;
 import dataLayer.SmsMessege;
 import orderData.Order;
 
+/**
+ * The WaitListSingelton program serves the WaitList program
+ *
+ * @author Roi Amar
+ */
+
 public class WaitListSingelton {
 
 	// singleton WaitListSingelton
@@ -18,8 +24,8 @@ public class WaitListSingelton {
 	private static Date LastMorningCheck;
 	private static boolean nightCheck;
 	private static boolean morningCheck;
-	
-	//SingletonBuilder
+
+	// SingletonBuilder
 	private WaitListSingelton() {
 		timeLastChecked = new Date();
 		LastNightlyCheck = new Date();
@@ -29,7 +35,7 @@ public class WaitListSingelton {
 		// on start up do this
 	}
 
-	//Singleton, create one instance only
+	// Singleton, create one instance only
 	public static WaitListSingelton getWaitlist() {
 		if (obj == null) {
 			if (obj == null) {
@@ -39,9 +45,14 @@ public class WaitListSingelton {
 		return obj;
 	}
 
-	//input: order that is pulled from the waitlist
-	//output: none
-	//send to client: SMS and Mail notification
+
+	/**
+	 * function that sends notifications to the client (SMS and Mail notification)
+	 * 
+	 * @param Order object that is pulled from the waitlist
+	 * @return none
+	 */
+
 	public static void sendWaitlistNotification(Order order) {
 		String subject = "GoNature Waitlist Notification";
 		String body = "Not long ago you were registerd to our waitlist"
@@ -54,10 +65,16 @@ public class WaitListSingelton {
 		Comunication.sendNotification(subject, body, order);
 		// send mail and sms notification
 	}
-	
-	//input: order that is pulled from the waitlist
-	//output: none
-	//send to client: SMS and Mail notification
+
+	// input: order that is pulled from the waitlist
+	// output: none
+	// send to client: SMS and Mail notification
+	/**
+	 * 
+	 * 
+	 * @param  
+	 * @return 
+	 */
 	public static void send24HoursNotification(Order order) {
 		String subject = "GoNature 24 Hours Reminder Notification";
 		String body = "Not long ago you have registerd an order with our system"
@@ -70,26 +87,29 @@ public class WaitListSingelton {
 		Comunication.sendNotification(subject, body, order);
 		// send mail and sms notification
 	}
-	
-	
-	//input: none
-	//output: none
-	//DB: 	delete (if found) expired orders listed in pending (more than 1 hour)
-	//		delete (if found) expired orders listed in waitlist (more than 24 hours)
-	//NOTE: the timeLastChecked mechanizem make sure that this function run not more than once per minute (to not overload the server and DB each time)
-	//		the LastDailyCheck mechanizem make sure that the function of deleting from the waitlist will not run more than once per day
-	//		the LastNightCheck mechanizem make sure that the function of sending tomorrow notifications will not run more than once per day
+
+	// input: none
+	// output: none
+	// DB: delete (if found) expired orders listed in pending (more than 1 hour)
+	// delete (if found) expired orders listed in waitlist (more than 24 hours)
+	// NOTE: the timeLastChecked mechanizem make sure that this function run not
+	// more than once per minute (to not overload the server and DB each time)
+	// the LastDailyCheck mechanizem make sure that the function of deleting from
+	// the waitlist will not run more than once per day
+	// the LastNightCheck mechanizem make sure that the function of sending tomorrow
+	// notifications will not run more than once per day
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
-		Date LastPlusMinute = new Date(timeLastChecked.getTime()+60*1000);
-		if ((LastPlusMinute.compareTo(timeNow)<=0) || nightCheck || morningCheck){
-			ArrayList<ArrayList<String>> expired = selectExpiredPending(); //select all expired in pending
-			if (!expired.isEmpty()) { //if not empty
-				for (ArrayList<String> row : expired) { //for each expired order
+		Date LastPlusMinute = new Date(timeLastChecked.getTime() + 60 * 1000);
+		if ((LastPlusMinute.compareTo(timeNow) <= 0) || nightCheck || morningCheck) {
+			ArrayList<ArrayList<String>> expired = selectExpiredPending(); // select all expired in pending
+			if (!expired.isEmpty()) { // if not empty
+				for (ArrayList<String> row : expired) { // for each expired order
 					ArrayList<Object> stubForFetchOrder = new ArrayList<Object>();
 					stubForFetchOrder.add("orderByID");
 					stubForFetchOrder.add(row);
-					Order exp = new Order((ExistingOrderCheck.fechOrder(stubForFetchOrder,"orders","orderNumber")).get(0));
+					Order exp = new Order(
+							(ExistingOrderCheck.fechOrder(stubForFetchOrder, "orders", "orderNumber")).get(0));
 					CancelOrder.deleteOrder(exp.getOrderNumber());
 					ArrayList<Object> stubForpullFromWaitList = new ArrayList<Object>();
 					stubForpullFromWaitList.add("waitlist");
@@ -102,39 +122,41 @@ public class WaitListSingelton {
 				query.add("timeLimit <= NOW()");
 				MySQLConnection.deleteCond(query);
 			}
-			
-			//send were sorry mail
-			timeLastChecked= new Date();
-		} //if last check was less than minute ago dont check
-		Date LastPlusDay = new Date(LastNightlyCheck.getTime()+24*60*60*1000);
-		if (LastPlusDay.compareTo(timeNow)<=0 || ((Calendar.HOUR_OF_DAY>22) && !isSameDay(LastNightlyCheck,timeNow))) {
-			nightCheck=true;
+
+			// send were sorry mail
+			timeLastChecked = new Date();
+		} // if last check was less than minute ago dont check
+		Date LastPlusDay = new Date(LastNightlyCheck.getTime() + 24 * 60 * 60 * 1000);
+		if (LastPlusDay.compareTo(timeNow) <= 0
+				|| ((Calendar.HOUR_OF_DAY > 22) && !isSameDay(LastNightlyCheck, timeNow))) {
+			nightCheck = true;
 		}
-		if (nightCheck) { //TODO: think if we want to send a messege to the deleted or not.
+		if (nightCheck) { // TODO: think if we want to send a messege to the deleted or not.
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("deleteOver24");
 			query.add("waitinglist");
 			query.add("arrivedTime <= DATE_SUB(NOW(), INTERVAL 1 DAY)");
 			MySQLConnection.deleteCond(query);
-			//delete wait list of today
-			nightCheck=false;
-			LastNightlyCheck= new Date();
+			// delete wait list of today
+			nightCheck = false;
+			LastNightlyCheck = new Date();
 		}
-		LastPlusDay = new Date(LastMorningCheck.getTime()+24*60*60*1000);
-		if (LastPlusDay.compareTo(timeNow)<=0 || ((Calendar.HOUR_OF_DAY>8) && (Calendar.HOUR_OF_DAY<10) && !isSameDay(LastMorningCheck,timeNow))) {
-			morningCheck=true;
+		LastPlusDay = new Date(LastMorningCheck.getTime() + 24 * 60 * 60 * 1000);
+		if (LastPlusDay.compareTo(timeNow) <= 0 || ((Calendar.HOUR_OF_DAY > 8) && (Calendar.HOUR_OF_DAY < 10)
+				&& !isSameDay(LastMorningCheck, timeNow))) {
+			morningCheck = true;
 		}
-		if (morningCheck) { //TODO: think if we want to send a messege to the deleted or not.
+		if (morningCheck) { // TODO: think if we want to send a messege to the deleted or not.
 			notificationsForTommorowTravelers();
-			morningCheck=false;
-			LastMorningCheck= new Date();
+			morningCheck = false;
+			LastMorningCheck = new Date();
 		}
 	}
-	
-	//input: NONE
-	//output: NONE
-	//DB: select all orders that are due tommorow
-	//NOTE: send notifications to all orders that are due tommorow
+
+	// input: NONE
+	// output: NONE
+	// DB: select all orders that are due tommorow
+	// NOTE: send notifications to all orders that are due tommorow
 	private static void notificationsForTommorowTravelers() {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -147,30 +169,30 @@ public class WaitListSingelton {
 			return;
 		else {
 			for (ArrayList<String> row : queryData) {
-				Order order =  new Order(row);
-				if (!ExistingOrderCheck.checkIfPending(""+order.getOrderNumber()))
+				Order order = new Order(row);
+				if (!ExistingOrderCheck.checkIfPending("" + order.getOrderNumber()))
 					send24HoursNotification(order);
 			}
 		}
 	}
-	
-	//input: two dates
-	//output: true if the two dates are on the same day, false if not
+
+	// input: two dates
+	// output: true if the two dates are on the same day, false if not
 	private static boolean isSameDay(Date date1, Date date2) {
-	    Calendar calendar1 = Calendar.getInstance();
-	    calendar1.setTime(date1);
-	    Calendar calendar2 = Calendar.getInstance();
-	    calendar2.setTime(date2);
-	    return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)
-	      && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
-	      && calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
+		Calendar calendar1 = Calendar.getInstance();
+		calendar1.setTime(date1);
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(date2);
+		return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)
+				&& calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
+				&& calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
 	}
-	
-	//input: order calss of order to check
-	//output: true if limit has passed false if not
-	private static boolean limitReach(Order order) {		  
+
+	// input: order calss of order to check
+	// output: true if limit has passed false if not
+	private static boolean limitReach(Order order) {
 		Date now = (Date) new Date();
-		Date limit = new Date (selectDateForPending(order).getTime());
+		Date limit = new Date(selectDateForPending(order).getTime());
 		//
 		//
 		int test3 = limit.compareTo(now);
@@ -178,13 +200,14 @@ public class WaitListSingelton {
 		boolean test2 = limit.equals(null);
 		//
 		//
-		if(limit.equals(null) || limit.compareTo(now) <= 0) //to<from: to.compareTo(from)<0
+		if (limit.equals(null) || limit.compareTo(now) <= 0) // to<from: to.compareTo(from)<0
 			return false;
 		return true;
 	}
-	
-	//input: Order class that wants to confirm arrivel
-	//output: true if time replayed has not reached the limit false if limit has reached
+
+	// input: Order class that wants to confirm arrivel
+	// output: true if time replayed has not reached the limit false if limit has
+	// reached
 	public static boolean orderConfirm(Order order) {
 		if (limitReach(order)) {
 			removePending(order);
@@ -192,8 +215,6 @@ public class WaitListSingelton {
 		}
 		return false;
 	}
-	
-	
 
 	// input: order class of the order to cancel
 	// output: true if found the order on the waitlist and removed it, false if not.
@@ -209,7 +230,7 @@ public class WaitListSingelton {
 			return false; // error in delete
 		return true;
 	}
-	
+
 	// input: Order to delete from the DB
 	// output: true if found the order on the waitlist and removed it, false if not.
 	// send to DB: order to remove from pending
@@ -224,53 +245,57 @@ public class WaitListSingelton {
 			return false; // error in delete
 		return true;
 	}
-	
-	//input: Order to insert into the DB
-	//output: true if sussesful false if not
-	//send to DB: new order to list in pending
+
+	// input: Order to insert into the DB
+	// output: true if sussesful false if not
+	// send to DB: new order to list in pending
 	private static boolean insertPending(EmailMessege messege) {
-	String orderNum = String.valueOf(messege.getOrder().getOrderNumber());
-	if (ExistingOrderCheck.checkIfPending(orderNum)) {
-		return true; //already exist in the DB - avoid duplicates - for safety only 
+		String orderNum = String.valueOf(messege.getOrder().getOrderNumber());
+		if (ExistingOrderCheck.checkIfPending(orderNum)) {
+			return true; // already exist in the DB - avoid duplicates - for safety only
+		}
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("insert"); // command
+		query.add("pendingwaitlist"); // table name
+		if (messege.getSubject().contains("GoNature 24 Hours Reminder Notification"))
+			query.add("'" + messege.getOrder().getOrderNumber() + "','" + messege.getLimitFor24() + "'"); // values in
+																											// query
+																											// format
+		else if (messege.getSubject().contains("GoNature Waitlist Notification"))
+			query.add("'" + messege.getOrder().getOrderNumber() + "','" + messege.getLimitFor24() + "'"); // values in
+																											// query
+																											// format
+		else
+			return false;
+		return MySQLConnection.insert(query);
 	}
-	ArrayList<String> query = new ArrayList<String>();
-	query.add("insert"); // command
-	query.add("pendingwaitlist"); // table name
-	if(messege.getSubject().contains("GoNature 24 Hours Reminder Notification"))
-		query.add("'"+messege.getOrder().getOrderNumber()+"','"+messege.getLimitFor24()+"'"); // values in query format
-	else if(messege.getSubject().contains("GoNature Waitlist Notification"))
-		query.add("'"+messege.getOrder().getOrderNumber()+"','"+messege.getLimitFor24()+"'"); // values in query format
-	else
-		return false;
-	return MySQLConnection.insert(query);
-	}
-	
-	
-	//input: Order to insert into the DB
-	//output: Array list of array list of strings that contains the expired entrys in pending
+
+	// input: Order to insert into the DB
+	// output: Array list of array list of strings that contains the expired entrys
+	// in pending
 	private static ArrayList<ArrayList<String>> selectExpiredPending() {
-	ArrayList<String> query = new ArrayList<String>();
-	query.add("select"); // command
-	query.add("pendingwaitlist"); // table name
-	query.add("orderNumber"); // col name
-	query.add("WHERE timeLimit<NOW()"); // condition
-	query.add("1"); // col num
-	return MySQLConnection.select(query);
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("pendingwaitlist"); // table name
+		query.add("orderNumber"); // col name
+		query.add("WHERE timeLimit<NOW()"); // condition
+		query.add("1"); // col num
+		return MySQLConnection.select(query);
 	}
-	
-	//input:Order to get time limit for
-	//output:the time limit of the order if found, if not than null
+
+	// input:Order to get time limit for
+	// output:the time limit of the order if found, if not than null
 	private static Date selectDateForPending(Order order) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("pendingwaitlist"); // table name
 		query.add("timeLimit"); // col name
-		query.add("WHERE orderNumber='"+ order.getOrderNumber() +"'"); // condition
+		query.add("WHERE orderNumber='" + order.getOrderNumber() + "'"); // condition
 		query.add("1"); // col num
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty())
 			return null;
-		return java.sql.Timestamp.valueOf(queryData.get(0).get(0)); ////////////check this closely
+		return java.sql.Timestamp.valueOf(queryData.get(0).get(0)); //////////// check this closely
 	}
 
 }
