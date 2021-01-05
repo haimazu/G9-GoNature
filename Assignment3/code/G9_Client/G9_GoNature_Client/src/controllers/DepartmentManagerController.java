@@ -92,17 +92,15 @@ public class DepartmentManagerController implements Initializable {
 	private TableColumn<TableViewSet, String> requestDetails;
 	@FXML
 	private TableColumn<TableViewSet, String> mark;
-	
 
-    
-    @FXML
-    private TableView<TableCurrentVisitors> TVisitors;
+	@FXML
+	private TableView<TableCurrentVisitors> TVisitors;
 
-    @FXML
-    private TableColumn<TableCurrentVisitors, String> visitorColumn;
+	@FXML
+	private TableColumn<TableCurrentVisitors, String> visitorColumn;
 
-    @FXML
-    private TableColumn <TableCurrentVisitors, String> amountColumn;
+	@FXML
+	private TableColumn<TableCurrentVisitors, String> amountColumn;
 
 	@FXML
 	private Label LabelCount;
@@ -149,8 +147,6 @@ public class DepartmentManagerController implements Initializable {
 	private static String firstName;
 	private AlertController alert = new AlertController();
 	private static ArrayList<ArrayList<String>> parkDetails;
-
-
 
 	/***** Dashboard Variables *****/
 	private ArrayList<Object> data = new ArrayList<>();
@@ -991,47 +987,48 @@ public class DepartmentManagerController implements Initializable {
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("PendingManagerRequests");
 		ClientUI.sentToChatClient(msg);
-
 		count = DBList.size();
 		LabelCount.setText(String.valueOf(count));
 		addData(DBList);
 	}
-	
+
 	public void iniailTabelVisitors() {
 		TVisitors.setEditable(true);
 		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("ParkNameVis"));
 		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("CurrentAmount"));
-		
-		ArrayList<Object> answer =new ArrayList<>();
+
+		ArrayList<Object> answer = new ArrayList<>();
 		answer.add("parkDateilsForDepartment");
 		ClientUI.sentToChatClient(answer);
-		
+
 		ObservableList<TableCurrentVisitors> listForTable = FXCollections.observableArrayList();
 
 		for (ArrayList<String> arrayList : parkDetails) {
-			TableCurrentVisitors TVV = new TableCurrentVisitors(arrayList.get(0),arrayList.get(1) + " / " + arrayList.get(2));
+			TableCurrentVisitors TVV = new TableCurrentVisitors(arrayList.get(0),
+					arrayList.get(1) + " / " + arrayList.get(2));
 			TVV.setMaxVisitors(arrayList.get(2));
 			listForTable.add(TVV);
 		}
 
 		TVisitors.setItems(listForTable);
-			
+
 	}
 
 	public void setCurrentVisitors(ArrayList<Object> arr) {
 		System.out.println("from server" + arr.get(2));
 		for (int i = 0; i < TVisitors.getItems().size(); i++) {
-			if (TVisitors.getItems().get(i).getParkNameVis().equals((String)arr.get(1))) {
+			if (TVisitors.getItems().get(i).getParkNameVis().equals((String) arr.get(1))) {
 				TVisitors.edit(i, amountColumn);
-				TVisitors.getItems().get(i).setCurrentAmount((String) arr.get(2)+ " / " + TVisitors.getItems().get(i).getMaxVisitors());
+				TVisitors.getItems().get(i)
+						.setCurrentAmount((String) arr.get(2) + " / " + TVisitors.getItems().get(i).getMaxVisitors());
 			}
 		}
 	}
-	
+
 	public static void setParkDetails(ArrayList<ArrayList<String>> Parks) {
-		DepartmentManagerController.parkDetails=Parks;
+		DepartmentManagerController.parkDetails = Parks;
 	}
-	
+
 	public static ArrayList<ArrayList<String>> getParkDetails() {
 		return parkDetails;
 	}
@@ -1039,28 +1036,20 @@ public class DepartmentManagerController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		
+
 		Context.getInstance().setDMC(this);
-		
+
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
-		
 
 		iniailTabelVisitors();
-		
-		
 
 		iniailTabelPending();
-
+		
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));
 		mark.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("MarkCh"));
-
-//		parkName.setStyle( "-fx-alignment: CENTER;");
-//		requestType.setStyle( "-fx-alignment: CENTER;");
-//		requestDetails.setStyle( "-fx-alignment: CENTER;");
-//		mark.setStyle( "-fx-alignment: CENTER;");
 
 		/***** Visitors Reports *****/
 		dpVisitorsFrom.setValue(LocalDate.now().withDayOfMonth(1));

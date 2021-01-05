@@ -18,6 +18,7 @@ import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
@@ -224,13 +225,11 @@ public class ParkManagerController implements Initializable {
 	private NumberAxis yAxisR;
 
 	@FXML
+	private JFXComboBox<String> cbxMounth;
+
+	@FXML
 	private Button btnShowReuvenue;
 
-	@FXML
-	private JFXDatePicker dpFromR;
-
-	@FXML
-	private JFXDatePicker dpToR;
 	/*-------------------------*/
 
 	public static ArrayList<ArrayList<String>> getUsageReport() {
@@ -338,12 +337,13 @@ public class ParkManagerController implements Initializable {
 	}
 
 	public void setUpdatedCurrentVisitors(String visitNum) {
-		//lblCurrentVisitors.setText(visitNum);
+		// lblCurrentVisitors.setText(visitNum);
 		Platform.runLater(new Runnable() {
-            @Override public void run() {
-            	lblCurrentVisitors.setText(visitNum);
-            }
-        });
+			@Override
+			public void run() {
+				lblCurrentVisitors.setText(visitNum);
+			}
+		});
 	}
 
 	@Override
@@ -391,20 +391,15 @@ public class ParkManagerController implements Initializable {
 			dpToU.setValue(newValue);
 		});
 
-		/*** revenue reports ***/
-		dpFromR.setValue(LocalDate.now().withDayOfMonth(1));
-		// listener for updating the date
-		dpFromR.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpFromR.setValue(newValue);
-		});
-
-		// plusMonths(1) to get the next month
-		// withDayOfMonth(1) to get the first day
-		dpToR.setValue(dpFromR.getValue().plusMonths(1).withDayOfMonth(1));
-		// listener for updating the date
-		dpToR.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpToR.setValue(newValue);
-		});
+		/***** Revenue report *********/
+		//the park meneger can get reports just one year back 
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		ArrayList<String> months = new ArrayList<>();
+		for(int i=1; i<=12;i++ ) {
+			months.add(i+"/"+year);
+		}
+		
+		cbxMounth.setItems(FXCollections.observableArrayList(months));
 
 	}
 
