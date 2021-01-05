@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import gui.ServerController;
 
+/**
+* The ServerUI program starts the server and shows its status
+*
+* @author Roi Amar  
+*/
+
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
 	private static boolean DBup = false;
