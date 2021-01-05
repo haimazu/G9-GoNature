@@ -544,6 +544,10 @@ public class ParkEmployeeController implements Initializable {
 				currentValue = memberId;
 			} else {
 				id = txtIdOrMemberId.getText();
+				if (id.length() != 9) {
+					alert.failedAlert("Failed", "Invalid ID.");
+					return false;
+				}
 				currentValue = id;
 			}
 			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));
@@ -551,9 +555,8 @@ public class ParkEmployeeController implements Initializable {
 			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));
 		}
 
-		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(currentValue)));
-
-		if (getError().equals("No such order")) {
+		// order number doesn't exists
+		if (getError().equals("Failed")) {
 			return false;
 		}
 		return true;

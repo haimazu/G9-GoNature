@@ -77,8 +77,9 @@ public class LoginController implements Initializable {
 	 * success (the user exists) -> we getting the role of the user else (the user
 	 * doesn't exists) -> getting "Failed" 
 	 * @param ActionEvent event
+	 * @exception IOException
 	 * 
-	 **/
+	 */
 	
 	@FXML
 	void login(ActionEvent event) throws IOException {
@@ -116,7 +117,7 @@ public class LoginController implements Initializable {
 	/**
 	 * Check Username input before sending to DB     
 	 * @return  true if the input is correct false otherwise
-	 **/
+	 */
 	
 	public boolean checkUsername() {
 		String username = txtUsername.getText();
@@ -137,7 +138,7 @@ public class LoginController implements Initializable {
 	/**
 	 * Check password input before sending to DB     
 	 * @return  true if the input is correct false otherwise
-	 **/
+	 */
 	
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
@@ -157,7 +158,7 @@ public class LoginController implements Initializable {
 	 *  sends the case we dealing with and dbColumns to the server to get data
 	 *  
 	 * @param cells, depending on the case           
-	 **/
+	 */
 
 	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
 		// Query
@@ -175,7 +176,7 @@ public class LoginController implements Initializable {
 	 * @return cell 0: the 'role' of the user
 	 *	       cell 1: the first name of the user
 	 *		   cell 2: name of the park where the employee works
-	 **/
+	 */
 
 	@SuppressWarnings("unchecked")
 	public static void receivedFromServerUserStatus(Object msgReceived) {
@@ -196,7 +197,7 @@ public class LoginController implements Initializable {
 	 * @return T / F, 
 	 *	       T ==> Update logged in status success
 	 *		   F ==> Update logged in status failed
-	 **/
+	 */
 	
 	public static void receivedFromServerLoggedInStatus(boolean msgReceived) {
 		if (msgReceived) {
@@ -262,7 +263,7 @@ public class LoginController implements Initializable {
 
 	/**
 	 * Initializing and force each of the fields according to the Required templates 
-	 **/
+	 */
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
