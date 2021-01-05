@@ -124,7 +124,7 @@ public class UpdateVisitorsNumber {
 		// the data that sent from the client
 		// cell 0: orderNumber
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
-		int orderNumber = Integer.parseInt(data.get(1));
+		int orderNumber = Integer.parseInt(data.get(0));
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -138,7 +138,7 @@ public class UpdateVisitorsNumber {
 		if (queryData.isEmpty()) {
 			answer.add("Didn't enter");
 		} else {
-			if (queryData.get(2) == null) {
+			if (queryData.get(0).get(2) == null) {
 				answer.add("Entered");
 			} else {
 				answer.add("Leaved");
