@@ -6,10 +6,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+*
+*controller that coordinator all the kinds of alert that we use in the project
+*
+* @author Bar Katz Haim Azulay Hodaya Mekonen
+*/
+
 public class AlertController {
 	private String result = "";
 	
-	// showing alert message
+	/**
+	 *  showing alert message       
+	 **/
 	public void setAlert(String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Failed");
@@ -18,7 +27,10 @@ public class AlertController {
 		alert.showAndWait();
 	}
 
-	// showing success alert message
+	/**
+	 *  showing success alert message   
+	 **/
+	
 	public void successAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle(title);
@@ -27,7 +39,10 @@ public class AlertController {
 		alert.showAndWait();
 	}
 
-	// showing failed alert message
+	/**
+	 *  showing failed alert message 
+	 **/
+	
 	public void failedAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(title);
@@ -36,7 +51,10 @@ public class AlertController {
 		alert.showAndWait();
 	}
 
-	// showing alert message
+	/**
+	 *   showing confirmation alert message
+	 **/
+	
 	public void ensureAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(title);

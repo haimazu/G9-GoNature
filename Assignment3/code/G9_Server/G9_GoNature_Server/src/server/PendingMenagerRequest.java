@@ -137,101 +137,110 @@ public class PendingMenagerRequest implements Serializable {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: ArrayList<Object>: cell[0] name
-	// cell[1] ManagerRequest object
-	// cell[2] yes/no
+	// input: ArrayList<Object>: 	cell[0] -> String removePendingsManagerReq
+	//								cell[1] -> ArrayList<ArrayList<Object>> ->
+	//										cell[0-n] -> ArrayList<Object> ->
+	//												 cell[0] ManagerRequest object
+	//												 cell[1] yes/no
 	//
 	// output: ArrayList<Object>: cell[0] T/F
 	//
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		ManagerRequest mr = (ManagerRequest) recived.get(1);
-		String yesno = (String) recived.get(2);
-
-		
-		// delete from pendingmanagerrequests
-		ArrayList<String> query = new ArrayList<String>();
-		query.add("deleteCond");
-		query.add("pendingmanagerrequests");
-		query.add("employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
-		
-		if (yesno.equals("no")) {
-			answer.add(MySQLConnection.deleteCond(query));
-			answer.add(true);
-			EchoServer.sendToMyClient(answer, client);
-			return;
-		}
-
-		else {
-			ArrayList<String> query1 = new ArrayList<String>();
-			query1.add("select"); // command
-			query1.add("pendingmanagerrequests"); // table name
-			query1.add("*"); // columns to select from
-			query1.add("WHERE employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
-			query1.add("8");
-			ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
-			mr = new ManagerRequest(queryData1.get(0));
-			answer.add(MySQLConnection.deleteCond(query));
-
-			if (mr.getRequestType().equals("discount")) {
-				String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
-						+ " OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to)";
-				System.out.println(dateCond);
-				// search if the dates already exist
-				ArrayList<String> query2 = new ArrayList<String>();
-				query2.add("select"); // command
-				query2.add("discounts"); // table name
-				query2.add("*"); // columns returned
-				query2.add("WHERE parkName ='" + mr.getParkName() + "' AND " + dateCond);
-				query2.add("5");
-				ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
-				if (!queryData2.isEmpty()) {
-					System.out.println("Already has discount on these dates!");
-					answer.add(false);
-					EchoServer.sendToMyClient(answer, client);
-					return;
-				} else {
-
-					ArrayList<String> query3 = new ArrayList<String>();
-					query3.add("insert"); // command
-					query3.add("discounts");
-					query3.add(toStringForDBDiscounts(mr));
-					answer.add(MySQLConnection.insert(query3));
-					EchoServer.sendToMyClient(answer, client);
-					return;
+		ArrayList<ArrayList<Object>> reqTable = (ArrayList<ArrayList<Object>>)recived.get(1);
+		for (ArrayList<Object> req : reqTable) {
+				
+			ManagerRequest mr = (ManagerRequest) recived.get(1);
+			String yesno = (String) recived.get(2);
+	
+			// delete from pendingmanagerrequests
+			ArrayList<String> query = new ArrayList<String>();
+			query.add("deleteCond");
+			query.add("pendingmanagerrequests");
+			query.add("employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
+			
+			if (yesno.equals("no")) {
+				answer.add(MySQLConnection.deleteCond(query));
+				answer.add(true);
+				EchoServer.sendToMyClient(answer, client);
+				return;
+			}
+	
+			else {
+				ArrayList<String> query1 = new ArrayList<String>();
+				query1.add("select"); // command
+				query1.add("pendingmanagerrequests"); // table name
+				query1.add("*"); // columns to select from
+				query1.add("WHERE employeeID ='" + mr.getEmployeeID() + "' AND requesttype='" + mr.getRequestType() + "'");
+				query1.add("8");
+				ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
+				mr = new ManagerRequest(queryData1.get(0));
+				answer.add(MySQLConnection.deleteCond(query));
+	
+				if (mr.getRequestType().equals("discount")) {
+					String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate() + "') < discounts.from"
+							+ " OR LEAST('" + mr.getFromDate() + "','" + mr.getToDate() + "') > discounts.to)";
+					System.out.println(dateCond);
+					// search if the dates already exist
+					ArrayList<String> query2 = new ArrayList<String>();
+					query2.add("select"); // command
+					query2.add("discounts"); // table name
+					query2.add("*"); // columns returned
+					query2.add("WHERE parkName ='" + mr.getParkName() + "' AND " + dateCond);
+					query2.add("5");
+					ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
+					if (!queryData2.isEmpty()) {
+						System.out.println("Already has discount on these dates!");
+						answer.add(false);
+						EchoServer.sendToMyClient(answer, client);
+						return;
+					} else {
+	
+						ArrayList<String> query3 = new ArrayList<String>();
+						query3.add("insert"); // command
+						query3.add("discounts");
+						query3.add(toStringForDBDiscounts(mr));
+						answer.add(MySQLConnection.insert(query3));
+	//					EchoServer.sendToMyClient(answer, client);
+	//					return;
+						break;
+					}
+	
 				}
-
+	
+				if (mr.getRequestType().equals("max_c")) {
+					answer.add(MySQLConnection.deleteCond(query));
+	
+					ArrayList<String> query2 = new ArrayList<String>();
+					query2.add("update"); // command
+					query2.add("park"); // table name
+					query2.add("maxVisitorAmount='" + mr.getMaxCapacity() + "'");
+					query2.add("parkName");
+					query2.add(mr.getParkName());
+					answer.add(MySQLConnection.update(query2));
+	//				System.out.println("max capacity updated");
+	//				EchoServer.sendToMyClient(answer, client);
+					break;
+				}
+	
+				if (mr.getRequestType().equals("max_o")) {
+					answer.add(MySQLConnection.deleteCond(query));
+					ArrayList<String> query2 = new ArrayList<String>();
+					query2.add("update"); // command
+					query2.add("park"); // table name
+					query2.add("maxOrderVisitorsAmount='" + mr.getOrdersCapacity() + "'");
+					query2.add("parkName");
+					query2.add(mr.getParkName());
+					answer.add(MySQLConnection.update(query2));
+	//				System.out.println("max orders capacity updated");
+	//				EchoServer.sendToMyClient(answer, client);
+					break;
+				}
+	
 			}
-
-			if (mr.getRequestType().equals("max_c")) {
-				answer.add(MySQLConnection.deleteCond(query));
-
-				ArrayList<String> query2 = new ArrayList<String>();
-				query2.add("update"); // command
-				query2.add("park"); // table name
-				query2.add("maxVisitorAmount='" + mr.getMaxCapacity() + "'");
-				query2.add("parkName");
-				query2.add(mr.getParkName());
-				answer.add(MySQLConnection.update(query2));
-				System.out.println("max capacity updated");
-				EchoServer.sendToMyClient(answer, client);
-			}
-
-			if (mr.getRequestType().equals("max_o")) {
-				answer.add(MySQLConnection.deleteCond(query));
-				ArrayList<String> query2 = new ArrayList<String>();
-				query2.add("update"); // command
-				query2.add("park"); // table name
-				query2.add("maxOrderVisitorsAmount='" + mr.getOrdersCapacity() + "'");
-				query2.add("parkName");
-				query2.add(mr.getParkName());
-				answer.add(MySQLConnection.update(query2));
-				System.out.println("max orders capacity updated");
-				EchoServer.sendToMyClient(answer, client);
-			}
-
 		}
+		EchoServer.sendToMyClient(answer, client);
 
 	}
 

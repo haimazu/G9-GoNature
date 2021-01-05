@@ -18,6 +18,7 @@ import orderData.Order;
  */
 public class ChatClient extends AbstractClient {
 	private boolean awaitResponse = false;
+
 	/**
 	 * Constructs an instance of the chat client.
 	 *
@@ -53,104 +54,106 @@ public class ChatClient extends AbstractClient {
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 		ArrayList<Object> received = (ArrayList<Object>) msg;
-		switch ((String)received.get(0)) {
-			case "login":
-				LoginController.receivedFromServerUserStatus((Object)received.get(1));
-				break;
-			case "updateLoggedIn":
-				LoginController.receivedFromServerLoggedInStatus((boolean)received.get(1));
-				break;
-			case "orderParksNameList":
-				OrderController.recivedFromServerParksNames(((ArrayList<String>)received.get(1)));
-				break;
-			case "ordersByIdOrMemberId":
-				ParkEmployeeController.receivedFromServerOrderDetails((Object)received.get(1));
-				break;
-			case "ordersByOrderNumber":
-				ParkEmployeeController.receivedFromServerOrderDetails((Object)received.get(1));
-				break;
-			case "getParkDetails":
-				ParkEmployeeController.receivedFromServerParkDetails((Object)received.get(1));
-				break;
-			case "updateCurrentVisitors":
-				ParkEmployeeController.receivedFromServerUpdateStatus((boolean)received.get(1));
-				break;
-			case "updateAmountArrived":
-				ParkEmployeeController.receivedFromServerUpdateStatus((boolean)received.get(1));
-				break;
-			case "randomVisitorFakeOrder":
-				ParkEmployeeController.receivedFromServerVisitorsPrice((Object)received.get(1));
-				break;
-			case "addFakeOrder":
-				ParkEmployeeController.receivedFromServerUpdateStatus((boolean)received.get(1));
-				break;
-			case "order":
-				OrderController.recivedFromServer((Object)received.get(1));
-				break;
-			case "checkOrderForGo":
-				WelcomeController.recievedFromServerValidOrderAndPending((ArrayList<Object>)received);
-				break;
-			case "confirmOrder":
-				OrderController.recivedFromServerConfirmOrder((boolean)received.get(1));
-				break;
-			case "editOrder":
-				ManageOrderController.updatedOrderFromServer((Object)received.get(1));
-				break;
-			case "cancelOrder":
-				ManageOrderController.canceledOrderFromServer((boolean)received.get(1));
-				break;
-			case "enterTheWaitList":
-				WaitingListConfirmContoller.recivedfromWaitListServer((Object)received.get(1));
-				break;
-			case "newMembershipInsert":
-				ServiceRepresentativeController.receivedFromServerAddMemberStatus((boolean)received.get(1),(String)received.get(2));
-				break;
-			case "checkFullDays":
-				WaitingListController.getListDatesServer(((ArrayList<String>)received.get(1)));
-				break;
-			case "parkManagerRequest":
-				ParkManagerController.recivedFromserver((boolean)received.get(1));
-				break;
-			case "requestForEmployeeID":
-				ParkManagerController.recivedFromserverEmployeeID((String)received.get(1));
-				break;
-			case "getCancellationReports":
-				DepartmentManagerController.receivedFromServerCancelReportsData(((ArrayList<ArrayList<String>>)received.get(1)));
-				break;
-			case "PendingManagerRequests":
-				DepartmentManagerController.setDBList((ArrayList<ArrayList<String>>)received.get(1));
-				break;
-			case "updateAccessControl":
-				ParkEmployeeController.receivedFromServerUpdateStatus((boolean)received.get(1));
-				break;
-			case "requestForParkDetails" :
-				ParkManagerController.recivedFromserverParkDetails((Object)received.get(1));
-				break;
-			case "overallVisitorsReport" :
-				ParkManagerController.recivedFromserverVisitorsReport((ArrayList<ArrayList<String>>)received.get(1));
-				break;
-			case "UsageReport":
-				ParkManagerController.recivedFromserverUsageReport((ArrayList<ArrayList<String>>)received.get(1));
-				break;
-			case "waitlistReplay" :
-				ManageOrderController.receviedFromserverArrivalConfirmation((ArrayList<Object>)received);
-				break;
-			case "removePendingsManagerReq":
-				DepartmentManagerController.setData((boolean)received.get(2));
-				break;
-			case "getRegularsVisitorsData":
-				DepartmentManagerController.receivedFromServerRegularsVisitorsData((ArrayList<Object>)received);
-				break;
-			case "getMembersVisitorsData":
-				DepartmentManagerController.receivedFromServerMembersVisitorsData((ArrayList<Object>)received);
-				break;
-			case "getGroupsVisitorsData":
-				DepartmentManagerController.receivedFromServerGroupsVisitorsData((ArrayList<Object>)received);
-				break;
-			case "VisitorsUpdateSendToAll":
-				ChatClient.sendToAllEmployee(received);
-				break;
-			default:
+		switch ((String) received.get(0)) {
+		case "login":
+			LoginController.receivedFromServerUserStatus((Object) received.get(1));
+			break;
+		case "updateLoggedIn":
+			LoginController.receivedFromServerLoggedInStatus((boolean) received.get(1));
+			break;
+		case "orderParksNameList":
+			OrderController.recivedFromServerParksNames(((ArrayList<String>) received.get(1)));
+			break;
+		case "ordersByIdOrMemberId":
+			ParkEmployeeController.receivedFromServerOrderDetails((Object) received.get(1));
+			break;
+		case "ordersByOrderNumber":
+			ParkEmployeeController.receivedFromServerOrderDetails((Object) received.get(1));
+			break;
+		case "getParkDetails":
+			ParkEmployeeController.receivedFromServerParkDetails((Object) received.get(1));
+			break;
+		case "updateCurrentVisitors":
+			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+			break;
+		case "updateAmountArrived":
+			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+			break;
+		case "randomVisitorFakeOrder":
+			ParkEmployeeController.receivedFromServerVisitorsPrice((Object) received.get(1));
+			break;
+		case "addFakeOrder":
+			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+			break;
+		case "order":
+			OrderController.recivedFromServer((Object) received.get(1));
+			break;
+		case "checkOrderForGo":
+			WelcomeController.recievedFromServerValidOrderAndPending((ArrayList<Object>) received);
+			break;
+		case "confirmOrder":
+			OrderController.recivedFromServerConfirmOrder((boolean) received.get(1));
+			break;
+		case "editOrder":
+			ManageOrderController.updatedOrderFromServer((Object) received.get(1));
+			break;
+		case "cancelOrder":
+			ManageOrderController.canceledOrderFromServer((boolean) received.get(1));
+			break;
+		case "enterTheWaitList":
+			WaitingListConfirmContoller.recivedfromWaitListServer((Object) received.get(1));
+			break;
+		case "newMembershipInsert":
+			ServiceRepresentativeController.receivedFromServerAddMemberStatus((boolean) received.get(1),
+					(String) received.get(2));
+			break;
+		case "checkFullDays":
+			WaitingListController.getListDatesServer(((ArrayList<String>) received.get(1)));
+			break;
+		case "parkManagerRequest":
+			ParkManagerController.recivedFromserver((boolean) received.get(1));
+			break;
+		case "requestForEmployeeID":
+			ParkManagerController.recivedFromserverEmployeeID((String) received.get(1));
+			break;
+		case "getCancellationReports":
+			DepartmentManagerController
+					.receivedFromServerCancelReportsData(((ArrayList<ArrayList<String>>) received.get(1)));
+			break;
+		case "PendingManagerRequests":
+			DepartmentManagerController.setDBList((ArrayList<ArrayList<String>>) received.get(1));
+			break;
+		case "updateAccessControl":
+			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+			break;
+		case "requestForParkDetails":
+			ParkManagerController.recivedFromserverParkDetails((Object) received.get(1));
+			break;
+		case "overallVisitorsReport":
+			ParkManagerController.recivedFromserverVisitorsReport((ArrayList<ArrayList<String>>) received.get(1));
+			break;
+		case "UsageReport":
+			ParkManagerController.recivedFromserverUsageReport((ArrayList<ArrayList<String>>) received.get(1));
+			break;
+		case "waitlistReplay":
+			ManageOrderController.receviedFromserverArrivalConfirmation((ArrayList<Object>) received);
+			break;
+		case "removePendingsManagerReq":
+			DepartmentManagerController.setData((boolean) received.get(2));
+			break;
+		case "getRegularsVisitorsData":
+			DepartmentManagerController.receivedFromServerRegularsVisitorsData((ArrayList<Object>) received);
+			break;
+		case "getMembersVisitorsData":
+			DepartmentManagerController.receivedFromServerMembersVisitorsData((ArrayList<Object>) received);
+			break;
+		case "getGroupsVisitorsData":
+			DepartmentManagerController.receivedFromServerGroupsVisitorsData((ArrayList<Object>) received);
+			break;
+		case "VisitorsUpdateSendToAll":
+			ChatClient.sendToAllEmployee(received);
+			break;
+		default:
 			break;
 		}
 //		feedback = "";
@@ -202,22 +205,23 @@ public class ChatClient extends AbstractClient {
 //		}
 
 	}
-	
-	
+
 	public static void sendToAllEmployee(ArrayList<Object> arr) {
-		
-		if(Context.getInstance().getPMC() != null) {
-			Context.getInstance().getPMC(). setCurrentVisitors(arr);
+		String parkName = (String) arr.get(1);
+		String updatedVisitorsNumber = (String) arr.get(2);
+		if (Context.getInstance().getPMC() != null) {
+			if (Context.getInstance().getPMC().getParkName().equals(parkName))
+				Context.getInstance().getPMC().setCurrentVisitors(updatedVisitorsNumber);
 		}
-		
-		if(Context.getInstance().getPEC() != null) {
-			
+
+		if (Context.getInstance().getPEC() != null) {
+			Context.getInstance().getPEC().setCurrentVisitors(arr);
 		}
-		
-		if(Context.getInstance().getDMC() != null) {
-			
+
+		if (Context.getInstance().getDMC() != null) {
+			Context.getInstance().getDMC().setCurrentVisitors(arr);
 		}
-		
+
 	}
 
 	/**
