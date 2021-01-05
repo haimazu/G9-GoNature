@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import ocsf.server.ConnectionToClient;
-import orderData.OrderType;
 
 public class Reports {
 
@@ -271,16 +270,38 @@ public class Reports {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	public static void main(String[] args) {
-		ArrayList<String> strArrLst = new ArrayList<String>();
-		strArrLst.add("localhost");
-		strArrLst.add("3306");
-		strArrLst.add("g9_gonature");
-		strArrLst.add("root");
-		// strArrLst.add("123456");
-		strArrLst.add("Aa123456");
-		MySQLConnection.connectToDB(strArrLst);
-		// CancellationReport(12, 2020);
+	
+	
+	// input: ArrayList<Object>: cell[0] name
+		// cell[1] start date
+		// cell[2] end date 
+	    // cell[3] park name ,ConnectionToClient
+		// sum of Incomes on specific dates
+		// output: list of cancelled orders:
+		// ArrayList<Object>: cell[0] func_name
+		// cell[1] String of sum
+	public static void incomesReport(ArrayList<Object> recived, ConnectionToClient client) {
+		ArrayList<Object> answer = new ArrayList<Object>();
+		// the service name :
+		// cell 0: the service name
+		answer.add(recived.get(0));
+
+		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
+		String startDate = dataFromClient.get(0);
+		String endDate = dataFromClient.get(1);
+		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
+		
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select");
+		query.add("orders");
+		query.add("SUM(afterDiscountPrice)");
+		query.add("WHERE "+dateCond+"AND parkName='"+dataFromClient.get(2)+"' AND amountArrived > 0");
+		query.add("1");
+		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+		answer.add(queryData.get(0).get(0));
+		System.out.println("revenues on these dates are : "+queryData);
+		EchoServer.sendToMyClient(answer, client);
 	}
+	
 
 }
