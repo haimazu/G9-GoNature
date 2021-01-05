@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
+import common.Status;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +22,13 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+/**
+*
+*controller that gets the user login details
+*
+* @author Haim Azulay Hodaya Mekonen
+*/
 
 public class LoginController implements Initializable {
 	@FXML
@@ -50,21 +58,28 @@ public class LoginController implements Initializable {
 	private boolean userStatus = false, passStatus = false;
 	private AlertController alert = new AlertController();
 
-	// Switch screens: Login -> Welcome
+	/**
+	 * Switch screens: Login -> Welcome
+	 **/
+
 	@FXML
 	void back(ActionEvent event) throws IOException {			
 		Stage stage = (Stage) btnBack.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		stage.setScene(new Scene(root));
 	}
-
-	/*
+		
+	 /**
+	 *
 	 * msg is ArrayList of objects -> [0] -> the function who calling to service
 	 * from the server "login" [1] -> ArrayList of String -> [0] -> username [1] ->
 	 * password The function waiting to response from the server and can get: if
 	 * success (the user exists) -> we getting the role of the user else (the user
-	 * doesn't exists) -> getting "Failed"
+	 * doesn't exists) -> getting "Failed" 
+	 * @param ActionEvent event
+	 * 
 	 **/
+	
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		// Data fields
@@ -98,7 +113,11 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	// Check password input before sending to DB
+	/**
+	 * Check Username input before sending to DB     
+	 * @return  true if the input is correct false otherwise
+	 **/
+	
 	public boolean checkUsername() {
 		String username = txtUsername.getText();
 		// Username consists a letter then letters or numbers [length of 3-20
@@ -115,7 +134,11 @@ public class LoginController implements Initializable {
 		return userStatus;
 	}
 
-	// Check password input before sending to DB
+	/**
+	 * Check password input before sending to DB     
+	 * @return  true if the input is correct false otherwise
+	 **/
+	
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
 
@@ -130,10 +153,12 @@ public class LoginController implements Initializable {
 		return passStatus;
 	}
 	
-	// String type, the case we dealing with
-	// ArrayList<String> dbColumns, sending to the server to get data
-	// input: cells, depending on the case
-	// output: none
+	/**
+	 *  sends the case we dealing with and dbColumns to the server to get data
+	 *  
+	 * @param cells, depending on the case           
+	 **/
+
 	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();	
@@ -144,10 +169,14 @@ public class LoginController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
-	// received data from the server
-	// output: cell 0: the 'role' of the user
-	// 		   cell 1: the first name of the user
-	// 		   cell 2: name of the park where the employee works
+	/**
+	 * @param msgReceived-data from the server
+	 *                
+	 * @return cell 0: the 'role' of the user
+	 *	       cell 1: the first name of the user
+	 *		   cell 2: name of the park where the employee works
+	 **/
+
 	@SuppressWarnings("unchecked")
 	public static void receivedFromServerUserStatus(Object msgReceived) {
 		if (msgReceived instanceof String) {
@@ -161,11 +190,14 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	// received data from the server
-	// input: boolean value with the success result
-	// output: T / F, 
-	// T ==> Update logged in status success
-	// F ==> Update logged in status failed
+	/**
+	 * @param msgReceived-boolean value with the result of the action Status 
+	 *                
+	 * @return T / F, 
+	 *	       T ==> Update logged in status success
+	 *		   F ==> Update logged in status failed
+	 **/
+	
 	public static void receivedFromServerLoggedInStatus(boolean msgReceived) {
 		if (msgReceived) {
 			System.out.println("Update logged in / out status success.");
@@ -228,6 +260,10 @@ public class LoginController implements Initializable {
 		LoginController.username = username;
 	}
 
+	/**
+	 * Initializing and force each of the fields according to the Required templates 
+	 **/
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// active listener for the username text field
