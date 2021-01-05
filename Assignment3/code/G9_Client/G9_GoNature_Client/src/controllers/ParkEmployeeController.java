@@ -534,7 +534,7 @@ public class ParkEmployeeController implements Initializable {
 	// otherwise creates new 'fake order' and return false
 	public boolean checkForExistingFakeOrders() {
 		String id = null;
-		String memberId = "0";
+		String memberId = null;
 		String currentValue = "";
 
 		/***** Random *****/
