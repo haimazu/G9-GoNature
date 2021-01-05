@@ -224,22 +224,20 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private NumberAxis yAxisR;
 	@FXML
-    private JFXComboBox<String> cbxMonth;
+	private JFXComboBox<String> cbxMonth;
 
-    @FXML
-    private JFXComboBox<String> cbxYear;
+	@FXML
+	private JFXComboBox<String> cbxYear;
 	@FXML
 	private Button btnShowReuvenue;
 
-
 	private static ArrayList<ArrayList<String>> revReport = new ArrayList<>();
 
-
+	private LocalDate fromDate;
+	
+	private LocalDate toDate;
 //	@FXML
 //	private JFXComboBox<String> cbxMounth;
-
-
-
 
 	/*-------------------------*/
 
@@ -308,6 +306,7 @@ public class ParkManagerController implements Initializable {
 	public static void setParkName(String parkName) {
 		ParkManagerController.parkName = parkName;
 	}
+
 	public static ArrayList<ArrayList<String>> getRevReport() {
 		return revReport;
 	}
@@ -1039,41 +1038,84 @@ public class ParkManagerController implements Initializable {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartRevenue() throws ParseException {
-		System.out.println(revReport);
+		xAxisR = new CategoryAxis();
+		yAxisR = new NumberAxis(0, 20, 2);
+		bcRevenue.getData().clear();
+		bcRevenue.setAnimated(false);
+		bcRevenue.setBarGap(1d);
+		bcRevenue.setCategoryGap(8.0);
+
+		bcRevenue.setMinSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
+		bcRevenue.setPrefSize(613, 430);
+		bcRevenue.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
+
+		Series<String, Double> DailyRevenue = new Series<>();
+
+		String someDate;
+		ArrayList<String> firstArrIncome;
+		String firstDate;
+		LocalDate checkDate = LocalDate.now();
+		
+		// for - that check every date if exist in usageReport and if it does it willl
+		// put in on the chart and then will remove it from the usageReport;
+		for (LocalDate date = fromDate; date
+				.isBefore(toDate.plusDays(1)); date = date.plusDays(1)) {
+
+			if (!revReport.isEmpty()) {
+				firstArrIncome = revReport.get(0);
+				firstDate = usageReport.get(0).get(1);// first array
+				someDate = getDate(firstDate); // yyyy-mm-dd
+				checkDate = LocalDate.parse(someDate);
+			}
+			if (date.equals(checkDate) && (!revReport.isEmpty())) {
+				DailyRevenue.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
+						Double.parseDouble(revReport.get(0).get(0))));
+				revReport.remove(0);
+			} else
+				DailyRevenue.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
+		}
+
 	}
+
 
 	@FXML
 	void ShowReuvenue(ActionEvent event) throws ParseException {
+		
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> data = new ArrayList<>();
 		msg.add("revenueReport");
 		int nextyear = Integer.parseInt(cbxYear.getValue());
 		int nextmonth = Integer.parseInt(cbxMonth.getValue());
 		String monthStr;
-		if(nextmonth+1<10) {// both months less than 10
+		if (nextmonth + 1 < 10) {// both months less than 10
 			nextmonth++;
 			data.add(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-0" + nextmonth + "-01");
-		}
-		else if ( nextmonth==9) {// first month 9 
+			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
+			toDate = LocalDate.parse(nextyear + "-0" + nextmonth + "-01");
+		} else if (nextmonth == 9) {// first month 9
 			nextmonth++;
 			data.add(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-" + nextmonth + "-01");
+			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
+			toDate = LocalDate.parse(nextyear + "-" + nextmonth + "-01");
 		}
-			
+
 		else if (nextmonth == 12) {
 			nextmonth = 1;
 			nextyear++;
 			data.add(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-0" + nextmonth + "-01");
-		} 
-		else {
+			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
+			toDate = LocalDate.parse(nextyear + "-0" + nextmonth + "-01");
+		} else {
 			nextmonth++;
 			data.add(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-" + nextmonth + "-01");
+			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
+			toDate = LocalDate.parse(nextyear + "-" + nextmonth + "-01");
 		}
-		
-		
+
 		data.add(park.getName());
 		msg.add(data);
 		ClientUI.sentToChatClient(msg);
@@ -1129,7 +1171,7 @@ public class ParkManagerController implements Initializable {
 			setRevReport(revReportAnswer);
 			System.out.print(revReportAnswer);
 		}
-		
+
 	}
 
 }
