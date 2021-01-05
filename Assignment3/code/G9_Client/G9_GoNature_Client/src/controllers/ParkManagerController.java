@@ -216,7 +216,7 @@ public class ParkManagerController implements Initializable {
 	/*-----------for Revenue chart----------*/
 
 	@FXML
-	private BarChart<?, ?> bcRevenue;
+	private BarChart<String, Double> bcRevenue;
 
 	@FXML
 	private CategoryAxis xAxisR;
@@ -409,14 +409,7 @@ public class ParkManagerController implements Initializable {
 		});
 
 		/***** Revenue report *********/
-//		//the park meneger can get reports just one year back 
-//		int year = Calendar.getInstance().get(Calendar.YEAR);
-//		ArrayList<String> months = new ArrayList<>();
-//		for(int i=1; i<=12;i++ ) {
-//			months.add(i+"/"+year);
-//		}
-//		
-//		cbxMounth.setItems(FXCollections.observableArrayList(months));
+
 
 		ArrayList<String> mounthArr = new ArrayList<>();
 
@@ -426,7 +419,7 @@ public class ParkManagerController implements Initializable {
 		cbxMonth.setItems(FXCollections.observableArrayList(mounthArr));
 		cbxMonth.getSelectionModel().selectFirst();
 		ArrayList<String> yearArr = new ArrayList<>();
-		for (int i = 2021; i <= 2031; i++) {
+		for (int i = 2021; i >= 2018; i--) {
 			yearArr.add(String.valueOf(i));
 		}
 		cbxYear.setItems(FXCollections.observableArrayList(yearArr));
@@ -1060,23 +1053,23 @@ public class ParkManagerController implements Initializable {
 		// put in on the chart and then will remove it from the usageReport;
 		for (LocalDate date = fromDate; date
 				.isBefore(toDate.plusDays(1)); date = date.plusDays(1)) {
-			System.out.println(date);
+			
 			if (!revReport.isEmpty()) {
-				firstArrIncome = revReport.get(0);
-				firstDate = usageReport.get(0).get(1);// first array
+				
+				firstDate = revReport.get(0).get(0);// first array
 				someDate = getDate(firstDate); // yyyy-mm-dd
 				checkDate = LocalDate.parse(someDate);
 			}
 			if (date.equals(checkDate) && (!revReport.isEmpty())) {
 				DailyRevenue.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(),
-						Double.parseDouble(revReport.get(0).get(0))));
+						Double.parseDouble(revReport.get(0).get(1))));
 				revReport.remove(0);
 			} else
 				DailyRevenue.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 		}
 		
-		DailyRevenue.setName("income");
-		bcUsageChart.getData().addAll(DailyRevenue);
+		DailyRevenue.setName("Daily income");
+		bcRevenue.getData().addAll(DailyRevenue);
 
 	}
 
@@ -1089,7 +1082,7 @@ public class ParkManagerController implements Initializable {
 		msg.add("revenueReport");
 		int nextyear = Integer.parseInt(cbxYear.getValue());
 		int nextmonth = Integer.parseInt(cbxMonth.getValue());
-		String monthStr;
+	
 		if (nextmonth + 1 < 10) {// both months less than 10
 			nextmonth++;
 			data.add(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
@@ -1162,7 +1155,7 @@ public class ParkManagerController implements Initializable {
 			noDataTopresent();
 		else {
 			setUsageReport(usageReportAnswer);
-			System.out.print(usageReportAnswer);
+		
 		}
 	}
 
@@ -1172,7 +1165,7 @@ public class ParkManagerController implements Initializable {
 			noDataTopresent();
 		else {
 			setRevReport(revReportAnswer);
-			System.out.print(revReportAnswer);
+			
 		}
 
 	}

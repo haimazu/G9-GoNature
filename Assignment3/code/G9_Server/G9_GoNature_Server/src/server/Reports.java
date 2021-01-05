@@ -299,7 +299,7 @@ public class Reports {
 //				+ "' AND amountArrived > 0 GROUP BY arrivedTime ORDER BY arrivedTime");
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		answer.add(queryData.get(0));
+		answer.add(queryData);
 		System.out.println("revenues on these dates are : " + queryData);
 		EchoServer.sendToMyClient(answer, client);
 	}
