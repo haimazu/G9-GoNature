@@ -1,26 +1,26 @@
 package server;
 
 import java.util.ArrayList;
-
 import dataLayer.CreditCard;
 import ocsf.server.ConnectionToClient;
 import orderData.OrderType;
 import userData.Member;
 
-
 /**
-* The NewMember program places a new member into the DB
-*
-* @author  Anastasia Kokin
-*/
+ * The NewMember program places a new member into the DB
+ *
+ * @author Anastasia Kokin
+ */
 
 public class NewMember {
 
-	// input: ArrayList<Object>: cell[0] function name
-	// cell[1] member object, cell[2] credit card object ,ConnectionToClient
-	// inserting a new member:MEMBER\GUIDE in members table in DB
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] T/F
+	/**
+	 * inserting a new member:MEMBER\GUIDE in members table in DB
+	 * 
+	 * @param ArrayList<Object>: cell[0] function name cell[1] member object,
+	 *                           cell[2] credit card object ,ConnectionToClient
+	 * @return ArrayList<Object>=> cell[0] function name cell[1] T/F
+	 */
 	public static void NewMemberInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -59,9 +59,12 @@ public class NewMember {
 		}
 	}
 
-	// input: memberID
-	// checks if the member exists in DB with his ID
-	// output: T/F
+	/**
+	 * checks if the member exists in DB with his ID
+	 * 
+	 * @param memberID
+	 * @return T/F
+	 **/
 	public static Boolean MemerCheck(String memberID) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -80,8 +83,13 @@ public class NewMember {
 		}
 	}
 
-	// input: Member object
-	// output: ToString For DB query
+	/**
+	 * ToString For DB query
+	 * 
+	 * @param Member object
+	 * @return String
+	 **/
+
 	public static String queryToString(Member memb) {
 		return "'" + memb.getMemberID() + "','" + memb.getMemberFirstName() + "','" + memb.getMemberLastName() + "','"
 				+ memb.getMemberNumber() + "','" + memb.getMemberPhoneNumber() + "','" + memb.getMemberEmail() + "','"

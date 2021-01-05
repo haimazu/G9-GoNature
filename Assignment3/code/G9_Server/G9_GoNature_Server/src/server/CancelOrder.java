@@ -6,19 +6,25 @@ import java.util.ArrayList;
 import dataLayer.EmailMessege;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
+/**
+* The CancelOrder program canceling an existing order and deleting it from the DB
+*
+* @author  Roi Amar & Anastasia Kokin
+*/
 
-//input: ArrayList of Objects:
-// in cell 0: String "cancelOrder"
-// in cell 1: Order class of a given order to cancel
-//
-// output: NONE.
-// send to client: ArrayList of Objects:
-// in cell 0: String "cancelOrder"
-// in cell 1: boolean ->
-// true if entry sucsseful
-// false if not
-// NOTE: this function calls to the waitlist to check if someone is waiting for the new spots avilable after the cancelation.
 public class CancelOrder {
+	
+	//input: ArrayList of Objects:
+	// in cell 0: String "cancelOrder"
+	// in cell 1: Order class of a given order to cancel
+	//
+	// output: NONE.
+	// send to client: ArrayList of Objects:
+	// in cell 0: String "cancelOrder"
+	// in cell 1: boolean ->
+	// true if entry sucsseful
+	// false if not
+	// NOTE: this function calls to the waitlist to check if someone is waiting for the new spots avilable after the cancelation.
 	public static void cancel(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));

@@ -7,16 +7,26 @@ import dataLayer.Park;
 import ocsf.server.ConnectionToClient;
 import reportData.ManagerRequest;
 
+/**
+* The PendingMenagerRequest program deals with managers requests
+*
+* @author  Anastasia Kokin
+*/
+
+
+
 public class PendingMenagerRequest implements Serializable {
 
-	// input: ArrayList<Object>: cell[0] name
-	// cell[1] ManagerRequest object
-	//
-	// output:T/F
+    /**
+	 * Inserts To Pending table in DB
+	 * 
+	 * @param  ArrayList<Object>: cell[0] name, cell[1] ManagerRequest object
+	 * @return ArrayList<Object>: cell[0] name ,cell[1] T/F
+	 */
 	public static void InsertToPending(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
-		// the service name : ??
+		// the service name 
 		answer.add(recived.get(0));
 
 		ManagerRequest mr = (ManagerRequest) recived.get(1);
