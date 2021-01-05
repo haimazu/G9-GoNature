@@ -223,17 +223,23 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	private NumberAxis yAxisR;
+	@FXML
+    private JFXComboBox<String> cbxMonth;
+
+    @FXML
+    private JFXComboBox<String> cbxYear;
+	@FXML
+	private Button btnShowReuvenue;
+
+
+	private static ArrayList<ArrayList<String>> revReport = new ArrayList<>();
+
 
 //	@FXML
 //	private JFXComboBox<String> cbxMounth;
 
-	@FXML
-	private Button btnShowReuvenue;
-	
-	private JFXComboBox<String> cbxExpiryMonth;
 
-	@FXML
-	private JFXComboBox<String> cbxExpiryYear;
+
 
 	/*-------------------------*/
 
@@ -301,6 +307,13 @@ public class ParkManagerController implements Initializable {
 
 	public static void setParkName(String parkName) {
 		ParkManagerController.parkName = parkName;
+	}
+	public static ArrayList<ArrayList<String>> getRevReport() {
+		return revReport;
+	}
+
+	public static void setRevReport(ArrayList<ArrayList<String>> revReport) {
+		ParkManagerController.revReport = revReport;
 	}
 
 	@FXML
@@ -405,20 +418,20 @@ public class ParkManagerController implements Initializable {
 //		}
 //		
 //		cbxMounth.setItems(FXCollections.observableArrayList(months));
-		
+
 		ArrayList<String> mounthArr = new ArrayList<>();
 
 		for (int i = 1; i <= 12; i++) {
 			mounthArr.add(String.valueOf(i));
 		}
-		cbxExpiryMonth.setItems(FXCollections.observableArrayList(mounthArr));
-		cbxExpiryMonth.getSelectionModel().selectFirst();
+		cbxMonth.setItems(FXCollections.observableArrayList(mounthArr));
+		cbxMonth.getSelectionModel().selectFirst();
 		ArrayList<String> yearArr = new ArrayList<>();
 		for (int i = 2021; i <= 2031; i++) {
 			yearArr.add(String.valueOf(i));
 		}
-		cbxExpiryYear.setItems(FXCollections.observableArrayList(yearArr));
-		cbxExpiryYear.getSelectionModel().selectFirst();
+		cbxYear.setItems(FXCollections.observableArrayList(yearArr));
+		cbxYear.getSelectionModel().selectFirst();
 
 	}
 
@@ -1022,6 +1035,53 @@ public class ParkManagerController implements Initializable {
 
 	/*-------end of usage report section --------*/
 
+	/*-------Revenue report section --------*/
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void chartRevenue() throws ParseException {
+		System.out.println(revReport);
+	}
+
+	@FXML
+	void ShowReuvenue(ActionEvent event) throws ParseException {
+		ArrayList<Object> msg = new ArrayList<>();
+		ArrayList<String> data = new ArrayList<>();
+		msg.add("revenueReport");
+		int nextyear = Integer.parseInt(cbxYear.getValue());
+		int nextmonth = Integer.parseInt(cbxMonth.getValue());
+		String monthStr;
+		if(nextmonth+1<10) {// both months less than 10
+			nextmonth++;
+			data.add(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
+			data.add(nextyear + "-0" + nextmonth + "-01");
+		}
+		else if ( nextmonth==9) {// first month 9 
+			nextmonth++;
+			data.add(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
+			data.add(nextyear + "-" + nextmonth + "-01");
+		}
+			
+		else if (nextmonth == 12) {
+			nextmonth = 1;
+			nextyear++;
+			data.add(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
+			data.add(nextyear + "-0" + nextmonth + "-01");
+		} 
+		else {
+			nextmonth++;
+			data.add(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
+			data.add(nextyear + "-" + nextmonth + "-01");
+		}
+		
+		
+		data.add(park.getName());
+		msg.add(data);
+		ClientUI.sentToChatClient(msg);
+
+		chartRevenue();
+	}
+	/*-------end of revenue report section --------*/
+
 	/*----received from server section ---*/
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
@@ -1059,6 +1119,17 @@ public class ParkManagerController implements Initializable {
 			setUsageReport(usageReportAnswer);
 			System.out.print(usageReportAnswer);
 		}
+	}
+
+	public static void recivedFromserverRevenueReport(ArrayList<ArrayList<String>> revReportAnswer) {
+		setRevReport(null);
+		if ((Object) revReportAnswer instanceof String)
+			noDataTopresent();
+		else {
+			setRevReport(revReportAnswer);
+			System.out.print(revReportAnswer);
+		}
+		
 	}
 
 }

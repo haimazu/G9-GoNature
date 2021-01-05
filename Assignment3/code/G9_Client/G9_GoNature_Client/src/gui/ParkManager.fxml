@@ -156,13 +156,13 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
-                  <JFXComboBox fx:id="cbxExpiryMonth" focusColor="SEAGREEN" focusTraversable="false" layoutX="116.0" layoutY="55.0" prefHeight="37.0" prefWidth="115.0" promptText="*Expiry Month" styleClass="comboBox" unFocusColor="#a3a3a3" />
+                  <JFXComboBox fx:id="cbxMonth" focusColor="SEAGREEN" focusTraversable="false" layoutX="116.0" layoutY="55.0" prefHeight="37.0" prefWidth="115.0" promptText="*Month" styleClass="comboBox" unFocusColor="#a3a3a3" />
                   <Label layoutX="238.0" layoutY="64.0" text="/">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="cbxExpiryYear" focusColor="SEAGREEN" focusTraversable="false" layoutX="254.0" layoutY="55.0" prefHeight="37.0" prefWidth="115.0" promptText="*Expiry Year" styleClass="comboBox" unFocusColor="#a3a3a3" />
+                  <JFXComboBox fx:id="cbxYear" focusColor="SEAGREEN" focusTraversable="false" layoutX="254.0" layoutY="55.0" prefHeight="37.0" prefWidth="115.0" promptText="*Year" styleClass="comboBox" unFocusColor="#a3a3a3" />
                </children>
             </Pane>
             <Pane fx:id="pnUsage" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css" visible="false">

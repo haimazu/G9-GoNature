@@ -126,6 +126,9 @@ public class EchoServer extends AbstractServer {
 		case "getVisitorsEntryStatus":
 			UpdateVisitorsNumber.getVisitorsEntryStatus(recived, client);
 			break;
+		case "revenueReport" :
+			Reports.incomesReport(recived, client);
+			break;
 		default:
 			break;
 		}

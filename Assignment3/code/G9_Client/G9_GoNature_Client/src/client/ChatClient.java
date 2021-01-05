@@ -159,6 +159,9 @@ public class ChatClient extends AbstractClient {
 		case "getVisitorsEntryStatus":
 			ParkEmployeeController.receivedFromEnterAndExitStatus((String) received.get(1));
 			break;
+		case "revenueReport" :
+			ParkManagerController.recivedFromserverRevenueReport((ArrayList<ArrayList<String>>) received.get(1));
+			break ;
 		default:
 			break;
 		}
