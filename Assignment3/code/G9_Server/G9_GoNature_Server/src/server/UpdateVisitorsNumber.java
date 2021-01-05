@@ -4,16 +4,25 @@ import java.util.ArrayList;
 import dataLayer.Park;
 import ocsf.server.ConnectionToClient;
 
+/**
+ * The UpdateVisitorsNumber program generates all entry and exit functions also
+ * controls the visitors amount in park and responsible for its update
+ *
+ * @author Haim Azulay, Roi Amar, Anastasia Kokin
+ */
+
 public class UpdateVisitorsNumber {
 
-	// input: ArrayList<Object> cell [0]: parkName
-	// cell [1]: currentVisitoreAmount ,ConnectionToClient
-	// updates the ParkCurrentVisitors in Park table
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] T if update succeeded, F if not, Full if we can add more visitors
-	@SuppressWarnings("unchecked")
+	/**
+	 * updates the ParkCurrentVisitors in Park table
+	 * 
+	 * @param ArrayList<Object> cell [0]: parkName, cell [1]: currentVisitoreAmount,
+	 *                          ConnectionToClient
+	 * @return ArrayList<Object>=> cell[0] function name, cell[1] T if update
+	 *         succeeded, F if not, Full if we can add more visitors
+	 */
+
 	public static void updateParkCurrentVisitors(ArrayList<Object> recived, ConnectionToClient client) {
-		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : updateCurrentVisitors
 		answer.add(recived.get(0));
@@ -178,9 +187,9 @@ public class UpdateVisitorsNumber {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	
-	//nastya
-	public static void getParkNamesAndAmountVisitorsCurrentlyInThePark(ArrayList<Object> recived, ConnectionToClient client) {
+	// nastya
+	public static void getParkNamesAndAmountVisitorsCurrentlyInThePark(ArrayList<Object> recived,
+			ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : getParkNamesAndAmountVisitorsCurrentlyInThePark
