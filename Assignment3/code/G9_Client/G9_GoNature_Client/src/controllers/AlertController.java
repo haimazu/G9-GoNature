@@ -18,7 +18,7 @@ public class AlertController {
 	
 	/**
 	 *  showing alert message       
-	 **/
+	 */
 	public void setAlert(String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Failed");
@@ -29,7 +29,7 @@ public class AlertController {
 
 	/**
 	 *  showing success alert message   
-	 **/
+	 */
 	
 	public void successAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -41,7 +41,7 @@ public class AlertController {
 
 	/**
 	 *  showing failed alert message 
-	 **/
+	 */
 	
 	public void failedAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -53,7 +53,7 @@ public class AlertController {
 
 	/**
 	 *   showing confirmation alert message
-	 **/
+	 */
 	
 	public void ensureAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);

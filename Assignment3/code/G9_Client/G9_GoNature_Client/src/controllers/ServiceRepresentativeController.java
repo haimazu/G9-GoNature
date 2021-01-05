@@ -76,7 +76,7 @@ public class ServiceRepresentativeController implements Initializable {
 
 	/**
 	 * Allows the user to log out and returns the user to the login page
-	 **/
+	 */
 
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -104,7 +104,7 @@ public class ServiceRepresentativeController implements Initializable {
 	 *  and gets answer according to the action status success or fail and the member number.
 	 * 
 	 * @param ActionEvent
-	 **/
+	 */
 
 	@FXML
 	//
@@ -196,7 +196,8 @@ public class ServiceRepresentativeController implements Initializable {
 	 * allows the user to open the credit card details page 
 	 *
 	 * @param ActionEvent
-	 **/
+	 * @exception IOException
+	 */
 
 	@FXML
 	void creditCard(ActionEvent event) throws IOException {
@@ -220,7 +221,7 @@ public class ServiceRepresentativeController implements Initializable {
 	/**
 	 * check valid input for first and last name       
 	 * @return  true if the input is correct false otherwise
-	 **/
+	 */
 
 	public boolean validFirstLastNameInput() {
 
@@ -235,7 +236,7 @@ public class ServiceRepresentativeController implements Initializable {
 	/**
 	 * check valid input for id            
 	 * @return  true if the input is correct false otherwise
-	 **/
+	 */
 	public boolean validIdInput() {
 
 		if (txtId.getText().length() != 9) {
@@ -250,7 +251,7 @@ public class ServiceRepresentativeController implements Initializable {
 	/**
 	 * check valid input for phoneNumber        
 	 * @return  true if the input is correct false otherwise
-	 **/
+	 */
 	
 	public boolean validPhoneNumberInput() {
 
@@ -264,7 +265,7 @@ public class ServiceRepresentativeController implements Initializable {
 	/**
 	 *  check valid input for email          
 	 * @return  true if the input is correct false otherwise
-	 **/
+	 */
 	
 	public boolean validEmailInput() {
 
@@ -297,7 +298,7 @@ public class ServiceRepresentativeController implements Initializable {
 
 	/**
 	 * Initializing and force each of the fields according to the Required templates 
-	 **/
+	 */
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -385,7 +386,7 @@ public class ServiceRepresentativeController implements Initializable {
 
 	/**
 	 *receive from the server the status of the member addition and the member number
-	 **/
+	 */
 
 	public static void receivedFromServerAddMemberStatus(boolean status,String memberNum) {
 		if ((status)) {

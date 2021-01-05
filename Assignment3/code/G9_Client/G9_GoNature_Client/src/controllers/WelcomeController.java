@@ -34,7 +34,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import orderData.Order;
 
-/*
+/**
 * Controller responsible for the welcome screen 
 * @author  Haim Azulay Rinat Stoudenets
 */
@@ -65,9 +65,10 @@ public class WelcomeController implements Initializable {
 		WelcomeController.ispending = ispending;
 	}
 	
-    /*
+    /**
 	 * Moves the screen to the login window
 	 * @param ActionEvent
+	 * @exception IOException
 	 */
 
 	@FXML
@@ -79,9 +80,10 @@ public class WelcomeController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	 /*
+	 /**
 	  * Moves the screen to the Order window
 	  * @param ActionEvent
+	  * @exception IOException
 	  */
 	
 	@FXML
@@ -105,14 +107,14 @@ public class WelcomeController implements Initializable {
 	}
 
 	
-	/*
+	/**
 	 * check if order number inserted by user exist , and it arrival time didn't already pass
 	 * present info alerts accordingly
 	 * 
 	 * @param ActionEvent
 	 *                
 	 * @return in case of success order object with order details , in case of failure - null 
-	 * 
+	 *  @exception IOException
 	 */
 
 	@FXML
@@ -167,7 +169,7 @@ public class WelcomeController implements Initializable {
 		orderDetails = orderDetails2;
 	}
 	
-	/*
+	/**
 	 *receive from the server order details
 	 */
 	
@@ -181,7 +183,7 @@ public class WelcomeController implements Initializable {
 		
 	}
 	
-	/*
+	/**
 	 * 
 	 * Updates the user's login status if necessary by the server 
 	 * @param Stage            
@@ -230,7 +232,7 @@ public class WelcomeController implements Initializable {
 		ClientUI.sentToChatClient(parkNamesArr);
 	}
 	
-	/*
+	/**
 	 * Checks whether the entry time of the order number you want to edit is relevant 
 	 * to the current time
 	 * 
