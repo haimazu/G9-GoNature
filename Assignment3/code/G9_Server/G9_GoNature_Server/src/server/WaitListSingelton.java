@@ -313,8 +313,11 @@ public class WaitListSingelton {
 		return MySQLConnection.select(query);
 	}
 
-	// input:Order to get time limit for
-	// output:the time limit of the order if found, if not than null
+	/**
+	 * 
+	 * @param Order object
+	 * @return the time limit of the order if found, if not than null
+	 */
 	private static Date selectDateForPending(Order order) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
