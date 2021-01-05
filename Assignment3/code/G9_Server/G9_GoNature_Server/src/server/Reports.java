@@ -269,17 +269,22 @@ public class Reports {
 	/**
 	 * sums the incomes on specific range of dates
 	 * 
-	 * @param ArrayList<Object>: cell[0] name, cell[1] start date, cell[2] end date
-	 *                           cell[3] park name ,ConnectionToClient
+	 * @param ArrayList<Object>: cell[0] name, cell[1] ArrayList<String>
+	 *  										cell[0] start date,
+	 *  										cell[1] end date,
+	 *  										cell[2] park name
+	 *  						ConnectionToClient
 	 * @returnArrayList<Object>: cell[0] func_name, cell[1] ArrayList<String>
 	 *                           cell[0] Date and time cell[1] amount of money
 	 *                           earned
 	 */
 
+	//select arrivedTime, SUM(afterDiscountPrice) AS price  from g9_gonature.orders where parkName='disney' and (arrivedTime BETWEEN '2021-01-01' and '2021-02-02' ) GROUP BY day(arrivedTime) order by day(arrivedTime);
+	
 	public static void incomesReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-
+		String parkName = (String)((ArrayList<String>)recived.get(1)).get(2);
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		String startDate = dataFromClient.get(0);
 		String endDate = dataFromClient.get(1);
@@ -288,7 +293,8 @@ public class Reports {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
 		query.add("orders");
-		query.add("SUM(afterDiscountPrice), arrivedTime");
+		query.add("arrivedTime, SUM(afterDiscountPrice) AS price");
+		query.add("WHERE parkName='"+ parkName +"' AND (arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "') GROUP BY day(arrivedTime) order by day(arrivedTime)");
 		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2)
 				+ "' AND amountArrived > 0 GROUP BY arrivedTime ORDER BY arrivedTime");
 		query.add("2");
