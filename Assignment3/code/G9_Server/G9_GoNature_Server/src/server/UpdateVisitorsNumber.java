@@ -190,9 +190,9 @@ public class UpdateVisitorsNumber {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("park"); // table name
-		query.add("parkName, currentVisitoreAmount"); // columns to select from
+		query.add("parkName, currentVisitoreAmount, maxVisitorAmount"); // columns to select from
 		query.add(""); // condition
-		query.add("2"); // how many columns returned
+		query.add("3"); // how many columns returned
 
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData);

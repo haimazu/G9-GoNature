@@ -7,7 +7,13 @@ import ocsf.server.ConnectionToClient;
 import orderData.OrderType;
 import userData.Member;
 
-//executed by Nastya
+
+/**
+* The NewMember program places a new member into the DB
+*
+* @author  Anastasia Kokin
+*/
+
 public class NewMember {
 
 	// input: ArrayList<Object>: cell[0] function name

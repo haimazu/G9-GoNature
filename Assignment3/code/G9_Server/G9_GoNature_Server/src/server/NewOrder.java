@@ -10,14 +10,24 @@ import orderData.Order;
 import orderData.OrderType;
 import userData.Member;
 
-//executed by Nastya
+/**
+ * The NewOrder program places a new order into the DB
+ *
+ * @author Anastasia Kokin
+ */
+
 public class NewOrder {
 
-	// input: ArrayList<Object>: cell[0] function name
-	// cell[1] order object ,ConnectionToClient
-	// inserting a new reservation in order table in DB
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] Order object with updated cells: price ,totalPrice
+	/**
+	 * inserting a new reservation in order table in DB
+	 * 
+	 * @param ArrayList<Object>: cell[0] function name // cell[1] order object
+	 *                           ,ConnectionToClient
+	 * 
+	 * @return ArrayList<Object>=> cell[0] function name // cell[1] Order object
+	 *         with updated cells: price ,totalPrice
+	 * 
+	 **/
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList a = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -47,11 +57,17 @@ public class NewOrder {
 
 	}
 
-	// input: ArrayList<Object>: cell[0] function name
-	// cell[1] order object
-	// cell[2] credit card object/null
-	// ConnectionToClient
-	// output:T/F
+	/**
+	 * function that called when we want to insert a new order and credit card into
+	 * the DB
+	 * 
+	 * @author: Roi Amar
+	 * @param cell[0] function name cell[1] order object cell[2] credit card
+	 *                object/null (ÎÏ ‰input)
+	 * @return T/F (Ù‰ Î˙Â· Ó‰ ‰È‰ ‰output)
+	 * @exception : ‡Ì È˘
+	 * 
+	 **/
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		System.out.println("queInsert start");
 		if (recived.get(2) != null)
@@ -64,8 +80,8 @@ public class NewOrder {
 		String subject = "GoNature Order Confirmation";
 		String messege = "order completed sucssesfuly!\n "
 				+ "dont forget to confirm you arrival 24 hours before the visit"
-				+ "\ndont worry, we will send you a reminder!"
-				+ "\nwe hope to see you soon!\n\n\n" + order.messegeString();
+				+ "\ndont worry, we will send you a reminder!" + "\nwe hope to see you soon!\n\n\n"
+				+ order.messegeString();
 		Comunication.sendNotification(subject, messege, order);
 	}
 
@@ -333,72 +349,3 @@ public class NewOrder {
 	}
 
 }
-
-// for backup
-////input: order
-//	//
-//	// output: to string for a query
-//	public static String toStringForReservation(Order data) {
-//
-//		String afterDiscount = Double.toString(data.getTotalPrice());
-//		String beforDiscount = Double.toString(data.getPrice());
-//		return "'" + data.getVisitorsNumber() + "','" + data.getOrderEmail() + "','" + data.getOrderPhone() + "','"
-//				+ data.getOrderType().toString() + "','" + afterDiscount + "','" + beforDiscount + "','"
-//				+ data.getParkName() + "','" + data.getArrivedTime() + "','" + data.getMemberId() + "','" + data.getID()
-//				+ "','" + data.getAmountArrived() + "','" + data.getOrderNumber() + "'";
-//	}
-// input: Order with empty totalPrice & price & orderType, a Member
-//
-// output: Order with updated totalPrice and price and orderType
-//public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
-//
-//	int parkEnteryPrice = CurrentPriceInPark(ord);
-//	if (!occasional)
-//		ord.setPrice(parkEnteryPrice * ord.getVisitorsNumber());// full price
-//	else
-//		ord.setPrice(parkEnteryPrice * ord.getAmountArrived());// full price
-//
-//	if (memb == null) {// if the order is not for a member
-//		ord.setOrderType(OrderType.REGULAR);
-//		ord.setID(null);
-//		ord.setMemberId(null);
-//		if (!occasional)
-//			ord.setTotalPrice(parkEnteryPrice * ord.getVisitorsNumber() * 0.85);
-//		else
-//			ord.setTotalPrice(parkEnteryPrice * ord.getAmountArrived() * 0.85);
-//	} else {// if the order is for members/group
-//
-//		switch (memb.getMemberOrderType()) {
-//		case MEMBER:
-//			ord.setOrderType(OrderType.MEMBER);
-//			int familymembers = Integer.parseInt(memb.getMemberAmount());
-//			int notFamilyMembers;
-//			if (occasional)
-//				notFamilyMembers = ord.getAmountArrived() - familymembers;
-//			else
-//				notFamilyMembers = ord.getVisitorsNumber() - familymembers;
-//			if (notFamilyMembers < 0)
-//				notFamilyMembers = 0;
-//			ord.setTotalPrice(familymembers * parkEnteryPrice * 0.80);
-//			if (occasional)
-//				ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice * 0.85);
-//			else
-//				ord.setTotalPrice(ord.getTotalPrice() + notFamilyMembers * parkEnteryPrice);
-//			break;
-//		case GROUP:
-//			ord.setOrderType(OrderType.GROUP);
-//			int groupAmount = Integer.parseInt(memb.getMemberAmount());
-//			if (!occasional) {
-//				groupAmount = Integer.parseInt(memb.getMemberAmount());
-//				ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.75);
-//			} else {
-//				groupAmount = ord.getAmountArrived();
-//				ord.setTotalPrice(groupAmount * parkEnteryPrice * 0.90);
-//			}
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-//	return ord;
-//}
