@@ -49,9 +49,9 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnSettings;
 	@FXML
-    private Pane pnSettings;
+	private Pane pnSettings;
 	@FXML
-    private Pane pnAccessControl;
+	private Pane pnAccessControl;
 
 	/***** Current Park Details *****/
 	@FXML
@@ -87,7 +87,7 @@ public class ParkEmployeeController implements Initializable {
 
 	/***** Show Details - Regular Entry *****/
 	@FXML
-    private Button btnManualAccess;
+	private Button btnManualAccess;
 	@FXML
 	private JFXTextField txtOrderNumber;
 	@FXML
@@ -142,22 +142,22 @@ public class ParkEmployeeController implements Initializable {
 		// Data fields
 		ArrayList<String> data = new ArrayList<String>();
 		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();	
-				
+		ArrayList<Object> msg = new ArrayList<Object>();
+
 		msg.add("updateLoggedIn");
 		// update as loggedin as logged out
 		data.add(LoginController.getUsername());
 		data.add(String.valueOf(0));
 		// Data fields
-		msg.add(data);	
+		msg.add(data);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
-				
+
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
 	}
-	
+
 	@FXML
 	public void handleSideBar(ActionEvent event) {
 		if (event.getSource() == btnAccessControl) {
@@ -170,13 +170,12 @@ public class ParkEmployeeController implements Initializable {
 			pnSettings.toFront();
 			setButtonPressed(btnSettings);
 			setButtonReleased(btnAccessControl);
-		} 
+		}
 	}
-	
+
 	public void setButtonPressed(Button button) {
-		button.setStyle("-fx-background-color: transparent;" 
-					  + "-fx-border-color: brown;"
-				      + "-fx-border-width: 0px 0px 0px 3px;");
+		button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: brown;"
+				+ "-fx-border-width: 0px 0px 0px 3px;");
 	}
 
 	public void setButtonReleased(Button button) {
@@ -192,12 +191,12 @@ public class ParkEmployeeController implements Initializable {
 		// call showDetails() function to set up all the order details
 
 		String fromSimulator = BarcodeSimulation.getSim().read(3);
-				
+
 		// memberId case: memberId = G2 ==> memberId = 2
 		if (Character.isLetter(fromSimulator.charAt(0))) {
-			//fromSimulator = memberId.substring(1);
+			// fromSimulator = memberId.substring(1);
 			fromSimulator.substring(1);
-		} 
+		}
 
 		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(fromSimulator)));
 
@@ -221,15 +220,16 @@ public class ParkEmployeeController implements Initializable {
 			setRandomModeOff();
 			return;
 		}
-		
+
 		if (txtOrderNumber.getText().isEmpty()) {
 			alert.failedAlert("Failed", "You must enter order number.");
 			return;
-		} 
+		}
 
 		// will not enter if already has information from the barcodeScan
 		if (!informationExists) {
-			sendToServerArrayList("ordersByOrderNumber", new ArrayList<String>(Arrays.asList(txtOrderNumber.getText())));
+			sendToServerArrayList("ordersByOrderNumber",
+					new ArrayList<String>(Arrays.asList(txtOrderNumber.getText())));
 
 			if (getError().equals("No such order")) {
 				alert.failedAlert("Failed", "No such order.");
@@ -245,7 +245,7 @@ public class ParkEmployeeController implements Initializable {
 		}
 
 		printOrderDetails();
-		
+
 		if (radExit.isSelected()) {
 			clearPaymentFields();
 		}
@@ -261,12 +261,12 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 		approveIsPressed = true;
-		
+
 		// random mode
 		if (!btnRandomVisitor.isVisible()) {
 			if (txtIdOrMemberId.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter id/memberid.");
-				return; 
+				return;
 			} else if (txtVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
@@ -278,12 +278,12 @@ public class ParkEmployeeController implements Initializable {
 				if (radEnter.isSelected()) {
 					orderStatus = false;
 					execRandomVisitor(Integer.parseInt(txtVisitorsAmount.getText()));
-				/*** Exit ***/
+					/*** Exit ***/
 				} else {
 					execExit();
 				}
 			}
-		// barcode / regular entry
+			// barcode / regular entry
 		} else {
 			if (txtOrderNumber.getText().isEmpty()) {
 				alert.failedAlert("Failed", "All fields required.");
@@ -295,66 +295,66 @@ public class ParkEmployeeController implements Initializable {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			}
-				
+
 			// if the order is for another park
 			if (!orderDetails.getParkName().equals(getParkName())) {
 				alert.failedAlert("Failed", "The order is for the park " + orderDetails.getParkName() + ".");
 				clearAllFields();
 				return;
 			}
-							
+
 			/*** Enter ***/ // check date and time
-			if (radEnter.isSelected() && checkDate() && checkTime("approve")) {	
+			if (radEnter.isSelected() && checkDate() && checkTime("approve")) {
 				orderStatus = true;
-				execEnter();	
+				execEnter();
 				/*** Exit ***/
 			} else if (radExit.isSelected()) {
 				execExit();
 			}
-		}	
-		
+		}
+
 		orderStatus = false;
 		// update park status
 		updateParkStatus(0);
 		clearAllFields();
 	}
-	
+
 	// checking the entrance of the random visitor
 	// sending to the server to update the current visitors amount
-	// input: new current visitors 
-	// output: updating the current visitors in the park 
+	// input: new current visitors
+	// output: updating the current visitors in the park
 	public void execRandomVisitor(int visitorsAmount) {
 		int updateCurrentVisitors = visitorsAmount;
-		
+
 		// update park status (for the 'else' part)
 		updateParkStatus(updateCurrentVisitors);
-				
+
 		// in case with order (the random visitors are the friends)
 		if (orderStatus) {
 			updateCurrentVisitors += Integer.parseInt(lblVisitorsNumber.getText());
 			// update park status
 			updateParkStatus(updateCurrentVisitors);
-				
+
 			// checking for places in the park
 			if (getError().equals("Free")) {
 				// update current visitors
 				updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
 				createFakeOrder("0", null, visitorsAmount);
-				// update the exact entry and exit time, for the ordered visitors && for the random friends
+				// update the exact entry and exit time, for the ordered visitors && for the
+				// random friends
 				updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label,
 						Integer.parseInt(lblVisitorsNumber.getText()));
-				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label,
-						visitorsAmount);
-				alert.successAlert("Success", 
-						Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
+				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(),
+						randomVisitorFakeOrderDetails.getOrderType().label, visitorsAmount);
+				alert.successAlert("Success", Integer.parseInt(lblVisitorsNumber.getText()) + " visitor/s with order.\n"
 						+ String.valueOf(visitorsAmount) + " casual visitor/s, entered.");
 			}
-		// in case without order (only random visitors)
+			// in case without order (only random visitors)
 		} else {
 			// checking for places in the park
 			if (getError().equals("Free")) {
-				// check if the random visitor have a fake order 
-				if (checkForExistingFakeOrders()) {		
+				// check if the random visitor have a fake order
+				if (checkForExistingFakeOrders()) {
 					if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && visitorsAmount > 15) {
 						alert.failedAlert("Failed", "You are registered as a guide, your group is up to 15 visitors.");
 						clearPaymentFields();
@@ -364,39 +364,40 @@ public class ParkEmployeeController implements Initializable {
 				// update current visitors
 				updateCurrentVisitors(parkDetails.getCurrentAmount() + visitorsAmount);
 				// update the exact entry and exit time
-				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label,
-						visitorsAmount);
-				alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");				
+				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(),
+						randomVisitorFakeOrderDetails.getOrderType().label, visitorsAmount);
+				alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
 			}
-		}		
+		}
 	}
-	
+
 	// enter control to the park
 	// input: none
-	// output: updating the current visitors in the park 
+	// output: updating the current visitors in the park
 	public void execEnter() {
-		int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());	
-		
+		int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());
+
 		// checks whether the number of visitors is greater than the number in the order
 		if (tooManyVisitors > Integer.parseInt(lblVisitorsNumber.getText())) {
-				
+
 			// check the available places in the park
 			updateParkStatus(tooManyVisitors);
-			
+
 			if (getError().equals("Free")) {
 				// the order is already used, need to make new purchase
 				if (orderDetails.getAmountArrived() != 0) {
 					// purchase as a random visitor
 					orderStatus = false;
 					// alert to ensure that the employee didn't get typing wrong
-					alert.ensureAlert("Ensure", "Are you sure you want to approve the purchase?\n"
-							+ "You can check if the additional visitors have a membership in the random part,"
-							+ " otherwise they will pay the full price for the entrance to the park.");
-					if (alert.getResult().equals("OK")) {	
+					alert.ensureAlert("Ensure",
+							"Are you sure you want to approve the purchase?\n"
+									+ "You can check if the additional visitors have a membership in the random part,"
+									+ " otherwise they will pay the full price for the entrance to the park.");
+					if (alert.getResult().equals("OK")) {
 						// make an automatic purchase for the additional visitors
-						execRandomVisitor(tooManyVisitors);				
-					} 
-				// the order is not used, just need to pay
+						execRandomVisitor(tooManyVisitors);
+					}
+					// the order is not used, just need to pay
 				} else {
 					orderStatus = true;
 					tooManyVisitors -= Integer.parseInt(lblVisitorsNumber.getText());
@@ -404,118 +405,121 @@ public class ParkEmployeeController implements Initializable {
 					// updates the number of visitors who came for a specific order
 					updateAmountArrived(Integer.parseInt(lblVisitorsNumber.getText()));
 				}
-			} 
-		// amount of visitors is less than or equal to what is on the order
+			}
+			// amount of visitors is less than or equal to what is on the order
 		} else {
 			// check the available places in the park
 			updateParkStatus(Integer.parseInt(txtVisitorsAmount.getText()));
-			
+
 			if (getError().equals("Free")) {
 				// the order is already used, need to make new purchase
 				if (orderDetails.getAmountArrived() != 0) {
 					// purchase as a random visitor
 					orderStatus = false;
-					// if this order is already listed in "Used", asked to make a purchase for everyone 
+					// if this order is already listed in "Used", asked to make a purchase for
+					// everyone
 					alert.ensureAlert("Ensure", "Visitors to this order have already entered the park.\n"
 							+ "Are you sure you want to approve the purchase for everyone?");
 					if (alert.getResult().equals("OK")) {
 						execRandomVisitor(Integer.parseInt(txtVisitorsAmount.getText()));
 					}
-				// the order is not used, just need to pay
+					// the order is not used, just need to pay
 				} else {
 					orderStatus = true;
 					// updates the number of visitors who came for a specific order
-					updateAmountArrived(Integer.parseInt(txtVisitorsAmount.getText()));	
+					updateAmountArrived(Integer.parseInt(txtVisitorsAmount.getText()));
 					// update current visitors
-					updateCurrentVisitors(parkDetails.getCurrentAmount() + 
-										  Integer.parseInt(txtVisitorsAmount.getText()));	
+					updateCurrentVisitors(
+							parkDetails.getCurrentAmount() + Integer.parseInt(txtVisitorsAmount.getText()));
 					// update the exact entry and exit time
 					updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label,
 							Integer.parseInt(txtVisitorsAmount.getText()));
-					alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");	
+					alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 				}
 			}
 		}
 	}
-	
+
 	// exit control from the park
 	// input: none
-	// output: updating the current visitors in the park 
+	// output: updating the current visitors in the park
 	public void execExit() {
 		int updateCurrentVisitors = 0;
 		String memberId = "";
-		
+
 		// update places in the park
 		updateParkStatus(0);
-					
+
 		// random mode
 		if (!btnRandomVisitor.isVisible()) {
 			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());
 
 			// there are not enough visitors to the park
 			if (updateCurrentVisitors < 0) {
-				alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");	
+				alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
 				return;
 			}
-							
+
 			// memberId case
 			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
 				memberId = txtIdOrMemberId.getText().substring(1);
 				sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(memberId)));
-			// id case
+				// id case
 			} else {
-				sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(txtIdOrMemberId.getText())));
-			}			
-					
+				sendToServerArrayList("ordersByIdOrMemberId",
+						new ArrayList<String>(Arrays.asList(txtIdOrMemberId.getText())));
+			}
+
 			// the visitors did not fulfilled the invitation
 			if (getError().equals("Failed")) {
 				alert.failedAlert("Failed", "The visitor/s didn't enter.");
 				clearAllFields();
 				return;
 			}
-			
+
 			// number of leavers <= number of entered
 			if (randomVisitorFakeOrderDetails.getAmountArrived() != 0) {
 				// update the exact entry and exit time
-				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label, 0);
+				updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(),
+						randomVisitorFakeOrderDetails.getOrderType().label, 0);
 				// update current visitors
-				updateCurrentVisitors(updateCurrentVisitors);	
-				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
-			} 
-		// barcode / regular mode (with order)
+				updateCurrentVisitors(updateCurrentVisitors);
+				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");
+			}
+			// barcode / regular mode (with order)
 		} else {
-			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());	
-			
+			updateCurrentVisitors = parkDetails.getCurrentAmount() - Integer.parseInt(txtVisitorsAmount.getText());
+
 			// there are not enough visitors to the park
 			if (updateCurrentVisitors < 0) {
-				alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");	
+				alert.failedAlert("Failed", "The amount of visitors is lower than the number existing in the park.");
 				return;
 			}
-			
+
 			// number of leavers <= number of entered
 			if (orderDetails.getAmountArrived() != 0) {
 				// update the exact entry and exit time
-				updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label, 0);				
+				updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label, 0);
 				// update current visitors
-				updateCurrentVisitors(updateCurrentVisitors);	
-				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
+				updateCurrentVisitors(updateCurrentVisitors);
+				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");
 			} else {
 				alert.failedAlert("Failed", "The visitor/s in this invitation didn't enter.");
 			}
-		} 
+		}
 	}
-	
-	// updates fake order 
+
+	// updates fake order
 	// input: none
 	// output: T / F ==> if exists return true
-	//         			 otherwise creates new 'fake order' and return false
-	public boolean checkForExistingFakeOrders() {	
+	// otherwise creates new 'fake order' and return false
+	public boolean checkForExistingFakeOrders() {
 		String id = null;
 		String memberId = "0";
 		String currentValue = "";
-		
+
 		/***** Random *****/
-		if (!orderStatus && !btnRandomVisitor.isVisible()) {		
+		if (!orderStatus && !btnRandomVisitor.isVisible()) {
 			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
 				memberId = txtIdOrMemberId.getText().substring(1);
 				currentValue = memberId;
@@ -523,19 +527,19 @@ public class ParkEmployeeController implements Initializable {
 				id = txtIdOrMemberId.getText();
 				currentValue = id;
 			}
-			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));	
+			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));
 		} else {
-			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));							
+			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));
 		}
-			
+
 		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(currentValue)));
 
 		if (getError().equals("No such order")) {
 			return false;
-		} 
+		}
 		return true;
 	}
-	
+
 	// updates prices for ordered visitors
 	// input: none
 	// output: prints the latest data for payment
@@ -545,12 +549,12 @@ public class ParkEmployeeController implements Initializable {
 		double orderVisitorDiscount = 0;
 		double randomVisitorDiscount = 0;
 		String tempDate = dateAndTimeFormat;
-		
+
 		// format time
 		checkTime("setPrice");
 		tempDate += timeFormat;
 		// after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
-		
+
 		difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
 		// visitorsAmount <= visitorsNumber in order
 		if (difference <= 0) {
@@ -560,89 +564,97 @@ public class ParkEmployeeController implements Initializable {
 				orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
 				lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "%");
 				lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪");
-			// order used
+				// order used
 			} else {
 				createFakeOrder("0", null, Integer.parseInt(txtVisitorsAmount.getText()));
 			}
-		// visitorsAmount > visitorsNumber in order
+			// visitorsAmount > visitorsNumber in order
 		} else {
 			// order not used
 			if (orderDetails.getAmountArrived() == 0) {
 				// id = memberId = null
 				fakeOrder = new Order(getParkName(), tempDate, "0", null, difference);
-				
+
 				// check for a member with fake order
 				sendToServerObject("randomVisitorFakeOrder", fakeOrder);
-				// create new order for the random visitors (add to DB only if pressed 'Approve')
+				// create new order for the random visitors (add to DB only if pressed
+				// 'Approve')
 				if (approveIsPressed) {
 					sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
 					approveIsPressed = false;
 				}
-				
+
 				// set price
-				lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪ , " 
-							   + String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
+				lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪ , "
+						+ String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
 				// set discount
 				orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-				randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+				randomVisitorDiscount = (1
+						- (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice()))
+						* 100;
 				lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "% , "
-								  + String.format("%.1f", randomVisitorDiscount) + "%");	
+						+ String.format("%.1f", randomVisitorDiscount) + "%");
 				// set total price
-				lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪ + " 
-							   + String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪ = " 
-							   + String.format("%.1f", (orderDetails.getTotalPrice() + randomVisitorFakeOrderDetails.getTotalPrice())) + "₪");
-			// order used
+				lblTotalPrice
+						.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪ + "
+								+ String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪ = "
+								+ String.format("%.1f",
+										(orderDetails.getTotalPrice() + randomVisitorFakeOrderDetails.getTotalPrice()))
+								+ "₪");
+				// order used
 			} else {
 				createFakeOrder("0", null, Integer.parseInt(txtVisitorsAmount.getText()));
 			}
 		}
 	}
-	
+
 	// create fake order for the random visitors (for statistics)
-	// input: [0] case name 
-	//        [1] Order object
+	// input: [0] case name
+	// [1] Order object
 	// output: get the new order details and prints the prices on the screen
 	public void createFakeOrder(String memberId, String id, int amountArrived) {
 		Order fakeOrder;
 		double randomVisitorDiscount = 0;
 		String tempDate = dateAndTimeFormat;
-		
+
 		// format time
 		checkTime("setPrice");
 		tempDate += timeFormat;
 		// after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
-		
+
 		// id = memberId = null
 		fakeOrder = new Order(getParkName(), tempDate, memberId, id, amountArrived);
-		
+
 		// check for a member with fake order
 		sendToServerObject("randomVisitorFakeOrder", fakeOrder);
-		
+
 		if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && amountArrived > 15) {
 			return;
 		}
-		
-		// create new order for the random visitors (add to DB only if pressed 'Approve')
+
+		// create new order for the random visitors (add to DB only if pressed
+		// 'Approve')
 		if (approveIsPressed) {
 			sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
 			approveIsPressed = false;
 		}
-		
+
 		lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
-		randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
-		lblDiscount.setText(String.format("%.1f", randomVisitorDiscount) + "%");			
+		randomVisitorDiscount = (1
+				- (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+		lblDiscount.setText(String.format("%.1f", randomVisitorDiscount) + "%");
 		lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
 	}
 
 	// check for valid date in the order
-	// input: [0] 'today's date' 
-	//        [1] order date
+	// input: [0] 'today's date'
+	// [1] order date
 	// output: return true if that's today's date
-	//         otherwise false
+	// otherwise false
 	public boolean checkDate() {
 		LocalDate arrivelDate = LocalDate.now();
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		
+
 		// "dd-MM-yyyy"
 		String currentDate = dateFormatter.format(arrivelDate);
 		String orderDate = lblDate.getText();
@@ -656,10 +668,10 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	// check for correct visit time in the order
-	// input: [0] 'the time now' 
-	//        [1] order time range
+	// input: [0] 'the time now'
+	// [1] order time range
 	// output: return true if the visitor arrived at the right hours
-	//         otherwise false
+	// otherwise false
 	public boolean checkTime(String from) {
 		timeFormat = "";
 		int arrivelHour = 0;
@@ -688,12 +700,12 @@ public class ParkEmployeeController implements Initializable {
 				return true;
 			}
 		} else if (currentHour >= 16 && currentHour < 20) {
-			timeFormat = " 16:00:00";//TODO
+			timeFormat = " 16:00:00";// TODO
 			if (arrivelHour == 16) {
 				return true;
 			}
 		}
-		
+
 		if (from.equals("setPrice")) {
 			return false;
 		}
@@ -701,34 +713,35 @@ public class ParkEmployeeController implements Initializable {
 		alert.failedAlert("Failed", "Arrival time doesn't match the time on order.");
 		return false;
 	}
-	
+
 	// input: number of visitor to update
 	// output: updates the number of visitors who came for a specific order
 	public void updateAmountArrived(int amountArrivedInOrder) {
 		// ArrayList<String> data
-		// 		  cell 0: orderNumber
-		//        cell 1: new arrived amount (updated one)
+		// cell 0: orderNumber
+		// cell 1: new arrived amount (updated one)
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(String.valueOf(orderDetails.getOrderNumber()));
 		data.add(String.valueOf(amountArrivedInOrder));
 		sendToServerArrayList("updateAmountArrived", data);
-		
+
 		// check if the update failed and showing alert
 		if (getError().equals("false")) {
 			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
 			return;
 		}
 	}
-	
+
 	// updates the current amount of visitors in the appropriate park table
 	// input: number of visitor to update
 	// output: updated number of visitors in DB
 	public void updateCurrentVisitors(int updateCurrentVisitors) {
-		// ArrayList<String> data, sending to the server to update the current visitors amount
+		// ArrayList<String> data, sending to the server to update the current visitors
+		// amount
 		// input: cell 0: parkName
-		//        cell 1: new current visitors (updated one)
+		// cell 1: new current visitors (updated one)
 		// output: message with the result of the update: true if success
-		//                                                false, otherwise
+		// false, otherwise
 		ArrayList<String> data = new ArrayList<String>();
 		data.add(getParkName());
 		data.add(String.valueOf(updateCurrentVisitors));
@@ -741,19 +754,19 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 	}
-	
+
 	// ArrayList<String> data, sending to the server to update the access control
 	// input: on enter: cell 0: orderNumber
-	//        			cell 1: entryTime / exitTime
-	//        			cell 2: parkName
-	//        			cell 3: orderType
-	//                  cell 4: amountArrived
+	// cell 1: entryTime / exitTime
+	// cell 2: parkName
+	// cell 3: orderType
+	// cell 4: amountArrived
 	// output: message with the result of the update: true if success
-	//                                                false, otherwise
+	// false, otherwise
 	public void updateAccessControl(int orderNumber, String orderType, int amountArrived) {
 		DateTimeFormatter dateAndTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime currentTime = LocalDateTime.now();
-		
+
 		ArrayList<String> data = new ArrayList<String>();
 
 		data.add(String.valueOf(orderNumber));
@@ -770,7 +783,7 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 	}
-	
+
 	// input: none
 	// output: update the park title with the current visitors
 	public void updateParkStatus(int addToEnter) {
@@ -778,36 +791,41 @@ public class ParkEmployeeController implements Initializable {
 		data.add(getParkName());
 		data.add(String.valueOf(addToEnter));
 		sendToServerArrayList("getParkDetails", data);
-		
+
 		// the park is empty
 		if (parkDetails.getCurrentAmount() == 0) {
 			theParkIsFullOrEmpty("Empty");
 		} else {
 			radExit.setDisable(false);
 		}
-		
+
 		// the park is full
 		if (getError().equals("Full")) {
 			theParkIsFullOrEmpty("Full");
 			return;
-		} 
-		
+		}
+
 		// too many visitors (check after enter)
 		if (approveIsPressed && getError().equals("Greater") && radEnter.isSelected()) {
 			alert.failedAlert("Failed", "The amount of visitors is greater than the number existing in the park.");
 			approveIsPressed = false;
 			return;
-		} 
-		
+		}
+
 		setError("Free");
-		lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
-				+ String.valueOf(parkDetails.getCurrentAmount()) + "/" 
+		lblCurrentVisitors.setText("[" + getParkName() + "]:  " + String.valueOf(parkDetails.getCurrentAmount()) + "/"
 				+ parkDetails.getMaximumCapacityInPark());
 	}
-	
+
+	public void setCurrentVisitors(String visitNum) {
+//	lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
+//			+ String.valueOf(visitNum + "/" 
+//			+ parkDetails.getMaximumCapacityInPark()));
+	}
+
 	// prints order data
 	// input: order
-	// output: prints the order data 
+	// output: prints the order data
 	public void printOrderDetails() {
 		// 2021-01-01 08:00:00
 		String DateAndTime = orderDetails.getArrivedTime();
@@ -835,55 +853,55 @@ public class ParkEmployeeController implements Initializable {
 			if (orderDetails.getOrderEmail().equals("null")) {
 				lblVisitorsNumber.setText(String.valueOf(orderDetails.getAmountArrived()));
 			} else {
-				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));				
+				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			}
 
 			if (!txtVisitorsAmount.getText().isEmpty()) {
-				setPriceForOrdering();				
+				setPriceForOrdering();
 			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// String type, the case we dealing with
 	// Object obj, sending to the server to get data
 	// input: object
 	// output: none
 	public void sendToServerObject(String type, Object obj) {
 		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();		
+		ArrayList<Object> msg = new ArrayList<Object>();
 		msg.add(type);
 		// Data fields
 		if (obj instanceof Order) {
-			msg.add((Order) obj);			
-		}	
+			msg.add((Order) obj);
+		}
 		msg.add(null);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
 	}
-	
+
 	// String type, the case we dealing with
 	// ArrayList<String> dbColumns, sending to the server to get data
 	// input: cells, depending on the case
 	// output: none
 	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
 		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();	
+		ArrayList<Object> msg = new ArrayList<Object>();
 		msg.add(type);
 		// Data fields
-		msg.add(dbColumns);	
+		msg.add(dbColumns);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
 	}
-	
+
 	// getting information from the server
-	// input: if the order number exists in the system: 
-	// 		  		1. ArrayList<String> order with all the order data
-	//        otherwise 2. string of "No such order"
+	// input: if the order number exists in the system:
+	// 1. ArrayList<String> order with all the order data
+	// otherwise 2. string of "No such order"
 	// output: for case 1. we create new order with all the received details
-	//         for case 2. we set the error message
+	// for case 2. we set the error message
 	public static void receivedFromServerOrderDetails(Object msg) {
 		if (msg instanceof Order) {
 			ParkEmployeeController.orderDetails = (Order) msg;
@@ -897,7 +915,7 @@ public class ParkEmployeeController implements Initializable {
 	// output: new park
 	public static void receivedFromServerParkDetails(Object msg) {
 		if (msg instanceof Park) {
-			ParkEmployeeController.parkDetails = (Park) msg;			
+			ParkEmployeeController.parkDetails = (Park) msg;
 		} else if (msg instanceof String) {
 			if (((String) msg).equals("Full")) {
 				setError("Full");
@@ -908,13 +926,13 @@ public class ParkEmployeeController implements Initializable {
 			}
 		}
 	}
-	
+
 	// getting information from the server
-	// input: if the member exists in the system: 
-	// 		  		1. ArrayList<String> member with all the member data
-	//        otherwise 2. string of "Not a member"
+	// input: if the member exists in the system:
+	// 1. ArrayList<String> member with all the member data
+	// otherwise 2. string of "Not a member"
 	// output: for case 1. we create new member with all the received details
-	//         for case 2. we set the error message
+	// for case 2. we set the error message
 	public static void receivedFromServerVisitorsPrice(Object msg) {
 		if (msg instanceof Order) {
 			ParkEmployeeController.randomVisitorFakeOrderDetails = (Order) msg;
@@ -922,12 +940,12 @@ public class ParkEmployeeController implements Initializable {
 			setError((String) msg);
 		}
 	}
-	
+
 	// acceptance status
 	// input: boolean status
 	// output: set error message with the following return
 	// T / F ==> T if succeeded
-	//           F otherwise
+	// F otherwise
 	public static void receivedFromServerUpdateStatus(boolean status) {
 		if (status) {
 			setError("true");
@@ -935,7 +953,7 @@ public class ParkEmployeeController implements Initializable {
 			setError("false");
 		}
 	}
-	
+
 	// acceptance status
 	// input: String status
 	// output: set entryAndExitStatus string with the following return
@@ -951,7 +969,7 @@ public class ParkEmployeeController implements Initializable {
 			setEntryAndExitStatus("Leaved");
 		}
 	}
-	
+
 	public static String getFirstName() {
 		return firstName;
 	}
@@ -987,7 +1005,7 @@ public class ParkEmployeeController implements Initializable {
 	public static void setParkName(String parkName) {
 		ParkEmployeeController.parkName = parkName;
 	}
-	
+
 	// enter random mode
 	// input: random button has been pressed
 	// output: screen changes
@@ -1001,12 +1019,12 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
 		clearAllOrderFields();
-		
+
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.format(time));
 	}
-	
+
 	// turns off random mode
 	// input: none
 	// output: screen changes
@@ -1021,7 +1039,7 @@ public class ParkEmployeeController implements Initializable {
 			radExit.setDisable(true);
 		}
 	}
-	
+
 	// turns off random mode
 	// input: none
 	// output: screen changes
@@ -1063,7 +1081,7 @@ public class ParkEmployeeController implements Initializable {
 		orderStatus = false;
 		approveIsPressed = false;
 	}
-	
+
 	// turns off order mode
 	// input: none
 	// output: screen changes
@@ -1082,7 +1100,7 @@ public class ParkEmployeeController implements Initializable {
 		orderStatus = false;
 		approveIsPressed = false;
 	}
-	
+
 	// turns off payment mode (on exit)
 	// input: none
 	// output: screen changes
@@ -1093,27 +1111,24 @@ public class ParkEmployeeController implements Initializable {
 		orderStatus = false;
 		approveIsPressed = false;
 	}
-	
-	public void setCurrentVisitors(ArrayList<Object> arr) {
-		
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setPEC(this);
+
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
 		setRandomModeOff();
-		
-		//setParkName(LoginController.getParkName());
+
+		// setParkName(LoginController.getParkName());
 		setParkName("jurasic");
 		updateParkStatus(0);
-		
+
 		/***** Random *****/
 		LocalDateTime arrivelDate = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		dateAndTimeFormat = arrivelDate.format(formatter);
-		
+
 		lblRandomDate.setText(arrivelDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
 		/***** Barcode / Regular *****/
@@ -1126,14 +1141,14 @@ public class ParkEmployeeController implements Initializable {
 				txtOrderNumber.setText(newValue.replaceAll("[^\\d]", ""));
 			}
 		});
-		
+
 		// force the field to be numeric only
-		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {	
+		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
-			
+
 			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
 				if (!btnRandomVisitor.isVisible() && !txtIdOrMemberId.getText().isEmpty()) {
-	 				// update random visitor prices
+					// update random visitor prices
 					checkForExistingFakeOrders();
 				} else if (!txtOrderNumber.getText().isEmpty()) {
 					showDetails(null);
@@ -1147,7 +1162,7 @@ public class ParkEmployeeController implements Initializable {
 			}
 		});
 
-		/***** Random *****/	
+		/***** Random *****/
 		// force the field to be numeric only
 		txtIdOrMemberId.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
