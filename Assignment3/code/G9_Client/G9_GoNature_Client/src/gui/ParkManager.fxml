@@ -172,8 +172,8 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="dpFromU" editable="false" focusTraversable="false" layoutX="39.0" layoutY="53.0" promptText="From Date" />
-                  <JFXDatePicker fx:id="dpToU" editable="false" focusTraversable="false" layoutX="235.0" layoutY="53.0" promptText="To Date" />
+                  <JFXDatePicker fx:id="dpFromU" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="39.0" layoutY="53.0" promptText="From Date" styleClass="date-picker" stylesheets="@application.css" />
+                  <JFXDatePicker fx:id="dpToU" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="235.0" layoutY="53.0" promptText="To Date" />
                   <Button fx:id="showUsage" focusTraversable="false" layoutX="434.0" layoutY="55.0" mnemonicParsing="false" onAction="#showUsage" styleClass="btnSmallGreen" text="Show" />
                   <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true" visible="false">
                     <columns>
@@ -218,8 +218,8 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="dpFrom" editable="false" focusTraversable="false" layoutX="22.0" layoutY="72.0" promptText="From Date" />
-                  <JFXDatePicker fx:id="dpTo" editable="false" focusTraversable="false" layoutX="218.0" layoutY="72.0" promptText="To Date" />
+                  <JFXDatePicker fx:id="dpFrom" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="22.0" layoutY="72.0" promptText="From Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
+                  <JFXDatePicker fx:id="dpTo" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="218.0" layoutY="72.0" promptText="To Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
                   <Button fx:id="btnShow" focusTraversable="false" layoutX="422.0" layoutY="75.0" mnemonicParsing="false" onAction="#showChart" styleClass="btnSmallGreen" text="Show" />
                   <BarChart fx:id="bcVisitorsChart" barGap="5.0" categoryGap="2.0" layoutX="-9.0" layoutY="116.0" prefHeight="430.0" prefWidth="613.0">
                      <xAxis>
