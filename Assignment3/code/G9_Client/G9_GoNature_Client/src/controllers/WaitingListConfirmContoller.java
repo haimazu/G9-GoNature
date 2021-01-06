@@ -20,6 +20,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * controller handles the confirmation Entry to the waiting list
+ * 
+ * @author Bar Katz
+ *
+ */
+
 public class WaitingListConfirmContoller {
 
 	@FXML
@@ -53,11 +60,12 @@ public class WaitingListConfirmContoller {
 	}
 
 	/**
-	 * button ListMe - client's aprrove for enter to wait list
+	 * button ListMe - client's approve for enter to wait list
 	 * 
-	 * @param event
+	 * @param ActionEvent event
 	 * @throws IOException
 	 */
+	
 	@FXML
 	void listMe(ActionEvent event) throws IOException {
 		ArrayList<Object> msgWaitList = new ArrayList<>();
@@ -89,10 +97,11 @@ public class WaitingListConfirmContoller {
 	}
 
 	/**
-	 * get from server that the client enter to the wait list in the db
+	 * receives from server the status of the entry confirmation to the waiting list 
 	 * 
-	 * @param status
+	 * @param status Object
 	 */
+	
 	public static void recivedfromWaitListServer(Object status) {
 		if (status instanceof Boolean) {
 			Boolean flag1 = (boolean) status;
@@ -105,10 +114,11 @@ public class WaitingListConfirmContoller {
 	}
 
 	/**
-	 * check the radi button to agree the terms
+	 * check the radio button to agree the terms
 	 * 
-	 * @return
+	 * @return T/F
 	 */
+	
 	public boolean checkAgreeRadioBtn() {
 		if (agree.isSelected()) {
 			return true;
