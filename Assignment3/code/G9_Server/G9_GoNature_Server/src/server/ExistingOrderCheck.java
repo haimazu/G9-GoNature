@@ -5,18 +5,26 @@ import java.util.ArrayList;
 import ocsf.server.ConnectionToClient;
 import orderData.Order;
 
+/**
+ * The ExistingOrderCheck program checks if there is an existing order
+ *
+ * @author Roi Amar
+ */
+
 public class ExistingOrderCheck {
-	
-	//input: array list of object contains:
-	//			[0] -> String ordersByIdOrMemberId OR ordersByOrderNumber
-	//			[1] -> ArrayList of String contains:
-	//							[0] -> orderNumber
-	//output: NONE
-	//send to client: Order Class if an order found, string "No such order" if not
+
+	/**
+	 * send to client: Order Class if an order found, string "No such order" if not
+	 * 
+	 * @param recived ArrayList<Object> [0] -> String ordersByIdOrMemberId OR
+	 *                ordersByOrderNumber [1] -> ArrayList of String contains: [0]
+	 *                -> orderNumber
+	 * @param client
+	 */
 	public static void getOrderDetailsByOrderNumber(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		ArrayList<ArrayList<String>> queryData = fechOrder(recived,"orders","orderNumber");
+		ArrayList<ArrayList<String>> queryData = fechOrder(recived, "orders", "orderNumber");
 		if (queryData.isEmpty()) {
 			answer.add("No such order");
 		} else {
@@ -25,15 +33,17 @@ public class ExistingOrderCheck {
 		}
 		EchoServer.sendToMyClient(answer, client);
 	}
-	
-	//input: array list of object contains:
-	//			[0] -> String ordersByIdOrMemberId OR ordersByOrderNumber
-	//			[1] -> ArrayList of String contains:
-	//							[0] -> orderNumber
-	//		table name as string
-	//		col name as string
-	//output: ArrayList<ArrayList<String>> containing the order deatils, empty if no details
-	@SuppressWarnings("unchecked")
+
+	/**
+	 * 
+	 * @param recived   array list of object contains: [0] -> String
+	 *                  ordersByIdOrMemberId OR ordersByOrderNumber [1] -> ArrayList
+	 *                  of String contains: [0] -> orderNumber
+	 * @param tableName table name as string
+	 * @param colName   col name as string
+	 * @return ArrayList<ArrayList<String>> containing the order details, empty if
+	 *         no details
+	 */
 	public static ArrayList<ArrayList<String>> fechOrder(ArrayList<Object> recived, String tableName, String colName) {
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
 		ArrayList<String> query = new ArrayList<String>();
@@ -48,9 +58,13 @@ public class ExistingOrderCheck {
 		query.add("12"); // how many columns returned
 		return MySQLConnection.select(query);
 	}
-	
-	//input: order number as string
-	//output: boolean true if exist in pendingwaitlist false if not
+
+	/**
+	 * checks if order is pending
+	 * 
+	 * @param orderNum String
+	 * @return boolean true if exist in pendingwaitlist false if not
+	 */
 	public static boolean checkIfPending(String orderNum) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -62,21 +76,21 @@ public class ExistingOrderCheck {
 		return (!queryData.isEmpty());
 	}
 
-	//input: array list of object contains:
-	//			[0] -> String checkOrderForGo
-	//			[1] -> ArrayList of String contains:
-	//							[0] -> orderNumber
-	//output: NONE
-	//send to client: array list of object contains:
-	//					[0] -> String checkOrderForGo
-	//					[1] -> Order Class if an order found, string "No such order" if not
-	//					[2] -> (if an order is found only) True if the order is in pendingwaitlist table
+	/**
+	 * send to client: array list of object contains: [0] -> String checkOrderForGo
+	 * [1] -> Order Class if an order found, string "No such order" if not [2] ->
+	 * (if an order is found only) True if the order is in pendingwaitlist table
+	 * 
+	 * @param recived ArrayList<Object> array list of object contains: [0] -> String
+	 *                checkOrderForGo [1] -> ArrayList of String contains: [0] ->
+	 *                orderNumber
+	 * @param client  ConnectionToClient
+	 */
 	public static void checkOrderForGo(ArrayList<Object> recived, ConnectionToClient client) {
-		// TODO Auto-generated method stub
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		String orderNum = ((ArrayList<String>)recived.get(1)).get(0);
-		ArrayList<ArrayList<String>> queryData = fechOrder(recived,"orders","orderNumber");
+		String orderNum = ((ArrayList<String>) recived.get(1)).get(0);
+		ArrayList<ArrayList<String>> queryData = fechOrder(recived, "orders", "orderNumber");
 		if (queryData.isEmpty()) {
 			answer.add("No such order");
 		} else {
