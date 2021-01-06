@@ -291,6 +291,7 @@ public class PendingMenagerRequest implements Serializable {
 		answer.add(recived.get(0));
 		ArrayList<ArrayList<Object>> reqTable = (ArrayList<ArrayList<Object>>) recived.get(1);
 		ArrayList<ArrayList<Object>> retTable = new ArrayList<ArrayList<Object>>();
+		
 		for (ArrayList<Object> req : reqTable) {
 			ArrayList<Object> ret = new ArrayList<Object>();
 			ManagerRequest mr = (ManagerRequest) req.get(0);
@@ -341,7 +342,7 @@ public class PendingMenagerRequest implements Serializable {
 						query3.add("discounts");
 						query3.add(toStringForDBDiscounts(mr));
 						ret.add(MySQLConnection.insert(query3));
-						break;
+						continue;
 					}
 
 				}
@@ -356,7 +357,7 @@ public class PendingMenagerRequest implements Serializable {
 					query2.add("parkName");
 					query2.add(mr.getParkName());
 					ret.add(MySQLConnection.update(query2));
-					break;
+					continue;
 				}
 
 				if (mr.getRequestType().equals("max_o")) {
@@ -368,11 +369,11 @@ public class PendingMenagerRequest implements Serializable {
 					query2.add("parkName");
 					query2.add(mr.getParkName());
 					ret.add(MySQLConnection.update(query2));
-					break;
+					continue;
 				}
 			}
 			System.out.println(ret);
-			retTable.add(new ArrayList<Object>(ret));
+			retTable.add(ret);
 
 		}
 		answer.add(new ArrayList<Object>(retTable));
