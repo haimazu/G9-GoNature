@@ -342,6 +342,7 @@ public class PendingMenagerRequest implements Serializable {
 						query3.add("discounts");
 						query3.add(toStringForDBDiscounts(mr));
 						ret.add(MySQLConnection.insert(query3));
+						retTable.add(ret);
 						continue;
 					}
 
@@ -357,6 +358,7 @@ public class PendingMenagerRequest implements Serializable {
 					query2.add("parkName");
 					query2.add(mr.getParkName());
 					ret.add(MySQLConnection.update(query2));
+					retTable.add(ret);
 					continue;
 				}
 
@@ -369,11 +371,10 @@ public class PendingMenagerRequest implements Serializable {
 					query2.add("parkName");
 					query2.add(mr.getParkName());
 					ret.add(MySQLConnection.update(query2));
+					retTable.add(ret);
 					continue;
 				}
 			}
-			System.out.println(ret);
-			retTable.add(ret);
 
 		}
 		answer.add(retTable);
