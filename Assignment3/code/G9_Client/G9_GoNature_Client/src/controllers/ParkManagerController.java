@@ -866,7 +866,7 @@ public class ParkManagerController implements Initializable {
 			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			data.add(dpTo.getValue().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-			sendToServerArrayList(data);
+			sendToServerArrayListForOverralVistiReports(data);
 			System.out.println(
 					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
@@ -880,7 +880,7 @@ public class ParkManagerController implements Initializable {
 		}
 	}
 
-	public void sendToServerArrayList(ArrayList<String> data) {
+	public void sendToServerArrayListForOverralVistiReports(ArrayList<String> data) {
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("overallVisitorsReport");
 		msg.add(data);
@@ -978,7 +978,13 @@ public class ParkManagerController implements Initializable {
 					"print date to server : " + dpFromU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			ClientUI.sentToChatClient(msg);
 
-			chartUsage();
+			if (!getErrorInchart())
+				chartUsage();
+			else {
+				noDataTopresentInchartForDates();
+				bcUsageChart.getData().clear();
+				setDatePickerForUsageReport();
+			}
 		}
 
 	}
@@ -1146,7 +1152,7 @@ public class ParkManagerController implements Initializable {
 	}
 	/*-------end of revenue report section --------*/
 
-	/*----received from server section ---*/
+	/*---------received from server section ------*/
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
 
@@ -1178,9 +1184,10 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverUsageReport(ArrayList<ArrayList<String>> usageReportAnswer) {
 		setUsageReport(null);
-		if ((Object) usageReportAnswer instanceof ArrayList<?>)
+		if (usageReportAnswer.isEmpty())
 			seterrorInchart(true);
 		else {
+			seterrorInchart(false);
 			setUsageReport(usageReportAnswer);
 
 		}
@@ -1197,5 +1204,5 @@ public class ParkManagerController implements Initializable {
 		}
 
 	}
-
+ 
 }
