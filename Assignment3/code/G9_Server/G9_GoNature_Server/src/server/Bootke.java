@@ -78,9 +78,9 @@ public class Bootke {
 			priceAfterDiscount += stubOrder.getTotalPrice();
 			disount = (1-(priceBeforeDiscount-priceAfterDiscount)/priceBeforeDiscount)*100; //discount in precent
 		}
-		answer.add(priceBeforeDiscount);
-		answer.add(priceAfterDiscount);
-		answer.add(disount);
+		answer.add(priceBeforeDiscount.toString());
+		answer.add(priceAfterDiscount.toString());
+		answer.add(disount.toString());
 		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {

@@ -271,15 +271,23 @@ public class PendingMenagerRequest implements Serializable {
 	/**
 	 * deletes approved and disapproved managers requests and executes them in their
 	 * DB, sends to client: ArrayList of Object: cell[0] calling function name,
+<<<<<<< Updated upstream
 	 * cell[1] ArrayList of ArrayList of Object = call[0-n] = ArrayList of Object =
 	 * cell[0] = request cell[1] = True if deleteCond success, false if failed
 	 * cell[2] = false if discount on this day or failed to insert DB, true
+=======
+	 * cell[1] ArrayList<ArrayList<Object>> => call[0-n] => ArrayList of Object =>
+	 * 														cell[0] => request
+	 * 														cell[1] => True if deleteCond success, false if failed
+	 * 														cell[2] => false if discount on this day or failed to insert DB, true
+>>>>>>> Stashed changes
 	 * otherwise
 	 * 
-	 * @param recived ArrayList of Object : cell[0] => String
-	 *                removePendingsManagerReq cell[1] =>
-	 *                ArrayList<ArrayList<Object>> => cell[0-n] => ArrayList Object
-	 *                => cell[0] ManagerRequest object cell[1] yes/no
+	 * @param recived ArrayList of Object : cell[0] => String removePendingsManagerReq
+	 * 										cell[1] => ArrayList<ArrayList<Object>> =>
+														cell[0-n] => ArrayList Object
+	 *                													=> cell[0] ManagerRequest object
+	 *                														cell[1] yes/no
 	 * @param client  ConnectionToClient
 	 * 
 	 */
@@ -290,9 +298,9 @@ public class PendingMenagerRequest implements Serializable {
 		ArrayList<ArrayList<Object>> retTable = new ArrayList<ArrayList<Object>>();
 		for (ArrayList<Object> req : reqTable) {
 			ArrayList<Object> ret = new ArrayList<Object>();
-			ret.add(req);
-			ManagerRequest mr = (ManagerRequest) recived.get(1);
-			String yesno = (String) recived.get(2);
+			ManagerRequest mr = (ManagerRequest) req.get(0);
+			ret.add(mr);
+			String yesno = (String) req.get(1);
 			// delete from pendingmanagerrequests
 			ArrayList<String> query = new ArrayList<String>();
 			query.add("deleteCond");
