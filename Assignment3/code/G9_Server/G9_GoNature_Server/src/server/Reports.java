@@ -268,13 +268,13 @@ public class Reports {
 	}
 
 	/**
-	 * sums the incomes on specific range of dates. sends to client
-	 * ArrayList<Object>: cell[0] func_name, cell[1] ArrayList<String> cell[0] Date
-	 * and time cell[1] amount of money earned
+	 * sums the incomes on specific range of dates. sends to client ArrayList of
+	 * Object: cell[0] func_name, cell[1] ArrayList of String cell[0] Date and time
+	 * cell[1] amount of money earned
 	 * 
-	 * @param ArrayList<Object>: cell[0] name, cell[1] ArrayList<String> cell[0]
-	 *                           start date, cell[1] end date, cell[2] park name
-	 *                           ConnectionToClient
+	 * @param recived ArrayList of Object : cell[0] name, cell[1] ArrayList<String>
+	 *                cell[0] start date, cell[1] end date, cell[2] park name
+	 *                ConnectionToClient
 	 * 
 	 */
 
