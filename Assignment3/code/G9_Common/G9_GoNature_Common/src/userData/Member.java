@@ -27,7 +27,7 @@ public class Member implements Serializable {
 
 	/**
 	 * constructor from DB
-	 * @param memberFromDB ArrayList<String>
+	 * @param memberFromDB ArrayList of String
 	 */
 	
 	public Member(ArrayList<String> memberFromDB) {

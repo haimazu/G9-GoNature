@@ -211,7 +211,7 @@ public class OrderController implements Initializable {
 	 * function for the back button Checks which window you are currently in and
 	 * goes back to the previous page
 	 * 
-	 * @param ActionEvent
+	 * @param ActionEvent event
 	 * @exception IOException
 	 */
 
@@ -276,6 +276,7 @@ public class OrderController implements Initializable {
 	 * @param ActionEvent
 	 * @exception IOException
 	 */
+	
 	@FXML
 	void crditCardClick(ActionEvent event) throws IOException {
 		Stage stage = new Stage();
@@ -297,12 +298,12 @@ public class OrderController implements Initializable {
 	}
 
 	/**
-	 * msgForServer is ArrayList of objects -> [0] -> name of the class "order" [1]
-	 * -> order Object / String / boolean output from server : Object Order / String
+	 * msgForServer is ArrayList of objects [0] name of the class "order" 
+	 * [1] order Object / String / boolean output from server : Object Order / String
 	 * / boolean
 	 * 
 	 * By clicking button next the function will check if the values in the fields
-	 * are correct - if so, send them to server Or if there is no place will open
+	 * are correct if so, send them to server Or if there is no place will open
 	 * the waiting list screen
 	 * 
 	 * @param ActionEvent
@@ -475,8 +476,7 @@ public class OrderController implements Initializable {
 	}
 
 	/**
-	 * Checks whether the time selected on today's date is relevant to placing an
-	 * order
+	 * Checks whether the time selected on today's date is relevant to placing an order
 	 * 
 	 * @return true if the reservation is in the correct time ,false otherwise
 	 */
@@ -559,7 +559,7 @@ public class OrderController implements Initializable {
 	 * checks valid input for each nameMathod according to relevant the pattern
 	 * 
 	 * @param nameMathod String
-	 * @param txt        String
+	 * @param txt  String
 	 * @return true if the pattern are correct ,false otherwise
 	 */
 
@@ -607,7 +607,7 @@ public class OrderController implements Initializable {
 	/**
 	 * return the list of all the parks names
 	 * 
-	 * @param ArrayList<String> of parks
+	 * @param ArrayList of String of parks
 	 **/
 
 	public static void recivedFromServerParksNames(ArrayList<String> parks) {

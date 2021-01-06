@@ -98,9 +98,9 @@ public class Order implements Serializable {
 
 
 	/**
-	 * constructor from ArrayList<String>
+	 * constructor from ArrayList of String
 	 * 
-	 * @param orderFromDB ArrayList<String>
+	 * @param orderFromDB ArrayList of String
 	 */
 	
 	public Order(ArrayList<String> orderFromDB) {
