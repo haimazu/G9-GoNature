@@ -18,7 +18,7 @@ public class PendingMenagerRequest implements Serializable {
 	/**
 	 * Inserts To Pending table in DB
 	 * 
-	 * @param recieved ArrayList of Object: cell[0] name, cell[1] ManagerRequest
+	 * @param recived ArrayList of Object: cell[0] name, cell[1] ManagerRequest
 	 *                 object
 	 * @param client   ConnectionToClient
 	 * @return ArrayList of Object : cell[0] name ,cell[1] T/F
@@ -105,10 +105,10 @@ public class PendingMenagerRequest implements Serializable {
 
 	/**
 	 * pulling details of a selected park from DB. sends to client:
-	 * ArrayList<Object> cell[0] func_name, cell[1] Park Object
+	 * ArrayList of Object cell[0] func_name, cell[1] Park Object
 	 * 
-	 * @param recived ArrayList<Object>: cell[0] func_name, cell[1]:
-	 *                ArrayList<String> cell[0] park name
+	 * @param recived ArrayList of Object: cell[0] func_name, cell[1]:
+	 *                ArrayList of String cell[0] park name
 	 * @param client  ConnectionToClient
 	 * 
 	 */
@@ -137,9 +137,9 @@ public class PendingMenagerRequest implements Serializable {
 
 	/**
 	 * pulls all items from pending manager request. sends to client
-	 * ArrayList<ArrayList<String>> of all items in pending manager request
+	 * ArrayList of ArrayList of String of all items in pending manager request
 	 * 
-	 * @param recieved ArrayList of Object: cell[0] name
+	 * @param recived ArrayList of Object: cell[0] name
 	 * @param client   ConnectionToClient
 	 */
 	public static void pendingManagerRequestAllItems(ArrayList<Object> recived, ConnectionToClient client) {
@@ -271,9 +271,9 @@ public class PendingMenagerRequest implements Serializable {
 	/**
 	 * deletes approved and disapproved managers requests and executes them in their
 	 * DB, sends to client: ArrayList of Object: cell[0] calling function name,
-	 * cell[1] ArrayList<ArrayList<Object>> => call[0-n] => ArrayList of Object =>
-	 * cell[0] => request cell[1] => True if deleteCond success, false if failed
-	 * cell[2] => false if discount on this day or failed to insert DB, true
+	 * cell[1] ArrayList of ArrayList of Object = call[0-n] = ArrayList of Object =
+	 * cell[0] = request cell[1] = True if deleteCond success, false if failed
+	 * cell[2] = false if discount on this day or failed to insert DB, true
 	 * otherwise
 	 * 
 	 * @param recived ArrayList of Object : cell[0] => String

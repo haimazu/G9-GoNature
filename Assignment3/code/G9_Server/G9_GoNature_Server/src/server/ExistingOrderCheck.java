@@ -19,7 +19,7 @@ public class ExistingOrderCheck {
 	 * @param recived ArrayList of Object [0] - String ordersByIdOrMemberId OR
 	 *                ordersByOrderNumber [1] - ArrayList of String contains: [0]
 	 *                - orderNumber
-	 * @param client
+	 * @param client ConnectionToClient
 	 */
 	public static void getOrderDetailsByOrderNumber(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();

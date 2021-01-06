@@ -19,8 +19,8 @@ public class UpdateVisitorsNumber {
 	 * Full if we can add more visitors
 	 * 
 	 * @param recived ArrayList of Object cell [0]: parkName, cell [1]:
-	 *                 currentVisitoreAmount
-	 * @param client   ConnectionToClient
+	 *                currentVisitoreAmount
+	 * @param client  ConnectionToClient
 	 *
 	 */
 
@@ -152,11 +152,11 @@ public class UpdateVisitorsNumber {
 	}
 
 	/**
-	 * pulling details of a selected park from DB. sends to client
-	 * ArrayList<Object>=> cell[0] function name, cell[1] ArrayList<String>=> [0]
-	 * parkName, [1] number of visitors to add
+	 * pulling details of a selected park from DB. sends to client ArrayList of
+	 * Object=> cell[0] function name, cell[1] ArrayList<String>=> [0] parkName, [1]
+	 * number of visitors to add
 	 * 
-	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param recived ArrayList of Object cell[0]: calling function name
 	 * @param client  ConnectionToClient
 	 */
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
@@ -193,10 +193,10 @@ public class UpdateVisitorsNumber {
 	}
 
 	/**
-	 * sends to client ArrayList<ArrayList<String>> of all park names and current
-	 * visitors amount and max visitors amount
+	 * sends to client ArrayList of ArrayList of String of all park names and
+	 * current visitors amount and max visitors amount
 	 * 
-	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param recived ArrayList of Object cell[0]: calling function name
 	 * @param client  ConnectionToClient
 	 */
 	public static void getParkNamesAndAmountVisitorsCurrentlyInThePark(ArrayList<Object> recived,

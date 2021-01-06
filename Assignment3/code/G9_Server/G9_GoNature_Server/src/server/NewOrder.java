@@ -19,12 +19,11 @@ import userData.Member;
 public class NewOrder {
 
 	/**
-	 * inserting a new reservation in order table in DB
+	 * inserting a new reservation in order table in DB. sends to client :ArrayList of Object => cell[0] function name,
+	 *         cell[1] Order object with updated cells: price ,totalPrice
 	 * 
 	 * @param ArrayList of Object: cell[0] function name, cell[1] order object
-	 * @param client             ConnectionToClient
-	 * @return none. sends to client :ArrayList of Object => cell[0] function name,
-	 *         cell[1] Order object with updated cells: price ,totalPrice
+	 * @param client    ConnectionToClient
 	 * 
 	 **/
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
@@ -98,7 +97,7 @@ public class NewOrder {
 	 * function that called when we want to insert a new order and credit card into
 	 * the DB
 	 * 
-	 * @param cell[0] function name cell[1] order object cell[2] credit card
+	 * @param recived cell[0] function name cell[1] order object cell[2] credit card
 	 *                object/null
 	 * @param client  ConnectionToClient
 	 * @return T/F
@@ -348,11 +347,12 @@ public class NewOrder {
 	////////////// ********************* Park **************************************
 
 	/**
-	 * function to pull parks names from DB
+	 * function to pull parks names from DB. sends to client a list of parks names
+	 * from DB
 	 * 
-	 * @param recived ArrayList<Object> cell [0]: calling function name
+	 * @param recived ArrayList of object cell [0]: calling function name
 	 * @param client  ConnectionToClient
-	 * @return a list of parks names from DB
+	 * 
 	 **/
 	public static void parksNames(ArrayList<Object> recived, ConnectionToClient client) {
 
@@ -387,10 +387,10 @@ public class NewOrder {
 	/**
 	 * updating column amountArrived in order table for an order
 	 * 
-	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param recived ArrayList of object cell[0]: calling function name
 	 * @param client  ConnectionToClient
-	 * @return ArrayList<Object>=> cell[0] function name, cell[1]: ArrayList<String>
-	 *         [0] orderNumber, [1] number of visitors to add
+	 * @return ArrayList of Object = cell[0] function name, cell[1]: ArrayList of
+	 *         String [0] orderNumber, [1] number of visitors to add
 	 **/
 
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
