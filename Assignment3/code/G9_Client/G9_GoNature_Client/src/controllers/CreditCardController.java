@@ -34,7 +34,7 @@ import javafx.stage.WindowEvent;
 import orderData.Order;
 
 /**
-* 
+* Controller responsible for the Creditcard 
 *
 * @author Bar Katz
 */
