@@ -957,8 +957,8 @@ public class ParkEmployeeController implements Initializable {
 	// otherwise 2. string of "No such order"
 	// output: for case 1. we create new order with all the received details
 	// for case 2. we set the error message
-	public static void receivedFromVisitorsPrice(ArrayList<String> msg) {
-		ParkEmployeeController.visitorsPrice = msg;		
+	public static void receivedFromVisitorsPrice(ArrayList<Object> received) {
+		//ParkEmployeeController.visitorsPrice = (ArrayList<String>) received;		
 	}
 
 	// getting information from the server

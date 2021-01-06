@@ -3,10 +3,18 @@ package client;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import controllers.*;
-import ocsf.client.*;
-import orderData.Order;
-import server.Bootke;
+import controllers.Context;
+import controllers.DepartmentManagerController;
+import controllers.LoginController;
+import controllers.ManageOrderController;
+import controllers.OrderController;
+import controllers.ParkEmployeeController;
+import controllers.ParkManagerController;
+import controllers.ServiceRepresentativeController;
+import controllers.WaitingListConfirmContoller;
+import controllers.WaitingListController;
+import controllers.WelcomeController;
+import ocsf.client.AbstractClient;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
