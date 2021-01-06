@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 import javax.swing.plaf.basic.BasicTabbedPaneUI.TabSelectionHandler;
 import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
+import javax.xml.stream.events.StartDocument;
 import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import java.util.PrimitiveIterator.OfDouble;
@@ -27,6 +27,7 @@ import org.omg.CORBA.BAD_POLICY_TYPE;
 import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
+import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.itextpdf.text.pdf.codec.TiffWriter.FieldShort;
 import com.jfoenix.controls.JFXComboBox;
@@ -902,6 +903,12 @@ public class ParkManagerController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
+	/**
+	 * 
+	 * send to server in order to get parkDetails : arraylist of object : [0]->
+	 * requestForEmployeeID, [1]->arraylist of string : [0]-> requestForParkDetails,
+	 * [1]->parkname
+	 */
 	public void RequestForParkDetails() {
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> data = new ArrayList<>();
@@ -911,6 +918,16 @@ public class ParkManagerController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
+	/**
+	 * check if the date that is set to be the date "to" is not before ths date
+	 * "from". return true if the dates are not corresponding , false if
+	 * corresponding.
+	 * 
+	 * @param datefrom
+	 * @param dateto
+	 * @return
+	 * @throws ParseException
+	 */
 	public boolean DatesNotCorresponding(String datefrom, String dateto) throws ParseException {
 		LocalDate from;
 		LocalDate to;
@@ -931,7 +948,9 @@ public class ParkManagerController implements Initializable {
 		return false;
 	}
 
-	/*------- visitors chart------------------*/
+	/** Reports **/
+
+	/** visitors chart **/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartVisitors() throws ParseException {
 
