@@ -17,11 +17,12 @@ import orderData.Order;
 public class CancelOrder {
 
 	/**
-	 * sends to client ArrayList of Objects: in cell 0: String "cancelOrder" in cell
-	 * 1: boolean -> true if entry successful false if not
+	 * sends to client ArrayList of Objects: in cell [0]: String "cancelOrder" in
+	 * cell [1]: boolean -> true if entry successful false if not
 	 * 
-	 * @param ArrayList of Objects: in cell [0]: String "cancelOrder" in cell, [1]:
-	 *                  Order class of a given order to cancel
+	 * @param recived ArrayList of Objects: in cell [0]: String "cancelOrder" in
+	 *                cell, [1]: Order class of a given order to cancel
+	 * @param client  ConnectionToClient
 	 * @exception IOException
 	 */
 	public static void cancel(ArrayList<Object> recived, ConnectionToClient client) {
@@ -47,7 +48,7 @@ public class CancelOrder {
 	/**
 	 * deleting an order from DB
 	 * 
-	 * @param orderNum
+	 * @param orderNum Integer
 	 * @return T/F
 	 */
 	public static boolean deleteOrder(int orderNum) {

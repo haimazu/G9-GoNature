@@ -25,6 +25,11 @@ class Counter {
 		discountsIDcount = getLastNumber("discounts", "requestID") + 1;
 	}
 
+	/**
+	 * sets new counter
+	 * 
+	 * @return object Counter
+	 */
 	public static Counter getCounter() {
 		if (obj == null) {
 			if (obj == null) {
@@ -34,32 +39,46 @@ class Counter {
 		return obj;
 	}
 
+	/**
+	 * 
+	 * @return last number +1
+	 */
 	public int orderNum() {
 		return count++;
 	}
 
+	/**
+	 * 
+	 * @return last number +1
+	 */
 	public int memberNum() {
 		return memCount++;
 	}
 
+	/**
+	 * 
+	 * @return last number +1
+	 */
 	public int waitlistNum() {
 		return waitlistNum++;
 	}
 
+	/**
+	 * 
+	 * @return last number +1
+	 */
 	public int cancelledCountNum() {
 		return cancelledCount++;
 	}
 
+	/**
+	 * 
+	 * @return last number +1
+	 */
 	public int discountsIDcountNum() {
 		return discountsIDcount++;
 	}
 
-	/**
-	 * Finds the number that symbols the last unique number in DB 
-	 * 
-	 * @param String tableName, String Column 
-	 * @return Integer 
-	 */
 	private int getLastNumber(String tableName, String Col) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");

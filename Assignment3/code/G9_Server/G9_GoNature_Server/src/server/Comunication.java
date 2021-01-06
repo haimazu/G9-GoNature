@@ -22,15 +22,17 @@ public class Comunication {
 	/**
 	 * sends notifications
 	 * 
-	 * @param String subject, String message, Order object
+	 * @param subject String
+	 * @param messege String
+	 * @param order   String
 	 */
 	public static void sendNotification(String subject, String messege, Order order) {
 		SmsMessege sms = new SmsMessege(order.getOrderPhone(), subject + "\n\n " + messege, order);
 		EmailMessege email = new EmailMessege(order.getOrderEmail(), subject, messege, order);
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		if (!order.getOrderEmail().equals(null)) { //email null means random visitor
+		if (!order.getOrderEmail().equals(null)) { // email null means random visitor
 			exec.execute(new Runnable() {
-	
+
 				/**
 				 * here is the simulation for the sending
 				 */
@@ -53,9 +55,10 @@ public class Comunication {
 	 * the client say "no", an empty message will be sent to the client - ergo:
 	 * nothing in cell [1].
 	 * 
-	 * @param ArrayList<Object> [0] -> string "waitlistReplay", [1] -> String answer
-	 *                          (NOTE: have to be "yes" or "no"), [2] -> Order class
-	 *                          of the order that initiated this method,
+	 * @param recived ArrayList<Object> [0] -> string "waitlistReplay", [1] ->
+	 *                String answer (NOTE: have to be "yes" or "no"), [2] -> Order
+	 *                class of the order that initiated this method
+	 * @param client  ConnectionToClient
 	 * @exception IOException
 	 */
 	public static void waitlistReplay(ArrayList<Object> recived, ConnectionToClient client) {
