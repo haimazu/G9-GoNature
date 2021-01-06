@@ -395,9 +395,9 @@ public class ParkManagerController implements Initializable {
 
 		/***** Revenue report *********/
 
-		ArrayList<String> mounthArr = new ArrayList<>();
+		ArrayList<String> monthArr = new ArrayList<>();
 
-		setDatesComboForRevenue(mounthArr);
+		setDatesComboForRevenue(monthArr);
 
 	}
 	/*---------setting date pickers in the conroller --------------*/
@@ -1108,7 +1108,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void ShowReuvenue(ActionEvent event) throws ParseException {
-
+		ArrayList<String> monthArr = new ArrayList<>();
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> data = new ArrayList<>();
 		msg.add("revenueReport");
@@ -1147,8 +1147,13 @@ public class ParkManagerController implements Initializable {
 		data.add(park.getName());
 		msg.add(data);
 		ClientUI.sentToChatClient(msg);
-
+		if(!getErrorInchart())
 		chartRevenue();
+		else {
+			noDataTopresentInchartForDates();
+			bcRevenue.getData().clear();
+			setDatesComboForRevenue(monthArr);
+		}
 	}
 	/*-------end of revenue report section --------*/
 
@@ -1195,10 +1200,10 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverRevenueReport(ArrayList<ArrayList<String>> revReportAnswer) {
 		setRevReport(null);
-		if ((Object) revReportAnswer instanceof ArrayList<?>)
+		if ( revReportAnswer.isEmpty())
 			seterrorInchart(true);
 		else {
-
+			seterrorInchart(false);
 			setRevReport(revReportAnswer);
 
 		}
