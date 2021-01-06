@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import gui.ServerController;
 
 /**
-* The ServerUI program starts the server and shows its status
-*
-* @author Roi Amar  
-*/
+ * The ServerUI program starts the server and shows its status
+ *
+ * @author Roi Amar
+ */
 
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
@@ -24,12 +24,22 @@ public class ServerUI extends Application {
 		launch(args);
 	}
 
+	/**
+	 * 
+	 * @param primaryStage Stage
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		control = new ServerController();
 		control.start(primaryStage);
 	}
 
+	/**
+	 * runs the server
+	 * 
+	 * @param sv
+	 * @return T/F
+	 */
 	public static boolean runServer(EchoServer sv) {
 		if (DBup) {
 			ServerUI.echoServ = sv;
@@ -47,6 +57,11 @@ public class ServerUI extends Application {
 		}
 	}
 
+	/**
+	 * stops the server
+	 * 
+	 * @return T/F
+	 */
 	public static boolean stopServer() {
 		try {
 			echoServ.close();
@@ -59,6 +74,12 @@ public class ServerUI extends Application {
 		return true;
 	}
 
+	/**
+	 * sets connection to DB
+	 * 
+	 * @param data ArrayList<String>
+	 * @return T/F
+	 */
 	public static boolean connectToDB(ArrayList<String> data) {
 		if (MySQLConnection.connectToDB(data)) {
 			DBup = true;
@@ -67,6 +88,11 @@ public class ServerUI extends Application {
 		return false;
 	}
 
+	/**
+	 * Disconnects from DB
+	 * 
+	 * @return T/F
+	 */
 	public static boolean disconnectFromDB() {
 		if (serverUP) {
 			return false;
@@ -79,10 +105,20 @@ public class ServerUI extends Application {
 		return false;
 	}
 
+	/**
+	 * checks if the DB is up
+	 * 
+	 * @return T/F
+	 */
 	public static boolean isDBup() {
 		return DBup;
 	}
 
+	/**
+	 * checks if the server is up
+	 * 
+	 * @return T/F
+	 */
 	public static boolean isServerUP() {
 		return serverUP;
 	}
