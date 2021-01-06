@@ -6,6 +6,12 @@ import java.util.Date;
 
 import orderData.Order;
 
+/**
+ * The Messege class contain the a Message
+ *
+ * @author Roi Amar
+ */
+
 public class Messege {
 	private String message;
 	private Date sentTime;
@@ -13,6 +19,11 @@ public class Messege {
 	private ArrayList<Object> attachments;
 	private Order order;
 
+	/**
+	 * constructor for Message
+	 * @param message String
+	 * @param order Order
+	 */
 	public Messege(String message, Order order){
 		setMessage(message);
 		sentTime = new Date(); 
@@ -39,12 +50,20 @@ public class Messege {
 	public String getSentTimeDB() {
 		return formatter.format(sentTime);
 	}
+	/**
+	 * 
+	 * @return send time plus 1 hour
+	 */
 	
-	public String getLimitForWaitlist() { //return send time plus 1 hour
+	public String getLimitForWaitlist() { 
 		return formatter.format(new Date(sentTime.getTime() + 60*60*1000));
 	}
 	
-	public String getLimitFor24 () { //return send time plus 2 hours
+	/**
+	 * 
+	 * @return return send time plus 2 hours
+	 */
+	public String getLimitFor24 () { 
 		return formatter.format(new Date(sentTime.getTime() + 120*60*1000));
 	}
 
