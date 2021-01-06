@@ -82,14 +82,17 @@ public class WaitingListConfirmContoller {
 				ORC.back(event);
 				stage.close();
 
-
 			}
 
-			
 		}
 
 	}
 
+	/**
+	 * get from server that the client enter to the wait list in the db
+	 * 
+	 * @param status
+	 */
 	public static void recivedfromWaitListServer(Object status) {
 		if (status instanceof Boolean) {
 			Boolean flag1 = (boolean) status;
@@ -101,6 +104,11 @@ public class WaitingListConfirmContoller {
 
 	}
 
+	/**
+	 * check the radi button to agree the terms
+	 * 
+	 * @return
+	 */
 	public boolean checkAgreeRadioBtn() {
 		if (agree.isSelected()) {
 			return true;
