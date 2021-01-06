@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.ByteOrder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import java.util.PrimitiveIterator.OfDouble;
 
+import org.omg.CORBA.BAD_POLICY_TYPE;
 import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
@@ -27,6 +29,7 @@ import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import com.mysql.cj.protocol.a.SimplePacketSender;
 import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
 //import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
 import com.sun.javafx.webkit.ThemeClientImpl;
@@ -339,6 +342,14 @@ public class ParkManagerController implements Initializable {
 		ParkManagerController.revReport = revReport;
 	}
 
+	public static String getFirstName() {
+		return firstName;
+	}
+
+	public static void setFirstName(String firstName) {
+		ParkManagerController.firstName = firstName;
+	}
+
 	/**
 	 * handles switching tabs in park manager controller
 	 * 
@@ -446,6 +457,12 @@ public class ParkManagerController implements Initializable {
 	}
 	/*---------setting date pickers in the conroller --------------*/
 
+	/**
+	 * set default values in combo box for elevant months and years . NOTICE :
+	 * revenue report will be saved only forlast 3 years !
+	 * 
+	 * @param mounthArr
+	 */
 	public void setDatesComboForRevenue(ArrayList<String> mounthArr) {
 		for (int i = 1; i <= 12; i++) {
 			mounthArr.add(String.valueOf(i));
@@ -460,6 +477,10 @@ public class ParkManagerController implements Initializable {
 		cbxYear.getSelectionModel().selectFirst();
 	}
 
+	/**
+	 * set default values for usage report. Default values will be the 1st of this
+	 * month till 1st of next month
+	 */
 	public void setDatePickerForUsageReport() {
 		dpFromU.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
@@ -476,6 +497,10 @@ public class ParkManagerController implements Initializable {
 		});
 	}
 
+	/**
+	 * set default values for visitors report. Default values will be the 1st of
+	 * this month till 1st of next month
+	 */
 	public void setDatePickerForVisitsReport() {
 		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
@@ -491,7 +516,10 @@ public class ParkManagerController implements Initializable {
 		});
 	}
 
-	// dates method
+	/**
+	 * datepicker initialize method. date that already passed will be disabled. as
+	 * well as dated after one year from now
+	 */
 	public void setDatePickerInitialValues() {
 		txtDateFrom.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
@@ -516,6 +544,15 @@ public class ParkManagerController implements Initializable {
 
 	}
 
+	/**
+	 * /by clicking on logout buttonn the user will be logged out of the system and
+	 * the infor will be saved in the DB . send to server data to update that the
+	 * user was log out : arraylist of object ->[0]->updateLoggedIn .[1]-> arraylist
+	 * of string ->[0]->user name ,[1]->0
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void logout(ActionEvent event) throws IOException {
 		// Data fields
@@ -537,14 +574,13 @@ public class ParkManagerController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	public static String getFirstName() {
-		return firstName;
-	}
-
-	public static void setFirstName(String firstName) {
-		ParkManagerController.firstName = firstName;
-	}
-
+	/**
+	 * by clicking on set discount button - make the relevant text field and date
+	 * pickers to be visible and the rest no if there is other request editing field
+	 * vsisible - set them be not visible
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void setDiscount(ActionEvent event) {
 		if (!btnSetMaxByOrder.isVisible()) {
@@ -574,7 +610,7 @@ public class ParkManagerController implements Initializable {
 			}
 		});
 	}
-
+	
 	@FXML
 	void setVisitorsCapacityByorder(ActionEvent event) {
 		if (!btnSetDisc.isVisible()) {
@@ -604,7 +640,13 @@ public class ParkManagerController implements Initializable {
 			}
 		});
 	}
-
+	/**
+	 * by clicking on set visitors button - make the relevant text field and date
+	 * pickers to be visible and the rest no if there is other request editing field
+	 * vsisible - set them be not visible
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void setMaxCapacity(ActionEvent event) {
 
