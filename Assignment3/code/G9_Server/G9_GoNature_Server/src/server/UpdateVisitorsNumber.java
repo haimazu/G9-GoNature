@@ -192,7 +192,13 @@ public class UpdateVisitorsNumber {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// nastya
+	/**
+	 * sends to client ArrayList<ArrayList<String>> of all park names and current
+	 * visitors amount and max visitors amount
+	 * 
+	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param client  ConnectionToClient
+	 */
 	public static void getParkNamesAndAmountVisitorsCurrentlyInThePark(ArrayList<Object> recived,
 			ConnectionToClient client) {
 		// query
