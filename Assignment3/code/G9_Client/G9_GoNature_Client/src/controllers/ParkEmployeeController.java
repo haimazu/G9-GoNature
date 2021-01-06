@@ -529,12 +529,12 @@ public class ParkEmployeeController implements Initializable {
 			}
 	        
 	        // getting the visitors status
-	        sendToServerArrayList("getVisitorsEntryStatus", new ArrayList<String>(Arrays.asList(String.valueOf(randomVisitorFakeOrderDetails.getOrderNumber()))));
+	        sendToServerArrayList("getVisitorsEntryStatus", new ArrayList<String>(Arrays.asList(String.valueOf(orderDetails.getOrderNumber()))));        	
 	        
 	        // the visitors have already entered
 	        if (getEntryAndExitStatus().equals("Entered")) {
 	            // update the exact entry and exit time
-	            updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label, 0);
+	            updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label, 0);
 	            // update current visitors
 	            updateCurrentVisitors(updateCurrentVisitors);	
 	            alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");	
@@ -1132,6 +1132,7 @@ public class ParkEmployeeController implements Initializable {
 		btnRandomVisitor.setVisible(true);
 		orderStatus = false;
 		approveIsPressed = false;
+		radEnter.setSelected(true);
 	}
 
 	// turns off order mode
