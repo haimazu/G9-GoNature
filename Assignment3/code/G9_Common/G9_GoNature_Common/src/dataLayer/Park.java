@@ -3,6 +3,12 @@ package dataLayer;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * The Park program creating Park object
+ *
+ * @author Anastasia Kokin
+ */
+
 public class Park implements Serializable {
 
 	private String name;
@@ -12,11 +18,14 @@ public class Park implements Serializable {
 	private int enteryPrice;
 	private double mangerDiscount;
 
-	// ******************************************************
-	// needed to be checked that 'maxAmountOrders < maximumCapacityInPark' while
-	// editing!!
-	// ******************************************************
-
+	/**
+	 * contractor for Park object
+	 * 
+	 * @param name                  String
+	 * @param maxAmountOrders       integer
+	 * @param maximumCapacityInPark integer
+	 * @param currentAmount         integer
+	 */
 	public Park(String name, int maxAmountOrders, int maximumCapacityInPark, int currentAmount) {
 		this.name = name;
 		this.maxAmountOrders = maxAmountOrders;
@@ -27,6 +36,11 @@ public class Park implements Serializable {
 		}
 	}
 
+	/**
+	 * constructor from ArrayList<String>
+	 * 
+	 * @param parkFromDB
+	 */
 	public Park(ArrayList<String> parkFromDB) {
 		this.name = parkFromDB.get(0);
 		this.currentAmount = Integer.parseInt(parkFromDB.get(1));
@@ -34,6 +48,17 @@ public class Park implements Serializable {
 		this.maxAmountOrders = Integer.parseInt(parkFromDB.get(3));
 		this.enteryPrice = Integer.parseInt(parkFromDB.get(4));
 		this.mangerDiscount = Double.parseDouble(parkFromDB.get(5));
+	}
+
+	/**
+	 * checks if maxAmountOrders <= maximumCapacityInPark
+	 * 
+	 * @return T/F
+	 */
+	public boolean check() {
+		if (maxAmountOrders <= maximumCapacityInPark)
+			return false;
+		return true;
 	}
 
 	public int getEnteryPrice() {
@@ -66,12 +91,6 @@ public class Park implements Serializable {
 
 	public void setMaximumCapacityInPark(int maximumCapacityInPark) {
 		this.maximumCapacityInPark = maximumCapacityInPark;
-	}
-
-	public boolean check() {
-		if (maxAmountOrders <= maximumCapacityInPark)
-			return false;
-		return true;
 	}
 
 	public Park(String name) {

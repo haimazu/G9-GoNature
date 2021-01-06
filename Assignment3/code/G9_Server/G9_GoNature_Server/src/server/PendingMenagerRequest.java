@@ -119,17 +119,19 @@ public class PendingMenagerRequest implements Serializable {
 		// the service name : getParkDetails
 		answer.add(recived.get(0));
 		// the data that sent from the client
+
 		// cell 0: parkName
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
+		NewOrder.updatingParkCurrentPrice(data.get(0));
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("park"); // table name
 		query.add("*"); // columns to select from
 		query.add("WHERE parkName = '" + data.get(0) + "'"); // condition
 		query.add("6"); // how many columns returned
-
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		Park park = new Park(queryData.get(0));
+
 		answer.add(park);
 		EchoServer.sendToMyClient(answer, client);
 	}

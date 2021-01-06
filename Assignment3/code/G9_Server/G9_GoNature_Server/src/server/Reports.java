@@ -268,14 +268,14 @@ public class Reports {
 	}
 
 	/**
-	 * sums the incomes on specific range of dates
+	 * sums the incomes on specific range of dates. sends to client
+	 * ArrayList<Object>: cell[0] func_name, cell[1] ArrayList<String> cell[0] Date
+	 * and time cell[1] amount of money earned
 	 * 
 	 * @param ArrayList<Object>: cell[0] name, cell[1] ArrayList<String> cell[0]
 	 *                           start date, cell[1] end date, cell[2] park name
 	 *                           ConnectionToClient
-	 * @returnArrayList<Object>: cell[0] func_name, cell[1] ArrayList<String>
-	 *                           cell[0] Date and time cell[1] amount of money
-	 *                           earned
+	 * 
 	 */
 
 	// select arrivedTime, SUM(afterDiscountPrice) AS price from g9_gonature.orders
@@ -297,8 +297,6 @@ public class Reports {
 		query.add("arrivedTime, SUM(afterDiscountPrice) AS price");
 		query.add("WHERE parkName='" + parkName + "' AND (arrivedTime BETWEEN '" + startDate + "' AND '" + endDate
 				+ "') GROUP BY day(arrivedTime) order by day(arrivedTime)");
-//		query.add("WHERE " + dateCond + "AND parkName='" + dataFromClient.get(2)
-//				+ "' AND amountArrived > 0 GROUP BY arrivedTime ORDER BY arrivedTime");
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData);
