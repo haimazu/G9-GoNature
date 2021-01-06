@@ -1,24 +1,30 @@
 package server;
 
-//import java.io.IOException;
 import java.util.ArrayList;
 
 import ocsf.server.ConnectionToClient;
 
+/**
+ * The Login program allows you to log into the program with the correct
+ * credentials
+ *
+ * @author Roi Amar, Haim Azulay
+ */
+
 public class Login {
-	// input: ArrayList of objects ->
-	// in cell 0: the client function who called for service (in that case "login")
-	// in cell 1: ArrayList of String ->
-	// in cell 0: user name
-	// in cell 1: password
-	// the function add the relevant data for the query and call MySQLConnection
-	// output: none (send to client with ServerController)
-	// send to client: ArrayList of objects ->
-	// in cell 0: the client function who called for service (in that case "login")
-	// in cell 1: ArrayList of String ->
-	// {if failed:} in cell 0: the string "failed"
-	// {if success:} in cell 0: the employee role as string
-	@SuppressWarnings("unchecked")
+
+	/**
+	 * the function add the relevant data for the query and call MySQLConnection
+	 * send to client: ArrayList of objects -> cell [0]: the client function who
+	 * called for service (in that case "login"), cell [1]: ArrayList of String ->
+	 * {if failed:} cell [0]: the string "failed" {if success:} cell [0]: the
+	 * employee role as string
+	 * 
+	 * @param recived ArrayList<Object> cell [0]: the client function who called for
+	 *                service (in that case "login"), cell [1]: ArrayList of String
+	 *                -> cell [0]: user name, cell [1]: password
+	 * @param client  ConnectionToClient
+	 */
 	public static void login(ArrayList<Object> recived, ConnectionToClient client) {
 		// add if db up later
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -41,20 +47,17 @@ public class Login {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: ArrayList of objects ->
-	// in cell 0: the client function who called for service (in that case
-	// "updateLoggedIn")
-	// in cell 1: ArrayList of String ->
-	// in cell 0: user name
-	// in cell 1: loggedin status
-	// the function add the relevant data for the query and call MySQLConnection
-	// output: none (send to client with ServerController)
-	// send to client: ArrayList of objects ->
-	// in cell 0: the client function who called for service (in that case
-	// "updateLoggedIn")
-	// in cell 1: boolean value -> {if failed:} ==> false
-	// {if success:} ==> true
-	@SuppressWarnings("unchecked")
+	/**
+	 * the function add the relevant data for the query and call MySQLConnection
+	 * send to client: ArrayList of objects -> cell [0]: the client function who
+	 * called for service (in that case "updateLoggedIn") cell [1]: boolean value ->
+	 * {if failed:} ==> false {if success:} ==> true
+	 * 
+	 * @param recived ArrayList<Object> cell [0]: the client function who called for
+	 *                service (in that case "updateLoggedIn"), cell [1]: ArrayList
+	 *                of String -> cell [0]: user name, cell [1]: logged in status
+	 * @param client  ConnectionToClient
+	 */
 	public static void updateLoggedInStatus(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -74,8 +77,10 @@ public class Login {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
+	/**
+	 * get all the users in the system
+	 */
 	public static void disconnectAllUsers() {
-		// get all the users in the system
 		ArrayList<String> selectQuery = new ArrayList<String>();
 		selectQuery.add("select");
 		selectQuery.add("employee");
@@ -90,6 +95,11 @@ public class Login {
 		}
 	}
 
+	/**
+	 * sends a user to update in DB
+	 * 
+	 * @param username String
+	 */
 	public static void userToUpdate(String username) {
 		// update all the users as logged out
 		ArrayList<String> updateQuery = new ArrayList<String>();
@@ -98,7 +108,7 @@ public class Login {
 		updateQuery.add("loggedin = '" + 0 + "'"); // columns to update
 		updateQuery.add("username"); // condition
 		updateQuery.add(username); // username value
-		
+
 		MySQLConnection.update(updateQuery);
 	}
 }
