@@ -234,12 +234,20 @@ public class ParkManagerController implements Initializable {
 	private static ArrayList<ArrayList<String>> revReport = new ArrayList<>();
 
 	private LocalDate fromDate;
-	
+
 	private LocalDate toDate;
 //	@FXML
 //	private JFXComboBox<String> cbxMounth;
 
 	/*-------------------------*/
+	private static void seterrorInchart(boolean b) {
+
+		errorInchart = b;
+	}
+
+	public static boolean getErrorInchart() {
+		return errorInchart;
+	}
 
 	public static ArrayList<ArrayList<String>> getUsageReport() {
 		return usageReport;
@@ -258,6 +266,7 @@ public class ParkManagerController implements Initializable {
 	private static boolean requestAnswerFromServer;
 	private static int empID = 0;
 	private static Park park;
+	private static boolean errorInchart=false;
 
 	public static String getCurrentVisitors() {
 		return currentVisitors;
@@ -409,7 +418,6 @@ public class ParkManagerController implements Initializable {
 		});
 
 		/***** Revenue report *********/
-
 
 		ArrayList<String> mounthArr = new ArrayList<>();
 
@@ -729,7 +737,7 @@ public class ParkManagerController implements Initializable {
 	}
 
 	void presentParkDetails(Park parkDetails) {
-		double disc = (1-parkDetails.getMangerDiscount()) * 100;
+		double disc = (1 - parkDetails.getMangerDiscount()) * 100;
 		lblPresentDisc.setText(String.format("%.1f", disc) + "%");
 		lblPresentMaxVis.setText(String.valueOf(parkDetails.getMaximumCapacityInPark()));
 		lblPresentReservationCap.setText(String.valueOf(parkDetails.getMaxAmountOrders()));
@@ -776,6 +784,7 @@ public class ParkManagerController implements Initializable {
 	/*------- visitors chart------------------*/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartVisitors() throws ParseException {
+
 		xAxis = new CategoryAxis();
 		yAxis = new NumberAxis(0, 20, 2);
 		bcVisitorsChart.getData().clear();
@@ -849,7 +858,11 @@ public class ParkManagerController implements Initializable {
 			System.out.println(
 					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-			chartVisitors();
+			if(!getErrorInchart())
+				chartVisitors();
+			else {
+				noDataTopresentInchartForDates();
+			}	bcVisitorsChart.getData().clear();
 		}
 	}
 
@@ -921,8 +934,9 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/*-------end of visitors report section --------*/
-	static void noDataTopresent() {
+	static void noDataTopresentInchartForDates() {
 		alert.setAlert("There is no Data to present for selected dates.");
+		System.out.println("no data to present");
 	}
 
 	public String getDate(String date) {
@@ -1048,14 +1062,13 @@ public class ParkManagerController implements Initializable {
 		ArrayList<String> firstArrIncome;
 		String firstDate;
 		LocalDate checkDate = LocalDate.now();
-		
+
 		// for - that check every date if exist in usageReport and if it does it willl
 		// put in on the chart and then will remove it from the usageReport;
-		for (LocalDate date = fromDate; date
-				.isBefore(toDate.plusDays(1)); date = date.plusDays(1)) {
-			
+		for (LocalDate date = fromDate; date.isBefore(toDate.plusDays(1)); date = date.plusDays(1)) {
+
 			if (!revReport.isEmpty()) {
-				
+
 				firstDate = revReport.get(0).get(0);// first array
 				someDate = getDate(firstDate); // yyyy-mm-dd
 				checkDate = LocalDate.parse(someDate);
@@ -1067,33 +1080,32 @@ public class ParkManagerController implements Initializable {
 			} else
 				DailyRevenue.getData().add(new XYChart.Data(date.getDayOfMonth() + "/" + date.getMonthValue(), 0));
 		}
-		
+
 		DailyRevenue.setName("Daily income");
 		bcRevenue.getData().addAll(DailyRevenue);
 
 	}
 
-
 	@FXML
 	void ShowReuvenue(ActionEvent event) throws ParseException {
-		
+
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> data = new ArrayList<>();
 		msg.add("revenueReport");
 		int nextyear = Integer.parseInt(cbxYear.getValue());
 		int nextmonth = Integer.parseInt(cbxMonth.getValue());
-	
+
 		if (nextmonth + 1 < 10) {// both months less than 10
 			nextmonth++;
 			data.add(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-0" + nextmonth + "-01");
-			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
+			fromDate = LocalDate.parse(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
 			toDate = LocalDate.parse(nextyear + "-0" + nextmonth + "-01");
 		} else if (nextmonth == 9) {// first month 9
 			nextmonth++;
 			data.add(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-" + nextmonth + "-01");
-			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
+			fromDate = LocalDate.parse(cbxYear.getValue().toString() + "-0" + cbxMonth.getValue().toString() + "-01");
 			toDate = LocalDate.parse(nextyear + "-" + nextmonth + "-01");
 		}
 
@@ -1102,13 +1114,13 @@ public class ParkManagerController implements Initializable {
 			nextyear++;
 			data.add(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-0" + nextmonth + "-01");
-			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
+			fromDate = LocalDate.parse(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
 			toDate = LocalDate.parse(nextyear + "-0" + nextmonth + "-01");
 		} else {
 			nextmonth++;
 			data.add(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
 			data.add(nextyear + "-" + nextmonth + "-01");
-			fromDate= LocalDate.parse(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
+			fromDate = LocalDate.parse(cbxYear.getValue().toString() + "-" + cbxMonth.getValue().toString() + "-01");
 			toDate = LocalDate.parse(nextyear + "-" + nextmonth + "-01");
 		}
 
@@ -1140,8 +1152,8 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
 		setVisitorsReport(null);
-		if ((Object) visitorsReportAnswer instanceof String)
-			noDataTopresent();
+		if ((Object) visitorsReportAnswer instanceof ArrayList<?>)
+			seterrorInchart(true);
 		else {
 			setVisitorsReport(visitorsReportAnswer);
 
@@ -1151,21 +1163,21 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverUsageReport(ArrayList<ArrayList<String>> usageReportAnswer) {
 		setUsageReport(null);
-		if ((Object) usageReportAnswer instanceof String)
-			noDataTopresent();
+		if ((Object) usageReportAnswer instanceof ArrayList<?>)
+			noDataTopresentInchartForDates();
 		else {
 			setUsageReport(usageReportAnswer);
-		
+
 		}
 	}
 
 	public static void recivedFromserverRevenueReport(ArrayList<ArrayList<String>> revReportAnswer) {
 		setRevReport(null);
-		if ((Object) revReportAnswer instanceof String)
-			noDataTopresent();
+		if ((Object) revReportAnswer instanceof ArrayList<?>)
+			noDataTopresentInchartForDates();
 		else {
 			setRevReport(revReportAnswer);
-			
+
 		}
 
 	}
