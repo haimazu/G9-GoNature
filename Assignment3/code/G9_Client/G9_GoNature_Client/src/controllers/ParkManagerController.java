@@ -211,6 +211,8 @@ public class ParkManagerController implements Initializable {
 	private JFXDatePicker dpFrom;
 	@FXML
 	private JFXDatePicker dpTo;
+    @FXML
+    private Button btnExport;
 	@FXML
 	private Button btnShow;
 	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
@@ -953,6 +955,10 @@ public class ParkManagerController implements Initializable {
 	/** Reports **/
 
 	/** visitors chart **/
+    @FXML
+    void export(ActionEvent event) {
+
+    }
 
 	/**
 	 * create chart for visitors by membership kind : 1) member 2)regular- not a
