@@ -610,6 +610,7 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public static void setStatus(ArrayList<ArrayList<Object>> status) {
+		System.out.println("stsua2" + status);
 		DepartmentManagerController.status = status;
 	}
 
@@ -675,13 +676,16 @@ public class DepartmentManagerController implements Initializable {
 
 		Server.add(new ArrayList<Object>(allItems));
 		allItems.clear();
-		System.out.println(Server);
+		//System.out.println(Server);
 		// remove items from list after the all lists for server
+		System.out.println("arritem" +arrItems.toString());
 		for (int i = arrItems.length - 1; i > -1; i--) {
 			TableDep.getItems().remove(TableDep.getItems().get(i));
 		}
 		ClientUI.sentToChatClient(Server);
-		Server.clear();
+		
+		//Server.clear();
+		if(status!=null) {
 		for (ArrayList<Object> item : status) {
 			if (!(boolean) item.get(1))
 				alert.failedAlert("Failed", "something went wrong, please try later again!");
@@ -694,6 +698,7 @@ public class DepartmentManagerController implements Initializable {
 			}
 		}
 		iniailTabelPending();
+		}
 	}
 
 	/**
