@@ -8,16 +8,32 @@ import gui.ServerController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
+/**
+ * 
+ * @author Roi Amar
+ *
+ */
 public class EchoServer extends AbstractServer {
 	private static ServerController control;
 	private static EchoServer self;
 
+	/**
+	 * 
+	 * @param port    integer
+	 * @param control ServerController
+	 */
 	public EchoServer(int port, ServerController control) {
 		super(port);
 		EchoServer.control = control;
-		self=this;
+		self = this;
 	}
 
+	/**
+	 * connection with the client
+	 * 
+	 * @param msg    Object
+	 * @param client ConnectionToClient
+	 */
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		@SuppressWarnings("unchecked")
@@ -33,10 +49,10 @@ public class EchoServer extends AbstractServer {
 		case "orderParksNameList":
 			NewOrder.parksNames(recived, client);
 			break;
-		case "ordersByIdOrMemberId":	
+		case "ordersByIdOrMemberId":
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 			break;
-		case "ordersByOrderNumber":	
+		case "ordersByOrderNumber":
 			ExistingOrderCheck.getOrderDetailsByOrderNumber(recived, client);
 			break;
 		case "getParkDetails":
@@ -87,7 +103,7 @@ public class EchoServer extends AbstractServer {
 		case "getCancellationReports":
 			Reports.CancellationReport(recived, client);
 			break;
-		case "requestForEmployeeID" : 
+		case "requestForEmployeeID":
 			PendingMenagerRequest.employeeNumberSet(recived, client);
 			break;
 		case "PendingManagerRequests":
@@ -96,13 +112,13 @@ public class EchoServer extends AbstractServer {
 		case "updateAccessControl":
 			UpdateVisitorsNumber.updateAccessControl(recived, client);
 			break;
-		case "requestForParkDetails" :
+		case "requestForParkDetails":
 			PendingMenagerRequest.getParkDetails(recived, client);
 			break;
-		case "overallVisitorsReport" :
+		case "overallVisitorsReport":
 			Reports.OverallVisitorsReport(recived, client);
 			break;
-		case "UsageReport" :
+		case "UsageReport":
 			Reports.UsageReport(recived, client);
 			break;
 		case "waitlistReplay":
@@ -127,7 +143,7 @@ public class EchoServer extends AbstractServer {
 		case "getVisitorsEntryStatus":
 			UpdateVisitorsNumber.getVisitorsEntryStatus(recived, client);
 			break;
-		case "revenueReport" :
+		case "revenueReport":
 			Reports.incomesReport(recived, client);
 			break;
 		default:
@@ -136,6 +152,11 @@ public class EchoServer extends AbstractServer {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * 
+	 * @param msg    ArrayList<Object>
+	 * @param client ConnectionToClient
+	 */
 	public static void sendToMyClient(ArrayList<Object> msg, ConnectionToClient client) {
 		try {
 			client.sendToClient(msg);
@@ -143,14 +164,21 @@ public class EchoServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @param msg ArrayList<Object>
+	 */
 	public static void sendToAll(ArrayList<Object> msg) {
 		self.sendToAllClients(msg);
 	}
-	
+
+	/**
+	 * @param client ConnectionToClient
+	 */
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
-		control.logIt("New Client conneted: "+ client.toString() +" "+ this.getPort());
+		control.logIt("New Client conneted: " + client.toString() + " " + this.getPort());
 	}
 
 }
