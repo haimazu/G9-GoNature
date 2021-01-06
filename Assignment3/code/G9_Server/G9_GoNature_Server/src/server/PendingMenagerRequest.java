@@ -291,7 +291,7 @@ public class PendingMenagerRequest implements Serializable {
 		answer.add(recived.get(0));
 		ArrayList<ArrayList<Object>> reqTable = (ArrayList<ArrayList<Object>>) recived.get(1);
 		ArrayList<ArrayList<Object>> retTable = new ArrayList<ArrayList<Object>>();
-		
+
 		for (ArrayList<Object> req : reqTable) {
 			ArrayList<Object> ret = new ArrayList<Object>();
 			ManagerRequest mr = (ManagerRequest) req.get(0);
@@ -376,7 +376,7 @@ public class PendingMenagerRequest implements Serializable {
 			retTable.add(ret);
 
 		}
-		answer.add(new ArrayList<Object>(retTable));
+		answer.add(retTable);
 		System.out.println(answer);
 		EchoServer.sendToMyClient(answer, client);
 	}
