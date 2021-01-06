@@ -131,6 +131,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String error = "";
 	private static String entryAndExitStatus = "";
 	private static String randomVisitorIdNumber = "";
+	private static ArrayList<String> visitorsPrice;
 
 	// input: none
 	// output: moving to 'login' screen
@@ -948,6 +949,16 @@ public class ParkEmployeeController implements Initializable {
 		} else {
 			setError((String) msg);
 		}
+	}
+	
+	// getting information from the server
+	// input: if the order number exists in the system:
+	// 1. ArrayList<String> order with all the order data
+	// otherwise 2. string of "No such order"
+	// output: for case 1. we create new order with all the received details
+	// for case 2. we set the error message
+	public static void receivedFromVisitorsPrice(ArrayList<String> msg) {
+		ParkEmployeeController.visitorsPrice = msg;		
 	}
 
 	// getting information from the server

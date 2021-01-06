@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import controllers.*;
 import ocsf.client.*;
 import orderData.Order;
+import server.Bootke;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
@@ -164,6 +165,9 @@ public class ChatClient extends AbstractClient {
 		case "revenueReport" :
 			ParkManagerController.recivedFromserverRevenueReport((ArrayList<ArrayList<String>>) received.get(1));
 			break ;
+		case "getVisitorsPrice":
+			ParkEmployeeController.receivedFromVisitorsPrice((ArrayList<Object>) received);
+			break;
 		default:
 			break;
 		}

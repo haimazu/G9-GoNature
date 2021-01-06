@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.print.Book;
 import java.io.IOException;
 //import java.sql.Connection;
 import java.util.ArrayList;
@@ -145,6 +146,9 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "revenueReport":
 			Reports.incomesReport(recived, client);
+			break;
+		case "getVisitorsPrice":
+			Bootke.getPriceForBootke(recived, client);
 			break;
 		default:
 			break;
