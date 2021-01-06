@@ -12,6 +12,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+
+import javax.swing.plaf.basic.BasicTabbedPaneUI.TabSelectionHandler;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import java.util.PrimitiveIterator.OfDouble;
 
 import org.omg.CORBA.Request;
@@ -23,6 +29,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
 //import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
+import com.sun.javafx.webkit.ThemeClientImpl;
 
 import client.ClientUI;
 import dataLayer.Park;
@@ -49,6 +56,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import orderData.Order;
 import reportData.ManagerRequest;
+
+/**
+ * controller for all of the park manager : it is responsible for setting new
+ * discounds and capacity of the parks. Viewing and creatong reports
+ * 
+ * @author Rinat Stoudenets
+ *
+ */
 
 public class ParkManagerController implements Initializable {
 	@FXML
@@ -240,6 +255,17 @@ public class ParkManagerController implements Initializable {
 //	private JFXComboBox<String> cbxMounth;
 
 	/*-------------------------*/
+	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
+	private static String firstName;
+	private static String parkName;
+	private static String currentVisitors;
+
+	private static AlertController alert = new AlertController();
+	private static boolean requestAnswerFromServer;
+	private static int empID = 0;
+	private static Park park;
+	private static boolean errorInchart = false;
+
 	private static void seterrorInchart(boolean b) {
 
 		errorInchart = b;
@@ -256,17 +282,6 @@ public class ParkManagerController implements Initializable {
 	public static void setUsageReport(ArrayList<ArrayList<String>> usageReport) {
 		ParkManagerController.usageReport = usageReport;
 	}
-
-	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
-	private static String firstName;
-	private static String parkName;
-	private static String currentVisitors;
-
-	private static AlertController alert = new AlertController();
-	private static boolean requestAnswerFromServer;
-	private static int empID = 0;
-	private static Park park;
-	private static boolean errorInchart = false;
 
 	public static String getCurrentVisitors() {
 		return currentVisitors;
@@ -324,6 +339,12 @@ public class ParkManagerController implements Initializable {
 		ParkManagerController.revReport = revReport;
 	}
 
+	/**
+	 * handles switching tabs in park manager controller
+	 * 
+	 * @param event
+	 */
+
 	@FXML
 	void handleSideBarParkManager(ActionEvent event) {
 		if (event.getSource() == btnDashboard) {
@@ -343,7 +364,7 @@ public class ParkManagerController implements Initializable {
 			setButtonPressed(btnUsage);
 			setButtonReleased(btnDashboard, btnVisits, btnMonthlyRevenue);
 		} else if (event.getSource() == btnMonthlyRevenue) {
-			lblTitle.setText("Revenew report");
+			lblTitle.setText("Revenue report");
 			pnMonthlyRev.toFront();
 			setButtonPressed(btnMonthlyRevenue);
 			setButtonReleased(btnVisits, btnDashboard, btnUsage);
@@ -351,19 +372,38 @@ public class ParkManagerController implements Initializable {
 		}
 	}
 
+	/**
+	 * sets the style for pressed tabs
+	 * 
+	 * @param button
+	 */
+
 	public void setButtonPressed(Button button) {
 		button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: brown;"
 				+ "-fx-border-width: 0px 0px 0px 3px;");
 	}
 
+	/**
+	 * sets the style for not pressed tabs
+	 * 
+	 * @param button
+	 * @param button1
+	 * @param button2
+	 */
 	public void setButtonReleased(Button button, Button button1, Button button2) {
 		button.setStyle("-fx-background-color: transparent;");
 		button1.setStyle("-fx-background-color: transparent;");
 		button2.setStyle("-fx-background-color: transparent;");
 	}
 
+	/**
+	 * 
+	 * update current visitors number in the park.The number is updated every time
+	 * when visitor enters or exits the park
+	 * 
+	 * @param visitNum
+	 */
 	public void setUpdatedCurrentVisitors(String visitNum) {
-		// lblCurrentVisitors.setText(visitNum);
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -372,6 +412,10 @@ public class ParkManagerController implements Initializable {
 		});
 	}
 
+	/**
+	 * Main initialize function for the screen. Initialize all the fields, labels
+	 * and datepickers
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setPMC(this);
@@ -1147,8 +1191,8 @@ public class ParkManagerController implements Initializable {
 		data.add(park.getName());
 		msg.add(data);
 		ClientUI.sentToChatClient(msg);
-		if(!getErrorInchart())
-		chartRevenue();
+		if (!getErrorInchart())
+			chartRevenue();
 		else {
 			noDataTopresentInchartForDates();
 			bcRevenue.getData().clear();
@@ -1200,7 +1244,7 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverRevenueReport(ArrayList<ArrayList<String>> revReportAnswer) {
 		setRevReport(null);
-		if ( revReportAnswer.isEmpty())
+		if (revReportAnswer.isEmpty())
 			seterrorInchart(true);
 		else {
 			seterrorInchart(false);
@@ -1209,5 +1253,5 @@ public class ParkManagerController implements Initializable {
 		}
 
 	}
- 
+
 }
