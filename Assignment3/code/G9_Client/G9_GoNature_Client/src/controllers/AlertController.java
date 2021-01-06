@@ -16,8 +16,10 @@ import javafx.scene.control.Alert.AlertType;
 public class AlertController {
 	private String result = "";
 	
+
 	/**
-	 *  showing alert message       
+	 * showing alert message 
+	 * @param msg
 	 */
 	public void setAlert(String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -28,9 +30,10 @@ public class AlertController {
 	}
 
 	/**
-	 *  showing success alert message   
+	 * showing success alert message  
+	 * @param title
+	 * @param msg
 	 */
-	
 	public void successAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle(title);
@@ -39,10 +42,12 @@ public class AlertController {
 		alert.showAndWait();
 	}
 
+
 	/**
-	 *  showing failed alert message 
+	 * showing failed alert message 
+	 * @param title
+	 * @param msg
 	 */
-	
 	public void failedAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(title);
@@ -51,10 +56,12 @@ public class AlertController {
 		alert.showAndWait();
 	}
 
+
 	/**
-	 *   showing confirmation alert message
+	 * showing confirmation alert message
+	 * @param title
+	 * @param msg
 	 */
-	
 	public void ensureAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(title);
@@ -67,10 +74,18 @@ public class AlertController {
 		}
 	}
 
+	/**
+	 * getResult
+	 * @return
+	 */
 	public String getResult() {
 		return result;
 	}
 
+	/**
+	 * setResult
+	 * @param result
+	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
