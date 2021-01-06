@@ -2,7 +2,6 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXRadioButton;
@@ -19,9 +17,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
 import dataLayer.Park;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,7 +29,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import orderData.Order;
 import orderData.OrderType;
 import sim.BarcodeSimulation;
@@ -134,6 +129,7 @@ public class ParkEmployeeController implements Initializable {
 	private static Park parkDetails;
 	private static String error = "";
 	private static String entryAndExitStatus = "";
+	private static String randomVisitorIdNumber = "";
 
 	// input: none
 	// output: moving to 'login' screen
@@ -184,6 +180,7 @@ public class ParkEmployeeController implements Initializable {
 
 	// input: Id / memberId
 	// output: order details
+	@SuppressWarnings("static-access")
 	@FXML
 	void barcodeScan(ActionEvent event) {
 		informationExists = true;
@@ -267,6 +264,9 @@ public class ParkEmployeeController implements Initializable {
 			if (txtIdOrMemberId.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter id/memberid.");
 				return;
+			} else if (txtIdOrMemberId.getText().length() != 9) {
+				alert.failedAlert("Failed", "Id must be 9 digits long.");
+				return;
 			} else if (txtVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
@@ -339,7 +339,9 @@ public class ParkEmployeeController implements Initializable {
 	        if (getError().equals("Free")) {
 	            // update current visitors
 	            updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
+	            // create fake order and check if has one
 	            createFakeOrder(null, null, visitorsAmount);
+	            
 	            // update the exact entry and exit time, for the ordered visitors && for the random friends
 	            updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label,
 	                    Integer.parseInt(lblVisitorsNumber.getText()));
@@ -353,15 +355,36 @@ public class ParkEmployeeController implements Initializable {
 	    } else {
 	        // checking for places in the park
 	        if (getError().equals("Free")) {
-	            // check if the random visitor have a fake order 
-	            if (checkForExistingFakeOrders()) {		
-	                if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && visitorsAmount > 15) {
+	        	// create fake order and check if has one
+	        	createFakeOrder(null, null, visitorsAmount);
+	        	
+	            // the random visitor have a fake order 
+	            if (!getRandomVisitorIdNumber().equals("Falied") && !getRandomVisitorIdNumber().equals("")) {		
+	                           
+	                // getting the visitors status 
+	                sendToServerArrayList("getVisitorsEntryStatus", new ArrayList<String>(Arrays.asList(getRandomVisitorIdNumber())));
+	                
+	                if (getEntryAndExitStatus().equals("Didn't enter")) {
+	                    // update current visitors
+	                    updateCurrentVisitors(parkDetails.getCurrentAmount() + visitorsAmount);
+	                    // update the exact entry and exit time
+	                    updateAccessControl(Integer.parseInt(getRandomVisitorIdNumber()), null, visitorsAmount);
+	                    alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");				
+	                } else if (getEntryAndExitStatus().equals("Entered")) {
+	                    alert.failedAlert("Failed", "The visitors identified by these details have not yet left the park.");
+	                } else {
+	                    alert.failedAlert("Failed", "These visitors have already realized the visit.");
+	                }
+	            // no fake order
+	            } else {
+	            	// the order is for a group with a guide
+	            	if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && visitorsAmount > 15) {
 	                    alert.failedAlert("Failed", "You are registered as a guide, your group is up to 15 visitors.");
 	                    clearPaymentFields();
 	                    return;
 	                }
-	                
-	                // getting the visitors status 
+	            	
+	            	// getting the visitors status 
 	                sendToServerArrayList("getVisitorsEntryStatus", new ArrayList<String>(Arrays.asList(String.valueOf(randomVisitorFakeOrderDetails.getOrderNumber()))));
 	                
 	                if (getEntryAndExitStatus().equals("Didn't enter")) {
@@ -376,9 +399,6 @@ public class ParkEmployeeController implements Initializable {
 	                } else {
 	                    alert.failedAlert("Failed", "These visitors have already realized the visit.");
 	                }
-	            // no fake order, create one
-	            } else {
-	                createFakeOrder(null, null, visitorsAmount);
 	            }
 	        }
 	    }		
@@ -528,40 +548,6 @@ public class ParkEmployeeController implements Initializable {
 	    } 
 	}
 
-	// updates fake order
-	// input: none
-	// output: T / F ==> if exists return true
-	// otherwise creates new 'fake order' and return false
-	public boolean checkForExistingFakeOrders() {
-		String id = null;
-		String memberId = null;
-		String currentValue = "";
-
-		/***** Random *****/
-		if (!orderStatus && !btnRandomVisitor.isVisible()) {
-			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
-				memberId = txtIdOrMemberId.getText().substring(1);
-				currentValue = memberId;
-			} else {
-				id = txtIdOrMemberId.getText();
-				if (id.length() != 9) {
-					alert.failedAlert("Failed", "Invalid ID.");
-					return false;
-				}
-				currentValue = id;
-			}
-			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));
-		} else {
-			createFakeOrder(memberId, id, Integer.parseInt(txtVisitorsAmount.getText()));
-		}
-
-		// order number doesn't exists
-		if (getError().equals("Failed")) {
-			return false;
-		}
-		return true;
-	}
-
 	// updates prices for ordered visitors
 	// input: none
 	// output: prints the latest data for payment
@@ -632,6 +618,12 @@ public class ParkEmployeeController implements Initializable {
 	    Order fakeOrder;
 	    double randomVisitorDiscount = 0;
 	    String tempDate = dateAndTimeFormat;
+
+		if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
+			memberId = txtIdOrMemberId.getText().substring(1);
+		} else {
+			id = txtIdOrMemberId.getText();
+		}		
 	    
 	    // format time
 	    checkTime("setPrice");
@@ -643,6 +635,11 @@ public class ParkEmployeeController implements Initializable {
 	    
 	    // check for a member with fake order
 	    sendToServerObject("randomVisitorFakeOrder", fakeOrder);
+	    
+	    // return string as answer ==> randomVisitorFakeOrderDetails is empty
+	    if (!getRandomVisitorIdNumber().equals("")) {
+	    	return;
+	    }
 	    
 	    if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && amountArrived > 15) {
 	        return;
@@ -714,7 +711,7 @@ public class ParkEmployeeController implements Initializable {
 				return true;
 			}
 		} else if (currentHour >= 16 && currentHour < 20) {
-			timeFormat = " 16:00:00";// TODO
+			timeFormat = " 16:00:00";
 			if (arrivelHour == 16) {
 				return true;
 			}
@@ -950,8 +947,10 @@ public class ParkEmployeeController implements Initializable {
 	public static void receivedFromServerVisitorsPrice(Object msg) {
 		if (msg instanceof Order) {
 			ParkEmployeeController.randomVisitorFakeOrderDetails = (Order) msg;
+		// if order number doesn't exists msg = Failed
+		// otherwise msg = orderNumber
 		} else {
-			setError((String) msg);
+			setRandomVisitorIdNumber((String) msg);
 		}
 	}
 
@@ -1006,6 +1005,14 @@ public class ParkEmployeeController implements Initializable {
 
 	public static void setEntryAndExitStatus(String entryAndExitStatus) {
 		ParkEmployeeController.entryAndExitStatus = entryAndExitStatus;
+	}
+
+	public static String getRandomVisitorIdNumber() {
+		return randomVisitorIdNumber;
+	}
+
+	public static void setRandomVisitorIdNumber(String randomVisitorIdNumber) {
+		ParkEmployeeController.randomVisitorIdNumber = randomVisitorIdNumber;
 	}
 
 	public static Order getOrderDetails() {
@@ -1074,6 +1081,7 @@ public class ParkEmployeeController implements Initializable {
 		alert.setResult("");
 		setError("");
 		setEntryAndExitStatus("");
+		setRandomVisitorIdNumber("");
 		txtIdOrMemberId.clear();
 		txtOrderNumber.clear();
 		txtVisitorsAmount.clear();
@@ -1160,20 +1168,23 @@ public class ParkEmployeeController implements Initializable {
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
 
-			if (!newValue.isEmpty() && newValue.charAt(0) != '0') {
-				if (!btnRandomVisitor.isVisible() && !txtIdOrMemberId.getText().isEmpty()) {
-					// update random visitor prices
-					checkForExistingFakeOrders();
-				} else if (!txtOrderNumber.getText().isEmpty()) {
-					showDetails(null);
-				}
-			}
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.isEmpty() && !newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
 				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
+				
+			} else if (!newValue.isEmpty() && newValue.matches("\\d")) {
+				if (newValue.charAt(0) != '0') {
+					if (!btnRandomVisitor.isVisible() && !txtIdOrMemberId.getText().isEmpty()) {
+						// update random visitor prices
+						createFakeOrder(null, null, Integer.parseInt(txtVisitorsAmount.getText()));
+					} else if (!txtOrderNumber.getText().isEmpty()) {
+						showDetails(null);
+					}
+				}
 			}
+				
 		});
 
 		/***** Random *****/
