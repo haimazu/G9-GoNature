@@ -667,6 +667,9 @@ public class DepartmentManagerController implements Initializable {
 				data.add("yes");
 				allItems.add(new ArrayList<Object>(data));
 				arrItems[i] = i;
+				for (int j = 0;j<arrItems.length;j++) {
+					System.out.println(arrItems[i]);
+				}
 
 				//
 
@@ -675,6 +678,7 @@ public class DepartmentManagerController implements Initializable {
 		}
 
 		Server.add(new ArrayList<Object>(allItems));
+		System.out.println("server: " + Server);
 		allItems.clear();
 		//System.out.println(Server);
 		// remove items from list after the all lists for server
