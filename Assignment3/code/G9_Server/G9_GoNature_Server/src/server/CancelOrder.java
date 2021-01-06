@@ -18,14 +18,13 @@ public class CancelOrder {
 
 	/**
 	 * sends to client ArrayList of Objects: in cell [0]: String "cancelOrder" in
-	 * cell [1]: boolean -> true if entry successful false if not
+	 * cell [1]: boolean : true if entry successful false if not
 	 * 
 	 * @param recived ArrayList of Objects: in cell [0]: String "cancelOrder" in
 	 *                cell, [1]: Order class of a given order to cancel
 	 * @param client  ConnectionToClient
-	 * @exception IOException
 	 */
-	public static void cancel(ArrayList<Object> recived, ConnectionToClient client) {
+	public static void cancel(ArrayList<Object> recived, ConnectionToClient client){
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
 		Order order = (Order) recived.get(1); // order object received
@@ -63,7 +62,7 @@ public class CancelOrder {
 	/**
 	 * inserting cancelled orders into 'canceledorders' table in DB
 	 * 
-	 * @param Order object
+	 * @param ord Order object
 	 */
 	public static void addToDBCanceledOrder(Order ord) {
 		ord.setOrderNumber(Counter.getCounter().cancelledCountNum());
