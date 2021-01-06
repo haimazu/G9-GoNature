@@ -14,12 +14,14 @@ import ocsf.server.ConnectionToClient;
 public class UpdateVisitorsNumber {
 
 	/**
-	 * updates the ParkCurrentVisitors in Park table
+	 * updates the ParkCurrentVisitors in Park table. sends to client
+	 * ArrayList<Object>=> cell[0] function name, cell[1] T if update succeeded, F
+	 * if not, Full if we can add more visitors
 	 * 
-	 * @param ArrayList<Object> cell [0]: parkName, cell [1]: currentVisitoreAmount,
-	 *                          ConnectionToClient
-	 * @return ArrayList<Object>=> cell[0] function name, cell[1] T if update
-	 *         succeeded, F if not, Full if we can add more visitors
+	 * @param recieved ArrayList<Object> cell [0]: parkName, cell [1]:
+	 *                 currentVisitoreAmount
+	 * @param client   ConnectionToClient
+	 *
 	 */
 
 	public static void updateParkCurrentVisitors(ArrayList<Object> recived, ConnectionToClient client) {
@@ -39,11 +41,6 @@ public class UpdateVisitorsNumber {
 		answer.add(MySQLConnection.update(query));
 		EchoServer.sendToMyClient(answer, client);
 
-		//
-		/////////// ROI//////////////////
-		// test this part to see if it works
-		//
-		//
 		ArrayList<Object> answer2 = new ArrayList<Object>();
 		answer2.add("VisitorsUpdateSendToAll");
 		answer2.add(data.get(0));// parkname
@@ -51,15 +48,16 @@ public class UpdateVisitorsNumber {
 		EchoServer.sendToAll(answer2);
 	}
 
-	// input: cell [0]: case name updateAccessControl
-	// cell [1]: cell 0: orderNumber
-	// cell 1: timeEnter / timeExit
-	// cell 2: parkName
-	// cell 3: orderType
-	// cell 4: amountArrived
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] T if update succeeded, F if not, Full if we can add more visitors
-	@SuppressWarnings("unchecked")
+	/**
+	 * information depending on entry or exit status. sends to
+	 * client:rrayList<Object>=> cell[0] function name // cell[1] T if update
+	 * succeeded, F if not, Full if we can add more visitors
+	 * 
+	 * @param recived ArrayList<Object> [0]: case name updateAccessControl cell [1]:
+	 *                cell [0]: orderNumber, cell [1]: timeEnter / timeExit cell
+	 *                [2]: parkName, cell [3]: orderType, cell [4]: amountArrived
+	 * @param client  ConnectionToClient
+	 */
 	public static void updateAccessControl(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
