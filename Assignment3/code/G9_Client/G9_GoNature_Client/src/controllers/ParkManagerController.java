@@ -729,7 +729,7 @@ public class ParkManagerController implements Initializable {
 	}
 
 	void presentParkDetails(Park parkDetails) {
-		double disc = (parkDetails.getMangerDiscount()) * 100;
+		double disc = (1-parkDetails.getMangerDiscount()) * 100;
 		lblPresentDisc.setText(String.format("%.1f", disc) + "%");
 		lblPresentMaxVis.setText(String.valueOf(parkDetails.getMaximumCapacityInPark()));
 		lblPresentReservationCap.setText(String.valueOf(parkDetails.getMaxAmountOrders()));
