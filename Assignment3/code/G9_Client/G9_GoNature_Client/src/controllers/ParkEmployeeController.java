@@ -619,11 +619,16 @@ public class ParkEmployeeController implements Initializable {
 	    double randomVisitorDiscount = 0;
 	    String tempDate = dateAndTimeFormat;
 
+	    if (txtIdOrMemberId.getText().isEmpty()) {
+	    	return;
+	    }
+	    
 		if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
 			memberId = txtIdOrMemberId.getText().substring(1);
 		} else {
 			id = txtIdOrMemberId.getText();
 		}		
+ 
 	    
 	    // format time
 	    checkTime("setPrice");
@@ -1172,8 +1177,7 @@ public class ParkEmployeeController implements Initializable {
 			// * -> escaped special characters
 			if (!newValue.isEmpty() && !newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
-				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));
-				
+				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));				
 			} else if (!newValue.isEmpty() && newValue.matches("\\d")) {
 				if (newValue.charAt(0) != '0') {
 					if (!btnRandomVisitor.isVisible() && !txtIdOrMemberId.getText().isEmpty()) {
