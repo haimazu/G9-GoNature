@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
+import java.util.logging.Handler;
 import java.util.prefs.BackingStoreException;
 
 import javax.imageio.stream.MemoryCacheImageInputStream;
@@ -40,6 +41,12 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import orderData.Order;
 import javafx.scene.control.Label;
+
+/**
+ * controller handle all the manage orders options
+ * @author Rinat Stoudenets
+ *
+ */
 
 public class ManageOrderController implements Initializable {
 	@FXML
@@ -116,11 +123,11 @@ public class ManageOrderController implements Initializable {
 		ManageOrderController.order = order;
 	}
 
-	/*
-	 * input : received order object from server 
-	 * Output : non 
-	 * present on screen: order details
+	/**
+	 * received order object from server and present on screen: order details
+	 * @param details Order
 	 */
+	
 	void presentOrderdetails(Order details) {
 
 		String DateAndTime = details.getArrivedTime();
@@ -152,10 +159,8 @@ public class ManageOrderController implements Initializable {
 
 	}
 
-	/*
-	 * input : non
-	 * output :non 
-	 * description : presenting the details , initializing the fields with order details
+	/**
+	 *  presenting the details , initializing the fields with order details
 	 */
 	
 	@Override
@@ -183,11 +188,11 @@ public class ManageOrderController implements Initializable {
 			lblEdit.setVisible(false);
 		}
 	}
- /*
-  * input :non 
-  * output: non 
-  * description : the function sets default dada in the  appropriate fields for edit as the data received from the DB 
-  */
+ 
+	/**
+	 * the function sets default dada in the  appropriate fields for edit as the data received from the DB
+	 */
+	
 	public void updateDetailsFromOrder() {
 		String DateAndTime = order.getArrivedTime();
 		String[] splitDateAndTime = DateAndTime.split(" ");
@@ -217,11 +222,12 @@ public class ManageOrderController implements Initializable {
 		txtdate.setValue(LOCAL_DATE(splitDateAndTime[0]));
 	}
 
-	/*
-	 * button back : return to previous screen 
-	 * @param event
+	/**
+	 * button back, return to previous screen 
+	 * @param event ActionEvent
 	 * @throws IOException
 	 */
+	
 	@FXML
 	void back(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -229,11 +235,13 @@ public class ManageOrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	/*
-	 * input : non 
-	 * output : non 
-	 * send to server : Array list of objects : [0]-> string for server : editOrder , [1]-> updated order object , [2]-> old order object
+	/**
+	 * send to server, Array list of objects, [0] string for server, editOrder , [1] updated order object, 
+	 * [2] old order object
+	 * @param event ActionEvent
+	 * @throws IOException
 	 */
+	
 	@FXML
 	void update(ActionEvent event) throws IOException {
 		Order sentOrder = new Order(order); 
@@ -287,9 +295,11 @@ public class ManageOrderController implements Initializable {
 			alert.setAlert("Failed to cancel Order");
 	}
 
-	/*input : non, output: non
+	/**
 	 * Do not allow to book a trip for a time that already passed today
+	 * @return T/F
 	 */
+	
 	public boolean checkCurrentTime() {
 		LocalDate date = txtdate.getValue();
 		String[] arrSplit = cbxArriveTime.getValue().toString().split("-");
@@ -304,21 +314,26 @@ public class ManageOrderController implements Initializable {
 		}
 		return true;
 	}
-/*	input : returned from server value - true if canceled , false - if not canceled  and an error ocured
- * 	output: non
- *
- */
+	
+	/**
+	 * returned from server value true if cancelled , false if not cancelled  and an error ocured
+	 * @param returned T/F
+	 */
+
 	public static void canceledOrderFromServer(boolean returned) {
 		canceled = returned;
 		order = null;
 	}
 
-	/*
-	 * input : from server the arraylist of object : if obj contains only one cell -
-	 * the user preesed no- >present succssesful cancel message if true-> the user
-	 * approved -> present edit window if false -> somthing went wrong outut :non
-	 * int caseApproval : 0->pressed no 1->pressed yes 2->false ,something wrong
+	/**
+	 * if obj contains only one cell the user pressed no present successful cancel message,
+	 *  if true the user
+	 * approved present edit window ,
+	 * if false  something went wrong int caseApproval : 0 pressed no ,1 pressed yes, 2 false something wrong 
+	 * 
+	 * @param returned ArrayList<Object>
 	 */
+	
 	public static void receviedFromserverArrivalConfirmation(ArrayList<Object> returned) {
 
 		if (returned.size() == 1)
@@ -343,11 +358,14 @@ public class ManageOrderController implements Initializable {
 //		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditMemberOrder.fxml"));
 //		stage.setScene(new Scene(root));
 	}
-/* uppon receving a message that there is free spot in the park or message to approve arrival on the next day
- * confirme or cancel order 
-input : non 
-output :non 
- */
+	
+	/**
+	 * Upon receiving a message that there is free spot in the park or message to approve arrival on the next day
+	 * Confirm or cancel order 
+	 * @param event ActionEvent
+	 * @throws IOException
+	 */
+
 	@FXML
 	void confirmeArrival(ActionEvent event) throws IOException {
 		ArrayList<Object> msg = new ArrayList<>();
@@ -392,10 +410,13 @@ output :non
 		}
 
 	}
-	/* input : date as a string 
-	 * output: the local date value of the string recieved
+	
+	/**
 	 * convert from string to local date 
+	 * @param dateString String, date as a string
+	 * @return the local date value of the string received
 	 */
+	
 	public static LocalDate LOCAL_DATE (String dateString){
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	    LocalDate localDate = LocalDate.parse(dateString, formatter);
