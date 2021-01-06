@@ -1317,10 +1317,12 @@ public class ParkManagerController implements Initializable {
 		bcRevenue.getData().addAll(DailyRevenue);
 
 	}
-	/**send to server array list of object :[0]revenueReport, [1] array list of string [0] park name ,[1]from date .[2] to date.
+	/**on click on show - send to server the current month and the next month 
+	 * send to server array list of object :[0]revenueReport, [1] array list of string ,[0]from date .[1] to date,[2] park name 
 	 * @param event
 	 * @throws ParseException
 	 */
+	
 	@FXML
 	void ShowReuvenue(ActionEvent event) throws ParseException {
 		ArrayList<String> monthArr = new ArrayList<>();
@@ -1373,11 +1375,20 @@ public class ParkManagerController implements Initializable {
 	/*-------end of revenue report section --------*/
 
 	/*---------received from server section ------*/
+	
+	/**
+	 * receive the answer if the request for park manager was successful - true if so , false if not 
+	 * @param answer
+	 */
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
 
 	}
 
+	/**
+	 * returned from server park details if in case of an error returneed null 
+	 * @param object
+	 */
 	public static void recivedFromserverParkDetails(Object object) {
 		if (object instanceof Park)
 			setPark((Park) object);
@@ -1385,11 +1396,19 @@ public class ParkManagerController implements Initializable {
 			setPark(null);
 	}
 
+	/**
+	 * returned from server employee id 
+	 * @param answer
+	 */
 	public static void recivedFromserverEmployeeID(String answer) {
 		setEmpID(Integer.parseInt(answer));
 
 	}
 
+	/**
+	 * visitors report - if the report is empty we will receive 'failed'
+	 * @param visitorsReportAnswer
+	 */
 	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
 		setVisitorsReport(null);
 		if ((Object) visitorsReportAnswer.get(0) instanceof String)
@@ -1401,7 +1420,10 @@ public class ParkManagerController implements Initializable {
 		}
 
 	}
-
+/**
+ * usage report - if the report is empty we will receive null
+ * @param usageReportAnswer
+ */
 	public static void recivedFromserverUsageReport(ArrayList<ArrayList<String>> usageReportAnswer) {
 		setUsageReport(null);
 		if (usageReportAnswer.isEmpty())
@@ -1412,6 +1434,10 @@ public class ParkManagerController implements Initializable {
 
 		}
 	}
+	/**
+	 * revenue report - if the report is empty we will receive null
+	 * @param revReportAnswer
+	 */
 
 	public static void recivedFromserverRevenueReport(ArrayList<ArrayList<String>> revReportAnswer) {
 		setRevReport(null);
