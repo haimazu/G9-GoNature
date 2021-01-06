@@ -3,8 +3,18 @@ package reportData;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ *create object of requests coming from the park manager
+ *
+ * @author Anastasia Kokin
+ */
+
 public class ManagerRequest implements Serializable {
 
+	/**
+	 * tostring function
+	 * @return tostring order 
+	 */
 	@Override
 	public String toString() {
 		return "ManagerRequest [employeeID=" + employeeID + ", requestType=" + requestType + ", maxCapacity="
@@ -21,11 +31,24 @@ public class ManagerRequest implements Serializable {
 	String toDate;
 	String parkName;
 	
+	/**
+	 * constructor for type of request
+	 * @param parkName String
+	 * @param employeeID integer
+	 * @param requestType String
+	 */
+	
 	public ManagerRequest(String parkName,int employeeID,String requestType ) {
 		this.parkName=parkName;
 		this.employeeID=employeeID;
 		this.requestType=requestType;
 	}
+	
+	/**
+	 * constructor from ArrayList<String>
+	 * 
+	 * @param ManagerRequestFromDB
+	 */
 
 	public ManagerRequest(ArrayList<String> ManagerRequestFromDB) {
 		this.employeeID = Integer.parseInt(ManagerRequestFromDB.get(0));
@@ -37,6 +60,19 @@ public class ManagerRequest implements Serializable {
 		this.toDate = ManagerRequestFromDB.get(6);
 		this.parkName = ManagerRequestFromDB.get(7);
 	}
+	
+	/**
+	 * Constructor for park manger
+	 * 
+	 * @param employeeID integer
+	 * @param requestType String
+	 * @param maxCapacity integer
+	 * @param ordersCapacity integer
+	 * @param discount String
+	 * @param fromDate String
+	 * @param toDate String
+	 * @param parkName String
+	 */
 
 	public ManagerRequest(int employeeID, String requestType, int maxCapacity, int ordersCapacity, String discount,
 			String fromDate, String toDate, String parkName) {
