@@ -122,6 +122,7 @@ public class ParkEmployeeController implements Initializable {
 	private String dateAndTimeFormat = "";
 	private boolean orderStatus = false;
 	private boolean approveIsPressed = false;
+	private boolean addFakeOrderToDB = false;
 	private static String firstName;
 	private static String parkName;
 	private static Order orderDetails;
@@ -310,6 +311,7 @@ public class ParkEmployeeController implements Initializable {
 		}
 
 		orderStatus = false;
+		addFakeOrderToDB = false;
 		// update park status
 		updateParkStatus(0);
 		clearAllFields();
@@ -335,6 +337,7 @@ public class ParkEmployeeController implements Initializable {
 	        if (getError().equals("Free")) {
 	            // update current visitors
 	            updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
+	            addFakeOrderToDB = true;
 	            // create fake order and check if has one
 	            createFakeOrder(null, "420", visitorsAmount);
 	            
@@ -349,6 +352,7 @@ public class ParkEmployeeController implements Initializable {
 	        }
 	    // in case without order (only random visitors)
 	    } else if (alert.getResult().equals("OK")) {
+	    	addFakeOrderToDB = true;
 	    	createFakeOrder(null, "420", visitorsAmount);
         	alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
         	// update current visitors
@@ -383,6 +387,7 @@ public class ParkEmployeeController implements Initializable {
 	                }
 	            // no fake order
 	            } else {
+	            	addFakeOrderToDB = true;
 	            	// create fake order and check if has one
 	            	createFakeOrder(null, "420", visitorsAmount);
 	            	// update current visitors
@@ -390,28 +395,6 @@ public class ParkEmployeeController implements Initializable {
                     // update the exact entry and exit time
                     updateAccessControl(Integer.parseInt(getRandomVisitorIdNumber()), null, visitorsAmount);
 	            	alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
-//	            	// the order is for a group with a guide
-//	            	if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && visitorsAmount > 15) {
-//	                    alert.failedAlert("Failed", "You are registered as a guide, your group is up to 15 visitors.");
-//	                    clearPaymentFields();
-//	                    return;
-//	                }
-//	            	
-//	            	// getting the visitors status 
-//	                sendToServerArrayList("getVisitorsEntryStatus", new ArrayList<String>(Arrays.asList(String.valueOf(randomVisitorFakeOrderDetails.getOrderNumber()))));
-//	                
-//	                if (getEntryAndExitStatus().equals("Didn't enter")) {
-//	                    // update current visitors
-//	                    updateCurrentVisitors(parkDetails.getCurrentAmount() + visitorsAmount);
-//	                    // update the exact entry and exit time
-//	                    updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), randomVisitorFakeOrderDetails.getOrderType().label,
-//	                            visitorsAmount);
-//	                    alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");				
-//	                } else if (getEntryAndExitStatus().equals("Entered")) {
-//	                    alert.failedAlert("Failed", "The visitors identified by these details have not yet left the park.");
-//	                } else {
-//	                    alert.failedAlert("Failed", "These visitors have already realized the visit.");
-//	                }
 	            }
 	        }
 	    }		
@@ -675,9 +658,10 @@ public class ParkEmployeeController implements Initializable {
 	    	}
 	            
 		    // create new order for the random visitors (add to DB only if pressed 'Approve')
-		    if (approveIsPressed) {
+		    if (approveIsPressed && addFakeOrderToDB) {
 		        sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
 		        approveIsPressed = false;
+		        addFakeOrderToDB = false;
 		    }
 		    
 		    lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
