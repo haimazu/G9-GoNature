@@ -377,7 +377,7 @@ public class PendingMenagerRequest implements Serializable {
 			}
 
 		}
-		answer.add(retTable);
+		answer.add("table= "+retTable);
 		System.out.println(answer);
 		EchoServer.sendToMyClient(answer, client);
 	}
