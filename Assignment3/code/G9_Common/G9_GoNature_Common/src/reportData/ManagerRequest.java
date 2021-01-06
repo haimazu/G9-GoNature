@@ -45,9 +45,9 @@ public class ManagerRequest implements Serializable {
 	}
 	
 	/**
-	 * constructor from ArrayList<String>
+	 * constructor from ArrayList of String
 	 * 
-	 * @param ManagerRequestFromDB
+	 * @param ManagerRequestFromDB ArrayList of String
 	 */
 
 	public ManagerRequest(ArrayList<String> ManagerRequestFromDB) {

@@ -7,19 +7,19 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
 /**
-*
-*controller that coordinator all the kinds of alert that we use in the project
-*
-* @author Bar Katz Haim Azulay Hodaya Mekonen
-*/
+ *
+ * controller that coordinator all the kinds of alert that we use in the project
+ *
+ * @author Bar Katz Haim Azulay Hodaya Mekonen
+ */
 
 public class AlertController {
 	private String result = "";
-	
 
 	/**
-	 * showing alert message 
-	 * @param msg
+	 * showing alert message
+	 * 
+	 * @param msg String
 	 */
 	public void setAlert(String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -30,9 +30,10 @@ public class AlertController {
 	}
 
 	/**
-	 * showing success alert message  
-	 * @param title
-	 * @param msg
+	 * showing success alert message
+	 * 
+	 * @param title String
+	 * @param msg String
 	 */
 	public void successAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -42,11 +43,11 @@ public class AlertController {
 		alert.showAndWait();
 	}
 
-
 	/**
-	 * showing failed alert message 
-	 * @param title
-	 * @param msg
+	 * showing failed alert message
+	 * 
+	 * @param title String
+	 * @param msg String
 	 */
 	public void failedAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -56,9 +57,9 @@ public class AlertController {
 		alert.showAndWait();
 	}
 
-
 	/**
 	 * showing confirmation alert message
+	 * 
 	 * @param title
 	 * @param msg
 	 */
@@ -68,7 +69,7 @@ public class AlertController {
 		alert.setHeaderText(null);
 		alert.setContentText(msg);
 		Optional<ButtonType> action = alert.showAndWait();
-		
+
 		if (action.get() == ButtonType.OK) {
 			setResult("OK");
 		}
@@ -76,6 +77,7 @@ public class AlertController {
 
 	/**
 	 * getResult
+	 * 
 	 * @return
 	 */
 	public String getResult() {
@@ -84,6 +86,7 @@ public class AlertController {
 
 	/**
 	 * setResult
+	 * 
 	 * @param result
 	 */
 	public void setResult(String result) {

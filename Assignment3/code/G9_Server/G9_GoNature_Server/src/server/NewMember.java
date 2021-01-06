@@ -17,10 +17,10 @@ public class NewMember {
 	/**
 	 * inserting a new member:MEMBER\GUIDE in members table in DB
 	 * 
-	 * @param ArrayList<Object>: cell[0] function name cell[1] member object,
+	 * @param ArrayList of Object: cell[0] function name cell[1] member object,
 	 *                           cell[2] credit card object
 	 * @param client             ConnectionToClient
-	 * @return ArrayList<Object>=> cell[0] function name cell[1] T/F
+	 * @return ArrayList Object => cell[0] function name cell[1] T/F
 	 */
 	public static void NewMemberInsert(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();

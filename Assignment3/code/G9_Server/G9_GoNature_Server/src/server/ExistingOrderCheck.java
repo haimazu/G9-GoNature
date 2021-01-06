@@ -41,7 +41,7 @@ public class ExistingOrderCheck {
 	 *                  of String contains: [0] - orderNumber
 	 * @param tableName table name as string
 	 * @param colName   col name as string
-	 * @return ArrayList<ArrayList<String>> containing the order details, empty if
+	 * @return ArrayList of ArrayList of String containing the order details, empty if
 	 *         no details
 	 */
 	public static ArrayList<ArrayList<String>> fechOrder(ArrayList<Object> recived, String tableName, String colName) {
@@ -77,12 +77,12 @@ public class ExistingOrderCheck {
 	}
 
 	/**
-	 * send to client: array list of object contains: [0] -> String checkOrderForGo
-	 * [1] -> Order Class if an order found, string "No such order" if not [2] ->
+	 * send to client: array list of object contains: [0] - String checkOrderForGo
+	 * [1] - Order Class if an order found, string "No such order" if not [2] -
 	 * (if an order is found only) True if the order is in pendingwaitlist table
 	 * 
-	 * @param recived ArrayList<Object> array list of object contains: [0] -> String
-	 *                checkOrderForGo [1] -> ArrayList of String contains: [0] ->
+	 * @param recived ArrayList of Object array list of object contains: [0] - String
+	 *                checkOrderForGo [1] - ArrayList of String contains: [0] -
 	 *                orderNumber
 	 * @param client  ConnectionToClient
 	 */

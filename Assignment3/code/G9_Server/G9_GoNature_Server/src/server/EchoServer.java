@@ -154,7 +154,7 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * 
-	 * @param msg    ArrayList<Object>
+	 * @param msg    ArrayList of Object
 	 * @param client ConnectionToClient
 	 */
 	public static void sendToMyClient(ArrayList<Object> msg, ConnectionToClient client) {

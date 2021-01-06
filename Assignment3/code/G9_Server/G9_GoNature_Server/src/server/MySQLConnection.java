@@ -21,7 +21,7 @@ public class MySQLConnection {
 	/**
 	 * sets the connection to the DB
 	 * 
-	 * @param data ArrayList<String> cell [0]: server URL, cell [1]: server port
+	 * @param data ArrayList of String cell [0]: server URL, cell [1]: server port
 	 *             (default for mySQL is 3306), cell [2]: name of the DB scheme,
 	 *             cell [3]: user name cell, [4]: password
 	 * @return T/F
@@ -71,7 +71,7 @@ public class MySQLConnection {
 
 	/**
 	 * 
-	 * @param data ArrayList<String> cell [0]: command (in this case will always be
+	 * @param data ArrayList of String cell [0]: command (in this case will always be
 	 *             "insert") cell [1]: table name to insert to string cell [2]:
 	 *             values that should be inserted NOTE: insert only full rows!
 	 * @return true if update successful, false if failed

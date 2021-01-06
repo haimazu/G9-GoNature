@@ -25,6 +25,7 @@ public class ChatClient extends AbstractClient {
 	 * @param host     The server to connect to.
 	 * @param port     The port number to connect on.
 	 * @param clientUI The interface type variable.
+	 * @exception IOException
 	 */
 
 	public ChatClient(String host, int port, WelcomeController control2) throws IOException {

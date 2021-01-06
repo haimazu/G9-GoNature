@@ -8,7 +8,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 
-public class TableViewSet implements Serializable{
+public class TableViewSet implements Serializable {
 
 	private String reqType;
 	private String reqDetails;
@@ -39,9 +39,11 @@ public class TableViewSet implements Serializable{
 //		setmark((CheckBox)arr.get(3));
 //	}
 
+
 	public String getParkName() {
 		return ParkName;
 	}
+
 
 	public void setParkName(String parkName) {
 		ParkName = parkName;

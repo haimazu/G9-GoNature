@@ -15,14 +15,14 @@ public class Login {
 
 	/**
 	 * the function add the relevant data for the query and call MySQLConnection
-	 * send to client: ArrayList of objects -> cell [0]: the client function who
-	 * called for service (in that case "login"), cell [1]: ArrayList of String ->
+	 * send to client: ArrayList of objects - cell [0]: the client function who
+	 * called for service (in that case "login"), cell [1]: ArrayList of String -
 	 * {if failed:} cell [0]: the string "failed" {if success:} cell [0]: the
 	 * employee role as string
 	 * 
-	 * @param recived ArrayList<Object> cell [0]: the client function who called for
+	 * @param recived ArrayList of Object cell [0]: the client function who called for
 	 *                service (in that case "login"), cell [1]: ArrayList of String
-	 *                -> cell [0]: user name, cell [1]: password
+	 *                - cell [0]: user name, cell [1]: password
 	 * @param client  ConnectionToClient
 	 */
 	public static void login(ArrayList<Object> recived, ConnectionToClient client) {
@@ -49,8 +49,8 @@ public class Login {
 
 	/**
 	 * the function add the relevant data for the query and call MySQLConnection
-	 * send to client: ArrayList of objects -> cell [0]: the client function who
-	 * called for service (in that case "updateLoggedIn") cell [1]: boolean value ->
+	 * send to client: ArrayList of objects - cell [0]: the client function who
+	 * called for service (in that case "updateLoggedIn") cell [1]: boolean value -
 	 * {if failed:} ==> false {if success:} ==> true
 	 * 
 	 * @param recived ArrayList<Object> cell [0]: the client function who called for

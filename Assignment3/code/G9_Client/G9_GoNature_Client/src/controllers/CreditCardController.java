@@ -136,8 +136,8 @@ public class CreditCardController implements Initializable {
 
 	/**
 	 * checks valid input for each nameMathod according to relevant the pattern
-	 * @param String nameMathod and txt
-	 * @param txt
+	 * @param nameMathod String
+	 * @param txt String
 	 * @return true if the pattern are correct ,false otherwise
 	 */
 	

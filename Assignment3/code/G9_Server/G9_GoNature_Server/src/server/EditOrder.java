@@ -16,10 +16,10 @@ public class EditOrder {
 
 	/**
 	 * changes can be made only for ArivelTime and VisitorsNumber parameters send to
-	 * client: ArrayList of objects that contains: [0] -> String "EditOrder" [1] ->
+	 * client: ArrayList of objects that contains: [0] - String "EditOrder" [1] -
 	 * true if update successful, false if not
 	 * 
-	 * @param recived ArrayList<Object>
+	 * @param recived ArrayList of Object
 	 * @param client  ConnectionToClient
 	 */
 	public static void edit(ArrayList<Object> recived, ConnectionToClient client) {
@@ -124,7 +124,7 @@ public class EditOrder {
 	/**
 	 * checkFullDays
 	 * 
-	 * @param recived ArrayList<Object>
+	 * @param recived ArrayList of Object
 	 * @param client  ConnectionToClient
 	 */
 	public static void checkFullDays(ArrayList<Object> recived, ConnectionToClient client) {

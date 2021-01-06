@@ -11,7 +11,7 @@ import orderData.Order;
  * The CancelOrder program canceling an existing order and deleting it from the
  * DB
  *
- * @author Roi Amar & Anastasia Kokin
+ * @author Roi Amar , Anastasia Kokin
  */
 
 public class CancelOrder {

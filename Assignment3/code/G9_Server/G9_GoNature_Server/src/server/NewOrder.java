@@ -21,9 +21,9 @@ public class NewOrder {
 	/**
 	 * inserting a new reservation in order table in DB
 	 * 
-	 * @param ArrayList<Object>: cell[0] function name, cell[1] order object
+	 * @param ArrayList of Object: cell[0] function name, cell[1] order object
 	 * @param client             ConnectionToClient
-	 * @return none. sends to client :ArrayList<Object>=> cell[0] function name,
+	 * @return none. sends to client :ArrayList of Object => cell[0] function name,
 	 *         cell[1] Order object with updated cells: price ,totalPrice
 	 * 
 	 **/
@@ -261,7 +261,7 @@ public class NewOrder {
 	 * calculates and return current price of entry in the park with manger discount
 	 * calculated
 	 * 
-	 * @param Order object
+	 * @param ord Order object
 	 * @return entry price
 	 **/
 	public static double CurrentPriceInPark(Order ord) {

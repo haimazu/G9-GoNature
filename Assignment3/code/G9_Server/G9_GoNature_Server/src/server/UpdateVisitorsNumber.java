@@ -18,7 +18,7 @@ public class UpdateVisitorsNumber {
 	 * Object => cell[0] function name, cell[1] T if update succeeded, F if not,
 	 * Full if we can add more visitors
 	 * 
-	 * @param recieved ArrayList of Object cell [0]: parkName, cell [1]:
+	 * @param recived ArrayList of Object cell [0]: parkName, cell [1]:
 	 *                 currentVisitoreAmount
 	 * @param client   ConnectionToClient
 	 *

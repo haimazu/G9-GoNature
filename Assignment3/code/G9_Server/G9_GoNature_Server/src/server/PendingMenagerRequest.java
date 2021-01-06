@@ -271,7 +271,7 @@ public class PendingMenagerRequest implements Serializable {
 	/**
 	 * deletes approved and disapproved managers requests and executes them in their
 	 * DB, sends to client: ArrayList of Object: cell[0] calling function name,
-	 * cell[1] ArrayList<ArrayList<Object>> => call[0-n] -> ArrayList of Object =>
+	 * cell[1] ArrayList<ArrayList<Object>> => call[0-n] => ArrayList of Object =>
 	 * cell[0] => request cell[1] => True if deleteCond success, false if failed
 	 * cell[2] => false if discount on this day or failed to insert DB, true
 	 * otherwise

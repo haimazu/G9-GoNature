@@ -9,7 +9,7 @@ import userData.Member;
 /**
  * The WaitingList program handles the waiting list functions
  *
- * @author
+ * @author Roi Amar
  */
 
 public class WaitingList {
