@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.ByteOrder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.TooManyListenersException;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 import javax.swing.plaf.basic.BasicTabbedPaneUI.TabSelectionHandler;
@@ -212,7 +214,7 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Button btnShow;
 	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
-	private double[] weekDaysCounter = new double[8];
+	private double[] sumByweekDays = new double[8];
 
 	/*------------------------*/
 
@@ -552,8 +554,8 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * /by clicking on logout buttonn the user will be logged out of the system and
 	 * the infor will be saved in the DB . send to server data to update that the
-	 * user was log out : arraylist of object ->[0]->updateLoggedIn .[1]-> arraylist
-	 * of string ->[0]->user name ,[1]->0
+	 * user was log out : arraylist of object [0] updateLoggedIn .[1] arraylist of
+	 * string [0] user name ,[1] 0
 	 * 
 	 * @param event
 	 * @throws IOException
@@ -647,9 +649,9 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * by clicking on set visitors button - make the relevant text field and date
+	 * by clicking on set visitors button : make the relevant text field and date
 	 * pickers to be visible and the rest no if there is other request editing field
-	 * vsisible - set them be not visible
+	 * vsisible : set them be not visible
 	 * 
 	 * @param event
 	 */
@@ -686,8 +688,8 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * send to server request : arraylist of object : [0]-> parkManagerRequest
-	 * [1]->Request object with the relevant fields for the specific request in this
+	 * send to server request : arraylist of object : [0] parkManagerRequest
+	 * [1]Request object with the relevant fields for the specific request in this
 	 * request : send the discount hight and the dates it will be valid in. All the
 	 * rest fields that are not relevant will be empty
 	 * 
@@ -776,10 +778,10 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * send to server request : arraylist of object : [0]-> parkManagerRequest
-	 * [1]->Request object with the relevant fields for the specific request. In
-	 * this request : ssend the new value for maximum capacity for ordered visits.
-	 * All the rest fields that are not relevant will be empty
+	 * send to server request : arraylist of object : [0] parkManagerRequest
+	 * [1]Request object with the relevant fields for the specific request. In this
+	 * request : ssend the new value for maximum capacity for ordered visits. All
+	 * the rest fields that are not relevant will be empty
 	 * 
 	 * @param event
 	 */
@@ -829,10 +831,10 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * send to server request : arraylist of object : [0]-> parkManagerRequest
-	 * [1]->Request object with the relevant fields for the specific request. In
-	 * this request : ssend the new value for maximum capacity. All the rest fields
-	 * that are not relevant will be empty
+	 * send to server request : arraylist of object : [0] parkManagerRequest
+	 * [1]Request object with the relevant fields for the specific request. In this
+	 * request : ssend the new value for maximum capacity. All the rest fields that
+	 * are not relevant will be empty
 	 * 
 	 * @param event
 	 * 
@@ -891,8 +893,8 @@ public class ParkManagerController implements Initializable {
 
 	/**
 	 * 
-	 * send to server in order to get employee id : arraylist of object : [0]->
-	 * requestForEmployeeID, [1]->user name, [2]-> password
+	 * send to server in order to get employee id : arraylist of object : [0]
+	 * requestForEmployeeID, [1]user name, [2] password
 	 */
 	public void RequestForEmployeeID() {
 
@@ -905,9 +907,9 @@ public class ParkManagerController implements Initializable {
 
 	/**
 	 * 
-	 * send to server in order to get parkDetails : arraylist of object : [0]->
-	 * requestForEmployeeID, [1]->arraylist of string : [0]-> requestForParkDetails,
-	 * [1]->parkname
+	 * send to server in order to get parkDetails : arraylist of object : [0]
+	 * requestForEmployeeID, [1]arraylist of string : [0] requestForParkDetails,
+	 * [1]parkname
 	 */
 	public void RequestForParkDetails() {
 		ArrayList<Object> msg = new ArrayList<>();
@@ -951,6 +953,13 @@ public class ParkManagerController implements Initializable {
 	/** Reports **/
 
 	/** visitors chart **/
+
+	/**
+	 * create chart for visitors by membership kind : 1) member 2)regular- not a
+	 * memeber, single visitor 3)group with a guide
+	 * 
+	 * @throws ParseException
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartVisitors() throws ParseException {
 
@@ -976,39 +985,46 @@ public class ParkManagerController implements Initializable {
 		regular.setName("regular");
 		checkWeekDays("regular");
 
-		regular.getData().add(new XYChart.Data("Sunday", weekDaysCounter[1]));
-		regular.getData().add(new XYChart.Data("Monday", weekDaysCounter[2]));
-		regular.getData().add(new XYChart.Data("Tuesday", weekDaysCounter[3]));
-		regular.getData().add(new XYChart.Data("Wednesday", weekDaysCounter[4]));
-		regular.getData().add(new XYChart.Data("Thursday", weekDaysCounter[5]));
-		regular.getData().add(new XYChart.Data("Friday", weekDaysCounter[6]));
-		regular.getData().add(new XYChart.Data("Saturday", weekDaysCounter[7]));
+		regular.getData().add(new XYChart.Data("Sunday", sumByweekDays[1]));
+		regular.getData().add(new XYChart.Data("Monday", sumByweekDays[2]));
+		regular.getData().add(new XYChart.Data("Tuesday", sumByweekDays[3]));
+		regular.getData().add(new XYChart.Data("Wednesday", sumByweekDays[4]));
+		regular.getData().add(new XYChart.Data("Thursday", sumByweekDays[5]));
+		regular.getData().add(new XYChart.Data("Friday", sumByweekDays[6]));
+		regular.getData().add(new XYChart.Data("Saturday", sumByweekDays[7]));
 
 		member.setName("member");
 		checkWeekDays("member");
 
-		member.getData().add(new XYChart.Data("Sunday", weekDaysCounter[1]));
-		member.getData().add(new XYChart.Data("Monday", weekDaysCounter[2]));
-		member.getData().add(new XYChart.Data("Tuesday", weekDaysCounter[3]));
-		member.getData().add(new XYChart.Data("Wednesday", weekDaysCounter[4]));
-		member.getData().add(new XYChart.Data("Thursday", weekDaysCounter[5]));
-		member.getData().add(new XYChart.Data("Friday", weekDaysCounter[6]));
-		member.getData().add(new XYChart.Data("Saturday", weekDaysCounter[7]));
+		member.getData().add(new XYChart.Data("Sunday", sumByweekDays[1]));
+		member.getData().add(new XYChart.Data("Monday", sumByweekDays[2]));
+		member.getData().add(new XYChart.Data("Tuesday", sumByweekDays[3]));
+		member.getData().add(new XYChart.Data("Wednesday", sumByweekDays[4]));
+		member.getData().add(new XYChart.Data("Thursday", sumByweekDays[5]));
+		member.getData().add(new XYChart.Data("Friday", sumByweekDays[6]));
+		member.getData().add(new XYChart.Data("Saturday", sumByweekDays[7]));
 
 		group.setName("group");
 		checkWeekDays("group");
 
-		group.getData().add(new XYChart.Data("Sunday", weekDaysCounter[1]));
-		group.getData().add(new XYChart.Data("Monday", weekDaysCounter[2]));
-		group.getData().add(new XYChart.Data("Tuesday", weekDaysCounter[3]));
-		group.getData().add(new XYChart.Data("Wednesday", weekDaysCounter[4]));
-		group.getData().add(new XYChart.Data("Thursday", weekDaysCounter[5]));
-		group.getData().add(new XYChart.Data("Friday", weekDaysCounter[6]));
-		group.getData().add(new XYChart.Data("Saturday", weekDaysCounter[7]));
+		group.getData().add(new XYChart.Data("Sunday", sumByweekDays[1]));
+		group.getData().add(new XYChart.Data("Monday", sumByweekDays[2]));
+		group.getData().add(new XYChart.Data("Tuesday", sumByweekDays[3]));
+		group.getData().add(new XYChart.Data("Wednesday", sumByweekDays[4]));
+		group.getData().add(new XYChart.Data("Thursday", sumByweekDays[5]));
+		group.getData().add(new XYChart.Data("Friday", sumByweekDays[6]));
+		group.getData().add(new XYChart.Data("Saturday", sumByweekDays[7]));
 
 		bcVisitorsChart.getData().addAll(regular, member, group);
 	}
 
+	/**
+	 * by clicking the show chart : check that current dates are corresponding call
+	 * the send to server function
+	 * 
+	 * @param event
+	 * @throws ParseException
+	 */
 	@FXML
 	void showChart(ActionEvent event) throws ParseException {
 
@@ -1024,8 +1040,6 @@ public class ParkManagerController implements Initializable {
 			data.add(dpTo.getValue().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
 			sendToServerArrayListForOverralVistiReports(data);
-			System.out.println(
-					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
 			if (!getErrorInchart())
 				chartVisitors();
@@ -1037,15 +1051,29 @@ public class ParkManagerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Send to server array list of object [0] overallVisitorsReport, [1] data array
+	 * list
+	 * 
+	 * @param data:aray list of string containing : [0] park name ,[1] date from,
+	 *                  [2] date to
+	 */
+
 	public void sendToServerArrayListForOverralVistiReports(ArrayList<String> data) {
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("overallVisitorsReport");
 		msg.add(data);
 
-		System.out.println("print message: " + msg);
 		ClientUI.sentToChatClient(msg);
 	}
 
+	/**
+	 * go over the report recevied from server acording to the appropriate day in
+	 * the week add the amount of visitors to the total sum
+	 * 
+	 * @param type :membership type
+	 * @throws ParseException
+	 */
 	void checkWeekDays(String type) throws ParseException {
 		String someDate;
 		Date date1;
@@ -1057,31 +1085,31 @@ public class ParkManagerController implements Initializable {
 				switch (getDayNumber(date1)) {
 				// SUN
 				case 1:
-					weekDaysCounter[1] += Double.parseDouble(arrayList.get(1));
+					sumByweekDays[1] += Double.parseDouble(arrayList.get(1));
 					break;
 				// MON
 				case 2:
-					weekDaysCounter[2] += Double.parseDouble(arrayList.get(1));
+					sumByweekDays[2] += Double.parseDouble(arrayList.get(1));
 					break;
 				// TUE
 				case 3:
-					weekDaysCounter[3] += Double.parseDouble(arrayList.get(1));
+					sumByweekDays[3] += Double.parseDouble(arrayList.get(1));
 					break;
 				// WED
 				case 4:
-					weekDaysCounter[4] += Double.parseDouble(arrayList.get(1));
+					sumByweekDays[4] += Double.parseDouble(arrayList.get(1));
 					break;
 				// THU
 				case 5:
-					weekDaysCounter[5] += Double.parseDouble(arrayList.get(1));
+					sumByweekDays[5] += Double.parseDouble(arrayList.get(1));
 					break;
 				// FRI
 				case 6:
-					weekDaysCounter[6] += Double.parseDouble(arrayList.get(1));
+					sumByweekDays[6] += Double.parseDouble(arrayList.get(1));
 					break;
 				// SAT
 				case 7:
-					weekDaysCounter[7] += Double.parseDouble(arrayList.get(1));
+					sumByweekDays[7] += Double.parseDouble(arrayList.get(1));
 					break;
 				default:
 					break;
@@ -1097,19 +1125,31 @@ public class ParkManagerController implements Initializable {
 		return cal.get(Calendar.DAY_OF_WEEK);
 	}
 
+	/**
+	 * reset the array
+	 */
+
 	public void resetWeekDayCounter() {
 
-		for (int i = 0; i < this.weekDaysCounter.length; i++) {
-			weekDaysCounter[i] = 0;
+		for (int i = 0; i < this.sumByweekDays.length; i++) {
+			sumByweekDays[i] = 0;
 		}
 	}
 
 	/*-------end of visitors report section --------*/
+	/**
+	 * prints alert when there is no data in the data base for the dates entered
+	 */
 	static void noDataTopresentInchartForDates() {
 		alert.setAlert("There is no Data to present for selected dates.");
 		System.out.println("no data to present");
 	}
-
+//get the date and split it 
+	/**
+	 * 
+	 * @param date: string value of date
+	 * @return
+	 */
 	public String getDate(String date) {
 		String[] arrDateAndTime = date.split(" ");
 		String[] arrDate = arrDateAndTime[0].split("-");
@@ -1117,6 +1157,11 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/*-------usage report section --------*/
+	/**send to server array list of object :[0]UsageReport, [1] array list of string [0] park name ,[1]from date .[2] to date.
+	 * @param event
+	 * @throws ParseException
+	 */
+	
 	@FXML
 	void showUsage(ActionEvent event) throws ParseException {
 		ArrayList<Object> msg = new ArrayList<>();
@@ -1130,9 +1175,6 @@ public class ParkManagerController implements Initializable {
 			data.add(dpFromU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			data.add(dpToU.getValue().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			msg.add(data);
-			System.out.println("print message: " + msg);
-			System.out.println(
-					"print date to server : " + dpFromU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			ClientUI.sentToChatClient(msg);
 
 			if (!getErrorInchart())
@@ -1145,7 +1187,11 @@ public class ParkManagerController implements Initializable {
 		}
 
 	}
-
+	
+	/**
+	 * create usage report 
+	 * @throws ParseException
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartUsage() throws ParseException {
 		boolean count = false;
@@ -1219,7 +1265,10 @@ public class ParkManagerController implements Initializable {
 	/*-------end of usage report section --------*/
 
 	/*-------Revenue report section --------*/
-
+	/**
+	 * create revenue report 
+	 * @throws ParseException
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartRevenue() throws ParseException {
 		xAxisR = new CategoryAxis();
@@ -1262,7 +1311,10 @@ public class ParkManagerController implements Initializable {
 		bcRevenue.getData().addAll(DailyRevenue);
 
 	}
-
+	/**send to server array list of object :[0]revenueReport, [1] array list of string [0] park name ,[1]from date .[2] to date.
+	 * @param event
+	 * @throws ParseException
+	 */
 	@FXML
 	void ShowReuvenue(ActionEvent event) throws ParseException {
 		ArrayList<String> monthArr = new ArrayList<>();
