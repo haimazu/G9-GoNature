@@ -46,7 +46,7 @@ public class WaitingListController implements Initializable {
 	private static ArrayList<String> time = new ArrayList<>();
 	private ArrayList<String> nonReleventDates = new ArrayList<>();
 	private static ArrayList<Object> anotherDates = new ArrayList<>();
-	private static int setDateFromWaitList=0;
+	private static int setDateFromWaitList = 0;
 
 	public static int getSetDateFromWaitList() {
 		return setDateFromWaitList;
@@ -73,6 +73,10 @@ public class WaitingListController implements Initializable {
 		WaitingListController.Dates = date;
 	}
 
+	/**
+	 * set dates  into date picker 
+	 * @param arr = nonReleventDates
+	 */
 	public void nonReleventDatesForCalender(ArrayList<String> arr) {
 
 		final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
@@ -110,6 +114,12 @@ public class WaitingListController implements Initializable {
 
 	}
 
+	/**
+	 * for split the stringd
+	 * @param date 
+	 * @param what - to know what  string the user need 
+	 * @return
+	 */
 	public String[] getDate(String date, String what) {
 		String[] arrDateAndTime = date.split(" ");
 		String[] arrDate = arrDateAndTime[0].split("-");
@@ -119,6 +129,9 @@ public class WaitingListController implements Initializable {
 			return arrDateAndTime;
 	}
 
+	/**
+	 * set list nonReleventDates that include dates that full from all capsuls
+	 */
 	public void setArrForDatePicker() {
 		ArrayList<String> newArr = new ArrayList<>();
 		int count = 0, rounds = 0, flag = 0;
@@ -152,7 +165,9 @@ public class WaitingListController implements Initializable {
 		this.nonReleventDates = newArr;
 
 	}
-
+	/**
+	 * set list Date that fill dates that isn't full for all capsuls
+	 */
 	public void setArrForTime() {
 
 		int length = Dates.size();
@@ -174,6 +189,10 @@ public class WaitingListController implements Initializable {
 		}
 	}
 
+	/**
+	 * set the cbxArrivelTime array list of time for specific date that the client choose
+	 * @param date
+	 */
 	public void setTimeWithSpecificDate(String date) {
 		ArrayList<String> timeTmp = new ArrayList<>(time);
 
@@ -195,6 +214,10 @@ public class WaitingListController implements Initializable {
 		cbxArrivelTime.setItems(FXCollections.observableArrayList(timeTmp));
 	}
 
+	/**
+	 * when press the date picker
+	 * @param event
+	 */
 	@FXML
 	void chooseDate(ActionEvent event) {
 		try {
@@ -207,6 +230,10 @@ public class WaitingListController implements Initializable {
 		}
 	}
 
+	/**
+	 * button continue for choose another date
+	 * @param event
+	 */
 	@FXML
 	void Continue(ActionEvent event) {
 		WaitingListController.setSetDateFromWaitList(1);
@@ -218,6 +245,12 @@ public class WaitingListController implements Initializable {
 		stage2.close();
 	}
 
+	/**
+	 * button here to enter the wait list
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void here(ActionEvent event) throws IOException {
 		WaitingListController.setSetDateFromWaitList(0);
@@ -236,6 +269,9 @@ public class WaitingListController implements Initializable {
 		setDates(arr);
 	}
 
+	/**
+	 * initialize the screen
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.time.clear();
@@ -244,6 +280,7 @@ public class WaitingListController implements Initializable {
 		this.time.add("16:00-20:00");
 		cbxArrivelTime.setDisable(true);
 
+		/************ get from server the date and time that is full ***********/
 		ArrayList<Object> sendServer = new ArrayList<>();
 		sendServer.add("checkFullDays");
 		sendServer.add(OrderController.getOrder());
@@ -251,6 +288,7 @@ public class WaitingListController implements Initializable {
 
 		setArrForDatePicker();
 		if (nonReleventDates.isEmpty()) {
+			/*********** set the date picker *************/
 			txtdate.setDayCellFactory(picker -> new DateCell() {
 				public void updateItem(LocalDate date, boolean empty) {
 					super.updateItem(date, empty);

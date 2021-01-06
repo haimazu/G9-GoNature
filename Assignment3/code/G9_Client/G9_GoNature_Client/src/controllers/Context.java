@@ -3,6 +3,12 @@ package controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * this class creat instance that save the controller that active now
+ * when we want to use another controller we approche from this class
+ * @author bar katz
+ *
+ */
 public class Context {
 
 	private OrderController OrderC;
