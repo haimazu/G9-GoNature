@@ -139,7 +139,8 @@ public class ChatClient extends AbstractClient {
 			ManageOrderController.receviedFromserverArrivalConfirmation((ArrayList<Object>) received);
 			break;
 		case "removePendingsManagerReq":
-			DepartmentManagerController.setData((boolean) received.get(2));
+			System.out.println("chat client: " + (ArrayList<ArrayList<Object>>) received.get(1));
+			DepartmentManagerController.setData((ArrayList<ArrayList<Object>>) received.get(1));
 			break;
 		case "getRegularsVisitorsData":
 			DepartmentManagerController.receivedFromServerRegularsVisitorsData((ArrayList<Object>) received);
@@ -215,6 +216,14 @@ public class ChatClient extends AbstractClient {
 
 	}
 
+	
+	/**
+	 * Update the current amount of visitor in this current day.
+	 * comes after update from service represintetive
+	 * send to all employees
+	 * 
+	 * @param arr cell[0] - park name cell[1] -Visitors Number.s
+	 */
 	public static void sendToAllEmployee(ArrayList<Object> arr) {
 		String parkName = (String) arr.get(1);
 		String updatedVisitorsNumber = (String) arr.get(2);

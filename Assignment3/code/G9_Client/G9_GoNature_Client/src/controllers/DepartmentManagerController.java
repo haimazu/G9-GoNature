@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import com.itextpdf.text.BaseColor;
@@ -149,9 +150,9 @@ public class DepartmentManagerController implements Initializable {
 	private static ArrayList<ArrayList<String>> parkDetails;
 
 	/***** Dashboard Variables *****/
-	private ArrayList<Object> data = new ArrayList<>();
+	// private ArrayList<Object> data = new ArrayList<>();
 	private static ArrayList<ArrayList<String>> DBList = new ArrayList<>();
-	private static boolean status;
+	private static ArrayList<ArrayList<Object>> status;
 	private int count = 0;
 
 	/***** Visits Report Variables *****/
@@ -604,15 +605,16 @@ public class DepartmentManagerController implements Initializable {
 		DepartmentManagerController.firstName = firstName;
 	}
 
-	public static boolean getStatus() {
+	public static ArrayList<ArrayList<Object>> getStatus() {
 		return status;
 	}
 
-	public static void setStatus(boolean status) {
+	public static void setStatus(ArrayList<ArrayList<Object>> status) {
 		DepartmentManagerController.status = status;
 	}
 
-	public static void setData(boolean status) {
+	public static void setData(ArrayList<ArrayList<Object>> status) {
+		System.out.println("status" + status);
 		setStatus(status);
 	}
 
@@ -631,6 +633,13 @@ public class DepartmentManagerController implements Initializable {
 //		radioCreditCard.setToggleGroup(group);
 //		radioPayPal.setToggleGroup(group);
 //	}
+	
+	public void initializeArr(int [] arr) {
+		for (int i = 0; i < arr.length; i++) {
+			arr[i]=0;
+			
+		}
+	}
 
 	/**
 	 * button approve will remove the row and will update the table from DB will
@@ -641,30 +650,48 @@ public class DepartmentManagerController implements Initializable {
 	 */
 	@FXML
 	void approve(ActionEvent event) {
+		int[] arrItems = new int[TableDep.getItems().size()];
+		initializeArr(arrItems);
+		ArrayList<Object> Server = new ArrayList<>();
+		ArrayList<ArrayList<Object>> allItems = new ArrayList<>();
+		ArrayList<Object> data = new ArrayList<>();
+		Server.add("removePendingsManagerReq");
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
 				TableViewSet s = TableDep.getItems().get(i);
 				ManagerRequest mnData = new ManagerRequest(s.getParkName(), Integer.parseInt(s.getIdEmp()),
 						s.getReqType());
-				data.add("removePendingsManagerReq");
+
 				data.add(mnData);
 				data.add("yes");
-				System.out.println("before server");
-				ClientUI.sentToChatClient(data);
+				allItems.add(new ArrayList<Object>(data));
+				arrItems[i] = i;
 
-				System.out.println("pass server");
-				if (status)
-					TableDep.getItems().remove(TableDep.getItems().get(i));
-				else {
-					if (TableDep.getItems().get(i).getReqType().equals("discount")) {
-						alert.failedAlert("Failed", "Already has discount on these dates!");
-					} else {
-						alert.failedAlert("Failed", "something went wrong, please try later again!");
-					}
-				}
+				//
 
 			}
 			data.clear();
+		}
+
+		Server.add(new ArrayList<Object>(allItems));
+		allItems.clear();
+		System.out.println(Server);
+		// remove items from list after the all lists for server
+		for (int i = arrItems.length - 1; i > -1; i--) {
+			TableDep.getItems().remove(TableDep.getItems().get(i));
+		}
+		ClientUI.sentToChatClient(Server);
+		Server.clear();
+		for (ArrayList<Object> item : status) {
+			if (!(boolean) item.get(1))
+				alert.failedAlert("Failed", "something went wrong, please try later again!");
+			else {
+				if (!(boolean) item.get(2)) {
+					ManagerRequest manager = (ManagerRequest) item.get(0);
+					alert.failedAlert("Failed",
+							"Already has discount on these dates for park " + manager.getParkName() + "!");
+				}
+			}
 		}
 		iniailTabelPending();
 	}
@@ -678,26 +705,47 @@ public class DepartmentManagerController implements Initializable {
 	 */
 	@FXML
 	void disapprove(ActionEvent event) {
-
+		int[] arrItems = new int[TableDep.getItems().size()];
+		initializeArr(arrItems);
+		ArrayList<Object> Server = new ArrayList<>();
+		Server.add("removePendingsManagerReq");
+		ArrayList<ArrayList<Object>> allItems = new ArrayList<>();
+		ArrayList<Object> data = new ArrayList<>();
 		for (int i = 0; i < TableDep.getItems().size(); i++) {
 			if (TableDep.getItems().get(i).getMarkCh().isSelected()) {
 				TableViewSet s = TableDep.getItems().get(i);
 				ManagerRequest mnData = new ManagerRequest(s.getParkName(), Integer.parseInt(s.getIdEmp()),
 						s.getReqType());
-				data.add("removePendingsManagerReq");
 				data.add(mnData);
 				data.add("no");
-
-				ClientUI.sentToChatClient(data);
-
-				if (status) {
-					TableDep.getItems().remove(TableDep.getItems().get(i));
-					alert.setAlert("The request dissaprove");
-				}
+				allItems.add(new ArrayList<Object>(data));
+				arrItems[i] = i;
 
 			}
 			data.clear();
 		}
+
+		Server.add(new ArrayList<Object>(allItems));
+		System.out.println("disapprove" + Server);
+		allItems.clear();
+		// remove items from list after the all lists for server
+		for (int i = arrItems.length - 1; i > -1; i--) {
+			TableDep.getItems().remove(TableDep.getItems().get(i));
+		}
+		ClientUI.sentToChatClient(Server);
+		Server.clear();
+		for (ArrayList<Object> item : status) {
+			if (!(boolean) item.get(1))
+				alert.failedAlert("Failed", "something went wrong, please try later again!");
+			else {
+				if ((boolean) item.get(2)) {
+					ManagerRequest manager = (ManagerRequest) item.get(0);
+					alert.failedAlert("Failed", "You disapprove the request type: " + manager.getRequestType());
+				}
+
+			}
+		}
+
 		iniailTabelPending();
 	}
 
@@ -993,14 +1041,18 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void iniailTabelVisitors() {
-		TVisitors.setEditable(true);
 		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("ParkNameVis"));
 		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("CurrentAmount"));
 
 		ArrayList<Object> answer = new ArrayList<>();
 		answer.add("parkDateilsForDepartment");
 		ClientUI.sentToChatClient(answer);
+		addDataToTable();
 
+	}
+
+	public void addDataToTable() {
+		TVisitors.getItems().clear();
 		ObservableList<TableCurrentVisitors> listForTable = FXCollections.observableArrayList();
 
 		for (ArrayList<String> arrayList : parkDetails) {
@@ -1011,18 +1063,22 @@ public class DepartmentManagerController implements Initializable {
 		}
 
 		TVisitors.setItems(listForTable);
-
 	}
 
 	public void setCurrentVisitors(ArrayList<Object> arr) {
-		System.out.println("from server" + arr.get(2));
-		for (int i = 0; i < TVisitors.getItems().size(); i++) {
-			if (TVisitors.getItems().get(i).getParkNameVis().equals((String) arr.get(1))) {
-				TVisitors.edit(i, amountColumn);
-				TVisitors.getItems().get(i)
-						.setCurrentAmount((String) arr.get(2) + " / " + TVisitors.getItems().get(i).getMaxVisitors());
+
+		String parkName = (String) arr.get(1);
+		String VisAmount;
+
+		for (ArrayList<String> arrayList : parkDetails) {
+
+			if (parkName.equals(arrayList.get(0))) {
+				VisAmount = (String) arr.get(2);
+				arrayList.set(1, VisAmount);
 			}
 		}
+
+		addDataToTable();
 	}
 
 	public static void setParkDetails(ArrayList<ArrayList<String>> Parks) {
@@ -1045,7 +1101,7 @@ public class DepartmentManagerController implements Initializable {
 		iniailTabelVisitors();
 
 		iniailTabelPending();
-		
+
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
 		requestType.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqType"));
 		requestDetails.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("reqDetails"));

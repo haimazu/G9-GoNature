@@ -109,6 +109,7 @@ public class EchoServer extends AbstractServer {
 			Comunication.waitlistReplay(recived, client);
 			break;
 		case "removePendingsManagerReq":
+			System.out.println("Ehco server: " + recived);
 			PendingMenagerRequest.deleteFromPending(recived, client);
 			break;
 		case "getRegularsVisitorsData":
