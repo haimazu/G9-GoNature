@@ -171,7 +171,7 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * 
-	 * @param msg ArrayList<Object>
+	 * @param msg ArrayList of Object
 	 */
 	public static void sendToAll(ArrayList<Object> msg) {
 		self.sendToAllClients(msg);

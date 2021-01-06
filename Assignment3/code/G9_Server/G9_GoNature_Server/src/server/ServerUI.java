@@ -77,7 +77,7 @@ public class ServerUI extends Application {
 	/**
 	 * sets connection to DB
 	 * 
-	 * @param data ArrayList<String>
+	 * @param data ArrayList of String
 	 * @return T/F
 	 */
 	public static boolean connectToDB(ArrayList<String> data) {

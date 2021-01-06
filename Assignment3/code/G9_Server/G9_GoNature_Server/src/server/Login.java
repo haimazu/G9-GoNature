@@ -53,9 +53,9 @@ public class Login {
 	 * called for service (in that case "updateLoggedIn") cell [1]: boolean value -
 	 * {if failed:} ==> false {if success:} ==> true
 	 * 
-	 * @param recived ArrayList<Object> cell [0]: the client function who called for
+	 * @param recived ArrayList of Object cell [0]: the client function who called for
 	 *                service (in that case "updateLoggedIn"), cell [1]: ArrayList
-	 *                of String -> cell [0]: user name, cell [1]: logged in status
+	 *                of String = cell [0]: user name, cell [1]: logged in status
 	 * @param client  ConnectionToClient
 	 */
 	public static void updateLoggedInStatus(ArrayList<Object> recived, ConnectionToClient client) {

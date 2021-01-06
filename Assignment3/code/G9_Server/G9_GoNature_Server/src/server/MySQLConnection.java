@@ -71,8 +71,8 @@ public class MySQLConnection {
 
 	/**
 	 * 
-	 * @param data ArrayList of String cell [0]: command (in this case will always be
-	 *             "insert") cell [1]: table name to insert to string cell [2]:
+	 * @param data ArrayList of String cell [0]: command (in this case will always
+	 *             be "insert") cell [1]: table name to insert to string cell [2]:
 	 *             values that should be inserted NOTE: insert only full rows!
 	 * @return true if update successful, false if failed
 	 */
@@ -87,10 +87,10 @@ public class MySQLConnection {
 	/**
 	 * insert query for DB NOTE: insert only full rows!
 	 * 
-	 * @param data ArrayList<String> cell [0]: command (in this case will always be
-	 *             "delete") cell [1]: table name to delete from, cell [2]: primary
-	 *             key column name of that table, cell [3]: primary key value of the
-	 *             row that need to be deleted,
+	 * @param data ArrayList of String cell [0]: command (in this case will always
+	 *             be "delete") cell [1]: table name to delete from, cell [2]:
+	 *             primary key column name of that table, cell [3]: primary key
+	 *             value of the row that need to be deleted,
 	 * @return true if update successful, false if failed
 	 */
 	public static boolean delete(ArrayList<String> data) {
@@ -182,9 +182,9 @@ public class MySQLConnection {
 	 *             number! i.e "7")
 	 * 
 	 * @return in case of success returns ArrayList that contains ArrayList of
-	 *         Strings -> each ArrayList of string represent a row in the DB
-	 *         replayed all the rows are packed together in an ArrayList that
-	 *         contains ArrayList of strings in case of failure returns null
+	 *         Strings = each ArrayList of string represent a row in the DB replayed
+	 *         all the rows are packed together in an ArrayList that contains
+	 *         ArrayList of strings in case of failure returns null
 	 */
 	public static ArrayList<ArrayList<String>> select(ArrayList<String> data) {
 		String tableName = data.get(1);
