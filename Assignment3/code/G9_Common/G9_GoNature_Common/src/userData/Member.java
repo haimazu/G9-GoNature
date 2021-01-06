@@ -3,7 +3,15 @@ package userData;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 import orderData.OrderType;
+
+/**
+ *  Create Member object
+ *
+ * @author Anastasia Kokin
+ */
 
 public class Member implements Serializable {
 
@@ -17,7 +25,11 @@ public class Member implements Serializable {
 	OrderType memberOrderType;
 	String memberAmount;
 
-	// constructor from DB
+	/**
+	 * constructor from DB
+	 * @param memberFromDB ArrayList<String>
+	 */
+	
 	public Member(ArrayList<String> memberFromDB) {
 		this.memberID = memberFromDB.get(0);
 		this.memberFirstName = memberFromDB.get(1);
@@ -30,21 +42,24 @@ public class Member implements Serializable {
 		this.memberAmount = memberFromDB.get(8);
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Member [memberID=" + memberID + ", memberFirstName=" + memberFirstName + ", memberLastName="
-//				+ memberLastName + ", memberNumber=" + memberNumber + ", memberPhoneNumber=" + memberPhoneNumber
-//				+ ", memberEmail=" + memberEmail + ", memberPaymentType=" + memberPaymentType + ", memberOrderType="
-//				+ memberOrderType + ", memberAmount=" + memberAmount + "]";
-//	}
 
+	/**
+	 * constructor for member object
+	 * 
+	 * @param memberID String
+	 * @param memberFirstNAme String
+	 * @param memberLastNAme String
+	 * @param memberPhoneNumber String
+	 * @param memberEmail String
+	 * @param memberOrderType OrderType
+	 * @param memberAmount String
+	 */
 	public Member(String memberID, String memberFirstNAme, String memberLastNAme,
 			String memberPhoneNumber, String memberEmail, OrderType memberOrderType, String memberAmount) {
 		super();
 		this.memberID = memberID;
 		this.memberFirstName = memberFirstNAme;
 		this.memberLastName = memberLastNAme;
-		//this.memberNumber = memberNumber;
 		this.memberPhoneNumber = memberPhoneNumber;
 		this.memberEmail = memberEmail;
 		this.memberOrderType = memberOrderType;

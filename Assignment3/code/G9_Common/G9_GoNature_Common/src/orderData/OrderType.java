@@ -1,5 +1,11 @@
 package orderData;
 
+/**
+ * enum for OrderType
+ *
+ * @author Bar Katz
+ */
+
 public enum OrderType {
 	REGULAR("regular"), //no membership, not from a group
 	MEMBER("member"),//has a membership

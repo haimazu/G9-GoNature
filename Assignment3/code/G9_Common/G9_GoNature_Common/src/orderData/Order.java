@@ -3,8 +3,18 @@ package orderData;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ *  Create Order object
+ *
+ * @author Anastasia Kokin
+ */
+
 public class Order implements Serializable {
 
+	/**
+	 * tostring function
+	 * @return tostring order 
+	 */
 	@Override
 	public String toString() {
 		return "Order [visitorsNumber=" + visitorsNumber + ", orderEmail=" + orderEmail + ", orderPhone=" + orderPhone
@@ -26,10 +36,17 @@ public class Order implements Serializable {
 	int amountArrived;
 	int orderNumber;
 
-	// this constructor is only for ParkEmployeeController from method next -DO NOT
-	// USE
-	// IT!!!
-	// server side updates : check if member,calculate price
+	/**
+	 *this constructor is only for ParkEmployeeController from method next -DO NOT USE
+	 * server side updates : check if member,calculate price
+	 * 
+	 * @param parkName String
+	 * @param arrivedTime String
+	 * @param memberId String
+	 * @param ID String
+	 * @param amountArrived integer
+	 */
+	
 	public Order(String parkName, String arrivedTime, String memberId, String ID, int amountArrived) {
 		this.parkName = parkName;
 		this.arrivedTime = arrivedTime;
@@ -40,8 +57,17 @@ public class Order implements Serializable {
 		this.orderPhone = null;
 	}
 
-	// this constructor is only for OrderConroller from method next -DO NOT USE
-	// IT!!!
+	/**
+	 * this constructor is only for OrderConroller from method next -DO NOT USE IT!!!
+	 * @param visitorsNumber integer
+	 * @param orderEmail String
+	 * @param orderPhone String
+	 * @param parkName String
+	 * @param arrivedTime String
+	 * @param memberId String
+	 * @param ID String
+	 */
+	
 	public Order(int visitorsNumber, String orderEmail, String orderPhone, String parkName, String arrivedTime,
 			String memberId, String ID) {
 
@@ -54,23 +80,30 @@ public class Order implements Serializable {
 		this.ID = ID;
 	}
 
-	public Order(int orderNumber, int visitorsNumber, String orderEmail, String orderPhone, OrderType orderType,
-			double price, double totalPrice, String parkName, String arrivedTime, String memberId, String ID) {
+	//public Order(int orderNumber, int visitorsNumber, String orderEmail, String orderPhone, OrderType orderType,
+	//		double price, double totalPrice, String parkName, String arrivedTime, String memberId, String ID) {
 
-		this.visitorsNumber = visitorsNumber;
-		this.orderEmail = orderEmail;
-		this.orderPhone = orderPhone;
-		this.orderType = orderType;
-		this.price = price;
-		this.totalPrice = totalPrice;
-		this.parkName = parkName;
-		this.arrivedTime = arrivedTime;
-		this.memberId = memberId;
-		this.ID = ID;
-		this.amountArrived = 0;
-		this.orderNumber = orderNumber;
-	}
+	//	this.visitorsNumber = visitorsNumber;
+	//	this.orderEmail = orderEmail;
+	//	this.orderPhone = orderPhone;
+	//	this.orderType = orderType;
+	//	this.price = price;
+	//	this.totalPrice = totalPrice;
+	//	this.parkName = parkName;
+	//	this.arrivedTime = arrivedTime;
+	//	this.memberId = memberId;
+	//	this.ID = ID;
+	//	this.amountArrived = 0;
+	//	this.orderNumber = orderNumber;
+	//}
 
+
+	/**
+	 * constructor from ArrayList<String>
+	 * 
+	 * @param orderFromDB
+	 */
+	
 	public Order(ArrayList<String> orderFromDB) {
 
 		this.visitorsNumber = Integer.parseInt(orderFromDB.get(0));
@@ -87,6 +120,10 @@ public class Order implements Serializable {
 		this.orderNumber = Integer.parseInt(orderFromDB.get(11));
 	}
 	
+	/**
+	 * constructor 
+	 * @param ord Order
+	 */
 	public Order(Order ord) {
 		this.visitorsNumber = ord.getVisitorsNumber();
 		this.orderEmail = ord.getOrderEmail();
@@ -102,7 +139,11 @@ public class Order implements Serializable {
 		this.orderNumber = ord.getOrderNumber();
 	}
 
-	// output: to string for a query to insert in DB
+	/**
+	 * 
+	 * @return to string for a query to insert in DB
+	 */
+	
 	public String toStringForDB() {
 
 		String afterDiscount = Double.toString(getTotalPrice());
@@ -121,6 +162,11 @@ public class Order implements Serializable {
 					+ getOrderNumber() + "'");
 	}
 	
+	/**
+	 * 
+	 * @return order details
+	 */
+	
 	public String messegeString() {
 		String details = "\n\tOrder Details:\n"
 				+ "Order Number:\t" + getOrderNumber()
@@ -135,7 +181,11 @@ public class Order implements Serializable {
 		return details;
 	}
 
-	// checks if the order is for occasional visitor
+	/**
+	 * checks if the order is for occasional visitor
+	 * @return T/F
+	 */
+	
 	public boolean isOccasional() {
 		if (this.orderEmail == null && this.orderPhone == null)
 			return true;

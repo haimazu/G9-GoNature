@@ -2,6 +2,11 @@ package dataLayer;
 
 import java.util.ArrayList;
 
+/**
+ * The TableCurrentVisitors contain current visitors for a park
+ *
+ * @author Bar Katz
+ */
 
 public class TableCurrentVisitors {
 	
@@ -9,13 +14,13 @@ public class TableCurrentVisitors {
 	private String CurrentAmount;
 	private String MaxVisitors;
 	
-
-
-
+	
 	/**
-	 * @param parkName
-	 * @param currentAmount
+	 * constructor for TableCurrentVisitors
+	 * @param parkName String
+	 * @param currentAmount String
 	 */
+	
 	public TableCurrentVisitors(String parkName, String currentAmount) {
 		super();
 		this.ParkNameVis = parkName;

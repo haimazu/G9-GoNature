@@ -266,7 +266,7 @@ public class ParkManagerController implements Initializable {
 	private static boolean requestAnswerFromServer;
 	private static int empID = 0;
 	private static Park park;
-	private static boolean errorInchart=false;
+	private static boolean errorInchart = false;
 
 	public static String getCurrentVisitors() {
 		return currentVisitors;
@@ -388,21 +388,35 @@ public class ParkManagerController implements Initializable {
 		presentParkDetails(park);
 
 		/*** visitors reports ***/
-		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
-		// listener for updating the date
-		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpFrom.setValue(newValue);
-		});
-
-		// plusMonths(1) to get the next month
-		// withDayOfMonth(1) to get the first day
-		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
-		// listener for updating the date
-		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
-			dpTo.setValue(newValue);
-		});
+		setDatePickerForVisitsReport();
 
 		/*** usage reports ***/
+		setDatePickerForUsageReport();
+
+		/***** Revenue report *********/
+
+		ArrayList<String> monthArr = new ArrayList<>();
+
+		setDatesComboForRevenue(monthArr);
+
+	}
+	/*---------setting date pickers in the conroller --------------*/
+
+	public void setDatesComboForRevenue(ArrayList<String> mounthArr) {
+		for (int i = 1; i <= 12; i++) {
+			mounthArr.add(String.valueOf(i));
+		}
+		cbxMonth.setItems(FXCollections.observableArrayList(mounthArr));
+		cbxMonth.getSelectionModel().selectFirst();
+		ArrayList<String> yearArr = new ArrayList<>();
+		for (int i = 2021; i >= 2018; i--) {
+			yearArr.add(String.valueOf(i));
+		}
+		cbxYear.setItems(FXCollections.observableArrayList(yearArr));
+		cbxYear.getSelectionModel().selectFirst();
+	}
+
+	public void setDatePickerForUsageReport() {
 		dpFromU.setValue(LocalDate.now().withDayOfMonth(1));
 		// listener for updating the date
 		dpFromU.valueProperty().addListener((ov, oldValue, newValue) -> {
@@ -416,23 +430,21 @@ public class ParkManagerController implements Initializable {
 		dpToU.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpToU.setValue(newValue);
 		});
+	}
 
-		/***** Revenue report *********/
-
-		ArrayList<String> mounthArr = new ArrayList<>();
-
-		for (int i = 1; i <= 12; i++) {
-			mounthArr.add(String.valueOf(i));
-		}
-		cbxMonth.setItems(FXCollections.observableArrayList(mounthArr));
-		cbxMonth.getSelectionModel().selectFirst();
-		ArrayList<String> yearArr = new ArrayList<>();
-		for (int i = 2021; i >= 2018; i--) {
-			yearArr.add(String.valueOf(i));
-		}
-		cbxYear.setItems(FXCollections.observableArrayList(yearArr));
-		cbxYear.getSelectionModel().selectFirst();
-
+	public void setDatePickerForVisitsReport() {
+		dpFrom.setValue(LocalDate.now().withDayOfMonth(1));
+		// listener for updating the date
+		dpFrom.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpFrom.setValue(newValue);
+		});
+		// plusMonths(1) to get the next month
+		// withDayOfMonth(1) to get the first day
+		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
+		// listener for updating the date
+		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
+			dpTo.setValue(newValue);
+		});
 	}
 
 	// dates method
@@ -854,19 +866,21 @@ public class ParkManagerController implements Initializable {
 			data.add(dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			data.add(dpTo.getValue().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-			sendToServerArrayList(data);
+			sendToServerArrayListForOverralVistiReports(data);
 			System.out.println(
 					"print date to server : " + dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-			if(!getErrorInchart())
+			if (!getErrorInchart())
 				chartVisitors();
 			else {
 				noDataTopresentInchartForDates();
-			}	bcVisitorsChart.getData().clear();
+				bcVisitorsChart.getData().clear();
+				setDatePickerForVisitsReport();
+			}
 		}
 	}
 
-	public void sendToServerArrayList(ArrayList<String> data) {
+	public void sendToServerArrayListForOverralVistiReports(ArrayList<String> data) {
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("overallVisitorsReport");
 		msg.add(data);
@@ -964,7 +978,13 @@ public class ParkManagerController implements Initializable {
 					"print date to server : " + dpFromU.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			ClientUI.sentToChatClient(msg);
 
-			chartUsage();
+			if (!getErrorInchart())
+				chartUsage();
+			else {
+				noDataTopresentInchartForDates();
+				bcUsageChart.getData().clear();
+				setDatePickerForUsageReport();
+			}
 		}
 
 	}
@@ -1088,7 +1108,7 @@ public class ParkManagerController implements Initializable {
 
 	@FXML
 	void ShowReuvenue(ActionEvent event) throws ParseException {
-
+		ArrayList<String> monthArr = new ArrayList<>();
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> data = new ArrayList<>();
 		msg.add("revenueReport");
@@ -1127,12 +1147,17 @@ public class ParkManagerController implements Initializable {
 		data.add(park.getName());
 		msg.add(data);
 		ClientUI.sentToChatClient(msg);
-
+		if(!getErrorInchart())
 		chartRevenue();
+		else {
+			noDataTopresentInchartForDates();
+			bcRevenue.getData().clear();
+			setDatesComboForRevenue(monthArr);
+		}
 	}
 	/*-------end of revenue report section --------*/
 
-	/*----received from server section ---*/
+	/*---------received from server section ------*/
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
 
@@ -1152,9 +1177,10 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
 		setVisitorsReport(null);
-		if ((Object) visitorsReportAnswer instanceof ArrayList<?>)
+		if ((Object) visitorsReportAnswer.get(0) instanceof String)
 			seterrorInchart(true);
 		else {
+			seterrorInchart(false);
 			setVisitorsReport(visitorsReportAnswer);
 
 		}
@@ -1163,9 +1189,10 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverUsageReport(ArrayList<ArrayList<String>> usageReportAnswer) {
 		setUsageReport(null);
-		if ((Object) usageReportAnswer instanceof ArrayList<?>)
-			noDataTopresentInchartForDates();
+		if (usageReportAnswer.isEmpty())
+			seterrorInchart(true);
 		else {
+			seterrorInchart(false);
 			setUsageReport(usageReportAnswer);
 
 		}
@@ -1173,13 +1200,14 @@ public class ParkManagerController implements Initializable {
 
 	public static void recivedFromserverRevenueReport(ArrayList<ArrayList<String>> revReportAnswer) {
 		setRevReport(null);
-		if ((Object) revReportAnswer instanceof ArrayList<?>)
-			noDataTopresentInchartForDates();
+		if ( revReportAnswer.isEmpty())
+			seterrorInchart(true);
 		else {
+			seterrorInchart(false);
 			setRevReport(revReportAnswer);
 
 		}
 
 	}
-
+ 
 }
