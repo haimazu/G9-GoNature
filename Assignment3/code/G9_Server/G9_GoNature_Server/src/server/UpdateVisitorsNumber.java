@@ -89,9 +89,12 @@ public class UpdateVisitorsNumber {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// check if the order number exists in the table access control
-	// input: orderNumber
-	// output: T / F ==> if the order number exists
+	/**
+	 * check if the order number exists in the table access control
+	 * 
+	 * @param orderNumber String
+	 * @return T/F
+	 */
 	public static boolean checkIfOrderNumberExists(String orderNumber) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -108,12 +111,14 @@ public class UpdateVisitorsNumber {
 		return true;
 	}
 
-	// input: ArrayList<Object>,ConnectionToClient
-	// pulling details of a selected park from DB
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] ArrayList<String> [0] parkName
-	// [1] number of visitors to add
-	@SuppressWarnings("unchecked")
+	/**
+	 * pulling details of a selected park from DB. sends to client :
+	 * ArrayList<Object>=> cell[0] function name, cell[1] ArrayList<String>=> [0]
+	 * parkName, [1] number of visitors to add
+	 * 
+	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param client
+	 */
 	public static void getVisitorsEntryStatus(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -146,12 +151,14 @@ public class UpdateVisitorsNumber {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-	// input: ArrayList<Object>,ConnectionToClient
-	// pulling details of a selected park from DB
-	// output: ArrayList<Object>=> cell[0] function name
-	// cell[1] ArrayList<String> [0] parkName
-	// [1] number of visitors to add
-	@SuppressWarnings("unchecked")
+	/**
+	 * pulling details of a selected park from DB. sends to client
+	 * ArrayList<Object>=> cell[0] function name, cell[1] ArrayList<String>=> [0]
+	 * parkName, [1] number of visitors to add
+	 * 
+	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param client  ConnectionToClient
+	 */
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
