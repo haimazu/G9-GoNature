@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * The Park program creating Park object
+ * create a Park object
  *
  * @author Anastasia Kokin
  */
@@ -19,7 +19,7 @@ public class Park implements Serializable {
 	private double mangerDiscount;
 
 	/**
-	 * contractor for Park object
+	 * Contractor for Park object
 	 * 
 	 * @param name                  String
 	 * @param maxAmountOrders       integer
@@ -37,9 +37,9 @@ public class Park implements Serializable {
 	}
 
 	/**
-	 * constructor from ArrayList<String>
+	 * constructor from  DB
 	 * 
-	 * @param parkFromDB
+	 * @param parkFromDB ArrayList<String>
 	 */
 	public Park(ArrayList<String> parkFromDB) {
 		this.name = parkFromDB.get(0);
