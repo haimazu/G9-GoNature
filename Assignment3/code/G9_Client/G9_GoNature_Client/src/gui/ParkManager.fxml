@@ -240,9 +240,10 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
+                  <Button fx:id="btnExport" focusTraversable="false" layoutX="510.0" layoutY="74.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" visible="false">
                <children>
                   <AnchorPane layoutX="61.0" layoutY="97.0" prefHeight="21.0" prefWidth="227.0" styleClass="pnAnchor" />
                   <AnchorPane layoutX="60.0" layoutY="119.0" prefHeight="65.0" prefWidth="227.0" styleClass="pnRightTop">
