@@ -19,8 +19,8 @@ public class EditOrder {
 	 * client: ArrayList of objects that contains: [0] -> String "EditOrder" [1] ->
 	 * true if update successful, false if not
 	 * 
-	 * @param recived
-	 * @param client
+	 * @param recived ArrayList<Object>
+	 * @param client  ConnectionToClient
 	 */
 	public static void edit(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList waitlist = new WaitingList(); // see if even needed
@@ -91,8 +91,8 @@ public class EditOrder {
 	/**
 	 * send to DB: update the visitors number in that given order
 	 * 
-	 * @param orderNum
-	 * @param visitorsNum
+	 * @param orderNum    integer
+	 * @param visitorsNum integer
 	 * @return T/F
 	 */
 	private static boolean updateVisitorsNumber(int orderNum, int visitorsNum) {
@@ -108,7 +108,7 @@ public class EditOrder {
 	/**
 	 * send to DB: update the price of a given order
 	 * 
-	 * @param order
+	 * @param order object
 	 * @return T/F
 	 */
 	private static boolean updatePrice(Order order) {
@@ -124,8 +124,8 @@ public class EditOrder {
 	/**
 	 * checkFullDays
 	 * 
-	 * @param recived
-	 * @param client
+	 * @param recived ArrayList<Object>
+	 * @param client  ConnectionToClient
 	 */
 	public static void checkFullDays(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
