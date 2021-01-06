@@ -59,7 +59,7 @@ public class LoginController implements Initializable {
 	private AlertController alert = new AlertController();
 
 	/**
-	 * Switch screens: Login -> Welcome
+	 * Switch screens: Login Welcome
 	 **/
 
 	@FXML
@@ -71,11 +71,11 @@ public class LoginController implements Initializable {
 		
 	 /**
 	 *
-	 * msg is ArrayList of objects -> [0] -> the function who calling to service
-	 * from the server "login" [1] -> ArrayList of String -> [0] -> username [1] ->
-	 * password The function waiting to response from the server and can get: if
-	 * success (the user exists) -> we getting the role of the user else (the user
-	 * doesn't exists) -> getting "Failed" 
+	 * msg is ArrayList of objects [0] the function who calling to service
+	 * from the server "login" [1] ArrayList of String [0] username
+	 *  [1] password The function waiting to response from the server and can get: if
+	 * success (the user exists) we getting the role of the user else (the user
+	 * doesn't exists) getting "Failed" 
 	 * @param ActionEvent event
 	 * @exception IOException
 	 * 
@@ -196,8 +196,8 @@ public class LoginController implements Initializable {
 	 * @param msgReceived-boolean value with the result of the action Status 
 	 *                
 	 * @return T / F, 
-	 *	       T ==> Update logged in status success
-	 *		   F ==> Update logged in status failed
+	 *	       T Update logged in status success
+	 *		   F Update logged in status failed
 	 */
 	
 	public static void receivedFromServerLoggedInStatus(boolean msgReceived) {

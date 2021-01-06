@@ -39,7 +39,7 @@ public class Park implements Serializable {
 	/**
 	 * constructor from  DB
 	 * 
-	 * @param parkFromDB ArrayList<String>
+	 * @param parkFromDB ArrayList of String
 	 */
 	public Park(ArrayList<String> parkFromDB) {
 		this.name = parkFromDB.get(0);
