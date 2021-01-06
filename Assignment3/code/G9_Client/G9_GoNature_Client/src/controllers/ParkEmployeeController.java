@@ -618,18 +618,13 @@ public class ParkEmployeeController implements Initializable {
 	    Order fakeOrder;
 	    double randomVisitorDiscount = 0;
 	    String tempDate = dateAndTimeFormat;
-
-	    if (txtIdOrMemberId.getText().isEmpty()) {
-	    	return;
-	    }
 	    
 		if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
 			memberId = txtIdOrMemberId.getText().substring(1);
 		} else {
 			id = txtIdOrMemberId.getText();
 		}		
- 
-	    
+  
 	    // format time
 	    checkTime("setPrice");
 	    tempDate += timeFormat;
