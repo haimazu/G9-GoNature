@@ -1,5 +1,6 @@
 package controllers;
 
+import java.beans.beancontext.BeanContext;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteOrder;
@@ -14,9 +15,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 import javax.swing.plaf.basic.BasicTabbedPaneUI.TabSelectionHandler;
 import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
+import javax.xml.stream.events.StartDocument;
 import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import java.util.PrimitiveIterator.OfDouble;
@@ -25,10 +27,13 @@ import org.omg.CORBA.BAD_POLICY_TYPE;
 import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
+import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+import com.itextpdf.text.pdf.codec.TiffWriter.FieldShort;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import com.mysql.cj.conf.BooleanPropertyDefinition.AllowableValues;
 import com.mysql.cj.protocol.a.SimplePacketSender;
 import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
 //import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
@@ -610,7 +615,7 @@ public class ParkManagerController implements Initializable {
 			}
 		});
 	}
-	
+
 	@FXML
 	void setVisitorsCapacityByorder(ActionEvent event) {
 		if (!btnSetDisc.isVisible()) {
@@ -640,6 +645,7 @@ public class ParkManagerController implements Initializable {
 			}
 		});
 	}
+
 	/**
 	 * by clicking on set visitors button - make the relevant text field and date
 	 * pickers to be visible and the rest no if there is other request editing field
@@ -678,6 +684,16 @@ public class ParkManagerController implements Initializable {
 		});
 
 	}
+
+	/**
+	 * send to server request : arraylist of object : [0]-> parkManagerRequest
+	 * [1]->Request object with the relevant fields for the specific request in this
+	 * request : send the discount hight and the dates it will be valid in. All the
+	 * rest fields that are not relevant will be empty
+	 * 
+	 * @param event
+	 * @throws ParseException
+	 */
 
 	@FXML
 	void submitPendingDiscount(ActionEvent event) throws ParseException {
@@ -736,6 +752,14 @@ public class ParkManagerController implements Initializable {
 		setDatePickerInitialValues();
 	}
 
+	/**
+	 * check the fields before submiting a discount. Check if the discount is not
+	 * empty and that the date are crrect
+	 * 
+	 * @param discount
+	 * @return
+	 * @throws ParseException
+	 */
 	public boolean illegalValuesForSubmitingDiscount(String discount) throws ParseException {
 		String datefrom = txtDateFrom.getValue().toString();
 		String dateto = txtDateTo.getValue().toString();
@@ -750,6 +774,15 @@ public class ParkManagerController implements Initializable {
 		}
 		return false;
 	}
+
+	/**
+	 * send to server request : arraylist of object : [0]-> parkManagerRequest
+	 * [1]->Request object with the relevant fields for the specific request. In
+	 * this request : ssend the new value for maximum capacity for ordered visits.
+	 * All the rest fields that are not relevant will be empty
+	 * 
+	 * @param event
+	 */
 
 	@FXML
 	void submitVisitorsCapacityByorder(ActionEvent event) {
@@ -795,6 +828,15 @@ public class ParkManagerController implements Initializable {
 
 	}
 
+	/**
+	 * send to server request : arraylist of object : [0]-> parkManagerRequest
+	 * [1]->Request object with the relevant fields for the specific request. In
+	 * this request : ssend the new value for maximum capacity. All the rest fields
+	 * that are not relevant will be empty
+	 * 
+	 * @param event
+	 * 
+	 */
 	@FXML
 	void submitVisitorsCapacity(ActionEvent event) {
 		String orderCapacity = lblSetMax.getText();
@@ -834,6 +876,12 @@ public class ParkManagerController implements Initializable {
 		lblSetMax.clear();
 	}
 
+	/**
+	 * present the current values of discount, maximum capacity and maximum allowed
+	 * capacity by orders
+	 * 
+	 * @param parkDetails
+	 */
 	void presentParkDetails(Park parkDetails) {
 		double disc = (1 - parkDetails.getMangerDiscount()) * 100;
 		lblPresentDisc.setText(String.format("%.1f", disc) + "%");
@@ -841,6 +889,11 @@ public class ParkManagerController implements Initializable {
 		lblPresentReservationCap.setText(String.valueOf(parkDetails.getMaxAmountOrders()));
 	}
 
+	/**
+	 * 
+	 * send to server in order to get employee id : arraylist of object : [0]->
+	 * requestForEmployeeID, [1]->user name, [2]-> password
+	 */
 	public void RequestForEmployeeID() {
 
 		ArrayList<Object> msg = new ArrayList<>();
@@ -850,6 +903,12 @@ public class ParkManagerController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
+	/**
+	 * 
+	 * send to server in order to get parkDetails : arraylist of object : [0]->
+	 * requestForEmployeeID, [1]->arraylist of string : [0]-> requestForParkDetails,
+	 * [1]->parkname
+	 */
 	public void RequestForParkDetails() {
 		ArrayList<Object> msg = new ArrayList<>();
 		ArrayList<String> data = new ArrayList<>();
@@ -859,6 +918,16 @@ public class ParkManagerController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
+	/**
+	 * check if the date that is set to be the date "to" is not before ths date
+	 * "from". return true if the dates are not corresponding , false if
+	 * corresponding.
+	 * 
+	 * @param datefrom
+	 * @param dateto
+	 * @return
+	 * @throws ParseException
+	 */
 	public boolean DatesNotCorresponding(String datefrom, String dateto) throws ParseException {
 		LocalDate from;
 		LocalDate to;
@@ -879,7 +948,9 @@ public class ParkManagerController implements Initializable {
 		return false;
 	}
 
-	/*------- visitors chart------------------*/
+	/** Reports **/
+
+	/** visitors chart **/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartVisitors() throws ParseException {
 
