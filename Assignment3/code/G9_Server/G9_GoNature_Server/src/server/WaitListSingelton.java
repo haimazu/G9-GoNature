@@ -35,20 +35,25 @@ public class WaitListSingelton {
 		// on start up do this
 	}
 
-	// Singleton, create one instance only
+	//
+	/**
+	 * Singleton, create one instance only
+	 * 
+	 * @return WaitListSingelton. if not existing. creating new one and sending it
+	 */
 	public static WaitListSingelton getWaitlist() {
+		// if (obj == null) {
 		if (obj == null) {
-			if (obj == null) {
-				obj = new WaitListSingelton();// instance will be created at request time
-			}
+			obj = new WaitListSingelton();// instance will be created at request time
 		}
+		// }
 		return obj;
 	}
 
 	/**
 	 * function that sends notifications to the client (SMS and Mail notification)
 	 * 
-	 * @param Order object that is pulled from the waitlist
+	 * @param Order object that is pulled from the wait list
 	 * @return none
 	 */
 
@@ -68,7 +73,7 @@ public class WaitListSingelton {
 	/**
 	 * send to client: SMS and Mail notification
 	 * 
-	 * @param order object (that is pulled from the waitlist)
+	 * @param order object (that is pulled from the wait list)
 	 */
 	public static void send24HoursNotification(Order order) {
 		String subject = "GoNature 24 Hours Reminder Notification";
@@ -178,10 +183,10 @@ public class WaitListSingelton {
 	 *
 	 * the function returns true if the two dates are on the same day, false if not
 	 * 
-	 * @param two dates
+	 * @param date1 Date
+	 * @param date2 Date
 	 * @return true if the two dates are on the same day, false if not
 	 */
-
 	private static boolean isSameDay(Date date1, Date date2) {
 		Calendar calendar1 = Calendar.getInstance();
 		calendar1.setTime(date1);
@@ -195,7 +200,7 @@ public class WaitListSingelton {
 	/**
 	 * check if the limit has been reached
 	 * 
-	 * @param Order object
+	 * @param order Order object
 	 * @return T\F
 	 */
 
@@ -215,7 +220,7 @@ public class WaitListSingelton {
 	/**
 	 * true if time replayed has not reached the limit false if limit has reached
 	 * 
-	 * @param Order object
+	 * @param order Order object
 	 * @return T/F
 	 */
 	public static boolean orderConfirm(Order order) {
@@ -227,10 +232,10 @@ public class WaitListSingelton {
 	}
 
 	/**
-	 * true if found the order on the waitlist and removed it, false if not. // DB:
-	 * delete the waitlist entry of that order if found
+	 * true if found the order on the wait list and removed it, false if not. // DB:
+	 * delete the wait list entry of that order if found
 	 * 
-	 * @param Order Object
+	 * @param recived Order Object
 	 * @return T/F
 	 */
 	public static boolean CancelWaitlist(Order recived) {
@@ -246,10 +251,10 @@ public class WaitListSingelton {
 	}
 
 	/**
-	 * true if found the order on the waitlist and removed it, false if not. // send
-	 * to DB: order to remove from pending
+	 * true if found the order on the wait list and removed it, false if not. //
+	 * send to DB: order to remove from pending
 	 * 
-	 * @param Order object
+	 * @param order Order object
 	 * @return T/F
 	 */
 	public static boolean removePending(Order order) {
@@ -268,7 +273,7 @@ public class WaitListSingelton {
 	 * Order to insert into the DB. true if successful false if not send to DB: new
 	 * order to list in pending
 	 * 
-	 * @param EmailMessege
+	 * @param messege EmailMessege
 	 * @return T/F
 	 */
 
@@ -293,15 +298,10 @@ public class WaitListSingelton {
 		return MySQLConnection.insert(query);
 	}
 
-	// input: Order to insert into the DB
-	// output: Array list of array list of strings that contains the expired entrys
-	// in pending
 	/**
-	 * g
+	 * query that takes data from DB about ExpiredPending
 	 * 
-	 * @param ArrayList<String>>
-	 * @return Array list of array list of strings that contains the expired entrys
-	 *         in pending
+	 * @return ArrayList<ArrayList<String>> contains the expired entries in pending
 	 */
 	private static ArrayList<ArrayList<String>> selectExpiredPending() {
 		ArrayList<String> query = new ArrayList<String>();
@@ -314,8 +314,9 @@ public class WaitListSingelton {
 	}
 
 	/**
+	 * Select Date For Pending
 	 * 
-	 * @param Order object
+	 * @param order Order object
 	 * @return the time limit of the order if found, if not than null
 	 */
 	private static Date selectDateForPending(Order order) {

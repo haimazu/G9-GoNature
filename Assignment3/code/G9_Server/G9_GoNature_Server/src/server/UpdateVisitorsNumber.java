@@ -43,7 +43,7 @@ public class UpdateVisitorsNumber {
 
 		ArrayList<Object> answer2 = new ArrayList<Object>();
 		answer2.add("VisitorsUpdateSendToAll");
-		answer2.add(data.get(0));// parkname
+		answer2.add(data.get(0));// park name
 		answer2.add(data.get(1));// updatedVisitorsNumber
 		EchoServer.sendToAll(answer2);
 	}

@@ -15,12 +15,12 @@ import userData.Member;
 public class WaitingList {
 
 	/**
-	 * enters an order to a waiting list
+	 * enters an order to a waiting list. send to client: ArrayList of Objects: cell
+	 * [0]: String "", cell [1]: boolean -> true if entry successful false if not
 	 * 
-	 * @param ArrayList of Objects: cell [0]: String "enterTheWaitList", cell [1]:
-	 *                  Order class of a given order to put in the wait list
-	 * @return send to client: ArrayList of Objects: cell [0]: String "", cell [1]:
-	 *         boolean -> true if entry successful false if not
+	 * @param recived ArrayList of Objects: cell [0]: String "enterTheWaitList",
+	 *                cell [1]: Order class of a given order to put in the wait list
+	 * @param client  ConnectionToClient
 	 */
 
 	public static void enterTheWaitList(ArrayList<Object> recived, ConnectionToClient client) {
@@ -54,8 +54,9 @@ public class WaitingList {
 	/**
 	 * function that checks if there are available spots in the park
 	 * 
-	 * @param ArrayList of Objects: cell [0]: String "checkForAvailableSpots" cell,
-	 *                  [1]: Order class of a given order to check if it can fit
+	 * @param recived ArrayList of Objects: cell [0]: String
+	 *                "checkForAvailableSpots" cell, [1]: Order class of a given
+	 *                order to check if it can fit
 	 * @return True -> if there are available spots at the given park at the given
 	 *         time, False -> if there are no spots available
 	 */
@@ -98,8 +99,8 @@ public class WaitingList {
 	 * this function called after an order has been canceled by a user and delete
 	 * the order from the waiting list
 	 * 
-	 * @param input: ArrayList of Objects: cell [0]: String "pullFromWaitList", cell
-	 *               [1]: Order class of a given order that has been canceled
+	 * @param recived ArrayList of Objects: cell [0]: String "pullFromWaitList",
+	 *                cell [1]: Order class of a given order that has been canceled
 	 * @return T/F
 	 */
 	public static boolean pullFromWaitList(ArrayList<Object> recived) {
