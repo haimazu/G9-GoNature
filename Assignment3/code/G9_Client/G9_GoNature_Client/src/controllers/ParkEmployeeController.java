@@ -641,13 +641,19 @@ public class ParkEmployeeController implements Initializable {
 	    double randomVisitorDiscount = 0;
 	    String tempDate = dateAndTimeFormat;
 	    boolean flag = false;
+	    String currentTypeValue = null;
+	    String currentTypeName = null;
 	    
 	    // random mode
 	    if (!btnRandomVisitor.isVisible()) {
 			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
 				memberId = txtIdOrMemberId.getText().substring(1);
+				currentTypeValue = memberId;
+				currentTypeName = "MEMBERID";
 			} else {
 				id = txtIdOrMemberId.getText();
+				currentTypeValue = id;
+				currentTypeName = "ID";
 			}	
 			flag = true;
 	    } 
@@ -680,10 +686,20 @@ public class ParkEmployeeController implements Initializable {
 		        addFakeOrderToDB = false;
 		    }
 		    
-		    lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
-		    randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
-		    lblDiscount.setText(String.format("%.1f", randomVisitorDiscount) + "%");			
-		    lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
+		    ArrayList<String> data = new ArrayList<String>();
+			data.add(getParkName());
+			data.add(currentTypeName);
+			data.add(currentTypeValue);
+			data.add(txtVisitorsAmount.getText());
+			sendToServerArrayList("getVisitorsPrice", data);
+		    
+		    lblPrice.setText(String.format("%.1f", visitorsPrice.get(1)) + "₪");
+		    lblDiscount.setText(String.format("%.1f", visitorsPrice.get(2)) + "%");			
+		    lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(3)) + "₪");
+//		    lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
+//		    randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+//		    lblDiscount.setText(String.format("%.1f", randomVisitorDiscount) + "%");			
+//		    lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
 	    }
 	}
 
@@ -958,7 +974,9 @@ public class ParkEmployeeController implements Initializable {
 	// output: for case 1. we create new order with all the received details
 	// for case 2. we set the error message
 	public static void receivedFromVisitorsPrice(ArrayList<Object> received) {
-		//ParkEmployeeController.visitorsPrice = (ArrayList<String>) received;		
+		ParkEmployeeController.visitorsPrice.add((String) received.get(1));	
+		ParkEmployeeController.visitorsPrice.add((String) received.get(2));	
+		ParkEmployeeController.visitorsPrice.add((String) received.get(3));	
 	}
 
 	// getting information from the server
