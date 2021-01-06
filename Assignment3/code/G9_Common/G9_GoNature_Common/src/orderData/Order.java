@@ -101,7 +101,7 @@ public class Order implements Serializable {
 	/**
 	 * constructor from ArrayList<String>
 	 * 
-	 * @param orderFromDB
+	 * @param orderFromDB ArrayList<String>
 	 */
 	
 	public Order(ArrayList<String> orderFromDB) {
