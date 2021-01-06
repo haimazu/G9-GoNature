@@ -2,13 +2,21 @@ package dataLayer;
 
 import java.io.Serializable;
 
+/**
+ * The CreditCard creating CreditCard object
+ *
+ * @author Bar Katz
+ */
+
 public class CreditCard  implements Serializable{
+
 	/**
-	 * @param cardNumber
-	 * @param cardHolderName
-	 * @param expirationDate
-	 * @param cvc
-	 * @param orderNumber
+	 * constructor for CreditCard object
+	 * @param cardNumber String
+	 * @param cardHolderName String
+	 * @param expirationDate String
+	 * @param cvc integer
+	 * @param orderNumber integer
 	 */
 	public CreditCard(String cardNumber, String cardHolderName, String expirationDate, int cvc, int orderNumber) {
 		super();
@@ -19,6 +27,13 @@ public class CreditCard  implements Serializable{
 		
 		this.orderNumber = orderNumber;
 	}
+	/**
+	 * constructor for CreditCard object
+	 * @param cardNumber String
+	 * @param cardHolderName String
+	 * @param expirationDate String
+	 * @param cvc integer
+	 */
 	public CreditCard(String cardNumber, String cardHolderName, String expirationDate, int cvc) {
 		super();
 		this.cardNumber = cardNumber;
