@@ -18,7 +18,8 @@ public class NewMember {
 	 * inserting a new member:MEMBER\GUIDE in members table in DB
 	 * 
 	 * @param ArrayList<Object>: cell[0] function name cell[1] member object,
-	 *                           cell[2] credit card object ,ConnectionToClient
+	 *                           cell[2] credit card object
+	 * @param client             ConnectionToClient
 	 * @return ArrayList<Object>=> cell[0] function name cell[1] T/F
 	 */
 	public static void NewMemberInsert(ArrayList<Object> recived, ConnectionToClient client) {
@@ -62,7 +63,7 @@ public class NewMember {
 	/**
 	 * checks if the member exists in DB with his ID
 	 * 
-	 * @param memberID
+	 * @param memberID String
 	 * @return T/F
 	 **/
 	public static Boolean MemerCheck(String memberID) {
@@ -86,7 +87,7 @@ public class NewMember {
 	/**
 	 * ToString For DB query
 	 * 
-	 * @param Member object
+	 * @param memb Member object
 	 * @return String
 	 **/
 

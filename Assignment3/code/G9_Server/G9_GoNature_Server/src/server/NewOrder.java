@@ -22,10 +22,9 @@ public class NewOrder {
 	 * inserting a new reservation in order table in DB
 	 * 
 	 * @param ArrayList<Object>: cell[0] function name, cell[1] order object
-	 *                           ,ConnectionToClient
-	 * 
-	 * @return none. sends to client :ArrayList<Object>=> cell[0] function name, cell[1] Order object
-	 *         with updated cells: price ,totalPrice
+	 * @param client             ConnectionToClient
+	 * @return none. sends to client :ArrayList<Object>=> cell[0] function name,
+	 *         cell[1] Order object with updated cells: price ,totalPrice
 	 * 
 	 **/
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
@@ -36,7 +35,7 @@ public class NewOrder {
 		Member memb = MemerCheck(data); // to check the member type by order
 		if (checkFake(data)) {
 			String fakeOrdNum = checkFakeExist(data);
-			if (fakeOrdNum!=null) {
+			if (fakeOrdNum != null) {
 				answer.add(fakeOrdNum);
 				EchoServer.sendToMyClient(answer, client);
 			}
@@ -63,9 +62,10 @@ public class NewOrder {
 
 	}
 
-	//input: order Class
-	//NOTE: check if allready in the park by ID/MemberID and arriveTime
-	//output: True if allready in exist flase if not exist
+	// input: order Class
+	// NOTE: check if allready in the park by ID/MemberID and arriveTime
+	// output: True if allready in exist flase if not exist
+
 	private static String checkFakeExist(Order data) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -82,14 +82,14 @@ public class NewOrder {
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		if (queryData.isEmpty())
 			return null;
-		return queryData.get(0).get(0); //return original order number
+		return queryData.get(0).get(0); // return original order number
 	}
 
-	//input: order class 
-	//note: check if the order is "fake order" for random visitions
-	//output: true if fake false if not 
+	// input: order class
+	// note: check if the order is "fake order" for random visitions
+	// output: true if fake false if not
 	private static boolean checkFake(Order data) {
-		if (data.getOrderEmail()==null)
+		if (data.getOrderEmail() == null)
 			return true;
 		return false;
 	}
@@ -100,6 +100,7 @@ public class NewOrder {
 	 * 
 	 * @param cell[0] function name cell[1] order object cell[2] credit card
 	 *                object/null
+	 * @param client  ConnectionToClient
 	 * @return T/F
 	 * 
 	 **/
@@ -108,11 +109,11 @@ public class NewOrder {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		Order order = (Order) recived.get(1); 
+		Order order = (Order) recived.get(1);
 		answer.add(insertNewOrder(order));
-		
+
 		if (recived.get(2) != null) {
-			CreditCard cc=(CreditCard) recived.get(2);
+			CreditCard cc = (CreditCard) recived.get(2);
 			cc.setOrderNumber(order.getOrderNumber());
 			creditCardSave(cc);
 		}
@@ -125,11 +126,11 @@ public class NewOrder {
 				+ order.messegeString();
 		Comunication.sendNotification(subject, messege, order);
 	}
-	
+
 	/**
 	 * sending to DB: new order to list in
 	 * 
-	 * @param Order Object to insert into the DB
+	 * @param order Order Object to insert into the DB
 	 * @return true if successful false if not
 	 **/
 
@@ -144,7 +145,7 @@ public class NewOrder {
 	/**
 	 * Checks if you are a member
 	 * 
-	 * @param order object
+	 * @param ord Order object
 	 * @return member/null
 	 * 
 	 **/
@@ -174,14 +175,14 @@ public class NewOrder {
 	}
 
 	///////////// ************************* price *****************************
-
 	/**
 	 * function that calculates the price for an order and puts it into Order object
 	 * 
-	 * @param Order with empty totalPrice , price , orderType, a Member
+	 * @param ord        Order with empty totalPrice
+	 * @param memb       Member object
+	 * @param occasional T/F
 	 * @return Order with updated totalPrice and price and orderType
-	 **/
-
+	 */
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
 		System.out.println("total price enter");
 		double parkEnteryPrice = CurrentPriceInPark(ord);
@@ -326,7 +327,8 @@ public class NewOrder {
 	/**
 	 * function to pull parks names from DB
 	 * 
-	 * @param ArrayList<Object>, ConnectionToClient
+	 * @param recived ArrayList<Object> cell [0]: calling function name
+	 * @param client  ConnectionToClient
 	 * @return a list of parks names from DB
 	 **/
 	public static void parksNames(ArrayList<Object> recived, ConnectionToClient client) {
@@ -362,7 +364,8 @@ public class NewOrder {
 	/**
 	 * updating column amountArrived in order table for an order
 	 * 
-	 * @param ArrayList<Object> cell[0]: calling function name ,ConnectionToClient
+	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param client  ConnectionToClient
 	 * @return ArrayList<Object>=> cell[0] function name, cell[1]: ArrayList<String>
 	 *         [0] orderNumber, [1] number of visitors to add
 	 **/
@@ -397,7 +400,7 @@ public class NewOrder {
 	/**
 	 * inserts a new credit card in DB
 	 * 
-	 * @param CreditCard object
+	 * @param cc CreditCard object
 	 * @return T\F
 	 **/
 	public static Boolean creditCardSave(CreditCard cc) {
@@ -413,14 +416,12 @@ public class NewOrder {
 	/**
 	 * toString in use for CreditCardSave query
 	 * 
-	 * @param CreditCard , order number
+	 * @param data CreditCard object
 	 * @return String
 	 **/
 	public static String toStringForCreditCardSave(CreditCard data) {
 		return "'" + data.getCardNumber() + "','" + data.getCardHolderName() + "','" + data.getExpirationDate() + "','"
 				+ data.getCvc() + "','" + data.getOrderNumber() + "'";
 	}
-
-
 
 }
