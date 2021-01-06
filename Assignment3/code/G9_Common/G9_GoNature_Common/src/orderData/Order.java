@@ -70,7 +70,6 @@ public class Order implements Serializable {
 	
 	public Order(int visitorsNumber, String orderEmail, String orderPhone, String parkName, String arrivedTime,
 			String memberId, String ID) {
-
 		this.visitorsNumber = visitorsNumber;
 		this.orderEmail = orderEmail;
 		this.orderPhone = orderPhone;
