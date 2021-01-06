@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.print.Book;
 import java.io.IOException;
 //import java.sql.Connection;
 import java.util.ArrayList;
@@ -146,6 +147,9 @@ public class EchoServer extends AbstractServer {
 		case "revenueReport":
 			Reports.incomesReport(recived, client);
 			break;
+		case "getVisitorsPrice":
+			Bootke.getPriceForBootke(recived, client);
+			break;
 		default:
 			break;
 		}
@@ -154,7 +158,7 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * 
-	 * @param msg    ArrayList<Object>
+	 * @param msg    ArrayList of Object
 	 * @param client ConnectionToClient
 	 */
 	public static void sendToMyClient(ArrayList<Object> msg, ConnectionToClient client) {
@@ -167,7 +171,7 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * 
-	 * @param msg ArrayList<Object>
+	 * @param msg ArrayList of Object
 	 */
 	public static void sendToAll(ArrayList<Object> msg) {
 		self.sendToAllClients(msg);

@@ -9,14 +9,14 @@ import userData.Member;
 /**
  * The WaitingList program handles the waiting list functions
  *
- * @author
+ * @author Roi Amar
  */
 
 public class WaitingList {
 
 	/**
 	 * enters an order to a waiting list. send to client: ArrayList of Objects: cell
-	 * [0]: String "", cell [1]: boolean -> true if entry successful false if not
+	 * [0]: String "", cell [1]: boolean => true if entry successful false if not
 	 * 
 	 * @param recived ArrayList of Objects: cell [0]: String "enterTheWaitList",
 	 *                cell [1]: Order class of a given order to put in the wait list
@@ -57,8 +57,8 @@ public class WaitingList {
 	 * @param recived ArrayList of Objects: cell [0]: String
 	 *                "checkForAvailableSpots" cell, [1]: Order class of a given
 	 *                order to check if it can fit
-	 * @return True -> if there are available spots at the given park at the given
-	 *         time, False -> if there are no spots available
+	 * @return True => if there are available spots at the given park at the given
+	 *         time, False => if there are no spots available
 	 */
 
 	public static boolean checkForAvailableSpots(ArrayList<Object> recived) {

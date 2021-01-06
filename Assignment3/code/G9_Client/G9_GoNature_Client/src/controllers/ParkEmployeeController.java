@@ -131,6 +131,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String error = "";
 	private static String entryAndExitStatus = "";
 	private static String randomVisitorIdNumber = "";
+	private static ArrayList<String> visitorsPrice;
 
 	// input: none
 	// output: moving to 'login' screen
@@ -313,7 +314,7 @@ public class ParkEmployeeController implements Initializable {
 		orderStatus = false;
 		addFakeOrderToDB = false;
 		// update park status
-		//updateParkStatus(0);
+		updateParkStatus(0);
 		clearAllFields();
 	}
 
@@ -383,20 +384,21 @@ public class ParkEmployeeController implements Initializable {
 	                }
 	        	} else if (randomVisitorFakeOrderDetails != null) {
 	        		// getting the visitors status 
+	        		System.out.println("randomVisitorFakeOrderDetails");
 	                sendToServerArrayList("getVisitorsEntryStatus", new ArrayList<String>
 	                	(Arrays.asList(String.valueOf(randomVisitorFakeOrderDetails.getOrderNumber()))));
-	                
+//	                
 	                if (getEntryAndExitStatus().equals("Didn't enter")) {
-	                    // update current visitors
+//	                    // update current visitors
 	                    updateCurrentVisitors(parkDetails.getCurrentAmount() + visitorsAmount);
-	                    // update the exact entry and exit time
+//	                    // update the exact entry and exit time
 	                    updateAccessControl(randomVisitorFakeOrderDetails.getOrderNumber(), "regular", visitorsAmount);
-	                    sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
+//	                    sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
 	                    alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");				
 	                } else if (getEntryAndExitStatus().equals("Entered")) {
-	                    alert.failedAlert("Failed", "The visitors identified by these details have not yet left the park.");
+//	                    alert.failedAlert("Failed", "The visitors identified by these details have not yet left the park.");
 	                } else {
-	                    alert.failedAlert("Failed", "These visitors have already realized the visit.");
+//	                    alert.failedAlert("Failed", "These visitors have already realized the visit.");
 	                }
 	        	} else if (getRandomVisitorIdNumber().equals("Failed") || getRandomVisitorIdNumber().equals("")) {
 	        		System.out.println("?");
@@ -948,6 +950,16 @@ public class ParkEmployeeController implements Initializable {
 			setError((String) msg);
 		}
 	}
+	
+	// getting information from the server
+	// input: if the order number exists in the system:
+	// 1. ArrayList<String> order with all the order data
+	// otherwise 2. string of "No such order"
+	// output: for case 1. we create new order with all the received details
+	// for case 2. we set the error message
+	public static void receivedFromVisitorsPrice(ArrayList<Object> received) {
+		//ParkEmployeeController.visitorsPrice = (ArrayList<String>) received;		
+	}
 
 	// getting information from the server
 	// input: ArrayList<String> park with all the park data
@@ -1170,6 +1182,7 @@ public class ParkEmployeeController implements Initializable {
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
 		setRandomModeOff();
+		btnManualAccess.setVisible(true);
 
 		// setParkName(LoginController.getParkName());
 		setParkName("jurasic");

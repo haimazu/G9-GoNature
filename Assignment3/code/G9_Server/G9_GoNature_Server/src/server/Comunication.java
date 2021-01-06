@@ -50,16 +50,15 @@ public class Comunication {
 	}
 
 	/**
-	 * array list of object that contains: [0] -> string "waitlistReplay" [1] ->
+	 * array list of object that contains: [0] - string "waitlistReplay" [1] -
 	 * Boolean true if the order is now in place false if something went wrong. if
 	 * the client say "no", an empty message will be sent to the client - ergo:
 	 * nothing in cell [1].
 	 * 
-	 * @param recived ArrayList<Object> [0] -> string "waitlistReplay", [1] ->
-	 *                String answer (NOTE: have to be "yes" or "no"), [2] -> Order
-	 *                class of the order that initiated this method
+	 * @param recived ArrayList of Object [0] - string "waitlistReplay", [1] - String
+	 *                answer (NOTE: have to be "yes" or "no"), [2] - Order class of
+	 *                the order that initiated this method
 	 * @param client  ConnectionToClient
-	 * @exception IOException
 	 */
 	public static void waitlistReplay(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();

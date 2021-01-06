@@ -3,9 +3,18 @@ package client;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import controllers.*;
-import ocsf.client.*;
-import orderData.Order;
+import controllers.Context;
+import controllers.DepartmentManagerController;
+import controllers.LoginController;
+import controllers.ManageOrderController;
+import controllers.OrderController;
+import controllers.ParkEmployeeController;
+import controllers.ParkManagerController;
+import controllers.ServiceRepresentativeController;
+import controllers.WaitingListConfirmContoller;
+import controllers.WaitingListController;
+import controllers.WelcomeController;
+import ocsf.client.AbstractClient;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
@@ -25,6 +34,7 @@ public class ChatClient extends AbstractClient {
 	 * @param host     The server to connect to.
 	 * @param port     The port number to connect on.
 	 * @param clientUI The interface type variable.
+	 * @exception IOException
 	 */
 
 	public ChatClient(String host, int port, WelcomeController control2) throws IOException {
@@ -163,6 +173,9 @@ public class ChatClient extends AbstractClient {
 		case "revenueReport" :
 			ParkManagerController.recivedFromserverRevenueReport((ArrayList<ArrayList<String>>) received.get(1));
 			break ;
+		case "getVisitorsPrice":
+			ParkEmployeeController.receivedFromVisitorsPrice((ArrayList<Object>) received);
+			break;
 		default:
 			break;
 		}

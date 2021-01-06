@@ -8,7 +8,15 @@ import com.jfoenix.controls.JFXCheckBox;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 
-public class TableViewSet implements Serializable{
+
+/**
+ * class to display a table and value in it
+ *
+ * @author Bar Katz
+ *
+ */
+
+public class TableViewSet implements Serializable {
 
 	private String reqType;
 	private String reqDetails;
@@ -17,11 +25,12 @@ public class TableViewSet implements Serializable{
 	private CheckBox MarkCh;
 
 	/**
-	 * @param parkName
-	 * @param reqType
-	 * @param reqDetails
-	 * @param checkBox
+	 * @param parkName String
+	 * @param reqType String
+	 * @param reqDetails String
+	 * @param checkBox CheckBox
 	 */
+	
 	public TableViewSet(String parkName, String reqType, String reqDetails) {
 		this.ParkName = parkName;
 		this.reqType = reqType;
@@ -29,19 +38,11 @@ public class TableViewSet implements Serializable{
 		this.MarkCh = new CheckBox();
 	}
 
-	/**
-	 * 
-	 */
-//	public TableViewSet(ArrayList<Object> arr) {
-//		setParkName((String)arr.get(0));
-//		setReqType((String) arr.get(1));
-//		setReqDetails((String)arr.get(2));
-//		setmark((CheckBox)arr.get(3));
-//	}
 
 	public String getParkName() {
 		return ParkName;
 	}
+
 
 	public void setParkName(String parkName) {
 		ParkName = parkName;

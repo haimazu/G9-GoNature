@@ -53,7 +53,7 @@ public class WaitListSingelton {
 	/**
 	 * function that sends notifications to the client (SMS and Mail notification)
 	 * 
-	 * @param Order object that is pulled from the wait list
+	 * @param order Order object that is pulled from the wait list
 	 * @return none
 	 */
 

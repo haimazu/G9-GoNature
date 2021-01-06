@@ -157,7 +157,8 @@ public class LoginController implements Initializable {
 	/**
 	 *  sends the case we dealing with and dbColumns to the server to get data
 	 *  
-	 * @param cells, depending on the case           
+	 * @param type String depending on the case         
+	 * @param   dbColumns ArrayList of String
 	 */
 
 	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
