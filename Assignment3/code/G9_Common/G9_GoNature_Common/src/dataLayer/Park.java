@@ -51,7 +51,7 @@ public class Park implements Serializable {
 	}
 
 	/**
-	 * checks if maxAmountOrders <= maximumCapacityInPark
+	 * checks if maxAmountOrders smaller than maximumCapacityInPark
 	 * 
 	 * @return T/F
 	 */

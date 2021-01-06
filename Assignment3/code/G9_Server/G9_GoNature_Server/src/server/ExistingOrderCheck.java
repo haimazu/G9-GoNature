@@ -16,9 +16,9 @@ public class ExistingOrderCheck {
 	/**
 	 * send to client: Order Class if an order found, string "No such order" if not
 	 * 
-	 * @param recived ArrayList<Object> [0] -> String ordersByIdOrMemberId OR
-	 *                ordersByOrderNumber [1] -> ArrayList of String contains: [0]
-	 *                -> orderNumber
+	 * @param recived ArrayList of Object [0] - String ordersByIdOrMemberId OR
+	 *                ordersByOrderNumber [1] - ArrayList of String contains: [0]
+	 *                - orderNumber
 	 * @param client
 	 */
 	public static void getOrderDetailsByOrderNumber(ArrayList<Object> recived, ConnectionToClient client) {
@@ -36,9 +36,9 @@ public class ExistingOrderCheck {
 
 	/**
 	 * 
-	 * @param recived   array list of object contains: [0] -> String
-	 *                  ordersByIdOrMemberId OR ordersByOrderNumber [1] -> ArrayList
-	 *                  of String contains: [0] -> orderNumber
+	 * @param recived   array list of object contains: [0] - String
+	 *                  ordersByIdOrMemberId OR ordersByOrderNumber [1] - ArrayList
+	 *                  of String contains: [0] - orderNumber
 	 * @param tableName table name as string
 	 * @param colName   col name as string
 	 * @return ArrayList<ArrayList<String>> containing the order details, empty if
