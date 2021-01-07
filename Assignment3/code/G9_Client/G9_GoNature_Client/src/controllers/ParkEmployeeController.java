@@ -133,7 +133,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String entryStatus = "";
 	private static String exitStatus = "";
 	private static String randomVisitorIdNumber = "";
-	private static ArrayList<String> visitorsPrice;
+	private static ArrayList<String> visitorsPrice = new ArrayList<String>();
 
 	// input: none
 	// output: moving to 'login' screen
@@ -277,10 +277,11 @@ public class ParkEmployeeController implements Initializable {
 				/*** Enter ***/
 				if (radEnter.isSelected()) {
 					orderStatus = false;
+					execEnter();
 					//execRandomVisitor(Integer.parseInt(txtVisitorsAmount.getText()));
 					/*** Exit ***/
 				} else if (radExit.isSelected()){
-					//execExit();
+					execExit();
 				}
 			}
 			// barcode / regular entry
@@ -324,8 +325,7 @@ public class ParkEmployeeController implements Initializable {
 	// sending to the server to update the current visitors amount
 	// input: new current visitors
 	// output: updating the current visitors in the park
-	public void execRandomVisitor(int visitorsAmount) {
-		
+//	public void execRandomVisitor(int visitorsAmount) {		
 //	    int updateCurrentVisitors = visitorsAmount;
 //	    
 //	    // update park status (for the 'else' part)
@@ -417,12 +417,19 @@ public class ParkEmployeeController implements Initializable {
 //	        	}  
 //	        }
 //	    }		
-	}
+//	}
 //
 //	// enter control to the park
 //	// input: none
 //	// output: updating the current visitors in the park 
-//	public void execEnter() {	
+	public void execEnter() {	
+		// random
+		if (!orderStatus) {
+			System.out.println("Enter on random");	
+		// order
+		} else {
+			System.out.println("Enter on order");	
+		}
 //	    int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());	
 //	    
 //	    // checks whether the number of visitors is greater than the number in the order
@@ -492,12 +499,19 @@ public class ParkEmployeeController implements Initializable {
 //	            }
 //	        }
 //	    }
-//	}
+	}
 //
 //	// exit control from the park
 //	// input: none
 //	// output: updating the current visitors in the park
-//	public void execExit() {
+	public void execExit() {
+		// random
+		if (!orderStatus) {
+			System.out.println("Exit on random");		
+		// order
+		} else {
+			System.out.println("Exit on order");			
+		}
 //		clearPaymentFields();
 //	    int updateCurrentVisitors = 0;
 //	    String memberId = "";
@@ -571,7 +585,7 @@ public class ParkEmployeeController implements Initializable {
 //	            alert.failedAlert("Failed", "The visitor/s in this invitation didn't enter.");
 //	        }
 //	    } 
-//	}
+	}
 
 	// updates prices for ordered visitors
 	// input: none
@@ -720,21 +734,32 @@ public class ParkEmployeeController implements Initializable {
 				currentTypeName = "ID";
 			}	
 			sendToGetPrice(currentTypeName, currentTypeValue, txtVisitorsAmount.getText());
-
+			System.out.println(txtVisitorsAmount.getText());
 		// price for ordered visitor
 	    } else {
 	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
 	    } 
 		
-		lblPrice.setText(String.format("%.1f", visitorsPrice.get(0)) + "₪");
-		lblDiscount.setText(String.format("%.1f", visitorsPrice.get(1)) + "%");			
-		lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(2)) + "₪");
+		lblPrice.setText(String.format("%.1f", Double.parseDouble(visitorsPrice.get(0))) + "₪");
+		lblDiscount.setText(String.format("%.1f", Double.parseDouble(visitorsPrice.get(1))) + "%");			
+		lblTotalPrice.setText(String.format("%.1f", Double.parseDouble(visitorsPrice.get(2))) + "₪");
 	}
 	
 	public void sendToGetPrice(String type, String value, String amount) {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		msg.add("getVisitorsPrice");
+		msg.add(parkDetails);
+		msg.add(type);
+		msg.add(value);
+		msg.add(amount);
+		ClientUI.sentToChatClient(msg);
+	}
+	
+	public void sendToGetEntryStatus(String type, String value, String amount) {
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+		msg.add("enterThePark");
 		msg.add(getParkName());
 		msg.add(type);
 		msg.add(value);
@@ -1301,21 +1326,22 @@ public class ParkEmployeeController implements Initializable {
 
 			// \\d -> only digits
 			// * -> escaped special characters
-			if (!newValue.isEmpty() && !newValue.matches("\\d")) {
+			if (newValue.length() == 1 || !newValue.isEmpty() && !newValue.matches("\\d")) {
 				// ^\\d -> everything that not a digit
-				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));				
-			} else if (!newValue.isEmpty() && newValue.matches("\\d")) {
+				txtVisitorsAmount.setText(newValue.replaceAll("[^\\d]", ""));	
+			
+			//} else if (!newValue.isEmpty() && newValue.matches("\\d")) {
 				if (newValue.charAt(0) != '0') {
 					if (!btnRandomVisitor.isVisible() && !txtIdOrMemberId.getText().isEmpty()) {
 						// update random visitor prices
 						//createFakeOrder(null, null, Integer.parseInt(txtVisitorsAmount.getText()));
 						setPrice();
+						System.out.println("sent to get update price...");
 					} else if (!txtOrderNumber.getText().isEmpty()) {
 						showDetails(null);
 					}
 				}
 			}
-				
 		});
 
 		/***** Random *****/
