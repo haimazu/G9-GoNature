@@ -98,6 +98,8 @@ public class ServerController implements Initializable {
     	if (ServerUI.stopServer()) {
     		stopServer.setDisable(true);
     		btnStart.setDisable(false);
+    		Login.disconnectAllUsers();
+			System.out.println("All users have been disconnected.");
     		logIt("Stoped Server succsefuly");
 		} else
 			logIt("goNature server still up");
