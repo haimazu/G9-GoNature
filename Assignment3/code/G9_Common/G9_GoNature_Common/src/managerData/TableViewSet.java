@@ -1,4 +1,4 @@
-package reportData;
+package managerData;
 
 import java.io.Serializable;
 import java.util.ArrayList;

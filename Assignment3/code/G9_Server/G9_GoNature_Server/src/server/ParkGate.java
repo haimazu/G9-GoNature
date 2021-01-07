@@ -68,9 +68,11 @@ public class ParkGate {
 	// output: none
 	// send to client: ArrayList of object
 	// cell[0] contains "enterThePark" String
-	// cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark"
-	// / "parkfull" if not
+	// cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark" / "parkfull" if not
+	// cell[2] if enterd the park as random ticket numbet as int, if enterd not as random than 0
+	// 
 	public static void enterThePark(ArrayList<Object> recived, ConnectionToClient client) throws IOException {
+		int randomVisitorTicket = 0;
 		String extras = null;
 		boolean moreThanOrdered = false;
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -149,7 +151,7 @@ public class ParkGate {
 		// **********mizdamen**********
 		if (orderWrapped.isEmpty() || moreThanOrdered) { // create an order for random visits
 			if (moreThanOrdered)
-				howMany = "" + (Integer.parseInt(howMany) - Integer.parseInt(extras));
+				howMany = extras;
 			LocalDateTime now = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			order = new Order(park.getName(), now.format(formatter).toString(), memberId, id,
@@ -157,13 +159,13 @@ public class ParkGate {
 			Member member = NewOrder.MemerCheck(order);
 			order = NewOrder.totalPrice(order, member, true);// updating the prices in the order
 			order.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
-			System.out.println("1:" + order);
+			randomVisitorTicket=order.getOrderNumber();
 			NewOrder.insertNewOrder(order);
 		}
-		System.out.println("2:" + order);
-		// updateArrived(order, order.getVisitorsNumber());// insert arrived to order
+		//updateArrived(order, order.getVisitorsNumber());// insert arrived to order
 		insertEnteryExit(order, order.getAmountArrived(), "enter");
 		answer.add("enter");
+		answer.add(randomVisitorTicket);
 		client.sendToClient(answer);
 
 	}

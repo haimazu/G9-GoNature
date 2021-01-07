@@ -77,8 +77,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import managerData.ManagerRequest;
 import orderData.Order;
-import reportData.ManagerRequest;
 
 /**
  * controller for all of the park manager : it is responsible for setting new
