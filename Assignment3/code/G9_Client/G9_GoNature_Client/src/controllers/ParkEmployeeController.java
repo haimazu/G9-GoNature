@@ -340,7 +340,7 @@ public class ParkEmployeeController implements Initializable {
 	            updateCurrentVisitors(parkDetails.getCurrentAmount() + updateCurrentVisitors);
 	            addFakeOrderToDB = true;
 	            // create fake order and check if has one
-	            createFakeOrder(null, "420", visitorsAmount);
+	            //createFakeOrder(null, "420", visitorsAmount);
 	            
 	            // update the exact entry and exit time, for the ordered visitors && for the random friends
 	            updateAccessControl(orderDetails.getOrderNumber(), orderDetails.getOrderType().label,
@@ -354,7 +354,7 @@ public class ParkEmployeeController implements Initializable {
 	    // in case without order (only random visitors)
 	    } else if (alert.getResult().equals("OK")) {
 	    	addFakeOrderToDB = true;
-	    	createFakeOrder(null, "420", visitorsAmount);
+	    	//createFakeOrder(null, "420", visitorsAmount);
         	alert.successAlert("Success", String.valueOf(visitorsAmount) + " visitor/s entered.");
         	// update current visitors
             updateCurrentVisitors(parkDetails.getCurrentAmount() + visitorsAmount);
@@ -364,7 +364,7 @@ public class ParkEmployeeController implements Initializable {
 	        // checking for places in the park
 	        if (getError().equals("Free")) {
 	        	// create fake order and check if has one
-	        	createFakeOrder(null, "420", visitorsAmount);
+	        	//createFakeOrder(null, "420", visitorsAmount);
 	        	
 	        	if (!getRandomVisitorIdNumber().equals("Failed") && !getRandomVisitorIdNumber().equals("")) {
 	        		// getRandomVisitorIdNumber() = "orderNumber"
@@ -573,135 +573,135 @@ public class ParkEmployeeController implements Initializable {
 	// updates prices for ordered visitors
 	// input: none
 	// output: prints the latest data for payment
-	public void setPriceForOrdering() {
-	    Order fakeOrder;
-	    int difference = 0;
-	    double orderVisitorDiscount = 0;
-	    double randomVisitorDiscount = 0;
-	    String tempDate = dateAndTimeFormat;
-	    
-	    // format time
-	    checkTime("setPrice");
-	    tempDate += timeFormat;
-	    // after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
-	    
-	    difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
-	    // visitorsAmount <= visitorsNumber in order
-	    if (difference <= 0) {
-	        // order not used
-	        if (orderDetails.getAmountArrived() == 0) {
-	            lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪");
-	            orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-	            lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "%");
-	            lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪");
-	        // order used
-	        } else {
-	            createFakeOrder(null, "420", Integer.parseInt(txtVisitorsAmount.getText()));
-	        }
-	    // visitorsAmount > visitorsNumber in order
-	    } else {
-	        // order not used
-	        if (orderDetails.getAmountArrived() == 0) {
-	            // id = 420 , memberId = null
-	            fakeOrder = new Order(getParkName(), tempDate, null, "420", difference);
-	            
-	            // check for a member with fake order
-	            sendToServerObject("randomVisitorFakeOrder", fakeOrder);
-	            // create new order for the random visitors (add to DB only if pressed 'Approve')
-	            if (approveIsPressed) {
-	                sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
-	                approveIsPressed = false;
-	            }
-	            
-	            // set price
-	            lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪ , " 
-	                           + String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
-	            // set discount
-	            orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
-	            randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
-	            lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "% , "
-	                              + String.format("%.1f", randomVisitorDiscount) + "%");	
-	            // set total price
-	            lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪ + " 
-	                           + String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪ = " 
-	                           + String.format("%.1f", (orderDetails.getTotalPrice() + randomVisitorFakeOrderDetails.getTotalPrice())) + "₪");
-	        // order used
-	        } else {
-	            createFakeOrder(null, "420", Integer.parseInt(txtVisitorsAmount.getText()));
-	        }
-	    }
-	}
+//	public void setPriceForOrdering() {
+//	    Order fakeOrder;
+//	    int difference = 0;
+//	    double orderVisitorDiscount = 0;
+//	    double randomVisitorDiscount = 0;
+//	    String tempDate = dateAndTimeFormat;
+//	    
+//	    // format time
+//	    checkTime("setPrice");
+//	    tempDate += timeFormat;
+//	    // after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
+//	    
+//	    difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
+//	    // visitorsAmount <= visitorsNumber in order
+//	    if (difference <= 0) {
+//	        // order not used
+//	        if (orderDetails.getAmountArrived() == 0) {
+//	            lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪");
+//	            orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+//	            lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "%");
+//	            lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪");
+//	        // order used
+//	        } else {
+//	            createFakeOrder(null, "420", Integer.parseInt(txtVisitorsAmount.getText()));
+//	        }
+//	    // visitorsAmount > visitorsNumber in order
+//	    } else {
+//	        // order not used
+//	        if (orderDetails.getAmountArrived() == 0) {
+//	            // id = 420 , memberId = null
+//	            fakeOrder = new Order(getParkName(), tempDate, null, "420", difference);
+//	            
+//	            // check for a member with fake order
+//	            sendToServerObject("randomVisitorFakeOrder", fakeOrder);
+//	            // create new order for the random visitors (add to DB only if pressed 'Approve')
+//	            if (approveIsPressed) {
+//	                sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
+//	                approveIsPressed = false;
+//	            }
+//	            
+//	            // set price
+//	            lblPrice.setText(String.format("%.1f", orderDetails.getPrice()) + "₪ , " 
+//	                           + String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
+//	            // set discount
+//	            orderVisitorDiscount = (1 - (orderDetails.getTotalPrice() / orderDetails.getPrice())) * 100;
+//	            randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+//	            lblDiscount.setText(String.format("%.1f", orderVisitorDiscount) + "% , "
+//	                              + String.format("%.1f", randomVisitorDiscount) + "%");	
+//	            // set total price
+//	            lblTotalPrice.setText(String.format("%.1f", orderDetails.getTotalPrice()) + "₪ + " 
+//	                           + String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪ = " 
+//	                           + String.format("%.1f", (orderDetails.getTotalPrice() + randomVisitorFakeOrderDetails.getTotalPrice())) + "₪");
+//	        // order used
+//	        } else {
+//	            createFakeOrder(null, "420", Integer.parseInt(txtVisitorsAmount.getText()));
+//	        }
+//	    }
+//	}
 
 	// create fake order for the random visitors (for statistics)
 	// input: [0] case name
 	// [1] Order object
 	// output: get the new order details and prints the prices on the screen
-	public void createFakeOrder(String memberId, String id, int amountArrived) {
-	    Order fakeOrder;
-	    double randomVisitorDiscount = 0;
-	    String tempDate = dateAndTimeFormat;
-	    boolean flag = false;
-	    String currentTypeValue = null;
-	    String currentTypeName = null;
-	    
-	    // random mode
-	    if (!btnRandomVisitor.isVisible()) {
-			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
-				memberId = txtIdOrMemberId.getText().substring(1);
-				currentTypeValue = memberId;
-				currentTypeName = "MEMBERID";
-			} else {
-				id = txtIdOrMemberId.getText();
-				currentTypeValue = id;
-				currentTypeName = "ID";
-			}	
-			flag = true;
-	    } 
-  
-	    // format time
-	    checkTime("setPrice");
-	    tempDate += timeFormat;
-	    // after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
-	    
-	    // id = memberId = null
-	    fakeOrder = new Order(getParkName(), tempDate, memberId, id, amountArrived);
-	    
-	    // check for a member with fake order
-	    sendToServerObject("randomVisitorFakeOrder", fakeOrder);
-	    
-	    // return string as answer ==> randomVisitorFakeOrderDetails is empty
-	    if (!getRandomVisitorIdNumber().equals("") && !flag) {
-	    	return;
-	    }
-	    
-	    if (randomVisitorFakeOrderDetails != null) {
-	    	if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && amountArrived > 15) {
-	    		return;
-	    	}
-	            
-		    // create new order for the random visitors (add to DB only if pressed 'Approve')
-		    if (approveIsPressed && addFakeOrderToDB) {
-		        sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
-		        approveIsPressed = false;
-		        addFakeOrderToDB = false;
-		    }
-		    
-		    ArrayList<String> data = new ArrayList<String>();
-			data.add(getParkName());
-			data.add(currentTypeName);
-			data.add(currentTypeValue);
-			data.add(txtVisitorsAmount.getText());
-			sendToServerArrayList("getVisitorsPrice", data);
-		    
-		    lblPrice.setText(String.format("%.1f", visitorsPrice.get(1)) + "₪");
-		    lblDiscount.setText(String.format("%.1f", visitorsPrice.get(2)) + "%");			
-		    lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(3)) + "₪");
-//		    lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
-//		    randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
-//		    lblDiscount.setText(String.format("%.1f", randomVisitorDiscount) + "%");			
-//		    lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
-	    }
-	}
+//	public void createFakeOrder(String memberId, String id, int amountArrived) {
+//	    Order fakeOrder;
+//	    double randomVisitorDiscount = 0;
+//	    String tempDate = dateAndTimeFormat;
+//	    boolean flag = false;
+//	    String currentTypeValue = null;
+//	    String currentTypeName = null;
+//	    
+//	    // random mode
+//	    if (!btnRandomVisitor.isVisible()) {
+//			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
+//				memberId = txtIdOrMemberId.getText().substring(1);
+//				currentTypeValue = memberId;
+//				currentTypeName = "MEMBERID";
+//			} else {
+//				id = txtIdOrMemberId.getText();
+//				currentTypeValue = id;
+//				currentTypeName = "ID";
+//			}	
+//			flag = true;
+//	    } 
+//  
+//	    // format time
+//	    checkTime("setPrice");
+//	    tempDate += timeFormat;
+//	    // after calling the function, dateAndTimeFormat = "yyyy-MM-dd HH:mm:ss"
+//	    
+//	    // id = memberId = null
+//	    fakeOrder = new Order(getParkName(), tempDate, memberId, id, amountArrived);
+//	    
+//	    // check for a member with fake order
+//	    sendToServerObject("randomVisitorFakeOrder", fakeOrder);
+//	    
+//	    // return string as answer ==> randomVisitorFakeOrderDetails is empty
+//	    if (!getRandomVisitorIdNumber().equals("") && !flag) {
+//	    	return;
+//	    }
+//	    
+//	    if (randomVisitorFakeOrderDetails != null) {
+//	    	if (randomVisitorFakeOrderDetails.getOrderType().equals(OrderType.GROUP) && amountArrived > 15) {
+//	    		return;
+//	    	}
+//	            
+//		    // create new order for the random visitors (add to DB only if pressed 'Approve')
+//		    if (approveIsPressed && addFakeOrderToDB) {
+//		        sendToServerObject("addFakeOrder", randomVisitorFakeOrderDetails);
+//		        approveIsPressed = false;
+//		        addFakeOrderToDB = false;
+//		    }
+//		    
+//		    ArrayList<String> data = new ArrayList<String>();
+//			data.add(getParkName());
+//			data.add(currentTypeName);
+//			data.add(currentTypeValue);
+//			data.add(txtVisitorsAmount.getText());
+//			sendToServerArrayList("getVisitorsPrice", data);
+//		    
+//		    lblPrice.setText(String.format("%.1f", visitorsPrice.get(1)) + "₪");
+//		    lblDiscount.setText(String.format("%.1f", visitorsPrice.get(2)) + "%");			
+//		    lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(3)) + "₪");
+////		    lblPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getPrice()) + "₪");
+////		    randomVisitorDiscount = (1 - (randomVisitorFakeOrderDetails.getTotalPrice() / randomVisitorFakeOrderDetails.getPrice())) * 100;
+////		    lblDiscount.setText(String.format("%.1f", randomVisitorDiscount) + "%");			
+////		    lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
+//	    }
+//	}
 	
 	public void setPrice() {
 		String memberId = null;
@@ -977,9 +977,9 @@ public class ParkEmployeeController implements Initializable {
 				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			}
 
-			if (!txtVisitorsAmount.getText().isEmpty()) {
-				setPriceForOrdering();
-			}
+//			if (!txtVisitorsAmount.getText().isEmpty()) {
+//				setPriceForOrdering();
+//			}
 
 		} catch (ParseException e) {
 			e.printStackTrace();
