@@ -699,7 +699,7 @@ public class DepartmentManagerController implements Initializable {
 		
 		System.out.println("i need this : " + status);
 
-		if (!status.isEmpty()) {
+		if (status!=null &&!status.isEmpty() ) {
 			System.out.println("pass server get answer - approve");
 			for (ArrayList<Object> item : status) {
 				System.out.println("item : " + item.get(1)) ;
@@ -764,7 +764,7 @@ public class DepartmentManagerController implements Initializable {
 		
 		System.out.println("i need this : " + status);
 
-		if (!status.isEmpty()) {
+		if (status!=null && !status.isEmpty()) {
 			System.out.println("pass server get answer - disapprove");
 			for (ArrayList<Object> item : status) {
 				if (!(boolean) item.get(1))
