@@ -155,9 +155,11 @@ public class ParkGate {
 			Member member = NewOrder.MemerCheck(order);
 			order = NewOrder.totalPrice(order, member, true);// updating the prices in the order
 			order.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
+			System.out.println("1:"+order);
 			NewOrder.insertNewOrder(order);
 		}
-		updateArrived(order, order.getVisitorsNumber());// insert arrived to order
+		System.out.println("2:"+order);
+		//updateArrived(order, order.getVisitorsNumber());// insert arrived to order
 		insertEnteryExit(order, order.getVisitorsNumber(), "enter");
 		answer.add("enter");
 		client.sendToClient(answer);
@@ -231,7 +233,7 @@ public class ParkGate {
 		// select entry and exit time from exitentry
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
-		query.add("entryandexit"); // table name
+		query.add("enteryandexit"); // table name
 		query.add("*"); // columns to select from
 		query.add("WHERE orderNumber='" + order.getOrderNumber() + "'"); // condition
 		query.add("6"); // how many columns returned
@@ -262,14 +264,14 @@ public class ParkGate {
 		ArrayList<String> query = new ArrayList<String>();
 		if (enterOrExit.equals("enter")) {
 			query.add("insert");
-			query.add("entryandexit");
+			query.add("enteryandexit");
 			query.add("'" + order.getOrderNumber() + "', '" + now.format(formatter) + "', " + null + ", '"
 					+ order.getParkName() + "', '" + order.getOrderType() + "', '" + visitorsNumber + "'");
 			MySQLConnection.insert(query);
 			updateParkCapacity(order.getParkName(), visitorsNumber);
 		} else if (enterOrExit.equals("exit")) {
 			query.add("update");
-			query.add("entryandexit");
+			query.add("enteryandexit");
 			query.add("timeExit='" + now.format(formatter) + "'");
 			query.add("orderNumber");
 			query.add("" + order.getOrderNumber());
@@ -372,6 +374,7 @@ public class ParkGate {
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		
 		Double discount = 1-Double.parseDouble(queryData.get(0).get(0)); // discount in precent
+		System.out.println("Discount = "+ discount);
 		
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> stringArr = new ArrayList<String>();
