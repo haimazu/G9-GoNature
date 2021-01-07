@@ -267,7 +267,7 @@ public class ParkEmployeeController implements Initializable {
 					&& txtIdOrMemberId.getText().length() != 9) {
 				alert.failedAlert("Failed", "Id must be 9 digits long.");
 				return;
-			} else if (txtVisitorsAmount.getText().isEmpty()) {
+			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
 			} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
@@ -289,7 +289,7 @@ public class ParkEmployeeController implements Initializable {
 			if (txtOrderNumber.getText().isEmpty()) {
 				alert.failedAlert("Failed", "All fields required.");
 				return;
-			} else if (txtVisitorsAmount.getText().isEmpty()) {
+			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
 			} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
@@ -1305,11 +1305,11 @@ public class ParkEmployeeController implements Initializable {
 		setError("");
 		setEntryStatus("");
 		setExitStatus("");
+		txtVisitorsAmount.setDisable(true);
 		// setEntryAndExitStatus("");
 		// setRandomVisitorIdNumber("");
 		txtIdOrMemberId.clear();
 		txtOrderNumber.clear();
-		txtVisitorsAmount.clear();
 		lblOrderNumber.setText("");
 		lblParkName.setText("");
 		lblDate.setText("");

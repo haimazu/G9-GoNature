@@ -301,7 +301,7 @@ public class DepartmentManagerController implements Initializable {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream("CanceledReport " + fileNameDate + ".pdf"));
 			document.open();
-			Image logo = Image.getInstance("C:\\Users\\bar katz\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+			Image logo = Image.getInstance("Assignment3/code/G9_Client/G9_GoNature_Client/src/gui/logo_small.png");
 			//"url('/controllers/logo_small.png')"
 			logo.setAlignment(Element.ALIGN_CENTER);
 			document.add(logo);
