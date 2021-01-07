@@ -1431,6 +1431,7 @@ public class ParkEmployeeController implements Initializable {
 		// listen to changes in selected toggle
 		radGroupStatus.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
 			if (newToggle == radEnter) {
+				txtVisitorsAmount.setDisable(false);
 				((RadioButton) radGroupStatus.getSelectedToggle()).getText();
 			} else if (newToggle == radExit) {
 				clearPaymentFields();
