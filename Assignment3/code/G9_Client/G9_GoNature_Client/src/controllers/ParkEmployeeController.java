@@ -264,7 +264,8 @@ public class ParkEmployeeController implements Initializable {
 			if (txtIdOrMemberId.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter id/memberid.");
 				return;
-			} else if (txtIdOrMemberId.getText().length() != 9) {
+			} else if (!Character.isLetter(txtIdOrMemberId.getText().charAt(0)) 
+					&& txtIdOrMemberId.getText().length() != 9) {
 				alert.failedAlert("Failed", "Id must be 9 digits long.");
 				return;
 			} else if (txtVisitorsAmount.getText().isEmpty()) {
@@ -446,8 +447,8 @@ public class ParkEmployeeController implements Initializable {
 			alert.failedAlert("Failed", "This order has already been fulfilled.");
 		} else if (getEntryStatus().equals("parkfull")) {
 			alert.failedAlert("Failed", "We are sorry, the park is full right now.");
-		// can enter
-		} else if (getEntryStatus().equals("enter")) {
+		// can enter getEntryStatus() = "enter"
+		} else {
 			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 		}
 //	    int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());	
@@ -542,8 +543,8 @@ public class ParkEmployeeController implements Initializable {
 			alert.failedAlert("Failed", "The visitor/s have already leaved.");
 		} else if (getExitStatus().equals("neverWasHere")) {
 			alert.failedAlert("Failed", "The visitor/s didn't enter.");
-		// can leave
-		} else if (getExitStatus().equals("exited")) {
+		// can leave getExitStatus() == "exited"
+		} else {
 			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");
 		}
 //		clearPaymentFields();
