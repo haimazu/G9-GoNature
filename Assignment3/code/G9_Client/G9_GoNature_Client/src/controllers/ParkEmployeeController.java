@@ -134,6 +134,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String exitStatus = "";
 	private static String randomVisitorIdNumber = "";
 	private static ArrayList<Double> visitorsPrice = new ArrayList<Double>();
+	private static int randomVisitorTicket = 0;
 
 	// input: none
 	// output: moving to 'login' screen
@@ -250,14 +251,14 @@ public class ParkEmployeeController implements Initializable {
 		informationExists = false;
 		btnApprove.setDisable(false);
 		orderStatus = true;
-		approveIsPressed = false;
+		//approveIsPressed = false;
 	}
 
 	// input: none
 	// output: number of visitor/s that enter / leave the park
 	@FXML
 	void approve(ActionEvent event) {
-		approveIsPressed = true;
+		//approveIsPressed = true;
 
 		// random mode
 		if (!btnRandomVisitor.isVisible()) {
@@ -316,7 +317,7 @@ public class ParkEmployeeController implements Initializable {
 		}
 
 		orderStatus = false;
-		addFakeOrderToDB = false;
+		//addFakeOrderToDB = false;
 		// update park status
 		updateParkStatus(0);
 		clearAllFields();
@@ -434,7 +435,11 @@ public class ParkEmployeeController implements Initializable {
 			if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "These visitors have already entered.");
 				return;
-			}			
+			} else if (getEntryStatus().equals("parkfull")) {
+				alert.failedAlert("Failed", "We are sorry, the park is full right now.");
+			} else if (getEntryStatus().equals("enter")) {
+				alert.successAlert("Success", randomVisitorTicket + " visitor/s entered.");
+			}
 		// order
 		} else {
 			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
@@ -442,19 +447,19 @@ public class ParkEmployeeController implements Initializable {
 			
 			if (getEntryStatus().equals("notGoodTime")) {
 				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
-				return;
 			} else if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "This order has already been fulfilled.");
-				return;
+			} else if (getEntryStatus().equals("parkfull")) {
+				alert.failedAlert("Failed", "We are sorry, the park is full right now.");
+			// getEntryStatus() = "enter"
+			} else {
+				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 			}
 		}
 					
-		if (getEntryStatus().equals("parkfull")) {
-			alert.failedAlert("Failed", "We are sorry, the park is full right now.");
+		
 		// can enter getEntryStatus() = "enter"
-		} else {
-			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
-		}
+		} 
 //	    int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());	
 //	    
 //	    // checks whether the number of visitors is greater than the number in the order
@@ -549,7 +554,7 @@ public class ParkEmployeeController implements Initializable {
 			alert.failedAlert("Failed", "The visitor/s didn't enter.");
 		// can leave getExitStatus() == "exited"
 		} else {
-			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");
+			alert.successAlert("Success", "Thanks for visiting, hope to see you again soon.");
 		}
 //		clearPaymentFields();
 //	    int updateCurrentVisitors = 0;
@@ -1095,13 +1100,16 @@ public class ParkEmployeeController implements Initializable {
 		ParkEmployeeController.visitorsPrice.add((Double) received.get(3));	
 	}
 	
-	public static void receivedFromServerEntryStatus(String received) {
+	public static void receivedFromServerEntryStatus(String received, int orderNumber) {
 		if (received.equals("notGoodTime")) {
 			setEntryStatus("notGoodTime");
 		} else if (received.equals("allreadyInPark")) {
 			setEntryStatus("allreadyInPark");
 		} else if (received.equals("parkfull")) {
 			setEntryStatus("parkfull");
+		} else {
+			setEntryStatus("enter");
+			randomVisitorTicket = orderNumber;
 		}
 	}
 	
@@ -1110,6 +1118,8 @@ public class ParkEmployeeController implements Initializable {
 			setExitStatus("allreadyExited");
 		} else if (received.equals("neverWasHere")) {
 			setExitStatus("neverWasHere");
+		} else {
+			setEntryStatus("exited");
 		}
 	}
 
