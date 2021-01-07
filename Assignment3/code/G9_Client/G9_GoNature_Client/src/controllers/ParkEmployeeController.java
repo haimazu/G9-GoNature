@@ -1377,6 +1377,9 @@ public class ParkEmployeeController implements Initializable {
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
 
+			if (newValue.isEmpty()) {
+				clearPaymentFields();
+			}
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (newValue.length() == 1 || !newValue.isEmpty() && !newValue.matches("\\d")) {
