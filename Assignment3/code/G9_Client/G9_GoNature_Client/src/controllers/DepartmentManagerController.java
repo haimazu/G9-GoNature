@@ -58,11 +58,11 @@ import managerData.ManagerRequest;
 import managerData.TableViewSet;
 
 /**
-*
-* controller that coordinator all the kinds of alert that we use in the project
-*
-* @author Haim Azulay, Bar Katz 
-*/
+ *
+ * controller that coordinator all the kinds of alert that we use in the project
+ *
+ * @author Haim Azulay, Bar Katz
+ */
 
 public class DepartmentManagerController implements Initializable {
 	/***** Side Bar *****/
@@ -104,16 +104,15 @@ public class DepartmentManagerController implements Initializable {
 	private TableColumn<TableViewSet, String> requestDetails;
 	@FXML
 	private TableColumn<TableViewSet, String> mark;
-	
-    @FXML
-    private TableView<TableCurrentVisitors> TVisitors;
 
-    @FXML
-    private TableColumn<TableCurrentVisitors, String> visitorColumn;
+	@FXML
+	private TableView<TableCurrentVisitors> TVisitors;
 
-    @FXML
-    private TableColumn<TableCurrentVisitors, String> amountColumn;
-    
+	@FXML
+	private TableColumn<TableCurrentVisitors, String> visitorColumn;
+
+	@FXML
+	private TableColumn<TableCurrentVisitors, String> amountColumn;
 
 	@FXML
 	private Label LabelCount;
@@ -178,11 +177,10 @@ public class DepartmentManagerController implements Initializable {
 	private static boolean error = false;
 	private int index = 0;
 
-	
 	/**
-	 * this function managed the side bar
-	 * input: button source that pressed
-	 * output: switch to the relevant pane
+	 * this function managed the side bar input: button source that pressed output:
+	 * switch to the relevant pane
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -210,7 +208,6 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-
 	/**
 	 * Moves to the 'login' screen
 	 * 
@@ -237,7 +234,6 @@ public class DepartmentManagerController implements Initializable {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
 	}
-
 
 	/**
 	 * checks if the date is correct and displays the chart if so
@@ -270,18 +266,13 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	
 	/**
-	 * checks if the date is correct and displays the chart if so
-	 * creates a PDF file based on data retrieved from the DB
-	 * input: from = start date
-	 * to = end date
-	 * ArrayList<ArrayList<String>> cancelledOrders, cells:
-	 * 		cell [i][0]: parkName
-	 * 		cell [i][1]: date of canceled/dismissed
-	 * 		cell [i][2]: amount
-	 * 0 <= i <= cancelledOrders.size() - 1
-	 * output: PDF report with all the data shown in the chart
+	 * checks if the date is correct and displays the chart if so creates a PDF file
+	 * based on data retrieved from the DB input: from = start date to = end date
+	 * ArrayList<ArrayList<String>> cancelledOrders, cells: cell [i][0]: parkName
+	 * cell [i][1]: date of canceled/dismissed cell [i][2]: amount 0 <= i <=
+	 * cancelledOrders.size() - 1 output: PDF report with all the data shown in the
+	 * chart
 	 * 
 	 * @param event
 	 */
@@ -312,7 +303,7 @@ public class DepartmentManagerController implements Initializable {
 					new FileOutputStream("CanceledReport " + fileNameDate + ".pdf"));
 			document.open();
 			Image logo = Image.getInstance("Assignment3/code/G9_Client/G9_GoNature_Client/src/gui/logo_small.png");
-			//"url('/controllers/logo_small.png')"
+			// "url('/controllers/logo_small.png')"
 			logo.setAlignment(Element.ALIGN_CENTER);
 			document.add(logo);
 
@@ -373,19 +364,16 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	/**
-	 * creates a PDF file based on data retrieved from the DB
-	 * input: from = start date 
-	 *        to = end date 
-	 *        ArrayList (Double)
-	 * 		  regularVisitors/memberVisitors/groupVisitors, cells: 
-	 * cell [0]: percentage of visitors between the hours 0 to 1 
-	 * cell [1]: percentage of visitors between the hours 1 to 2 
-	 * cell [2]: percentage of visitors between the hours 2 to 3
-	 * cell [3]: percentage of visitors between the hours 3 to 4 
-	 * output: PDF report with all the data shown in the chart
+	 * creates a PDF file based on data retrieved from the DB input: from = start
+	 * date to = end date ArrayList (Double)
+	 * regularVisitors/memberVisitors/groupVisitors, cells: cell [0]: percentage of
+	 * visitors between the hours 0 to 1 cell [1]: percentage of visitors between
+	 * the hours 1 to 2 cell [2]: percentage of visitors between the hours 2 to 3
+	 * cell [3]: percentage of visitors between the hours 3 to 4 output: PDF report
+	 * with all the data shown in the chart
 	 * 
 	 * @param event
-	 */	
+	 */
 	@FXML
 	void exportPieChart(ActionEvent event) {
 		// call the function to fill the cancelledOrders data
@@ -407,11 +395,10 @@ public class DepartmentManagerController implements Initializable {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream("VisitorsReport " + fileNameDate + ".pdf"));
 			document.open();
-		
-			Image logo = Image.getInstance(
-					"Assignment3/code/G9_Client/G9_GoNature_Client/src/gui/logo_small.png");
+
+			Image logo = Image.getInstance("Assignment3/code/G9_Client/G9_GoNature_Client/src/gui/logo_small.png");
 			logo.setAlignment(Element.ALIGN_CENTER);
-			document.add( logo);
+			document.add(logo);
 
 			Paragraph title = new Paragraph("Visitors Report\n", titleFont);
 			title.setAlignment(Element.ALIGN_CENTER);
@@ -501,19 +488,16 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	/**
-	 * displays the chart for the information retrieved from DB
-	 * input: from = start date 
-	 *        to = end date 
-	 *        ArrayList (Double)
-	 * 		  regularVisitors/memberVisitors/groupVisitors, cells: 
-	 * cell [0]: percentage of visitors between the hours 0 to 1 
-	 * cell [1]: percentage of visitors between the hours 1 to 2 
-	 * cell [2]: percentage of visitors between the hours 2 to 3
-	 * cell [3]: percentage of visitors between the hours 3 to 4 
-	 * output: displays the data
+	 * displays the chart for the information retrieved from DB input: from = start
+	 * date to = end date ArrayList (Double)
+	 * regularVisitors/memberVisitors/groupVisitors, cells: cell [0]: percentage of
+	 * visitors between the hours 0 to 1 cell [1]: percentage of visitors between
+	 * the hours 1 to 2 cell [2]: percentage of visitors between the hours 2 to 3
+	 * cell [3]: percentage of visitors between the hours 3 to 4 output: displays
+	 * the data
 	 * 
 	 * @param event
-	 */	
+	 */
 	@FXML
 	void showPieChart(ActionEvent event) {
 		ArrayList<String> data = new ArrayList<>();
@@ -560,14 +544,13 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-
 	/**
 	 * check that the inserted dates are correct
 	 * 
 	 * @param from
 	 * @param to
 	 * @return true if the date is valid, false otherwise
-	 */	
+	 */
 	public boolean checkDate(LocalDate from, LocalDate to) {
 
 		// the dates are correct
@@ -578,18 +561,17 @@ public class DepartmentManagerController implements Initializable {
 		return false;
 	}
 
-
 	/**
 	 * adding a specific chart
 	 * 
-	 * cell [0]: percentage of visitors between the hours 0 to 1 
-	 * cell [1]: percentage of visitors between the hours 1 to 2 
-	 * cell [2]: percentage of visitors between the hours 2 to 3
-	 * cell [3]: percentage of visitors between the hours 3 to 4 
+	 * cell [0]: percentage of visitors between the hours 0 to 1 cell [1]:
+	 * percentage of visitors between the hours 1 to 2 cell [2]: percentage of
+	 * visitors between the hours 2 to 3 cell [3]: percentage of visitors between
+	 * the hours 3 to 4
 	 * 
 	 * @param currentPie
 	 * @param title
-	 */	
+	 */
 	public void addPieChart(PieChart currentPie, String title) {
 		currentPie.getData().clear();
 		// setting the length of the label line
@@ -626,7 +608,7 @@ public class DepartmentManagerController implements Initializable {
 	 * 
 	 * @param currentList
 	 * @return currentVisitorsData
-	 */	
+	 */
 	public ObservableList<PieChart.Data> getChartData(ArrayList<Double> currentList) {
 
 		ObservableList<PieChart.Data> currentVisitorsData = FXCollections.observableArrayList();
@@ -655,7 +637,7 @@ public class DepartmentManagerController implements Initializable {
 	 * get the user first name
 	 * 
 	 * @return firstName
-	 */	
+	 */
 	public static String getFirstName() {
 		return firstName;
 	}
@@ -712,9 +694,7 @@ public class DepartmentManagerController implements Initializable {
 
 	/**
 	 * button approve will remove the row and will update the table from DB will
-	 * send to server array list of object [0] 
-	 * name method [1] 
-	 * string "yes" [2]
+	 * send to server array list of object [0] name method [1] string "yes" [2]
 	 * object of ManagerRequest
 	 * 
 	 * @param event
@@ -744,11 +724,10 @@ public class DepartmentManagerController implements Initializable {
 			data.clear();
 		}
 
-
 		if (!allItems.isEmpty()) {
 			Server.add(new ArrayList<Object>(allItems));
 			allItems.clear();
-			// remove items from list after the all lists for server -  DO NOT DELETE!
+			// remove items from list after the all lists for server - DO NOT DELETE!
 //			for (int i = arrItems.length - 1; i >= 0; i--) {
 //				if (arrItems[i] != 0)
 //					TableDep.getItems().remove(TableDep.getItems().get(i));
@@ -757,9 +736,7 @@ public class DepartmentManagerController implements Initializable {
 			ClientUI.sentToChatClient(Server);
 		}
 
-
-
-		if (status!=null &&!status.isEmpty() ) {
+		if (status != null && !status.isEmpty()) {
 			for (ArrayList<Object> item : status) {
 				if (!(boolean) item.get(1))
 					alert.failedAlert("Failed", "something went wrong, please try later again!");
@@ -778,10 +755,8 @@ public class DepartmentManagerController implements Initializable {
 
 	/**
 	 * button disapprove will not remove the row and will update the server will
-	 * send to server array list of Object : 
-	 * [0] name method 
-	 * [1] string "no" 
-	 * [2] Object of ManagerRequest
+	 * send to server array list of Object : [0] name method [1] string "no" [2]
+	 * Object of ManagerRequest
 	 * 
 	 * @param event
 	 */
@@ -807,11 +782,10 @@ public class DepartmentManagerController implements Initializable {
 			data.clear();
 		}
 
-
 		if (!allItems.isEmpty()) {
 			Server.add(new ArrayList<Object>(allItems));
 			allItems.clear();
-			// remove items from list after the all lists for server -  DO NOT DELETE!
+			// remove items from list after the all lists for server - DO NOT DELETE!
 //			for (int i = arrItems.length - 1; i > -1; i--) {
 //				if (arrItems[i] != 0)
 //					TableDep.getItems().remove(TableDep.getItems().get(i));
@@ -819,9 +793,8 @@ public class DepartmentManagerController implements Initializable {
 			ClientUI.sentToChatClient(Server);
 		}
 		// Server.clear();
-		
 
-		if (status!=null && !status.isEmpty()) {
+		if (status != null && !status.isEmpty()) {
 			for (ArrayList<Object> item : status) {
 				if (!(boolean) item.get(1))
 					alert.failedAlert("Failed", "something went wrong, please try later again!");
@@ -889,7 +862,7 @@ public class DepartmentManagerController implements Initializable {
 	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
 		DBList = dBList;
 	}
-	
+
 	/**
 	 * add data to the pending manager requests
 	 * 
@@ -932,10 +905,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * displays the chart for the information retrieved from DB
 	 *
-	 * ArrayList<ArrayList<String>> cancelledOrders, cells:
-	 * cell [0]: parkName
-	 * cell [1]: date of canceled/dismissed
-	 * cell [2]: amount
+	 * ArrayList<ArrayList<String>> cancelledOrders, cells: cell [0]: parkName cell
+	 * [1]: date of canceled/dismissed cell [2]: amount
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void barChart() {
@@ -1047,10 +1018,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * Sends ArrayList to server
 	 * 
-	 * ArrayList(String) data, sending to the server to get data
-	 * [0] case name
-	 * [1] month
-	 * [2] year
+	 * ArrayList(String) data, sending to the server to get data [0] case name [1]
+	 * month [2] year
 	 *
 	 * @param caseName
 	 * @param date
@@ -1068,9 +1037,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * getting data from the server for cancel report
 	 * 
-	 * ArrayList(Object):
-	 * cell[0] list of cancelled orders
-	 * cell[1] list of dismissed orders
+	 * ArrayList(Object): cell[0] list of cancelled orders cell[1] list of dismissed
+	 * orders
 	 *
 	 * @param cancelData
 	 */
@@ -1086,12 +1054,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * getting data from the server for regular visitors report
 	 * 
-	 * if empty ==> String "empty", otherwise
-	 * ArrayList(Object): 
-	 * cell[0] 0 to 1 hour
-	 * cell[1] 1 to 2 hours
-	 * cell[2] 2 to 3 hours
-	 * cell[3] 3 to 4 hours
+	 * if empty ==> String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
+	 * cell[1] 1 to 2 hours cell[2] 2 to 3 hours cell[3] 3 to 4 hours
 	 *
 	 * @param msgReceived
 	 */
@@ -1113,12 +1077,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * getting data from the server for members visitors report
 	 * 
-	 * if empty ==> String "empty", otherwise
-	 * ArrayList(Object): 
-	 * cell[0] 0 to 1 hour
-	 * cell[1] 1 to 2 hours
-	 * cell[2] 2 to 3 hours
-	 * cell[3] 3 to 4 hours
+	 * if empty ==> String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
+	 * cell[1] 1 to 2 hours cell[2] 2 to 3 hours cell[3] 3 to 4 hours
 	 *
 	 * @param msgReceived
 	 */
@@ -1140,12 +1100,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * getting data from the server for groups visitors report
 	 * 
-	 * if empty ==> String "empty", otherwise
-	 * ArrayList(Object): 
-	 * cell[0] 0 to 1 hour
-	 * cell[1] 1 to 2 hours
-	 * cell[2] 2 to 3 hours
-	 * cell[3] 3 to 4 hours
+	 * if empty ==> String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
+	 * cell[1] 1 to 2 hours cell[2] 2 to 3 hours cell[3] 3 to 4 hours
 	 *
 	 * @param msgReceived
 	 */
@@ -1199,7 +1155,9 @@ public class DepartmentManagerController implements Initializable {
 	public static void setEmpty(boolean isEmpty) {
 		DepartmentManagerController.isEmpty = isEmpty;
 	}
-
+/**
+ * iniailize table current visitors number
+ */
 	public void iniailTabelVisitors() {
 		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("parkNameVis"));
 		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("currentAmount"));
@@ -1211,6 +1169,9 @@ public class DepartmentManagerController implements Initializable {
 
 	}
 
+	/**
+	 * add data to the tabel current visitors number
+	 */
 	public void addDataToTable() {
 		TVisitors.getItems().clear();
 		ObservableList<TableCurrentVisitors> listForTable = FXCollections.observableArrayList();
@@ -1224,8 +1185,14 @@ public class DepartmentManagerController implements Initializable {
 
 		TVisitors.setItems(listForTable);
 	}
-	
 
+	/**
+	 * 
+	 * update current visitors number in the park.The number is updated every time
+	 * when visitor enters or exits the park
+	 * 
+	 * @param visitNum
+	 */
 	public void setCurrentVisitors(ArrayList<Object> arr) {
 
 		String parkName = (String) arr.get(1);
@@ -1251,25 +1218,23 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	/**
-	 * Initializing and force each of the fields according to the Required templates 
+	 * Initializing and force each of the fields according to the Required templates
 	 * 
-	 * @param arg0
-	 * @param arg1
+	 * @param location
+	 * @param resources
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 
 		Context.getInstance().setDMC(this);
-		
 
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 
 		/*************** for deshbord ***********/
 		iniailTabelVisitors();
-		
-		
+
 		iniailTabelPending();
 
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));
