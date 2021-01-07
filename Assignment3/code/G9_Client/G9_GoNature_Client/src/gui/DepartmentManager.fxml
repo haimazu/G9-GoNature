@@ -82,8 +82,8 @@
          <children>
             <Pane fx:id="pnCancels" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
-                  <JFXDatePicker fx:id="dpCancelFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
-                  <JFXDatePicker fx:id="dpCancelTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpCancelFrom" defaultColor="SEAGREEN" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpCancelTo" defaultColor="SEAGREEN" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
                   <BarChart fx:id="bcCancells" barGap="5.0" layoutX="1.0" layoutY="86.0" prefHeight="430.0" prefWidth="613.0">
                      <xAxis>
                         <CategoryAxis label="Day in month" side="BOTTOM" fx:id="xAxis">
@@ -105,12 +105,22 @@
                   </BarChart>
                   <Button fx:id="btnCancelShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#show" styleClass="btnSmallGreen" text="Show" />
                   <Button fx:id="btnExport" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
+                  <Label layoutX="85.0" layoutY="18.0" text="From Date:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="268.0" layoutY="18.0" text="To Date:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
-                  <JFXDatePicker fx:id="dpVisitorsFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
-                  <JFXDatePicker fx:id="dpVisitorsTo" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpVisitorsFrom" defaultColor="SEAGREEN" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
+                  <JFXDatePicker fx:id="dpVisitorsTo" defaultColor="SEAGREEN" focusTraversable="false" layoutX="268.0" layoutY="33.0" promptText="To Date" styleClass="date-picker" />
                   <Button fx:id="btnVisitorsShow" focusTraversable="false" layoutX="457.0" layoutY="36.0" mnemonicParsing="false" onAction="#showPieChart" styleClass="btnSmallGreen" text="Show" />
                   <Button fx:id="btnExportPieChart" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" onAction="#exportPieChart" styleClass="btnSmallGreen" text="Export" />
                   <Label fx:id="lblRegular" layoutX="116.0" layoutY="94.0">
@@ -131,6 +141,16 @@
                      </font>
                   </Label>
                   <PieChart fx:id="pieGroup" layoutX="149.0" layoutY="286.0" prefHeight="280.0" prefWidth="320.0" />
+                  <Label layoutX="85.0" layoutY="18.0" text="From Date:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="268.0" layoutY="18.0" text="To Date:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <Pane fx:id="pnDashboard" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
