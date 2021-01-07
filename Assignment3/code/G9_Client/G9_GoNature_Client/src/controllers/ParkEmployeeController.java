@@ -319,6 +319,7 @@ public class ParkEmployeeController implements Initializable {
 		// update park status
 		// updateParkStatus(0);
 		clearAllFields();
+		txtVisitorsAmount.setDisable(true);
 	}
 
 	// checking the entrance of the random visitor
@@ -1303,7 +1304,7 @@ public class ParkEmployeeController implements Initializable {
 	// input: none
 	// output: none
 	public void clearAllFields() {
-		alert.setResult("");
+		//alert.setResult("");
 		setError("");
 		setEntryStatus("");
 		setExitStatus("");
