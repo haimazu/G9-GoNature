@@ -1,6 +1,9 @@
 package controllers;
 
+import java.awt.Desktop;
 import java.beans.beancontext.BeanContext;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteOrder;
@@ -29,7 +32,17 @@ import org.omg.CORBA.BAD_POLICY_TYPE;
 import org.omg.CORBA.Request;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.itextpdf.text.pdf.codec.TiffWriter.FieldShort;
 import com.jfoenix.controls.JFXComboBox;
@@ -955,9 +968,95 @@ public class ParkManagerController implements Initializable {
 	/** Reports **/
 
 	/** visitors chart **/
+	
+	private static boolean error = false;
+	public static boolean getError() {
+		return error;
+	}
     @FXML
-    void export(ActionEvent event) {
+    void export(ActionEvent event) throws ParseException {
+    		showChart(event);
 
+    			// cancelledOrders is empty
+    			if (getError()) {
+    				return;
+    			}
+
+    			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    			DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    			String fromFormat = dateFormatter.format(dpFrom.getValue());
+    			String toFormat = dateFormatter.format(dpTo.getValue());
+    			// the date it was created
+    			String fileNameDate = fileNameFormatter.format(LocalDate.now());
+
+    			Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
+    			try {
+    				Document document = new Document();
+    				// creates a report with the name ==> CanceledReport 'yyyy-MM-dd'.pdf
+    				// the 'yyyy-MM-dd' is the date it was created
+    				PdfWriter writer = PdfWriter.getInstance(document,
+    						new FileOutputStream("Visits Report " + fileNameDate + ".pdf"));
+    				document.open();
+    				Image logo = Image.getInstance(
+    						"C:\\Users\\bar katz\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+    				logo.setAlignment(Element.ALIGN_CENTER);
+    				document.add(logo);
+
+    				Paragraph title = new Paragraph("Visitor numbers including segmented by types of visitors/" + getParkName() +"\n", titleFont);
+    				title.setAlignment(Element.ALIGN_CENTER);
+    				document.add(title);
+
+    				Paragraph date = new Paragraph(new Date().toString() + "\n\n");
+    				date.setAlignment(Element.ALIGN_CENTER);
+    				document.add(date);
+
+    				PdfPTable table = new PdfPTable(3);
+    				table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+    				table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+    				PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
+    				titleCell.setColspan(3);
+    				titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    				titleCell.setBackgroundColor(BaseColor.GRAY);
+    				// the title of the table
+    				table.addCell(titleCell);
+
+    				PdfPCell visitor = new PdfPCell(new Paragraph("Visitor type"));
+    				visitor.setColspan(1);
+    				visitor.setHorizontalAlignment(Element.ALIGN_CENTER);
+    				visitor.setBackgroundColor(BaseColor.LIGHT_GRAY);
+    				table.addCell(visitor);
+
+    				PdfPCell Day = new PdfPCell(new Paragraph("Day in the week"));
+    				Day.setColspan(1);
+    				Day.setHorizontalAlignment(Element.ALIGN_CENTER);
+    				Day.setBackgroundColor(BaseColor.LIGHT_GRAY);
+    				table.addCell(Day);
+
+    				PdfPCell amount = new PdfPCell(new Paragraph("Amount"));
+    				amount.setColspan(1);
+    				amount.setHorizontalAlignment(Element.ALIGN_CENTER);
+    				amount.setBackgroundColor(BaseColor.LIGHT_GRAY);
+    				table.addCell(amount);
+
+    				for (int i = 0; i < visitorsReport.size(); i++) {
+    					table.addCell(visitorsReport.get(i).get(0));
+    					table.addCell(visitorsReport.get(i).get(1));
+    					table.addCell(visitorsReport.get(i).get(2));
+    				}
+    				document.add(table);
+
+    				alert.successAlert("Success", "The report was created successfully.");
+
+    				Desktop.getDesktop().open(new File("Visits Report " + fileNameDate + ".pdf"));
+
+    				document.close();
+    				writer.close();
+
+    			} catch (Exception e) {
+    				alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
+    			}
     }
 
 	/**

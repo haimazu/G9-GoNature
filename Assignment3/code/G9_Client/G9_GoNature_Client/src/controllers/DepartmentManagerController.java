@@ -102,14 +102,6 @@ public class DepartmentManagerController implements Initializable {
     @FXML
     private TableColumn<TableCurrentVisitors, String> amountColumn;
     
-//    @FXML
-//    private TableView<TableCurrentVisitors> TVisitorsNew;
-//
-//    @FXML
-//    private TableColumn<TableCurrentVisitors, String> visitorColumnNew;
-//
-//    @FXML
-//    private TableColumn<TableCurrentVisitors, String> amountColumnNew;
 
 	@FXML
 	private Label LabelCount;
@@ -304,8 +296,8 @@ public class DepartmentManagerController implements Initializable {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream("CanceledReport " + fileNameDate + ".pdf"));
 			document.open();
-			Image logo = Image.getInstance(
-					"E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+			Image logo = Image.getInstance("C:\\Users\\bar katz\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+			//"url('/controllers/logo_small.png')"
 			logo.setAlignment(Element.ALIGN_CENTER);
 			document.add(logo);
 
@@ -355,7 +347,7 @@ public class DepartmentManagerController implements Initializable {
 
 			alert.successAlert("Success", "The report was created successfully.");
 
-			Desktop.getDesktop().open(new File("CanceledReport " + fileNameDate + ".pdf"));
+			Desktop.getDesktop().open(new File("Visits Report " + fileNameDate + ".pdf"));
 
 			document.close();
 			writer.close();
