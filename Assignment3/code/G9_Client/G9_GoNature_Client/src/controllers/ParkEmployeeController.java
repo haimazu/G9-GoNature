@@ -431,7 +431,7 @@ public class ParkEmployeeController implements Initializable {
 		if (!orderStatus) {
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
-			System.out.println("Enter on random");	
+			
 			if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "These visitors have already entered.");
 				return;
@@ -443,7 +443,6 @@ public class ParkEmployeeController implements Initializable {
 		// order
 		} else {
 			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
-			System.out.println("Enter on order");	
 			
 			if (getEntryStatus().equals("notGoodTime")) {
 				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
@@ -455,7 +454,7 @@ public class ParkEmployeeController implements Initializable {
 			} else {
 				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
 				if (randomVisitorTicket != 0) {				
-					message = message + "\nand your ticket number for the extra people is: " + randomVisitorTicket;
+					message = message + "\nYour ticket number for the extra people is: " + randomVisitorTicket;
 				}
 				alert.successAlert("Success", message);
 			}
@@ -545,18 +544,16 @@ public class ParkEmployeeController implements Initializable {
 		if (!orderStatus) {
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetExitStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
-			System.out.println("Exit on random");		
 		// order
 		} else {
 			sendToGetExitStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-			System.out.println("Exit on order");			
 		}
 		
 		if (getExitStatus().equals("allreadyExited")) {
 			alert.failedAlert("Failed", "The visitor/s have already leaved.");
 		} else if (getExitStatus().equals("neverWasHere")) {
 			alert.failedAlert("Failed", "The visitor/s didn't enter.");
-		// can leave getExitStatus() == "exited"
+		// can leave getExitStatus() = "exited"
 		} else {
 			alert.successAlert("Success", "Thanks for visiting, hope to see you again soon.");
 		}
@@ -1352,6 +1349,7 @@ public class ParkEmployeeController implements Initializable {
 	// input: none
 	// output: screen changes
 	public void clearPaymentFields() {
+		txtVisitorsAmount.setDisable(true);
 		lblPrice.setText("");
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
