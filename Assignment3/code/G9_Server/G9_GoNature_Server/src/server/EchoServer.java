@@ -150,6 +150,13 @@ public class EchoServer extends AbstractServer {
 		case "getVisitorsPrice":
 			ParkGate.getPrice(recived, client);
 			break;
+		case "enterThePark":
+			try {
+				ParkGate.enterThePark(recived, client);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
 		default:
 			break;
 		}

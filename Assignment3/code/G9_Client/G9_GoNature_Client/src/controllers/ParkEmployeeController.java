@@ -1007,16 +1007,20 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 	
-	// getting information from the server
-	// input: if the order number exists in the system:
-	// 1. ArrayList<String> order with all the order data
-	// otherwise 2. string of "No such order"
-	// output: for case 1. we create new order with all the received details
-	// for case 2. we set the error message
-	public static void receivedFromVisitorsPrice(ArrayList<Object> received) {
+	public static void receivedFromServerVisitorsPrice(ArrayList<Object> received) {
 		ParkEmployeeController.visitorsPrice.add((String) received.get(1));	
 		ParkEmployeeController.visitorsPrice.add((String) received.get(2));	
 		ParkEmployeeController.visitorsPrice.add((String) received.get(3));	
+	}
+	
+	public static void receivedFromServerEntryStatus(String received) {
+		if (received.equals("notGoodTime")) {
+			setEntryAndExitStatus("notGoodTime");
+		} else if (received.equals("allreadyInPark")) {
+			setEntryAndExitStatus("allreadyInPark");
+		} else if (received.equals("parkfull")) {
+			setEntryAndExitStatus("parkfull");
+		}
 	}
 
 	// getting information from the server
@@ -1237,6 +1241,7 @@ public class ParkEmployeeController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setPEC(this);
 
+		txtVisitorsAmount.setDisable(true);
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
 		setRandomModeOff();
@@ -1256,6 +1261,7 @@ public class ParkEmployeeController implements Initializable {
 		/***** Barcode / Regular *****/
 		// force the field to be numeric only
 		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
+			txtVisitorsAmount.setDisable(false);
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (!newValue.isEmpty() && !newValue.matches("\\d")) {
@@ -1291,6 +1297,7 @@ public class ParkEmployeeController implements Initializable {
 		// force the field to be numeric only
 		txtIdOrMemberId.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
+			txtVisitorsAmount.setDisable(false);
 
 			if (!newValue.isEmpty()) {
 				txtIdOrMemberId.setText(newValue);
