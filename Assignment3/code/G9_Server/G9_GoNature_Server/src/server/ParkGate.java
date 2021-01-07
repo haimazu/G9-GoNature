@@ -99,16 +99,28 @@ public class ParkGate {
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> orderNumArr = new ArrayList<String>();
 		orderNumArr.add(orderNumber);
+//		if (orderNumber != null) {
+//			objForFech.add("ordersByOrderNumber");
+//			objForFech.add(orderNumArr);
+//		} else {
+//			objForFech.add("ordersByIdOrMemberId");
+//			if (memberId != null)
+//				objForFech.add(memberId);
+//			else if (id != null)
+//				objForFech.add(id);
+//		}
+		ArrayList<String> stringArr = new ArrayList<String>();
 		if (orderNumber != null) {
+			stringArr.add(orderNumber);
 			objForFech.add("ordersByOrderNumber");
-			objForFech.add(orderNumArr);
 		} else {
 			objForFech.add("ordersByIdOrMemberId");
 			if (memberId != null)
-				objForFech.add(memberId);
+				stringArr.add(memberId);
 			else if (id != null)
-				objForFech.add(id);
+				stringArr.add(id);			
 		}
+		objForFech.add(stringArr);
 		Order order=null;
 		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		if (!orderWrapped.isEmpty()) {//order was found
@@ -180,16 +192,28 @@ public class ParkGate {
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> orderNumArr = new ArrayList<String>();
 		orderNumArr.add(orderNumber);
+//		if (orderNumber != null) {
+//			objForFech.add("ordersByOrderNumber");
+//			objForFech.add(orderNumArr);
+//		} else {
+//			objForFech.add("ordersByIdOrMemberId");
+//			if (memberId != null)
+//				objForFech.add(memberId);
+//			else if (id != null)
+//				objForFech.add(id);
+//		}
+		ArrayList<String> stringArr = new ArrayList<String>();
 		if (orderNumber != null) {
+			stringArr.add(orderNumber);
 			objForFech.add("ordersByOrderNumber");
-			objForFech.add(orderNumArr);
 		} else {
 			objForFech.add("ordersByIdOrMemberId");
 			if (memberId != null)
-				objForFech.add(memberId);
+				stringArr.add(memberId);
 			else if (id != null)
-				objForFech.add(id);
+				stringArr.add(id);			
 		}
+		objForFech.add(stringArr);
 		Order order=null;
 		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		if (orderWrapped.isEmpty()) {
