@@ -331,18 +331,18 @@ public class ParkGate {
 		Double priceAfterDiscount = 0.0;
 		Double discount = 0.0;
 		ArrayList<Object> objForFech = new ArrayList<Object>();
-		ArrayList<String> orderNumArr = new ArrayList<String>();
-		orderNumArr.add(orderNumber);
+		ArrayList<String> stringArr = new ArrayList<String>();
 		if (orderNumber != null) {
+			stringArr.add(orderNumber);
 			objForFech.add("ordersByOrderNumber");
-			objForFech.add(orderNumArr);
 		} else {
 			objForFech.add("ordersByIdOrMemberId");
 			if (memberId != null)
-				objForFech.add(memberId);
+				stringArr.add(memberId);
 			else if (id != null)
-				objForFech.add(id);
+				stringArr.add(id);			
 		}
+		objForFech.add(stringArr);
 		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		if (!orderWrapped.isEmpty()) {//order was found
 			Order order = new Order(orderWrapped.get(1));

@@ -36,9 +36,9 @@ public class ExistingOrderCheck {
 
 	/**
 	 * 
-	 * @param recived   array list of object contains: [0] - String
-	 *                  ordersByIdOrMemberId OR ordersByOrderNumber [1] - ArrayList
-	 *                  of String contains: [0] - orderNumber
+	 * @param recived   array list of object contains: [0] - String ordersByIdOrMemberId OR ordersByOrderNumber
+	 * 													[1] - ArrayList	of String contains:
+	 * 															[0] - orderNumber
 	 * @param tableName table name as string
 	 * @param colName   col name as string
 	 * @return ArrayList of ArrayList of String containing the order details, empty if
