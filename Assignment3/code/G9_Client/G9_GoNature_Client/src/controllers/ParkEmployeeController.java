@@ -286,6 +286,8 @@ public class ParkEmployeeController implements Initializable {
 			}
 			// barcode / regular entry
 		} else {
+			txtVisitorsAmount.setText(lblVisitorsNumber.getText());
+
 			if (txtOrderNumber.getText().isEmpty()) {
 				alert.failedAlert("Failed", "All fields required.");
 				return;
@@ -1044,8 +1046,6 @@ public class ParkEmployeeController implements Initializable {
 				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			}
 			
-			txtVisitorsAmount.setText(lblVisitorsNumber.getText());
-
 			if (!txtVisitorsAmount.getText().isEmpty()) {
 				setPrice();
 			}
