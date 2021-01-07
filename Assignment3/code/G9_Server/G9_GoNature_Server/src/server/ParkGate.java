@@ -155,9 +155,11 @@ public class ParkGate {
 			Member member = NewOrder.MemerCheck(order);
 			order = NewOrder.totalPrice(order, member, true);// updating the prices in the order
 			order.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
+			System.out.println("1:"+order);
 			NewOrder.insertNewOrder(order);
 		}
-		updateArrived(order, order.getVisitorsNumber());// insert arrived to order
+		System.out.println("2:"+order);
+		//updateArrived(order, order.getVisitorsNumber());// insert arrived to order
 		insertEnteryExit(order, order.getVisitorsNumber(), "enter");
 		answer.add("enter");
 		client.sendToClient(answer);
