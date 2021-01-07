@@ -529,7 +529,7 @@ public class ParkEmployeeController implements Initializable {
 //	            }
 //	        }
 //	    }
-	}
+//	}
 //
 //	// exit control from the park
 //	// input: none
