@@ -118,21 +118,21 @@ public class ParkEmployeeController implements Initializable {
 
 	private AlertController alert = new AlertController();
 	private boolean informationExists = false;
-	private String timeFormat = "";
-	private String dateAndTimeFormat = "";
+	//private String timeFormat = "";
+	//private String dateAndTimeFormat = "";
 	private boolean orderStatus = false;
-	private boolean approveIsPressed = false;
-	private boolean addFakeOrderToDB = false;
+	//private boolean approveIsPressed = false;
+	//private boolean addFakeOrderToDB = false;
 	private static String firstName;
 	private static String parkName;
 	private static Order orderDetails;
-	private static Order randomVisitorFakeOrderDetails;
+	//private static Order randomVisitorFakeOrderDetails;
 	private static Park parkDetails;
 	private static String error = "";
 	//private static String entryAndExitStatus = "";
 	private static String entryStatus = "";
 	private static String exitStatus = "";
-	private static String randomVisitorIdNumber = "";
+	//private static String randomVisitorIdNumber = "";
 	private static ArrayList<Double> visitorsPrice = new ArrayList<Double>();
 	private static int randomVisitorTicket = 0;
 
@@ -971,32 +971,32 @@ public class ParkEmployeeController implements Initializable {
 	// input: none
 	// output: update the park title with the current visitors
 	public void updateParkStatus(int addToEnter) {
-		ArrayList<String> data = new ArrayList<String>();
-		data.add(getParkName());
-		data.add(String.valueOf(addToEnter));
-		sendToServerArrayList("getParkDetails", data);
-
-		// the park is empty
-		if (parkDetails.getCurrentAmount() == 0) {
-			theParkIsFullOrEmpty("Empty");
-		} else {
-			radExit.setDisable(false);
-		}
-
-		// the park is full
-		if (getError().equals("Full")) {
-			theParkIsFullOrEmpty("Full");
-			return;
-		}
-
-		// too many visitors (check after enter)
-		if (approveIsPressed && getError().equals("Greater") && radEnter.isSelected()) {
-			alert.failedAlert("Failed", "The amount of visitors is greater than the number existing in the park.");
-			approveIsPressed = false;
-			return;
-		}
-
-		setError("Free");
+//		ArrayList<String> data = new ArrayList<String>();
+//		data.add(getParkName());
+//		data.add(String.valueOf(addToEnter));
+//		sendToServerArrayList("getParkDetails", data);
+//
+//		// the park is empty
+//		if (parkDetails.getCurrentAmount() == 0) {
+//			theParkIsFullOrEmpty("Empty");
+//		} else {
+//			radExit.setDisable(false);
+//		}
+//
+//		// the park is full
+//		if (getError().equals("Full")) {
+//			theParkIsFullOrEmpty("Full");
+//			return;
+//		}
+//
+//		// too many visitors (check after enter)
+//		if (approveIsPressed && getError().equals("Greater") && radEnter.isSelected()) {
+//			alert.failedAlert("Failed", "The amount of visitors is greater than the number existing in the park.");
+//			approveIsPressed = false;
+//			return;
+//		}
+//
+//		setError("Free");
 		lblCurrentVisitors.setText("[" + getParkName() + "]:  " + String.valueOf(parkDetails.getCurrentAmount()) + "/"
 				+ parkDetails.getMaximumCapacityInPark());
 	}
@@ -1226,13 +1226,13 @@ public class ParkEmployeeController implements Initializable {
 		ParkEmployeeController.exitStatus = exitStatus;
 	}
 
-	public static String getRandomVisitorIdNumber() {
-		return randomVisitorIdNumber;
-	}
-
-	public static void setRandomVisitorIdNumber(String randomVisitorIdNumber) {
-		ParkEmployeeController.randomVisitorIdNumber = randomVisitorIdNumber;
-	}
+//	public static String getRandomVisitorIdNumber() {
+//		return randomVisitorIdNumber;
+//	}
+//
+//	public static void setRandomVisitorIdNumber(String randomVisitorIdNumber) {
+//		ParkEmployeeController.randomVisitorIdNumber = randomVisitorIdNumber;
+//	}
 
 	public static Order getOrderDetails() {
 		return orderDetails;
@@ -1302,7 +1302,7 @@ public class ParkEmployeeController implements Initializable {
 		setEntryStatus("");
 		setExitStatus("");
 		//setEntryAndExitStatus("");
-		setRandomVisitorIdNumber("");
+		//setRandomVisitorIdNumber("");
 		txtIdOrMemberId.clear();
 		txtOrderNumber.clear();
 		txtVisitorsAmount.clear();
@@ -1322,7 +1322,7 @@ public class ParkEmployeeController implements Initializable {
 		btnApprove.setDisable(true);
 		btnRandomVisitor.setVisible(true);
 		orderStatus = false;
-		approveIsPressed = false;
+		//approveIsPressed = false;
 		radEnter.setSelected(true);
 	}
 
@@ -1342,7 +1342,7 @@ public class ParkEmployeeController implements Initializable {
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
 		orderStatus = false;
-		approveIsPressed = false;
+		//approveIsPressed = false;
 	}
 
 	// turns off payment mode (on exit)
@@ -1354,7 +1354,7 @@ public class ParkEmployeeController implements Initializable {
 		lblDiscount.setText("");
 		lblTotalPrice.setText("");
 		orderStatus = false;
-		approveIsPressed = false;
+		//approveIsPressed = false;
 	}
 
 	@Override
@@ -1366,7 +1366,9 @@ public class ParkEmployeeController implements Initializable {
 		radEnter.setSelected(true);
 		setRandomModeOff();
 		btnManualAccess.setVisible(true);
-
+		
+		//setFirstName(LoginController.getFirstName());
+		//lblFirstNameTitle.setText(getFirstName());
 		// setParkName(LoginController.getParkName());
 		setParkName("jurasic");
 		updateParkStatus(0);
@@ -1374,8 +1376,7 @@ public class ParkEmployeeController implements Initializable {
 		/***** Random *****/
 		LocalDateTime arrivelDate = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		dateAndTimeFormat = arrivelDate.format(formatter);
-
+		//dateAndTimeFormat = arrivelDate.format(formatter);
 		lblRandomDate.setText(arrivelDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
 		/***** Barcode / Regular *****/
