@@ -244,7 +244,9 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 
-		printOrderDetails();
+		if (orderDetails.getVisitorsNumber() != 0) {			
+			printOrderDetails();
+		}
 
 		informationExists = false;
 		btnApprove.setDisable(false);
