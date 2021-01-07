@@ -203,7 +203,7 @@
                   </TableView>
                </children>
             </Pane>
-            <Pane fx:id="pnDashboard1" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+            <Pane fx:id="pnDashboard" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
                   <AnchorPane layoutX="2.0" layoutY="177.0" prefHeight="268.0" prefWidth="615.0">
                      <children>
