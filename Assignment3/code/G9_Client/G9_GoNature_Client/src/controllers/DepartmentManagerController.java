@@ -81,15 +81,12 @@ public class DepartmentManagerController implements Initializable {
 
 	/***** Panels *****/
 	@FXML
-	private StackPane pnStack;
-	@FXML
 	private Pane pnDashboard;
 	@FXML
 	private Pane pnVisits;
 	@FXML
 	private Pane pnCancels;
-	@FXML
-	private Pane pnSettings;
+
 
 	/***** Dashboard *****/
 	@FXML
