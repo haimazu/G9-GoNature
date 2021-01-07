@@ -16,7 +16,7 @@ public class ParkGate {
 	//						cell[0] contains "getPrice" String
 	//						cell[1] contains ParkName
 	//						cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data in cell3)
-	//						cell[3] contains value determent by cell2 as String 
+	//						cell[3] contains value detorment by cell2 as String 
 	//						cell[4] how many people wants to enter 
 	//output: none
 	//send to client: ArrayList of object
@@ -391,8 +391,23 @@ public class ParkGate {
 			discount = (1-(priceBeforeDiscount-priceAfterDiscount)/priceBeforeDiscount)*100; //discount in precent
 		}
 		ret.add(priceBeforeDiscount);
+		ret.add(1-discount);
 		ret.add(priceAfterDiscount);
-		ret.add(discount);
+		
 		return ret;
 	}
+	
+	
+	
+	private static int enteryAmountLeft(String patkName, String date) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		
+		int amount=0;
+		
+		
+		
+		return amount;
+	}
+	
 }
