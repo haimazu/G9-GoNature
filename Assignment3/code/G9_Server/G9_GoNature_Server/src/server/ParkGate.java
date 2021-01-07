@@ -14,7 +14,7 @@ public class ParkGate {
 
 	//input: ArrayList of object
 	//						cell[0] contains "getPrice" String
-	//						cell[1] contains Park Class
+	//						cell[1] contains ParkName
 	//						cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data in cell3)
 	//						cell[3] contains value determent by cell2 as String 
 	//						cell[4] how many people wants to enter 
@@ -27,7 +27,7 @@ public class ParkGate {
 	public static void getPrice(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		Park park = (Park) recived.get(1);
+		String parkName = (String) recived.get(1);
 		String switchKey = (String) recived.get(2);
 		String id = null, memberId = null, orderNumber = null;
 		switch (switchKey) {
@@ -45,7 +45,7 @@ public class ParkGate {
 			break;
 		}
 		String howMany = (String) recived.get(4);
-		ArrayList<Double> prices = priceingForEntry(orderNumber, memberId, id, howMany, park.getName());
+		ArrayList<Double> prices = priceingForEntry(orderNumber, memberId, id, howMany, parkName);
 		answer.add(prices.get(0).toString()); //priceBeforeDiscount
 		answer.add(prices.get(1).toString()); //priceAfterDiscount
 		answer.add(prices.get(2).toString()); //discount
