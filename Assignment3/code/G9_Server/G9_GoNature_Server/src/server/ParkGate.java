@@ -345,7 +345,7 @@ public class ParkGate {
 		objForFech.add(stringArr);
 		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		if (!orderWrapped.isEmpty()) {//order was found
-			Order order = new Order(orderWrapped.get(1));
+			Order order = new Order(orderWrapped.get(0));
 			priceBeforeDiscount += order.getPrice();
 			priceAfterDiscount += order.getTotalPrice();
 			discount = (1-(priceBeforeDiscount-priceAfterDiscount)/priceBeforeDiscount)*100; //discount in precent
