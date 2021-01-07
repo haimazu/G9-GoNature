@@ -185,13 +185,12 @@ public class NewOrder {
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
 		System.out.println("total price enter");
 		double parkEnteryPrice = CurrentPriceInPark(ord);
-		System.out.println("CurrentPriceInPark exit");
-		System.out.println(parkEnteryPrice);
+		System.out.println(ord);
 		int numberOfPeople;
 		if (occasional) {
 			numberOfPeople = ord.getAmountArrived();
 			ord.setPrice(parkEnteryPrice * numberOfPeople);// full price for all
-
+			
 			if (memb == null) { // if the order is not for a member
 				ord.setOrderType(OrderType.REGULAR);
 				ord.setTotalPrice(ord.getPrice());
@@ -277,10 +276,11 @@ public class NewOrder {
 		Double priceWithDiscount = Double.parseDouble(parkDetails.get(0).get(0))
 				* Double.parseDouble(parkDetails.get(0).get(1));
 		System.out.println(parkDetails);
-
+		System.out.println("price with discount ="+ priceWithDiscount);
 		// returns full price in park if no discount
-		if (priceWithDiscount <= 0.0)
+		if (priceWithDiscount <= 0.0) {
 			return Double.parseDouble(parkDetails.get(0).get(0));
+		}
 		else
 			return priceWithDiscount;
 	}

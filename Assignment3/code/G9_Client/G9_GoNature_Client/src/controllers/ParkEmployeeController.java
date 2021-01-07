@@ -1084,6 +1084,7 @@ public class ParkEmployeeController implements Initializable {
 	}
 	
 	public static void receivedFromServerVisitorsPrice(ArrayList<Object> received) {
+		ParkEmployeeController.visitorsPrice.clear();
 		ParkEmployeeController.visitorsPrice.add((String) received.get(1));	
 		ParkEmployeeController.visitorsPrice.add((String) received.get(2));	
 		ParkEmployeeController.visitorsPrice.add((String) received.get(3));	
@@ -1376,6 +1377,9 @@ public class ParkEmployeeController implements Initializable {
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
 
+			if (newValue.isEmpty()) {
+				clearPaymentFields();
+			}
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (newValue.length() == 1 || !newValue.isEmpty() && !newValue.matches("\\d")) {
