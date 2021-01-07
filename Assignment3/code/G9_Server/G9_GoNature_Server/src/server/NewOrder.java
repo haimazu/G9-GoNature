@@ -233,13 +233,14 @@ public class NewOrder {
 				ord.setID(memb.getMemberID());
 				switch (memb.getMemberOrderType()) {
 				case MEMBER:
+					
 					System.out.println("pre order member type enter");
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
-						ord.setTotalPrice((ord.getPrice() * 0.85) * parkDiscount);
 						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)
-								* (Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.2);
+								* (Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.8);
+						ord.setTotalPrice((ord.getPrice() * 0.85) * parkDiscount);
 					} else {
 						ord.setTotalPrice((numberOfPeople * parkEnteryPrice) * 0.85);
 						ord.setTotalPrice((ord.getTotalPrice() * 0.8) * parkDiscount);
