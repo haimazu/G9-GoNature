@@ -702,6 +702,68 @@ public class ParkEmployeeController implements Initializable {
 //		    lblTotalPrice.setText(String.format("%.1f", randomVisitorFakeOrderDetails.getTotalPrice()) + "₪");
 	    }
 	}
+	
+	public void setPrice() {
+		String memberId = null;
+	    String id = null;
+		String currentTypeValue = null;
+	    String currentTypeName = null;
+	     
+		// price for random visitor
+		if (!btnRandomVisitor.isVisible()) {
+			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
+				memberId = txtIdOrMemberId.getText().substring(1);
+				currentTypeValue = memberId;
+				currentTypeName = "MEMBERID";
+			} else {
+				id = txtIdOrMemberId.getText();
+				currentTypeValue = id;
+				currentTypeName = "ID";
+			}	
+			sendToGetPrice(currentTypeName, currentTypeValue, txtVisitorsAmount.getText());
+
+		// price for ordered visitor
+	    } else if (!btnManualAccess.isVisible() && 
+	    		Integer.parseInt(txtVisitorsAmount.getText()) <= Integer.parseInt(lblVisitorsNumber.getText())) {
+	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
+			
+	    // price for both, ordered visitors and friends
+	    } else {
+	    	int difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
+	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
+	    	// for order
+	    	String price = visitorsPrice.get(1);
+	    	String discount = visitorsPrice.get(2);
+	    	String totalPrice = visitorsPrice.get(3);
+	    	// for the other visitors (as random)
+	    	sendToGetPrice("ID", "420", String.valueOf((difference)));
+	    	
+	    	// set price
+            lblPrice.setText(String.format("%.1f", price) + "₪ , " 
+                           + String.format("%.1f", visitorsPrice.get(1)) + "₪");
+            // set discount
+            lblDiscount.setText(String.format("%.1f", discount) + "% , "
+                              + String.format("%.1f", visitorsPrice.get(2)) + "%");	
+            // set total price
+            lblTotalPrice.setText(String.format("%.1f", totalPrice) + "₪ + " 
+                           + String.format("%.1f", visitorsPrice.get(3)) + "₪ = " 
+                           + String.format("%.1f", (Integer.parseInt(totalPrice) + Integer.parseInt(visitorsPrice.get(3)))) + "₪");
+            return;
+	    }
+		
+		lblPrice.setText(String.format("%.1f", visitorsPrice.get(1)) + "₪");
+	    lblDiscount.setText(String.format("%.1f", visitorsPrice.get(2)) + "%");			
+	    lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(3)) + "₪");
+	}
+	
+	public void sendToGetPrice(String type, String value, String amount) {
+		ArrayList<String> data = new ArrayList<String>();
+		data.add(getParkName());
+		data.add(type);
+		data.add(value);
+		data.add(amount);
+		sendToServerArrayList("getVisitorsPrice", data);
+	}
 
 	// check for valid date in the order
 	// input: [0] 'today's date'
@@ -1237,7 +1299,8 @@ public class ParkEmployeeController implements Initializable {
 				if (newValue.charAt(0) != '0') {
 					if (!btnRandomVisitor.isVisible() && !txtIdOrMemberId.getText().isEmpty()) {
 						// update random visitor prices
-						createFakeOrder(null, null, Integer.parseInt(txtVisitorsAmount.getText()));
+						//createFakeOrder(null, null, Integer.parseInt(txtVisitorsAmount.getText()));
+						setPrice();
 					} else if (!txtOrderNumber.getText().isEmpty()) {
 						showDetails(null);
 					}
