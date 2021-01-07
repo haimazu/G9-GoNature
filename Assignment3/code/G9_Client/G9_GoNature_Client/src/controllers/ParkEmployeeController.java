@@ -1084,6 +1084,7 @@ public class ParkEmployeeController implements Initializable {
 	}
 	
 	public static void receivedFromServerVisitorsPrice(ArrayList<Object> received) {
+		ParkEmployeeController.visitorsPrice.clear();
 		ParkEmployeeController.visitorsPrice.add((String) received.get(1));	
 		ParkEmployeeController.visitorsPrice.add((String) received.get(2));	
 		ParkEmployeeController.visitorsPrice.add((String) received.get(3));	
