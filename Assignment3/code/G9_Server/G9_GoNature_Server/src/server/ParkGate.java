@@ -27,24 +27,24 @@ public class ParkGate {
 	public static void getPrice(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
-		String parkName = (String) recived.get(1);
-		String switchKey = (String) recived.get(2);
+		String parkName = (String)recived.get(1);
+		String switchKey = (String)recived.get(2);
 		String id = null, memberId = null, orderNumber = null;
 		switch (switchKey) {
 		case "ID":
-			id = (String) recived.get(3);
+			id = (String)recived.get(3);
 			break;
 		case "MEMBERID":
-			memberId = (String) recived.get(3);
+			memberId = (String)recived.get(3);
 			break;
 		case "ORDERNUMBER":
-			orderNumber = (String) recived.get(3);
+			orderNumber = (String)recived.get(3);
 			break;
 		default:
 			System.out.println("bootkeError");
 			break;
 		}
-		String howMany = (String) recived.get(4);
+		String howMany = (String)recived.get(4);
 		ArrayList<Double> prices = priceingForEntry(orderNumber, memberId, id, howMany, parkName);
 		answer.add(prices.get(0).toString()); //priceBeforeDiscount
 		answer.add(prices.get(1).toString()); //priceAfterDiscount
