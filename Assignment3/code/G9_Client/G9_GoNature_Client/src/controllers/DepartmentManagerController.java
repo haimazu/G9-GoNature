@@ -712,8 +712,10 @@ public class DepartmentManagerController implements Initializable {
 
 	/**
 	 * button approve will remove the row and will update the table from DB will
-	 * send to server array list of object [0] - name method [1] - string "yes" [2]
-	 * -object of ManagerRequest
+	 * send to server array list of object [0] 
+	 * name method [1] 
+	 * string "yes" [2]
+	 * object of ManagerRequest
 	 * 
 	 * @param event
 	 */
@@ -776,8 +778,10 @@ public class DepartmentManagerController implements Initializable {
 
 	/**
 	 * button disapprove will not remove the row and will update the server will
-	 * send to server array list of Object : [0] - name method [1] - string "no" [2]
-	 * - Object of ManagerRequest
+	 * send to server array list of Object : 
+	 * [0] name method 
+	 * [1] string "no" 
+	 * [2] Object of ManagerRequest
 	 * 
 	 * @param event
 	 */
@@ -868,18 +872,29 @@ public class DepartmentManagerController implements Initializable {
 		TableDep.setItems(listForTable);
 	}
 
+	/**
+	 * get the list
+	 * 
+	 * @param dBList
+	 */
 	public static ArrayList<ArrayList<String>> getDBList() {
 		return DBList;
 	}
 
+	/**
+	 * set the list from the DB
+	 * 
+	 * @param dBList
+	 */
 	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
 		DBList = dBList;
 	}
 	
-	
-
+	/**
+	 * add data to the pending manager requests
+	 * 
+	 */
 	public void iniailTabelPending() {
-
 		DBList.clear();
 		ArrayList<Object> msg = new ArrayList<>();
 		msg.add("PendingManagerRequests");
@@ -891,31 +906,37 @@ public class DepartmentManagerController implements Initializable {
 
 	/*****************************************/
 
-	// set style for the pressed button
-	// input: the active button
-	// output: new style
+	/**
+	 * set style for the pressed button
+	 * 
+	 * @param button
+	 */
 	public void setButtonPressed(Button button) {
 		button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: brown;"
 				+ "-fx-border-width: 0px 0px 0px 3px;");
 	}
 
-	// set style for the released buttons
-	// input: the inactive buttons
-	// output: removing the previous style
+	/**
+	 * set style for the released buttons
+	 * 
+	 * @param button
+	 * @param button1
+	 * @param button2
+	 */
 	public void setButtonReleased(Button button, Button button1, Button button2) {
 		button.setStyle("-fx-background-color: transparent;");
 		button1.setStyle("-fx-background-color: transparent;");
 		button2.setStyle("-fx-background-color: transparent;");
 	}
 
-	// displays the chart for the information retrieved from DB
-	// input: from -> start date
-	// to -> end date
-	// ArrayList<ArrayList<String>> cancelledOrders, cells:
-	// cell [0]: parkName
-	// cell [1]: date of canceled/dismissed
-	// cell [2]: amount
-	// output: displays the data
+	/**
+	 * displays the chart for the information retrieved from DB
+	 *
+	 * ArrayList<ArrayList<String>> cancelledOrders, cells:
+	 * cell [0]: parkName
+	 * cell [1]: date of canceled/dismissed
+	 * cell [2]: amount
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void barChart() {
 		int i;
@@ -998,10 +1019,11 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// checks if the date exists and saves the first position where it appears
-	// input: date to check
-	// output: - return the number of times he appears
-	// - saves the first index where he appeared
+	/**
+	 * checks if the date exists and saves the first position where it appears
+	 *
+	 * @return count
+	 */
 	public int checkIfExists(LocalDate date) {
 		int count = 0;
 		boolean flag = false;
@@ -1022,11 +1044,17 @@ public class DepartmentManagerController implements Initializable {
 		return count;
 	}
 
-	// ArrayList<String> data, sending to the server to get data
-	// input: [0] case name
-	// [1] month
-	// [2] year
-	// output: none
+	/**
+	 * Sends ArrayList to server
+	 * 
+	 * ArrayList(String) data, sending to the server to get data
+	 * [0] case name
+	 * [1] month
+	 * [2] year
+	 *
+	 * @param caseName
+	 * @param date
+	 */
 	public void sendToServerArrayList(String caseName, ArrayList<String> date) {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
@@ -1037,11 +1065,15 @@ public class DepartmentManagerController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
-	// getting information from the server
-	// input: none
-	// output: list of cancelled orders:
-	// ArrayList<Object>: cell[0] list of cancelled orders
-	// cell[1] list of dismissed orders
+	/**
+	 * getting data from the server for cancel report
+	 * 
+	 * ArrayList(Object):
+	 * cell[0] list of cancelled orders
+	 * cell[1] list of dismissed orders
+	 *
+	 * @param cancelData
+	 */
 	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData) {
 		if (cancelData.isEmpty()) {
 			setError(true);
@@ -1051,14 +1083,18 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// getting information from the server
-	// input: none
-	// output: list of regular visitors:
-	// if empty ==> String "empty", otherwise
-	// ArrayList<Object>: cell[0] 0-1 hour
-	// cell[1] 1-2 hours
-	// cell[2] 2-3 hours
-	// cell[3] 3-4 hours
+	/**
+	 * getting data from the server for regular visitors report
+	 * 
+	 * if empty ==> String "empty", otherwise
+	 * ArrayList(Object): 
+	 * cell[0] 0 to 1 hour
+	 * cell[1] 1 to 2 hours
+	 * cell[2] 2 to 3 hours
+	 * cell[3] 3 to 4 hours
+	 *
+	 * @param msgReceived
+	 */
 	public static void receivedFromServerRegularsVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
@@ -1074,14 +1110,18 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// getting information from the server
-	// input: none
-	// output: list of members visitors:
-	// if empty ==> String "empty", otherwise
-	// ArrayList<Object>: cell[0] 0-1 hour
-	// cell[1] 1-2 hours
-	// cell[2] 2-3 hours
-	// cell[3] 3-4 hours
+	/**
+	 * getting data from the server for members visitors report
+	 * 
+	 * if empty ==> String "empty", otherwise
+	 * ArrayList(Object): 
+	 * cell[0] 0 to 1 hour
+	 * cell[1] 1 to 2 hours
+	 * cell[2] 2 to 3 hours
+	 * cell[3] 3 to 4 hours
+	 *
+	 * @param msgReceived
+	 */
 	public static void receivedFromServerMembersVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
@@ -1097,14 +1137,18 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// getting information from the server
-	// input: none
-	// output: list of group visitors:
-	// if empty ==> String "empty", otherwise
-	// ArrayList<Object>: cell[0] 0-1 hour
-	// cell[1] 1-2 hours
-	// cell[2] 2-3 hours
-	// cell[3] 3-4 hours
+	/**
+	 * getting data from the server for groups visitors report
+	 * 
+	 * if empty ==> String "empty", otherwise
+	 * ArrayList(Object): 
+	 * cell[0] 0 to 1 hour
+	 * cell[1] 1 to 2 hours
+	 * cell[2] 2 to 3 hours
+	 * cell[3] 3 to 4 hours
+	 *
+	 * @param msgReceived
+	 */
 	public static void receivedFromServerGroupsVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
@@ -1120,18 +1164,38 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
+	/**
+	 * get the error
+	 * 
+	 * @return error
+	 */
 	public static boolean getError() {
 		return error;
 	}
 
+	/**
+	 * set errors
+	 * 
+	 * @param error
+	 */
 	public static void setError(boolean error) {
 		DepartmentManagerController.error = error;
 	}
 
+	/**
+	 * get the isEmpty
+	 * 
+	 * @return isEmpty
+	 */
 	public static boolean isEmpty() {
 		return isEmpty;
 	}
 
+	/**
+	 * set isEmpty
+	 * 
+	 * @param isEmpty
+	 */
 	public static void setEmpty(boolean isEmpty) {
 		DepartmentManagerController.isEmpty = isEmpty;
 	}
@@ -1186,6 +1250,12 @@ public class DepartmentManagerController implements Initializable {
 		return parkDetails;
 	}
 
+	/**
+	 * Initializing and force each of the fields according to the Required templates 
+	 * 
+	 * @param arg0
+	 * @param arg1
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
