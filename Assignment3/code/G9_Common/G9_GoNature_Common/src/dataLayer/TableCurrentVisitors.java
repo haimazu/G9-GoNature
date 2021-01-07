@@ -29,15 +29,19 @@ public class TableCurrentVisitors {
 	
 
 	public String getParkNameVis() {
+		System.out.println("got park");
 		return ParkNameVis;
 	}
 	public void setParkNameVis(String parkName) {
+		System.out.println("set park");
 		ParkNameVis = parkName;
 	}
 	public String getCurrentAmount() {
+		System.out.println("got vis");
 		return CurrentAmount;
 	}
 	public void setCurrentAmount(String currentAmount) {
+		System.out.println("set vis");
 		CurrentAmount = currentAmount;
 	}
 
