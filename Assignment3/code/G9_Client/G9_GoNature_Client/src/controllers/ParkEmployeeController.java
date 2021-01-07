@@ -434,7 +434,8 @@ public class ParkEmployeeController implements Initializable {
 				alert.failedAlert("Failed", "These visitors have already entered.");
 				return;
 			} else if (getEntryStatus().equals("parkfull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now.");
+				alert.failedAlert("Failed", "We are sorry, the park is full right now.'n"
+						+ "Or you are trying to add too many visitors");
 			} else if (getEntryStatus().equals("enter")) {
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 			}
@@ -447,7 +448,8 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "This order has already been fulfilled.");
 			} else if (getEntryStatus().equals("parkfull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now.");
+				alert.failedAlert("Failed", "We are sorry, the park is full right now.'n"
+						+ "Or you are trying to add too many visitors");
 				// getEntryStatus() = "enter"
 			} else {
 				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
