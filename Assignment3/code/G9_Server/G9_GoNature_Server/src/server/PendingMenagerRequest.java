@@ -378,11 +378,6 @@ public class PendingMenagerRequest implements Serializable {
 
 		}
 		answer.add(retTable);
-<<<<<<< HEAD
-		System.out.println(answer);
-=======
-		System.out.println( "answer: "+ answer);
->>>>>>> 371588f5a3c022d7b5b717a3b2a0248f0d1db714
 		EchoServer.sendToMyClient(answer, client);
 	}
 
