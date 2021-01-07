@@ -824,109 +824,109 @@ public class ParkEmployeeController implements Initializable {
 	// [1] order date
 	// output: return true if that's today's date
 	// otherwise false
-	public boolean checkDate() {
-		LocalDate arrivelDate = LocalDate.now();
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-		// "dd-MM-yyyy"
-		String currentDate = dateFormatter.format(arrivelDate);
-		String orderDate = lblDate.getText();
-
-		if (currentDate.equals(orderDate)) {
-			return true;
-		}
-
-		alert.failedAlert("Failed", "Invalid date.");
-		return false;
-	}
+//	public boolean checkDate() {
+//		LocalDate arrivelDate = LocalDate.now();
+//		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//
+//		// "dd-MM-yyyy"
+//		String currentDate = dateFormatter.format(arrivelDate);
+//		String orderDate = lblDate.getText();
+//
+//		if (currentDate.equals(orderDate)) {
+//			return true;
+//		}
+//
+//		alert.failedAlert("Failed", "Invalid date.");
+//		return false;
+//	}
 
 	// check for correct visit time in the order
 	// input: [0] 'the time now'
 	// [1] order time range
 	// output: return true if the visitor arrived at the right hours
 	// otherwise false
-	public boolean checkTime(String from) {
-		timeFormat = "";
-		int arrivelHour = 0;
-		LocalDateTime arrivelTime = LocalDateTime.now();
-		// currentHour = hh
-		int currentHour = arrivelTime.getHour();
-		// startTime = hh:mm
-		if (!lblTime.getText().isEmpty()) {
-			String startTime = lblTime.getText();
-			String[] splitStartTime = startTime.split(":");
-			// stringArrivelHour = hh
-			String stringArrivelHour = splitStartTime[0];
-			arrivelHour = Integer.parseInt(stringArrivelHour);
-		}
-
-		// currentHour = 08:00 | 12:00 | 16:00
-		// arrivelHour = 08:00 - 12:00 | 12:00 - 16:00 | 16:00 - 20:00
-		if (currentHour >= 8 && currentHour < 12) {
-			timeFormat = " 08:00:00";
-			if (arrivelHour == 8) {
-				return true;
-			}
-		} else if (currentHour >= 12 && currentHour < 16) {
-			timeFormat = " 12:00:00";
-			if (arrivelHour == 12) {
-				return true;
-			}
-		} else if (currentHour >= 16 && currentHour < 20) {
-			timeFormat = " 16:00:00";
-			if (arrivelHour == 16) {
-				return true;
-			}
-		}
-
-		if (from.equals("setPrice")) {
-			return false;
-		}
-
-		alert.failedAlert("Failed", "Arrival time doesn't match the time on order.");
-		return false;
-	}
+//	public boolean checkTime(String from) {
+//		timeFormat = "";
+//		int arrivelHour = 0;
+//		LocalDateTime arrivelTime = LocalDateTime.now();
+//		// currentHour = hh
+//		int currentHour = arrivelTime.getHour();
+//		// startTime = hh:mm
+//		if (!lblTime.getText().isEmpty()) {
+//			String startTime = lblTime.getText();
+//			String[] splitStartTime = startTime.split(":");
+//			// stringArrivelHour = hh
+//			String stringArrivelHour = splitStartTime[0];
+//			arrivelHour = Integer.parseInt(stringArrivelHour);
+//		}
+//
+//		// currentHour = 08:00 | 12:00 | 16:00
+//		// arrivelHour = 08:00 - 12:00 | 12:00 - 16:00 | 16:00 - 20:00
+//		if (currentHour >= 8 && currentHour < 12) {
+//			timeFormat = " 08:00:00";
+//			if (arrivelHour == 8) {
+//				return true;
+//			}
+//		} else if (currentHour >= 12 && currentHour < 16) {
+//			timeFormat = " 12:00:00";
+//			if (arrivelHour == 12) {
+//				return true;
+//			}
+//		} else if (currentHour >= 16 && currentHour < 20) {
+//			timeFormat = " 16:00:00";
+//			if (arrivelHour == 16) {
+//				return true;
+//			}
+//		}
+//
+//		if (from.equals("setPrice")) {
+//			return false;
+//		}
+//
+//		alert.failedAlert("Failed", "Arrival time doesn't match the time on order.");
+//		return false;
+//	}
 
 	// input: number of visitor to update
 	// output: updates the number of visitors who came for a specific order
-	public void updateAmountArrived(int amountArrivedInOrder) {
-		// ArrayList<String> data
-		// cell 0: orderNumber
-		// cell 1: new arrived amount (updated one)
-		ArrayList<String> data = new ArrayList<String>();
-		data.add(String.valueOf(orderDetails.getOrderNumber()));
-		data.add(String.valueOf(amountArrivedInOrder));
-		sendToServerArrayList("updateAmountArrived", data);
-
-		// check if the update failed and showing alert
-		if (getError().equals("false")) {
-			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-			return;
-		}
-	}
+//	public void updateAmountArrived(int amountArrivedInOrder) {
+//		// ArrayList<String> data
+//		// cell 0: orderNumber
+//		// cell 1: new arrived amount (updated one)
+//		ArrayList<String> data = new ArrayList<String>();
+//		data.add(String.valueOf(orderDetails.getOrderNumber()));
+//		data.add(String.valueOf(amountArrivedInOrder));
+//		sendToServerArrayList("updateAmountArrived", data);
+//
+//		// check if the update failed and showing alert
+//		if (getError().equals("false")) {
+//			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+//			return;
+//		}
+//	}
 
 	// updates the current amount of visitors in the appropriate park table
 	// input: number of visitor to update
 	// output: updated number of visitors in DB
-	public void updateCurrentVisitors(int updateCurrentVisitors) {
-		// ArrayList<String> data, sending to the server to update the current visitors
-		// amount
-		// input: cell 0: parkName
-		// cell 1: new current visitors (updated one)
-		// output: message with the result of the update: true if success
-		// false, otherwise
-		ArrayList<String> data = new ArrayList<String>();
-		data.add(getParkName());
-		data.add(String.valueOf(updateCurrentVisitors));
-
-		sendToServerArrayList("updateCurrentVisitors", data);
-
-		// check if the update failed and showing alert
-		if (getError().equals("false")) {
-			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-			return;
-		}
-	}
+//	public void updateCurrentVisitors(int updateCurrentVisitors) {
+//		// ArrayList<String> data, sending to the server to update the current visitors
+//		// amount
+//		// input: cell 0: parkName
+//		// cell 1: new current visitors (updated one)
+//		// output: message with the result of the update: true if success
+//		// false, otherwise
+//		ArrayList<String> data = new ArrayList<String>();
+//		data.add(getParkName());
+//		data.add(String.valueOf(updateCurrentVisitors));
+//
+//		sendToServerArrayList("updateCurrentVisitors", data);
+//
+//		// check if the update failed and showing alert
+//		if (getError().equals("false")) {
+//			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+//			return;
+//		}
+//	}
 
 	// ArrayList<String> data, sending to the server to update the access control
 	// input: on enter: cell 0: orderNumber
@@ -936,26 +936,26 @@ public class ParkEmployeeController implements Initializable {
 	// cell 4: amountArrived
 	// output: message with the result of the update: true if success
 	// false, otherwise
-	public void updateAccessControl(int orderNumber, String orderType, int amountArrived) {
-		DateTimeFormatter dateAndTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime currentTime = LocalDateTime.now();
-
-		ArrayList<String> data = new ArrayList<String>();
-
-		data.add(String.valueOf(orderNumber));
-		data.add(currentTime.format(dateAndTime));
-		data.add(getParkName());
-		data.add(orderType);
-		data.add(String.valueOf(amountArrived));
-
-		sendToServerArrayList("updateAccessControl", data);
-
-		// check if the update failed and showing alert
-		if (getError().equals("false")) {
-			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
-			return;
-		}
-	}
+//	public void updateAccessControl(int orderNumber, String orderType, int amountArrived) {
+//		DateTimeFormatter dateAndTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//		LocalDateTime currentTime = LocalDateTime.now();
+//
+//		ArrayList<String> data = new ArrayList<String>();
+//
+//		data.add(String.valueOf(orderNumber));
+//		data.add(currentTime.format(dateAndTime));
+//		data.add(getParkName());
+//		data.add(orderType);
+//		data.add(String.valueOf(amountArrived));
+//
+//		sendToServerArrayList("updateAccessControl", data);
+//
+//		// check if the update failed and showing alert
+//		if (getError().equals("false")) {
+//			alert.failedAlert("Failed", "Sorry, we couldn't do the update.");
+//			return;
+//		}
+//	}
 
 	// input: none
 	// output: update the park title with the current visitors
@@ -1145,13 +1145,13 @@ public class ParkEmployeeController implements Initializable {
 	// output: set error message with the following return
 	// T / F ==> T if succeeded
 	// F otherwise
-	public static void receivedFromServerUpdateStatus(boolean status) {
-		if (status) {
-			setError("true");
-		} else {
-			setError("false");
-		}
-	}
+//	public static void receivedFromServerUpdateStatus(boolean status) {
+//		if (status) {
+//			setError("true");
+//		} else {
+//			setError("false");
+//		}
+//	}
 
 	// acceptance status
 	// input: String status
