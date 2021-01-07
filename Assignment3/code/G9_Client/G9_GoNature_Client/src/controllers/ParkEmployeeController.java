@@ -133,7 +133,7 @@ public class ParkEmployeeController implements Initializable {
 	private static String entryStatus = "";
 	private static String exitStatus = "";
 	private static String randomVisitorIdNumber = "";
-	private static ArrayList<String> visitorsPrice = new ArrayList<String>();
+	private static ArrayList<Double> visitorsPrice = new ArrayList<Double>();
 
 	// input: none
 	// output: moving to 'login' screen
@@ -786,9 +786,9 @@ public class ParkEmployeeController implements Initializable {
 	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
 	    } 
 		
-		lblPrice.setText(String.format("%.1f", Double.parseDouble(visitorsPrice.get(0))) + "₪");
-		lblDiscount.setText(String.format("%.1f", Double.parseDouble(visitorsPrice.get(1))) + "%");			
-		lblTotalPrice.setText(String.format("%.1f", Double.parseDouble(visitorsPrice.get(2))) + "₪");
+		lblPrice.setText(String.format("%.1f", visitorsPrice.get(0)) + "₪");
+		lblDiscount.setText(String.format("%.1f", visitorsPrice.get(1)) + "%");			
+		lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(2)) + "₪");
 	}
 	
 	public void sendToGetPrice(String type, String value, String amount) {
@@ -1090,9 +1090,9 @@ public class ParkEmployeeController implements Initializable {
 	
 	public static void receivedFromServerVisitorsPrice(ArrayList<Object> received) {
 		ParkEmployeeController.visitorsPrice.clear();
-		ParkEmployeeController.visitorsPrice.add((String) received.get(1));	
-		ParkEmployeeController.visitorsPrice.add((String) received.get(2));	
-		ParkEmployeeController.visitorsPrice.add((String) received.get(3));	
+		ParkEmployeeController.visitorsPrice.add((Double) received.get(1));	
+		ParkEmployeeController.visitorsPrice.add((Double) received.get(2));	
+		ParkEmployeeController.visitorsPrice.add((Double) received.get(3));	
 	}
 	
 	public static void receivedFromServerEntryStatus(String received) {
