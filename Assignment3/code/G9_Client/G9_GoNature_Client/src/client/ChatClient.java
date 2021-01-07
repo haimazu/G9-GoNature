@@ -176,7 +176,7 @@ public class ChatClient extends AbstractClient {
 			ParkEmployeeController.receivedFromServerVisitorsPrice((ArrayList<Object>) received);
 			break;
 		case "enterThePark":
-			ParkEmployeeController.receivedFromServerEntryStatus((String) received.get(1));
+			ParkEmployeeController.receivedFromServerEntryStatus((String) received.get(1), (int) received.get(2));
 			break;
 		case "exitThePark":
 			ParkEmployeeController.receivedFromServerExitStatus((String) received.get(1));
