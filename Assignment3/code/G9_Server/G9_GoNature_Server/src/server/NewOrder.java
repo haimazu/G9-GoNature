@@ -156,7 +156,7 @@ public class NewOrder {
 		query.add("member"); // table name
 		query.add("*"); // columns to select from
 
-		if (ord.getID()==null&&ord.getMemberId()==null)
+		if (ord.getID() == null && ord.getMemberId() == null)
 			return null;
 		if (ord.getID() != null) {
 			query.add("WHERE ID='" + ord.getID() + "'");
@@ -198,7 +198,7 @@ public class NewOrder {
 
 			if (memb == null) { // if the order is not for a member
 				ord.setOrderType(OrderType.REGULAR);
-				ord.setTotalPrice(parkEnteryPrice * numberOfPeople*parkDiscount);
+				ord.setTotalPrice((parkEnteryPrice * numberOfPeople) * parkDiscount);
 			} else { // if the order is for occasional member
 				ord.setMemberId(memb.getMemberNumber());
 				ord.setID(memb.getMemberID());
@@ -207,14 +207,15 @@ public class NewOrder {
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0)
-						ord.setTotalPrice(nonFamily * parkEnteryPrice
-								+ Double.parseDouble(memb.getMemberAmount()) * parkEnteryPrice * 0.8*parkDiscount);
+						ord.setTotalPrice(parkDiscount * nonFamily * parkEnteryPrice
+								+ (((Double.parseDouble(memb.getMemberAmount()) * parkEnteryPrice) * 0.8)
+										* parkDiscount));
 					else
-						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8*parkDiscount);
+						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8 * parkDiscount);
 					break;
 				case GROUP:
 					ord.setOrderType(OrderType.GROUP);
-					ord.setTotalPrice(ord.getPrice() * 0.9*parkDiscount);
+					ord.setTotalPrice((ord.getPrice() * 0.9) * parkDiscount);
 					break;
 				default:
 					break;
@@ -226,7 +227,7 @@ public class NewOrder {
 			if (memb == null) { // if the order is not for a member
 				System.out.println("pre order regular type enter");
 				ord.setOrderType(OrderType.REGULAR);
-				ord.setTotalPrice(ord.getPrice() * 0.85*parkDiscount);
+				ord.setTotalPrice((ord.getPrice() * 0.85) * parkDiscount);
 			} else {// if the order is for non-occasional member
 				ord.setMemberId(memb.getMemberNumber());
 				ord.setID(memb.getMemberID());
@@ -236,19 +237,19 @@ public class NewOrder {
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
-						ord.setTotalPrice(ord.getPrice() * 0.85*parkDiscount);
-						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)//****
-								* Integer.parseInt(memb.getMemberAmount()) * 0.2);
+						ord.setTotalPrice((ord.getPrice() * 0.85) * parkDiscount);
+						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)
+								* (Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.2);
 					} else {
-						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.85);
-						ord.setTotalPrice(ord.getTotalPrice() * 0.8 *parkDiscount);
+						ord.setTotalPrice((numberOfPeople * parkEnteryPrice) * 0.85);
+						ord.setTotalPrice((ord.getTotalPrice() * 0.8) * parkDiscount);
 					}
 					break;
 				case GROUP:
 					System.out.println("pre order group type enter");
 					System.out.println(ord.getPrice());
 					ord.setOrderType(OrderType.GROUP);
-					ord.setTotalPrice(ord.getPrice() * 0.75);
+					ord.setTotalPrice((ord.getPrice() * 0.75) * parkDiscount);
 					System.out.println(ord.getTotalPrice());
 					break;
 				default:
