@@ -72,8 +72,6 @@ public class DepartmentManagerController implements Initializable {
 	private Button btnVisitsReport;
 	@FXML
 	private Button btnCancelsReport;
-	@FXML
-	private Button btnSettings;
 
 	/***** Top Title *****/
 	@FXML
@@ -189,23 +187,18 @@ public class DepartmentManagerController implements Initializable {
 			lblTitle.setText("Dashboard");
 			pnDashboard.toFront();
 			setButtonPressed(btnDashboard);
-			setButtonReleased(btnVisitsReport, btnCancelsReport, btnSettings);
+			setButtonReleased(btnVisitsReport, btnCancelsReport);
 		} else if (event.getSource() == btnVisitsReport) {
 			lblTitle.setText("Visits Report");
 			pnVisits.toFront();
 			setButtonPressed(btnVisitsReport);
-			setButtonReleased(btnDashboard, btnCancelsReport, btnSettings);
+			setButtonReleased(btnDashboard, btnCancelsReport);
 		} else if (event.getSource() == btnCancelsReport) {
 			lblTitle.setText("Cancels Report");
 			pnCancels.toFront();
 			setButtonPressed(btnCancelsReport);
-			setButtonReleased(btnDashboard, btnVisitsReport, btnSettings);
-		} else if (event.getSource() == btnSettings) {
-			lblTitle.setText("Settings");
-			pnSettings.toFront();
-			setButtonPressed(btnSettings);
-			setButtonReleased(btnVisitsReport, btnCancelsReport, btnCancelsReport);
-		}
+			setButtonReleased(btnDashboard, btnVisitsReport);
+		} 
 	}
 
 	/**
@@ -894,12 +887,10 @@ public class DepartmentManagerController implements Initializable {
 	 * 
 	 * @param button
 	 * @param button1
-	 * @param button2
 	 */
-	public void setButtonReleased(Button button, Button button1, Button button2) {
+	public void setButtonReleased(Button button, Button button1) {
 		button.setStyle("-fx-background-color: transparent;");
 		button1.setStyle("-fx-background-color: transparent;");
-		button2.setStyle("-fx-background-color: transparent;");
 	}
 
 	/**

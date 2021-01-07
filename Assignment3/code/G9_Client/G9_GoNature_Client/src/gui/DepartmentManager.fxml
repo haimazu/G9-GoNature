@@ -60,17 +60,6 @@
                   <FontAwesomeIconView glyphName="BAN" size="16" />
                </graphic>
             </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="8.0" mnemonicParsing="false" onAction="#handleSideBar" prefHeight="42.0" prefWidth="182.0" styleClass="btnSidebarMenu" text="Settings" textFill="WHITE">
-               <graphic>
-                  <FontAwesomeIconView glyphName="COG" size="16" />
-               </graphic>
-               <padding>
-                  <Insets left="15.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Button>
          </children>
       </VBox>
       <Pane layoutX="182.0" prefHeight="65.0" prefWidth="620.0" styleClass="pnRightTop" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0">
@@ -91,16 +80,6 @@
       </Pane>
       <StackPane fx:id="pnStack" layoutX="182.0" layoutY="65.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
          <children>
-            <Pane fx:id="pnSettings" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
-               <children>
-                  <TableView layoutX="10.0" layoutY="105.0" prefHeight="422.0" prefWidth="598.0">
-                     <columns>
-                        <TableColumn prefWidth="75.0" text="C1" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                     </columns>
-                  </TableView>
-               </children>
-            </Pane>
             <Pane fx:id="pnCancels" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
                   <JFXDatePicker fx:id="dpCancelFrom" focusTraversable="false" layoutX="84.0" layoutY="33.0" promptText="From Date" styleClass="date-picker" />
@@ -152,55 +131,6 @@
                      </font>
                   </Label>
                   <PieChart fx:id="pieGroup" layoutX="149.0" layoutY="286.0" prefHeight="280.0" prefWidth="320.0" />
-               </children>
-            </Pane>
-            <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
-               <children>
-                  <AnchorPane layoutX="2.0" layoutY="168.0" prefHeight="250.0" prefWidth="615.0">
-                     <children>
-                        <TableView fx:id="TableDep" layoutX="1.0" layoutY="59.0" prefHeight="218.0" prefWidth="613.0" style="-fx-background-color: #FFFFF0;" stylesheets="@application.css">
-                           <columns>
-                              <TableColumn fx:id="parkName" prefWidth="74.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Park Name" />
-                              <TableColumn fx:id="requestType" prefWidth="83.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Request Type" />
-                              <TableColumn fx:id="requestDetails" prefWidth="394.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="Requset Details" />
-                              <TableColumn fx:id="mark" prefWidth="61.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8; -fx-alignment: CENTER;" text="mark" />
-                           </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-                  <Label layoutX="26.0" layoutY="220.0" styleClass="labelBold" text="Last 10 reports:" visible="false">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="184.0" prefHeight="26.0" prefWidth="320.0" styleClass="labelBold" text="You have    messages to confirm">
-                     <font>
-                        <Font name="Ebrima Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="LabelCount" alignment="TOP_LEFT" layoutX="106.0" layoutY="184.0" prefHeight="26.0" prefWidth="16.0" styleClass="labelBold">
-                     <font>
-                        <Font name="Ebrima Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="TOP_LEFT" layoutX="38.0" layoutY="268.0" prefHeight="26.0" prefWidth="174.0" styleClass="labelBold" text="Reports" visible="false">
-                     <font>
-                        <Font name="Ebrima Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnApprove" focusTraversable="false" layoutX="205.0" layoutY="466.0" mnemonicParsing="false" onAction="#approve" prefHeight="42.0" prefWidth="75.0" styleClass="btnNext" text="approve" />
-                  <Button fx:id="btnDisaprove" focusTraversable="false" layoutX="334.0" layoutY="466.0" mnemonicParsing="false" onAction="#disapprove" prefHeight="42.0" prefWidth="75.0" style="-fx-background-color: #cc0000;" styleClass="btnNext" text="disapprove" />
-                  <Label fx:id="lblCurrentVisitors" layoutX="176.0" layoutY="-2.0">
-                     <font>
-                        <Font name="Ebrima" size="16.0" />
-                     </font>
-                  </Label>
-                  <TableView fx:id="TVisitors" layoutX="20.0" layoutY="7.0" prefHeight="169.0" prefWidth="182.0" style="-fx-background-color: #FFFFF0; -fx-border-color: #deceb8;">
-                    <columns>
-                      <TableColumn fx:id="visitorColumn" prefWidth="75.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Park Name" />
-                      <TableColumn fx:id="amountColumn" prefWidth="106.0" style="-fx-background-color: #F0EAD2; -fx-border-color: #deceb8;" text="Current Amount" />
-                    </columns>
-                  </TableView>
                </children>
             </Pane>
             <Pane fx:id="pnDashboard" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
