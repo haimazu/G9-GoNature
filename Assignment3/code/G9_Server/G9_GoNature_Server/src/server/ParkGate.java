@@ -22,9 +22,9 @@ public class ParkGate {
 	// output: none
 	// send to client: ArrayList of object
 	// cell[0] contains "enterThePark" String
-	// cell[1] contains priceBeforeDiscount as string
-	// cell[2] contains priceAfterDiscount as string
-	// cell[3] contains discount as string
+	// cell[1] contains priceBeforeDiscount as double
+	// cell[2] contains priceAfterDiscount as double
+	// cell[3] contains discount as double
 	public static void getPrice(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -47,9 +47,9 @@ public class ParkGate {
 		}
 		String howMany = (String) recived.get(4);
 		ArrayList<Double> prices = priceingForEntry(orderNumber, memberId, id, howMany, parkName);
-		answer.add(prices.get(0).toString()); // priceBeforeDiscount
-		answer.add(prices.get(1).toString()); // priceAfterDiscount
-		answer.add(prices.get(2).toString()); // discount
+		answer.add(prices.get(0)); // priceBeforeDiscount
+		answer.add(prices.get(1)); // priceAfterDiscount
+		answer.add(prices.get(2)); // discount
 		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {
@@ -397,7 +397,7 @@ public class ParkGate {
 			Order order = new Order(orderWrapped.get(0));
 			priceBeforeDiscount += order.getPrice();
 			priceAfterDiscount += order.getTotalPrice();
-			discount = 1 - ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in
+			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in
 																										// precent
 			// suck the order price
 			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than people on reservation

@@ -156,6 +156,8 @@ public class NewOrder {
 		query.add("member"); // table name
 		query.add("*"); // columns to select from
 
+		if (ord.getID()==null&&ord.getMemberId()==null)
+			return null;
 		if (ord.getID() != null) {
 			query.add("WHERE ID='" + ord.getID() + "'");
 		} else if (ord.getMemberId() != null) {
