@@ -89,9 +89,9 @@ public class ChatClient extends AbstractClient {
 		case "updateAmountArrived":
 			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
 			break;
-		case "randomVisitorFakeOrder":
-			ParkEmployeeController.receivedFromServerVisitorsPrice((Object) received.get(1));
-			break;
+//		case "randomVisitorFakeOrder":
+//			ParkEmployeeController.receivedFromServerVisitorsPrice((Object) received.get(1));
+//			break;
 		case "addFakeOrder":
 			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
 			break;
@@ -167,9 +167,9 @@ public class ChatClient extends AbstractClient {
 		case "parkDateilsForDepartment":
 			DepartmentManagerController.setParkDetails((ArrayList<ArrayList<String>>) received.get(1));
 			break;
-		case "getVisitorsEntryStatus":
-			ParkEmployeeController.receivedFromEnterAndExitStatus((String) received.get(1));
-			break;
+//		case "getVisitorsEntryStatus":
+//			ParkEmployeeController.receivedFromEnterAndExitStatus((String) received.get(1));
+//			break;
 		case "revenueReport" :
 			ParkManagerController.recivedFromserverRevenueReport((ArrayList<ArrayList<String>>) received.get(1));
 			break ;
@@ -177,7 +177,10 @@ public class ChatClient extends AbstractClient {
 			ParkEmployeeController.receivedFromServerVisitorsPrice((ArrayList<Object>) received);
 			break;
 		case "enterThePark":
-			ParkEmployeeController.receivedFromServerVisitorsPrice((String) received.get(1));
+			ParkEmployeeController.receivedFromServerEntryStatus((String) received.get(1));
+			break;
+		case "exitThePark":
+			ParkEmployeeController.receivedFromServerExitStatus((String) received.get(1));
 			break;
 		default:
 			break;

@@ -157,6 +157,13 @@ public class EchoServer extends AbstractServer {
 				e.printStackTrace();
 			}
 			break;
+		case "exitThePark":
+			try {
+				ParkGate.exitThePark(recived, client);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
 		default:
 			break;
 		}
