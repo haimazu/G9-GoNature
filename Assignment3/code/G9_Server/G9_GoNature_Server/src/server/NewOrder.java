@@ -239,7 +239,7 @@ public class NewOrder {
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
 						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)
-								* (Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.8);
+								* ((Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.8));
 						ord.setTotalPrice((ord.getPrice() * 0.85) * parkDiscount);
 					} else {
 						ord.setTotalPrice((numberOfPeople * parkEnteryPrice) * 0.85);
