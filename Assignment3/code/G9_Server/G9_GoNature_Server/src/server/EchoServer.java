@@ -148,7 +148,7 @@ public class EchoServer extends AbstractServer {
 			Reports.incomesReport(recived, client);
 			break;
 		case "getVisitorsPrice":
-			Bootke.getPriceForBootke(recived, client);
+			ParkGate.getPrice(recived, client);
 			break;
 		default:
 			break;
