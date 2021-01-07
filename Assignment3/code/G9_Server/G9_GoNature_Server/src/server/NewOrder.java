@@ -19,8 +19,9 @@ import userData.Member;
 public class NewOrder {
 
 	/**
-	 * inserting a new reservation in order table in DB. sends to client :ArrayList of Object => cell[0] function name,
-	 *         cell[1] Order object with updated cells: price ,totalPrice
+	 * inserting a new reservation in order table in DB. sends to client :ArrayList
+	 * of Object => cell[0] function name, cell[1] Order object with updated cells:
+	 * price ,totalPrice
 	 * 
 	 * @param ArrayList of Object: cell[0] function name, cell[1] order object
 	 * @param client    ConnectionToClient
@@ -184,16 +185,18 @@ public class NewOrder {
 	 */
 	public static Order totalPrice(Order ord, Member memb, Boolean occasional) {
 		System.out.println("total price enter");
-		double parkEnteryPrice = CurrentPriceInPark(ord);
+		double[] a = CurrentPriceInPark(ord);
+		double parkEnteryPrice = a[0];
+		double parkDiscount = a[1];
 		System.out.println(ord);
 		int numberOfPeople;
 		if (occasional) {
 			numberOfPeople = ord.getAmountArrived();
 			ord.setPrice(parkEnteryPrice * numberOfPeople);// full price for all
-			
+
 			if (memb == null) { // if the order is not for a member
 				ord.setOrderType(OrderType.REGULAR);
-				ord.setTotalPrice(ord.getPrice());
+				ord.setTotalPrice(parkEnteryPrice * numberOfPeople*parkDiscount);
 			} else { // if the order is for occasional member
 				ord.setMemberId(memb.getMemberNumber());
 				ord.setID(memb.getMemberID());
@@ -203,13 +206,13 @@ public class NewOrder {
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0)
 						ord.setTotalPrice(nonFamily * parkEnteryPrice
-								+ Double.parseDouble(memb.getMemberAmount()) * parkEnteryPrice * 0.8);
+								+ Double.parseDouble(memb.getMemberAmount()) * parkEnteryPrice * 0.8*parkDiscount);
 					else
-						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8);
+						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8*parkDiscount);
 					break;
 				case GROUP:
 					ord.setOrderType(OrderType.GROUP);
-					ord.setTotalPrice(ord.getPrice() * 0.9);
+					ord.setTotalPrice(ord.getPrice() * 0.9*parkDiscount);
 					break;
 				default:
 					break;
@@ -221,7 +224,7 @@ public class NewOrder {
 			if (memb == null) { // if the order is not for a member
 				System.out.println("pre order regular type enter");
 				ord.setOrderType(OrderType.REGULAR);
-				ord.setTotalPrice(ord.getPrice() * 0.85);
+				ord.setTotalPrice(ord.getPrice() * 0.85*parkDiscount);
 			} else {// if the order is for non-occasional member
 				ord.setMemberId(memb.getMemberNumber());
 				ord.setID(memb.getMemberID());
@@ -231,12 +234,12 @@ public class NewOrder {
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
-						ord.setTotalPrice(ord.getPrice() * 0.85);
-						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)
+						ord.setTotalPrice(ord.getPrice() * 0.85*parkDiscount);
+						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)//****
 								* Integer.parseInt(memb.getMemberAmount()) * 0.2);
 					} else {
 						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.85);
-						ord.setTotalPrice(ord.getTotalPrice() * 0.8);
+						ord.setTotalPrice(ord.getTotalPrice() * 0.8 *parkDiscount);
 					}
 					break;
 				case GROUP:
@@ -262,10 +265,11 @@ public class NewOrder {
 	 * @param ord Order object
 	 * @return entry price
 	 **/
-	public static double CurrentPriceInPark(Order ord) {
+	public static double[] CurrentPriceInPark(Order ord) {
 
 		updatingParkCurrentPrice(ord.getParkName());
 		// current park discount
+		double[] a = new double[2];
 		ArrayList<String> query2 = new ArrayList<String>();
 		query2.add("select"); // command
 		query2.add("park"); // table name
@@ -273,16 +277,11 @@ public class NewOrder {
 		query2.add("WHERE parkName='" + ord.getParkName() + "'"); // condition
 		query2.add("2"); // how many columns returned
 		ArrayList<ArrayList<String>> parkDetails = MySQLConnection.select(query2);
-		Double priceWithDiscount = Double.parseDouble(parkDetails.get(0).get(0))
-				* Double.parseDouble(parkDetails.get(0).get(1));
-		System.out.println(parkDetails);
-		System.out.println("price with discount ="+ priceWithDiscount);
-		// returns full price in park if no discount
-		if (priceWithDiscount <= 0.0) {
-			return Double.parseDouble(parkDetails.get(0).get(0));
-		}
-		else
-			return priceWithDiscount;
+
+		a[0] = Double.parseDouble(parkDetails.get(0).get(0));
+		a[1] = Double.parseDouble(parkDetails.get(0).get(1));
+
+		return a;
 	}
 
 	/**
