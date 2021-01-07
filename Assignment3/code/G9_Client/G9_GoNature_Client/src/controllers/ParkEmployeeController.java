@@ -723,33 +723,9 @@ public class ParkEmployeeController implements Initializable {
 			sendToGetPrice(currentTypeName, currentTypeValue, txtVisitorsAmount.getText());
 
 		// price for ordered visitor
-	    } else if (!btnManualAccess.isVisible() && 
-	    		Integer.parseInt(txtVisitorsAmount.getText()) <= Integer.parseInt(lblVisitorsNumber.getText())) {
-	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-			
-	    // price for both, ordered visitors and friends
 	    } else {
-	    	int difference = Integer.parseInt(txtVisitorsAmount.getText()) - Integer.parseInt(lblVisitorsNumber.getText());
-	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-	    	// for order
-	    	String price = visitorsPrice.get(1);
-	    	String discount = visitorsPrice.get(2);
-	    	String totalPrice = visitorsPrice.get(3);
-	    	// for the other visitors (as random)
-	    	sendToGetPrice("ID", "420", String.valueOf((difference)));
-	    	
-	    	// set price
-            lblPrice.setText(String.format("%.1f", price) + "₪ , " 
-                           + String.format("%.1f", visitorsPrice.get(1)) + "₪");
-            // set discount
-            lblDiscount.setText(String.format("%.1f", discount) + "% , "
-                              + String.format("%.1f", visitorsPrice.get(2)) + "%");	
-            // set total price
-            lblTotalPrice.setText(String.format("%.1f", totalPrice) + "₪ + " 
-                           + String.format("%.1f", visitorsPrice.get(3)) + "₪ = " 
-                           + String.format("%.1f", (Integer.parseInt(totalPrice) + Integer.parseInt(visitorsPrice.get(3)))) + "₪");
-            return;
-	    }
+	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
+	    } 
 		
 		lblPrice.setText(String.format("%.1f", visitorsPrice.get(1)) + "₪");
 	    lblDiscount.setText(String.format("%.1f", visitorsPrice.get(2)) + "%");			
