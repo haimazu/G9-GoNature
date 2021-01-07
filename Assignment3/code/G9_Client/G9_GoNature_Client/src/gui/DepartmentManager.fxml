@@ -205,7 +205,7 @@
             </Pane>
             <Pane fx:id="pnDashboard1" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
                <children>
-                  <AnchorPane layoutX="2.0" layoutY="168.0" prefHeight="250.0" prefWidth="615.0">
+                  <AnchorPane layoutX="2.0" layoutY="177.0" prefHeight="268.0" prefWidth="615.0">
                      <children>
                         <TableView fx:id="TableDep" layoutX="1.0" layoutY="59.0" prefHeight="218.0" prefWidth="613.0" style="-fx-background-color: #FFFFF0;" stylesheets="@application.css">
                            <columns>
