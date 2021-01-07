@@ -757,12 +757,14 @@ public class ParkEmployeeController implements Initializable {
 	}
 	
 	public void sendToGetPrice(String type, String value, String amount) {
-		ArrayList<String> data = new ArrayList<String>();
-		data.add(getParkName());
-		data.add(type);
-		data.add(value);
-		data.add(amount);
-		sendToServerArrayList("getVisitorsPrice", data);
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+		msg.add("getVisitorsPrice");
+		msg.add(getParkName());
+		msg.add(type);
+		msg.add(value);
+		msg.add(amount);
+		ClientUI.sentToChatClient(msg);
 	}
 
 	// check for valid date in the order
