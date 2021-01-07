@@ -57,6 +57,13 @@ import javafx.stage.Stage;
 import managerData.ManagerRequest;
 import managerData.TableViewSet;
 
+/**
+*
+* controller that coordinator all the kinds of alert that we use in the project
+*
+* @author Haim Azulay, Bar Katz 
+*/
+
 public class DepartmentManagerController implements Initializable {
 	/***** Side Bar *****/
 	@FXML
@@ -205,8 +212,8 @@ public class DepartmentManagerController implements Initializable {
 
 
 	/**
-	 * input: none 
-	 * output: moving to 'login' screen
+	 * Moves to the 'login' screen
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -234,9 +241,7 @@ public class DepartmentManagerController implements Initializable {
 
 	/**
 	 * checks if the date is correct and displays the chart if so
-	 * input: from -> start date
-	 *	to -> end date
-	 * output: display the chart depending on the dates entered
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -265,16 +270,21 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// creates a PDF file based on data retrieved from the DB
-	// input: from -> start date
-	// to -> end date
-	// ArrayList<ArrayList<String>> cancelledOrders, cells:
-	// cell [i][0]: parkName
-	// cell [i][1]: date of canceled/dismissed
-	// cell [i][2]: amount
-	// 0 <= i <= cancelledOrders.size() - 1
-	// output: PDF report with all the data shown in the chart
 	
+	/**
+	 * checks if the date is correct and displays the chart if so
+	 * creates a PDF file based on data retrieved from the DB
+	 * input: from = start date
+	 * to = end date
+	 * ArrayList<ArrayList<String>> cancelledOrders, cells:
+	 * 		cell [i][0]: parkName
+	 * 		cell [i][1]: date of canceled/dismissed
+	 * 		cell [i][2]: amount
+	 * 0 <= i <= cancelledOrders.size() - 1
+	 * output: PDF report with all the data shown in the chart
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void export(ActionEvent event) {
 		// call the function to fill the cancelledOrders data
@@ -362,15 +372,20 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// creates a PDF file based on data retrieved from the DB
-	// input: from -> start date
-	// to -> end date
-	// ArrayList<Double> regularVisitors/memberVisitors/groupVisitors, cells:
-	// cell [0]: percentage of visitors between the hours 0-1
-	// cell [1]: percentage of visitors between the hours 1-2
-	// cell [2]: percentage of visitors between the hours 2-3
-	// cell [3]: percentage of visitors between the hours 3-4
-	// output: PDF report with all the data shown in the chart
+	/**
+	 * creates a PDF file based on data retrieved from the DB
+	 * input: from = start date 
+	 *        to = end date 
+	 *        ArrayList (Double)
+	 * 		  regularVisitors/memberVisitors/groupVisitors, cells: 
+	 * cell [0]: percentage of visitors between the hours 0 to 1 
+	 * cell [1]: percentage of visitors between the hours 1 to 2 
+	 * cell [2]: percentage of visitors between the hours 2 to 3
+	 * cell [3]: percentage of visitors between the hours 3 to 4 
+	 * output: PDF report with all the data shown in the chart
+	 * 
+	 * @param event
+	 */	
 	@FXML
 	void exportPieChart(ActionEvent event) {
 		// call the function to fill the cancelledOrders data
@@ -485,15 +500,20 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// displays the chart for the information retrieved from DB
-	// input: from -> start date
-	// to -> end date
-	// ArrayList<Double> regularVisitors/memberVisitors/groupVisitors, cells:
-	// cell [0]: percentage of visitors between the hours 0-1
-	// cell [1]: percentage of visitors between the hours 1-2
-	// cell [2]: percentage of visitors between the hours 2-3
-	// cell [3]: percentage of visitors between the hours 3-4
-	// output: displays the data
+	/**
+	 * displays the chart for the information retrieved from DB
+	 * input: from = start date 
+	 *        to = end date 
+	 *        ArrayList (Double)
+	 * 		  regularVisitors/memberVisitors/groupVisitors, cells: 
+	 * cell [0]: percentage of visitors between the hours 0 to 1 
+	 * cell [1]: percentage of visitors between the hours 1 to 2 
+	 * cell [2]: percentage of visitors between the hours 2 to 3
+	 * cell [3]: percentage of visitors between the hours 3 to 4 
+	 * output: displays the data
+	 * 
+	 * @param event
+	 */	
 	@FXML
 	void showPieChart(ActionEvent event) {
 		ArrayList<String> data = new ArrayList<>();
@@ -540,10 +560,14 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// check that the inserted dates are correct
-	// input: from -> start date
-	// to -> end date
-	// output: T / F ==> if valid T, otherwise F
+
+	/**
+	 * check that the inserted dates are correct
+	 * 
+	 * @param from
+	 * @param to
+	 * @return true if the date is valid, false otherwise
+	 */	
 	public boolean checkDate(LocalDate from, LocalDate to) {
 
 		// the dates are correct
@@ -554,15 +578,18 @@ public class DepartmentManagerController implements Initializable {
 		return false;
 	}
 
-	// adding a specific chart
-	// input: PieChart currentPie - with the current pie chart we want to add
-	// String title - the case for this pie chart
-	// ArrayList<Double> currentPie, cells:
-	// cell [0]: percentage of visitors between the hours 0-1
-	// cell [1]: percentage of visitors between the hours 1-2
-	// cell [2]: percentage of visitors between the hours 2-3
-	// cell [3]: percentage of visitors between the hours 3-4
-	// output: add the data
+
+	/**
+	 * adding a specific chart
+	 * 
+	 * cell [0]: percentage of visitors between the hours 0 to 1 
+	 * cell [1]: percentage of visitors between the hours 1 to 2 
+	 * cell [2]: percentage of visitors between the hours 2 to 3
+	 * cell [3]: percentage of visitors between the hours 3 to 4 
+	 * 
+	 * @param currentPie
+	 * @param title
+	 */	
 	public void addPieChart(PieChart currentPie, String title) {
 		currentPie.getData().clear();
 		// setting the length of the label line
@@ -593,6 +620,13 @@ public class DepartmentManagerController implements Initializable {
 		currentPie.setData(currentVisitorsData);
 	}
 
+	/**
+	 * adding data for the pie chart
+	 * 
+	 * 
+	 * @param currentList
+	 * @return currentVisitorsData
+	 */	
 	public ObservableList<PieChart.Data> getChartData(ArrayList<Double> currentList) {
 
 		ObservableList<PieChart.Data> currentVisitorsData = FXCollections.observableArrayList();
@@ -617,10 +651,20 @@ public class DepartmentManagerController implements Initializable {
 		return currentVisitorsData;
 	}
 
+	/**
+	 * get the user first name
+	 * 
+	 * @return firstName
+	 */	
 	public static String getFirstName() {
 		return firstName;
 	}
 
+	/**
+	 * set the user first name
+	 * 
+	 * @param firstName
+	 */
 	public static void setFirstName(String firstName) {
 		DepartmentManagerController.firstName = firstName;
 	}

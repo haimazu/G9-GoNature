@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 
 /**
 *
-*controller that gets the user login details
+* Controller that gets the user login details
 *
 * @author Haim Azulay Hodaya Mekonen
 */
@@ -59,9 +59,8 @@ public class LoginController implements Initializable {
 	private AlertController alert = new AlertController();
 
 	/**
-	 * Switch screens: Login Welcome
+	 * Switch screens: Welcome
 	 **/
-
 	@FXML
 	void back(ActionEvent event) throws IOException {			
 		Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -70,17 +69,11 @@ public class LoginController implements Initializable {
 	}
 		
 	 /**
-	 *
-	 * msg is ArrayList of objects [0] the function who calling to service
-	 * from the server "login" [1] ArrayList of String [0] username
-	 *  [1] password The function waiting to response from the server and can get: if
-	 * success (the user exists) we getting the role of the user else (the user
-	 * doesn't exists) getting "Failed" 
+	 * Checks login status for employee
+	 * 
 	 * @param ActionEvent event
 	 * @exception IOException
-	 * 
 	 */
-	
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		// Data fields
@@ -116,9 +109,9 @@ public class LoginController implements Initializable {
 
 	/**
 	 * Check Username input before sending to DB     
-	 * @return  true if the input is correct false otherwise
+	 * 
+	 * @return  true if the input is correct, false otherwise
 	 */
-	
 	public boolean checkUsername() {
 		String username = txtUsername.getText();
 		// Username consists a letter then letters or numbers [length of 3-20
@@ -137,9 +130,9 @@ public class LoginController implements Initializable {
 
 	/**
 	 * Check password input before sending to DB     
+	 * 
 	 * @return  true if the input is correct false otherwise
-	 */
-	
+	 */	
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
 
@@ -155,12 +148,11 @@ public class LoginController implements Initializable {
 	}
 	
 	/**
-	 *  sends the case we dealing with and dbColumns to the server to get data
+	 * Sends the case we dealing with and dbColumns to the server to get data
 	 *  
 	 * @param type String depending on the case         
-	 * @param   dbColumns ArrayList of String
+	 * @param dbColumns ArrayList of String
 	 */
-
 	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();	
@@ -172,13 +164,13 @@ public class LoginController implements Initializable {
 	}
 
 	/**
-	 * @param msgReceived-data from the server
-	 *                
+	 * Receives information returning from the server with user status
+	 * 
+	 * @param msgReceived data from the server               
 	 * @return cell 0: the 'role' of the user
 	 *	       cell 1: the first name of the user
 	 *		   cell 2: name of the park where the employee works
 	 */
-
 	@SuppressWarnings("unchecked")
 	public static void receivedFromServerUserStatus(Object msgReceived) {
 		if (msgReceived instanceof String) {
@@ -193,13 +185,13 @@ public class LoginController implements Initializable {
 	}
 
 	/**
-	 * @param msgReceived-boolean value with the result of the action Status 
-	 *                
+	 * Receives information that is returned from the server with the user login status
+	 * 
+	 * @param msgReceived boolean value with the result of the action Status                 
 	 * @return T / F, 
 	 *	       T Update logged in status success
 	 *		   F Update logged in status failed
-	 */
-	
+	 */	
 	public static void receivedFromServerLoggedInStatus(boolean msgReceived) {
 		if (msgReceived) {
 			System.out.println("Update logged in / out status success.");
@@ -208,64 +200,120 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	// get the 'role' of the user
+	/**
+	 * get the user 'role'
+	 * 
+	 * @return status
+	 */
 	public static String getStatus() {
 		return status;
 	}
 
-	// set the 'role' of the user
+	/**
+	 * set the 'role' of the user
+	 * 
+	 * @param status
+	 */
 	public static void setStatus(String status) {
 		LoginController.status = status;
 	}
 
-	// get the 'firstName' of the user
+	/**
+	 * get the 'firstName' of the user
+	 * 
+	 * @return firstName
+	 */
 	public static String getFirstName() {
 		return firstName;
 	}
 
-	// set the 'firstName' of the user
+	/**
+	 * set the 'firstName' of the user
+	 * 
+	 * @param firstName
+	 */
 	public static void setFirstName(String firstName) {
 		LoginController.firstName = firstName;
 	}
 
-	// get the 'parkName'
+	/**
+	 * get the 'parkName'
+	 * 
+	 * @return parkName
+	 */
 	public static String getParkName() {
 		return parkName;
 	}
 
-	// set the 'parkName'
+	/**
+	 * set the 'parkName'
+	 * 
+	 * @param parkName
+	 */
 	public static void setParkName(String parkName) {
 		LoginController.parkName = parkName;
 	}
 
+	/**
+	 * get the error
+	 * 
+	 * @return error
+	 */
 	public static String getError() {
 		return error;
 	}
 
+	/**
+	 * set errors
+	 * 
+	 * @param error
+	 */
 	public static void setError(String error) {
 		LoginController.error = error;
 	}
 
+	/**
+	 * get the 'password'
+	 * 
+	 * @return password
+	 */
 	public static String getPassword() {
 		return password;
 	}
 
+	/**
+	 * set the 'password'
+	 * 
+	 * @param password
+	 */
 	public static void setPassword(String password) {
 		LoginController.password = password;
 	}
 
+	/**
+	 * get the 'username'
+	 * 
+	 * @return username
+	 */
 	public static String getUsername() {
 		return username;
 	}
 
+	/**
+	 * set the 'username'
+	 * 
+	 * @param username
+	 */
 	public static void setUsername(String username) {
 		LoginController.username = username;
 	}
 
 	/**
 	 * Initializing and force each of the fields according to the Required templates 
+	 * 
+	 * @param arg0
+	 * @param arg1
 	 */
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// active listener for the username text field

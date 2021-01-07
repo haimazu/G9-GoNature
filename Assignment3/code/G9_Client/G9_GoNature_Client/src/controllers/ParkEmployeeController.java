@@ -1308,7 +1308,6 @@ public class ParkEmployeeController implements Initializable {
 		setError("");
 		setEntryStatus("");
 		setExitStatus("");
-		txtVisitorsAmount.setDisable(true);
 		txtVisitorsAmount.clear();
 		// setEntryAndExitStatus("");
 		// setRandomVisitorIdNumber("");
