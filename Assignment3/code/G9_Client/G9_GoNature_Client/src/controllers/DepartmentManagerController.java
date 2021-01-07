@@ -823,6 +823,8 @@ public class DepartmentManagerController implements Initializable {
 	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
 		DBList = dBList;
 	}
+	
+	
 
 	public void iniailTabelPending() {
 
