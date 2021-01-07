@@ -83,18 +83,18 @@ public class ChatClient extends AbstractClient {
 		case "getParkDetails":
 			ParkEmployeeController.receivedFromServerParkDetails((Object) received.get(1));
 			break;
-		case "updateCurrentVisitors":
-			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
-			break;
-		case "updateAmountArrived":
-			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
-			break;
+//		case "updateCurrentVisitors":
+//			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+//			break;
+//		case "updateAmountArrived":
+//			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+//			break;
 //		case "randomVisitorFakeOrder":
 //			ParkEmployeeController.receivedFromServerVisitorsPrice((Object) received.get(1));
 //			break;
-		case "addFakeOrder":
-			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
-			break;
+//		case "addFakeOrder":
+//			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+//			break;
 		case "order":
 			OrderController.recivedFromServer((Object) received.get(1));
 			break;
@@ -133,9 +133,9 @@ public class ChatClient extends AbstractClient {
 		case "PendingManagerRequests":
 			DepartmentManagerController.setDBList((ArrayList<ArrayList<String>>) received.get(1));
 			break;
-		case "updateAccessControl":
-			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
-			break;
+//		case "updateAccessControl":
+//			ParkEmployeeController.receivedFromServerUpdateStatus((boolean) received.get(1));
+//			break;
 		case "requestForParkDetails":
 			ParkManagerController.recivedFromserverParkDetails((Object) received.get(1));
 			break;
