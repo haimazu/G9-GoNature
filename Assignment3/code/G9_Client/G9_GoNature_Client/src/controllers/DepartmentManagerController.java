@@ -4,14 +4,12 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MulticastSocket;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import com.itextpdf.text.BaseColor;
@@ -679,13 +677,9 @@ public class DepartmentManagerController implements Initializable {
 			data.clear();
 		}
 
-		for (int j = 0; j < arrItems.length; j++) {
-			System.out.println(arrItems[j]);
-		}
 
 		if (!allItems.isEmpty()) {
 			Server.add(new ArrayList<Object>(allItems));
-			System.out.println("server: " + Server);
 			allItems.clear();
 			// remove items from list after the all lists for server -  DO NOT DELETE!
 //			for (int i = arrItems.length - 1; i >= 0; i--) {
@@ -696,13 +690,10 @@ public class DepartmentManagerController implements Initializable {
 			ClientUI.sentToChatClient(Server);
 		}
 
-		
-		System.out.println("i need this : " + status);
+
 
 		if (status!=null &&!status.isEmpty() ) {
-			System.out.println("pass server get answer - approve");
 			for (ArrayList<Object> item : status) {
-				System.out.println("item : " + item.get(1)) ;
 				if (!(boolean) item.get(1))
 					alert.failedAlert("Failed", "something went wrong, please try later again!");
 				else {
@@ -747,9 +738,7 @@ public class DepartmentManagerController implements Initializable {
 			data.clear();
 		}
 
-		for (int j = 0; j < arrItems.length; j++) {
-			System.out.println(arrItems[j]);
-		}
+
 		if (!allItems.isEmpty()) {
 			Server.add(new ArrayList<Object>(allItems));
 			allItems.clear();
@@ -762,10 +751,8 @@ public class DepartmentManagerController implements Initializable {
 		}
 		// Server.clear();
 		
-		System.out.println("i need this : " + status);
 
 		if (status!=null && !status.isEmpty()) {
-			System.out.println("pass server get answer - disapprove");
 			for (ArrayList<Object> item : status) {
 				if (!(boolean) item.get(1))
 					alert.failedAlert("Failed", "something went wrong, please try later again!");
@@ -1103,10 +1090,11 @@ public class DepartmentManagerController implements Initializable {
 					arrayList.get(1) + " / " + arrayList.get(2));
 			TVV.setMaxVisitors(arrayList.get(2));
 			listForTable.add(TVV);
+			System.out.println(arrayList);
 		}
 		TVisitors.setItems(listForTable);
-		System.out.println(TVisitors.toString());
 	}
+	
 
 	public void setCurrentVisitors(ArrayList<Object> arr) {
 
