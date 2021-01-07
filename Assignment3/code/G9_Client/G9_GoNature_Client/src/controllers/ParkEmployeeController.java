@@ -306,7 +306,7 @@ public class ParkEmployeeController implements Initializable {
 
 			orderStatus = true;
 			/*** Enter ***/ // check date and time
-			if (radEnter.isSelected() && checkDate() && checkTime("approve")) {				
+			if (radEnter.isSelected()) {// && checkDate() && checkTime("approve")) {				
 				execEnter();
 				/*** Exit ***/
 			} else if (radExit.isSelected()) {
@@ -430,10 +430,25 @@ public class ParkEmployeeController implements Initializable {
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
 			System.out.println("Enter on random");	
+			
 		// order
 		} else {
 			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
 			System.out.println("Enter on order");	
+			
+			if (getEntryStatus().equals("notGoodTime")) {
+				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
+				return;
+			}
+		}
+			
+		if (getEntryStatus().equals("allreadyInPark")) {
+			alert.failedAlert("Failed", "The visitors identified by these details have not yet left the park.");
+		} else if (getEntryStatus().equals("parkfull")) {
+			alert.failedAlert("Failed", "We are sorry, the park is full right now.");
+			// can enter
+		} else if (getEntryStatus().equals("enter")) {
+			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 		}
 //	    int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());	
 //	    
@@ -510,12 +525,26 @@ public class ParkEmployeeController implements Initializable {
 //	// input: none
 //	// output: updating the current visitors in the park
 	public void execExit() {
+		ArrayList<String> idOrMemberId;
+		
 		// random
 		if (!orderStatus) {
+			idOrMemberId = checkForIdOrMemberId();
+			sendToGetExitStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
 			System.out.println("Exit on random");		
 		// order
 		} else {
+			sendToGetExitStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
 			System.out.println("Exit on order");			
+		}
+		
+		if (getExitStatus().equals("allreadyExited")) {
+			alert.failedAlert("Failed", "The visitor/s have already leaved.");
+		} else if (getExitStatus().equals("neverWasHere")) {
+			alert.failedAlert("Failed", "The visitor/s didn't enter.");
+		// can leave
+		} else if (getExitStatus().equals("exited")) {
+			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s leaved.");
 		}
 //		clearPaymentFields();
 //	    int updateCurrentVisitors = 0;
@@ -772,6 +801,17 @@ public class ParkEmployeeController implements Initializable {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		msg.add("enterThePark");
+		msg.add(parkDetails);
+		msg.add(type);
+		msg.add(value);
+		msg.add(amount);
+		ClientUI.sentToChatClient(msg);
+	}
+	
+	public void sendToGetExitStatus(String type, String value, String amount) {
+		// Query
+		ArrayList<Object> msg = new ArrayList<Object>();
+		msg.add("exitThePark");
 		msg.add(parkDetails);
 		msg.add(type);
 		msg.add(value);
