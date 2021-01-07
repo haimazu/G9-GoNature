@@ -233,6 +233,7 @@ public class NewOrder {
 				ord.setID(memb.getMemberID());
 				switch (memb.getMemberOrderType()) {
 				case MEMBER:
+					
 					System.out.println("pre order member type enter");
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
