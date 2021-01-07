@@ -30,7 +30,11 @@ public class ExistingOrderCheck {
 		} else {
 			Order kuku = new Order(queryData.get(0));
 			answer.add(kuku);
+			
+			if(ParkGate.orderWasUsed(kuku))
+				answer.add("Order is already used");
 		}
+		
 		EchoServer.sendToMyClient(answer, client);
 	}
 
