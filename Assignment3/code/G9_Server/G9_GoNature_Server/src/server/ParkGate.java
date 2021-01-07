@@ -367,7 +367,7 @@ public class ParkGate {
 		query.add("select"); // command
 		query.add("park"); // table name
 		query.add("mangerDiscount"); // columns to show
-		query.add("WHERE parkName = '" + stubOrder.getParkName() + "'"); // condition
+		query.add("WHERE parkName = '" + parkName + "'"); // condition
 		query.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		
@@ -408,8 +408,7 @@ public class ParkGate {
 			// dont forget to insert the + thig
 			priceBeforeDiscount += stubOrder.getPrice();
 			priceAfterDiscount += stubOrder.getTotalPrice();
-			
-			
+				
 		}
 		ret.add(priceBeforeDiscount);
 		ret.add(discount);
