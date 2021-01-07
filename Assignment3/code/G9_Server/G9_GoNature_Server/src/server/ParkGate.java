@@ -394,7 +394,7 @@ public class ParkGate {
 			Order order = new Order(orderWrapped.get(0));
 			priceBeforeDiscount += order.getPrice();
 			priceAfterDiscount += order.getTotalPrice();
-			discount += ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in precent
+			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in precent
 			// suck the order price
 			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than pepole on reservation
 				moreThanOrdered = true;
