@@ -433,7 +433,7 @@ public class ParkEmployeeController implements Initializable {
 			if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "These visitors have already entered.");
 				return;
-			} else if (getEntryStatus().equals("parkfull")) {
+			} else if (getEntryStatus().equals("parkFull")) {
 				alert.failedAlert("Failed", "We are sorry, the park is full right now.'n"
 						+ "Or you are trying to add too many visitors");
 			} else if (getEntryStatus().equals("enter")) {
@@ -447,7 +447,7 @@ public class ParkEmployeeController implements Initializable {
 				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
 			} else if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "This order has already been fulfilled.");
-			} else if (getEntryStatus().equals("parkfull")) {
+			} else if (getEntryStatus().equals("parkFull")) {
 				alert.failedAlert("Failed", "We are sorry, the park is full right now.'n"
 						+ "Or you are trying to add too many visitors");
 				// getEntryStatus() = "enter"
