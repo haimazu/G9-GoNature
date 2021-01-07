@@ -274,9 +274,9 @@ public class ParkEmployeeController implements Initializable {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			} else {
+				orderStatus = false;
 				/*** Enter ***/
 				if (radEnter.isSelected()) {
-					orderStatus = false;
 					execEnter();
 					//execRandomVisitor(Integer.parseInt(txtVisitorsAmount.getText()));
 					/*** Exit ***/
@@ -304,13 +304,13 @@ public class ParkEmployeeController implements Initializable {
 				return;
 			}
 
+			orderStatus = true;
 			/*** Enter ***/ // check date and time
-			if (radEnter.isSelected() && checkDate() && checkTime("approve")) {
-				orderStatus = true;
-				//execEnter();
+			if (radEnter.isSelected() && checkDate() && checkTime("approve")) {				
+				execEnter();
 				/*** Exit ***/
 			} else if (radExit.isSelected()) {
-				//execExit();
+				execExit();
 			}
 		}
 
@@ -423,11 +423,16 @@ public class ParkEmployeeController implements Initializable {
 //	// input: none
 //	// output: updating the current visitors in the park 
 	public void execEnter() {	
+		ArrayList<String> idOrMemberId;
+		
 		// random
 		if (!orderStatus) {
+			idOrMemberId = checkForIdOrMemberId();
+			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
 			System.out.println("Enter on random");	
 		// order
 		} else {
+			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
 			System.out.println("Enter on order");	
 		}
 //	    int tooManyVisitors = Integer.parseInt(txtVisitorsAmount.getText());	
@@ -720,20 +725,27 @@ public class ParkEmployeeController implements Initializable {
 //	    }
 //	}
 	
+	public ArrayList<String> checkForIdOrMemberId() {
+		ArrayList<String> idOrMemberId = new ArrayList<String>();
+	    
+	    if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
+	    	idOrMemberId.add("MEMBERID");
+			idOrMemberId.add(txtIdOrMemberId.getText().substring(1));
+		} else {
+			idOrMemberId.add("ID");
+			idOrMemberId.add(txtIdOrMemberId.getText());
+		}	
+	    
+		return idOrMemberId;
+	}
+	
 	public void setPrice() {
-		String currentTypeValue = null;
-	    String currentTypeName = null;
-	     
+		ArrayList<String> idOrMemberId;
+		
 		// price for random visitor
 		if (!btnRandomVisitor.isVisible()) {
-			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
-				currentTypeValue = txtIdOrMemberId.getText().substring(1);
-				currentTypeName = "MEMBERID";
-			} else {
-				currentTypeValue = txtIdOrMemberId.getText();
-				currentTypeName = "ID";
-			}	
-			sendToGetPrice(currentTypeName, currentTypeValue, txtVisitorsAmount.getText());
+			idOrMemberId = checkForIdOrMemberId();
+			sendToGetPrice(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
 			System.out.println(txtVisitorsAmount.getText());
 		// price for ordered visitor
 	    } else {
@@ -749,7 +761,7 @@ public class ParkEmployeeController implements Initializable {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		msg.add("getVisitorsPrice");
-		msg.add(parkDetails);
+		msg.add(getParkName());
 		msg.add(type);
 		msg.add(value);
 		msg.add(amount);
@@ -760,7 +772,7 @@ public class ParkEmployeeController implements Initializable {
 		// Query
 		ArrayList<Object> msg = new ArrayList<Object>();
 		msg.add("enterThePark");
-		msg.add(getParkName());
+		msg.add(parkDetails);
 		msg.add(type);
 		msg.add(value);
 		msg.add(amount);
