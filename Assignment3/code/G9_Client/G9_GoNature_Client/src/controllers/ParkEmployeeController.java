@@ -707,20 +707,16 @@ public class ParkEmployeeController implements Initializable {
 //	}
 	
 	public void setPrice() {
-		String memberId = null;
-	    String id = null;
 		String currentTypeValue = null;
 	    String currentTypeName = null;
 	     
 		// price for random visitor
 		if (!btnRandomVisitor.isVisible()) {
 			if (Character.isLetter(txtIdOrMemberId.getText().charAt(0))) {
-				memberId = txtIdOrMemberId.getText().substring(1);
-				currentTypeValue = memberId;
+				currentTypeValue = txtIdOrMemberId.getText().substring(1);
 				currentTypeName = "MEMBERID";
 			} else {
-				id = txtIdOrMemberId.getText();
-				currentTypeValue = id;
+				currentTypeValue = txtIdOrMemberId.getText();
 				currentTypeName = "ID";
 			}	
 			sendToGetPrice(currentTypeName, currentTypeValue, txtVisitorsAmount.getText());
@@ -730,9 +726,9 @@ public class ParkEmployeeController implements Initializable {
 	    	sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
 	    } 
 		
-		lblPrice.setText(String.format("%.1f", visitorsPrice.get(1)) + "₪");
-	    lblDiscount.setText(String.format("%.1f", visitorsPrice.get(2)) + "%");			
-	    lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(3)) + "₪");
+		lblPrice.setText(String.format("%.1f", visitorsPrice.get(0)) + "₪");
+		lblDiscount.setText(String.format("%.1f", visitorsPrice.get(1)) + "%");			
+		lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(2)) + "₪");
 	}
 	
 	public void sendToGetPrice(String type, String value, String amount) {
