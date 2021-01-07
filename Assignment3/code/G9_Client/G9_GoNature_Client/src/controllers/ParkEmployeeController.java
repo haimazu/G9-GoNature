@@ -319,7 +319,7 @@ public class ParkEmployeeController implements Initializable {
 		orderStatus = false;
 		//addFakeOrderToDB = false;
 		// update park status
-		updateParkStatus(0);
+		//updateParkStatus(0);
 		clearAllFields();
 	}
 
@@ -1104,23 +1104,23 @@ public class ParkEmployeeController implements Initializable {
 		ParkEmployeeController.visitorsPrice.add((Double) received.get(3));	
 	}
 	
-	public static void receivedFromServerEntryStatus(String received, int orderNumber) {
-		if (received.equals("notGoodTime")) {
+	public static void receivedFromServerEntryStatus(ArrayList<Object> received) {
+		if (received.get(1).equals("notGoodTime")) {
 			setEntryStatus("notGoodTime");
-		} else if (received.equals("allreadyInPark")) {
+		} else if (received.get(1).equals("allreadyInPark")) {
 			setEntryStatus("allreadyInPark");
-		} else if (received.equals("parkfull")) {
+		} else if (received.get(1).equals("parkfull")) {
 			setEntryStatus("parkfull");
 		} else {
 			setEntryStatus("enter");
-			randomVisitorTicket = orderNumber;
+			randomVisitorTicket = (int) received.get(2);
 		}
 	}
 	
-	public static void receivedFromServerExitStatus(String received) {
-		if (received.equals("allreadyExited")) {
+	public static void receivedFromServerExitStatus(ArrayList<Object> received) {
+		if (received.get(1).equals("allreadyExited")) {
 			setExitStatus("allreadyExited");
-		} else if (received.equals("neverWasHere")) {
+		} else if (received.get(1).equals("neverWasHere")) {
 			setExitStatus("neverWasHere");
 		} else {
 			setEntryStatus("exited");
