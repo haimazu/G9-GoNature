@@ -431,7 +431,10 @@ public class ParkEmployeeController implements Initializable {
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
 			System.out.println("Enter on random");	
-			
+			if (getEntryStatus().equals("allreadyInPark")) {
+				alert.failedAlert("Failed", "These visitors have already entered.");
+				return;
+			}			
 		// order
 		} else {
 			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());			
@@ -440,12 +443,13 @@ public class ParkEmployeeController implements Initializable {
 			if (getEntryStatus().equals("notGoodTime")) {
 				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
 				return;
+			} else if (getEntryStatus().equals("allreadyInPark")) {
+				alert.failedAlert("Failed", "This order has already been fulfilled.");
+				return;
 			}
 		}
-			
-		if (getEntryStatus().equals("allreadyInPark")) {
-			alert.failedAlert("Failed", "This order has already been fulfilled.");
-		} else if (getEntryStatus().equals("parkfull")) {
+					
+		if (getEntryStatus().equals("parkfull")) {
 			alert.failedAlert("Failed", "We are sorry, the park is full right now.");
 		// can enter getEntryStatus() = "enter"
 		} else {
@@ -1378,7 +1382,7 @@ public class ParkEmployeeController implements Initializable {
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
 
-			if (newValue.isEmpty()) {
+			if (newValue.isEmpty() || radExit.isSelected()) {
 				clearPaymentFields();
 			}
 			// \\d -> only digits
