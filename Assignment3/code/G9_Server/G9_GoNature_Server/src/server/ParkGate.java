@@ -103,16 +103,6 @@ public class ParkGate {
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> orderNumArr = new ArrayList<String>();
 		orderNumArr.add(orderNumber);
-//		if (orderNumber != null) {
-//			objForFech.add("ordersByOrderNumber");
-//			objForFech.add(orderNumArr);
-//		} else {
-//			objForFech.add("ordersByIdOrMemberId");
-//			if (memberId != null)
-//				objForFech.add(memberId);
-//			else if (id != null)
-//				objForFech.add(id);
-//		}
 		ArrayList<String> stringArr = new ArrayList<String>();
 		if (orderNumber != null) {
 			stringArr.add(orderNumber);
@@ -176,7 +166,7 @@ public class ParkGate {
 	// cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data
 	// in cell3)
 	// cell[3] contains value determent by cell2 as String
-	// output: none
+	// output: non
 	// send to client: ArrayList of object
 	// cell[0] contains "exitThePark" String
 	// cell[1] contains String "exited" if exited "allreadyExited" or "neverWasHere"
@@ -198,22 +188,12 @@ public class ParkGate {
 			orderNumber = (String) recived.get(3);
 			break;
 		default:
-			System.out.println("bootkeError");
+			//System.out.println("bootkeError");
 			break;
 		}
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> orderNumArr = new ArrayList<String>();
 		orderNumArr.add(orderNumber);
-//		if (orderNumber != null) {
-//			objForFech.add("ordersByOrderNumber");
-//			objForFech.add(orderNumArr);
-//		} else {
-//			objForFech.add("ordersByIdOrMemberId");
-//			if (memberId != null)
-//				objForFech.add(memberId);
-//			else if (id != null)
-//				objForFech.add(id);
-//		}
 		ArrayList<String> stringArr = new ArrayList<String>();
 		if (orderNumber != null) {
 			stringArr.add(orderNumber);
@@ -367,19 +347,6 @@ public class ParkGate {
 		boolean moreThanOrdered = false;
 		Double priceBeforeDiscount = 0.0;
 		Double priceAfterDiscount = 0.0;
-
-//		// calculates the current discount in park that valid
-//		ArrayList<String> query = new ArrayList<String>();
-//		query.add("select"); // command
-//		query.add("park"); // table name
-//		query.add("mangerDiscount"); // columns to show
-//		query.add("WHERE parkName = '" + parkName + "'"); // condition
-//		query.add("1"); // how many columns returned
-//		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-
-//		Double discount = 1 - Double.parseDouble(queryData.get(0).get(0)); // discount in precent
-//		System.out.println("Discount = " + discount);
-
 		Double discount = 0.0;
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> stringArr = new ArrayList<String>();
