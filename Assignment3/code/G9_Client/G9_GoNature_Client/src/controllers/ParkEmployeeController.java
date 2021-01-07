@@ -439,6 +439,8 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("parkFull")) {
 				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
 						+ "or you are trying to add too many visitors");
+			} else if (getEntryStatus().equals("noRoomForRandom")) {
+				alert.failedAlert("Failed", "noRoomForRandom");
 			} else if (getEntryStatus().equals("enter")) {
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 			}
@@ -1117,6 +1119,8 @@ public class ParkEmployeeController implements Initializable {
 			setEntryStatus("allreadyInPark");
 		} else if (received.get(1).equals("parkFull")) {
 			setEntryStatus("parkFull");
+		} else if (received.get(1).equals("noRoomForRandom")) {
+			setEntryStatus("noRoomForRandom");
 		} else {
 			setEntryStatus("enter");
 			randomVisitorTicket = (int) received.get(2);
@@ -1375,10 +1379,10 @@ public class ParkEmployeeController implements Initializable {
 		setRandomModeOff();
 		btnManualAccess.setVisible(true);
 
-		// setFirstName(LoginController.getFirstName());
-		// lblFirstNameTitle.setText(getFirstName());
-		// setParkName(LoginController.getParkName());
-		setParkName("jurasic");
+		setFirstName(LoginController.getFirstName());
+		lblFirstNameTitle.setText(getFirstName());
+		setParkName(LoginController.getParkName());
+	    //setParkName("jurasic");
 		updateParkStatus(0);
 
 		/***** Random *****/

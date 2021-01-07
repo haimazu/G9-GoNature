@@ -107,12 +107,12 @@
                   <Button fx:id="btnExport" focusTraversable="false" layoutX="532.0" layoutY="36.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
                   <Label layoutX="85.0" layoutY="18.0" text="From Date:">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font size="13.0" />
                      </font>
                   </Label>
                   <Label layoutX="268.0" layoutY="18.0" text="To Date:">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font size="13.0" />
                      </font>
                   </Label>
                </children>
@@ -143,12 +143,12 @@
                   <PieChart fx:id="pieGroup" layoutX="149.0" layoutY="286.0" prefHeight="280.0" prefWidth="320.0" />
                   <Label layoutX="85.0" layoutY="18.0" text="From Date:">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font size="13.0" />
                      </font>
                   </Label>
                   <Label layoutX="268.0" layoutY="18.0" text="To Date:">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font size="13.0" />
                      </font>
                   </Label>
                </children>
