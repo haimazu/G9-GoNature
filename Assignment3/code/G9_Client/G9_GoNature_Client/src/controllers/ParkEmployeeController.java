@@ -438,7 +438,7 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("parkfull")) {
 				alert.failedAlert("Failed", "We are sorry, the park is full right now.");
 			} else if (getEntryStatus().equals("enter")) {
-				alert.successAlert("Success", randomVisitorTicket + " visitor/s entered.");
+				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 			}
 		// order
 		} else {
@@ -453,7 +453,11 @@ public class ParkEmployeeController implements Initializable {
 				alert.failedAlert("Failed", "We are sorry, the park is full right now.");
 			// getEntryStatus() = "enter"
 			} else {
-				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
+				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
+				if (randomVisitorTicket != 0) {				
+					message = message + "\nand your ticket number for the extra people is: " + randomVisitorTicket;
+				}
+				alert.successAlert("Success", message);
 			}
 		}
 					
