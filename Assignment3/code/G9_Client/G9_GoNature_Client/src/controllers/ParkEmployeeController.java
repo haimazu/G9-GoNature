@@ -1112,8 +1112,8 @@ public class ParkEmployeeController implements Initializable {
 			setEntryStatus("notGoodTime");
 		} else if (received.get(1).equals("allreadyInPark")) {
 			setEntryStatus("allreadyInPark");
-		} else if (received.get(1).equals("parkfull")) {
-			setEntryStatus("parkfull");
+		} else if (received.get(1).equals("parkFull")) {
+			setEntryStatus("parkFull");
 		} else {
 			setEntryStatus("enter");
 			randomVisitorTicket = (int) received.get(2);
