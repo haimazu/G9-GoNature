@@ -12,18 +12,25 @@ import userData.Member;
 
 public class ParkGate {
 
-	//input: ArrayList of object
-	//						cell[0] contains "getPrice" String
-	//						cell[1] contains ParkName
-	//						cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data in cell3)
-	//						cell[3] contains value determent by cell2 as String 
-	//						cell[4] how many people wants to enter 
-	//output: none
-	//send to client: ArrayList of object
-	//						cell[0] contains "enterThePark" String
-	//						cell[1] contains priceBeforeDiscount as string
-	//						cell[2] contains priceAfterDiscount as string
-	//						cell[3] contains discount as string
+	
+	/**
+	* 
+	* @param recived
+	* @param client
+	* 
+	* input: ArrayList of object
+	*						cell[0] contains "getPrice" String
+	*						cell[1] contains ParkName
+	*						cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data in cell3)
+	*						cell[3] contains value determent by cell2 as String 
+	*						cell[4] how many people wants to enter 
+	*output: none
+	*send to client: ArrayList of object
+	*						cell[0] contains "enterThePark" String
+	*						cell[1] contains priceBeforeDiscount as string
+	*						cell[2] contains priceAfterDiscount as string
+	*						cell[3] contains discount as string
+	*/
 	public static void getPrice(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
