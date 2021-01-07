@@ -127,16 +127,17 @@ public class ParkGate {
 		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		if (!orderWrapped.isEmpty()) {// order was found
 			order = new Order(orderWrapped.get(0));
-			if (!orderOnTime(order)) {
-				answer.add("notGoodTime");
-				client.sendToClient(answer);
-				return;
-			}
 			if (orderWasUsed(order)) {
 				answer.add("allreadyInPark");
 				client.sendToClient(answer);
 				return;
 			}
+			if (!orderOnTime(order)) {
+				answer.add("notGoodTime");
+				client.sendToClient(answer);
+				return;
+			}
+
 			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than pepole on reservation
 				moreThanOrdered = true;
 				extras = "" + (Integer.parseInt(howMany) - order.getVisitorsNumber());
@@ -145,6 +146,7 @@ public class ParkGate {
 				// dont return yet
 			}
 		}
+		// **********mizdamen**********
 		if (orderWrapped.isEmpty() || moreThanOrdered) { // create an order for random visits
 			if (moreThanOrdered)
 				howMany = "" + (Integer.parseInt(howMany) - Integer.parseInt(extras));
@@ -340,7 +342,7 @@ public class ParkGate {
 	// input: order class
 	// note: check if the order exist in entry and exit table
 	// output: true if exist false if not
-	private static boolean orderWasUsed(Order order) {
+	public static boolean orderWasUsed(Order order) {
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("enteryandexit"); // table name
@@ -364,18 +366,19 @@ public class ParkGate {
 		Double priceBeforeDiscount = 0.0;
 		Double priceAfterDiscount = 0.0;
 
-		// calculates the current discount in park that valid
-		ArrayList<String> query = new ArrayList<String>();
-		query.add("select"); // command
-		query.add("park"); // table name
-		query.add("mangerDiscount"); // columns to show
-		query.add("WHERE parkName = '" + parkName + "'"); // condition
-		query.add("1"); // how many columns returned
-		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
+//		// calculates the current discount in park that valid
+//		ArrayList<String> query = new ArrayList<String>();
+//		query.add("select"); // command
+//		query.add("park"); // table name
+//		query.add("mangerDiscount"); // columns to show
+//		query.add("WHERE parkName = '" + parkName + "'"); // condition
+//		query.add("1"); // how many columns returned
+//		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 
-		Double discount = 1 - Double.parseDouble(queryData.get(0).get(0)); // discount in precent
-		System.out.println("Discount = " + discount);
+//		Double discount = 1 - Double.parseDouble(queryData.get(0).get(0)); // discount in precent
+//		System.out.println("Discount = " + discount);
 
+		Double discount = 0.0;
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> stringArr = new ArrayList<String>();
 		if (orderNumber != null) {
@@ -394,9 +397,10 @@ public class ParkGate {
 			Order order = new Order(orderWrapped.get(0));
 			priceBeforeDiscount += order.getPrice();
 			priceAfterDiscount += order.getTotalPrice();
-			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in precent
+			discount = 1 - ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in
+																										// precent
 			// suck the order price
-			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than pepole on reservation
+			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than people on reservation
 				moreThanOrdered = true;
 				howMany = "" + (Integer.parseInt(howMany) - order.getVisitorsNumber());
 			}
@@ -411,8 +415,10 @@ public class ParkGate {
 			// don't forget to insert the + thing
 			priceBeforeDiscount += stubOrder.getPrice();
 			priceAfterDiscount += stubOrder.getTotalPrice();
+			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100;
 
 		}
+
 		ret.add(priceBeforeDiscount);
 		ret.add(discount);
 		ret.add(priceAfterDiscount);
