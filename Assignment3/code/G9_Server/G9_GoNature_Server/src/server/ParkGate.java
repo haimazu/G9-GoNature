@@ -388,10 +388,10 @@ public class ParkGate {
 			//dont forget to insert the + thig
 			priceBeforeDiscount += stubOrder.getPrice();
 			priceAfterDiscount += stubOrder.getTotalPrice();
-			discount = (1-(priceBeforeDiscount-priceAfterDiscount)/priceBeforeDiscount)*100; //discount in precent
+			discount = ((priceBeforeDiscount-priceAfterDiscount)/priceBeforeDiscount)*100; //discount in precent
 		}
 		ret.add(priceBeforeDiscount);
-		ret.add(1-discount);
+		ret.add(discount);
 		ret.add(priceAfterDiscount);
 		
 		return ret;
