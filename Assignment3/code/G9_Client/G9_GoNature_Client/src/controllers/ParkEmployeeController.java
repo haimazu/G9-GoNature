@@ -788,11 +788,15 @@ public class ParkEmployeeController implements Initializable {
 			// price for ordered visitor
 		} else {
 			sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-		}
+		}		
 
 		lblPrice.setText(String.format("%.1f", visitorsPrice.get(0)) + "₪");
 		lblDiscount.setText(String.format("%.1f", visitorsPrice.get(1)) + "%");
 		lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(2)) + "₪");
+		
+		if (radExit.isSelected()) {
+			clearPaymentFields();
+		}
 	}
 
 	public void sendToGetPrice(String type, String value, String amount) {
@@ -1037,6 +1041,8 @@ public class ParkEmployeeController implements Initializable {
 			} else {
 				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			}
+			
+			txtVisitorsAmount.setText(lblVisitorsNumber.getText());
 
 			if (!txtVisitorsAmount.getText().isEmpty()) {
 				setPrice();
@@ -1393,9 +1399,6 @@ public class ParkEmployeeController implements Initializable {
 		txtVisitorsAmount.textProperty().addListener((obs, oldValue, newValue) -> {
 			btnApprove.setDisable(false);
 
-			if (newValue.isEmpty() || radExit.isSelected()) {
-				clearPaymentFields();
-			}
 			// \\d -> only digits
 			// * -> escaped special characters
 			if (newValue.length() == 1 || !newValue.isEmpty() && !newValue.matches("\\d")) {
