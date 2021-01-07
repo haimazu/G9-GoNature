@@ -270,7 +270,7 @@ public class ParkEmployeeController implements Initializable {
 			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
+			} else if (txtVisitorsAmount.getText().charAt(0) == '0' && radEnter.isSelected()) {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			} else {
@@ -292,7 +292,7 @@ public class ParkEmployeeController implements Initializable {
 			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
+			} else if (txtVisitorsAmount.getText().charAt(0) == '0' && radEnter.isSelected()) {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			}
@@ -434,8 +434,8 @@ public class ParkEmployeeController implements Initializable {
 				alert.failedAlert("Failed", "These visitors have already entered.");
 				return;
 			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now.'n"
-						+ "Or you are trying to add too many visitors");
+				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
+						+ "or you are trying to add too many visitors");
 			} else if (getEntryStatus().equals("enter")) {
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 			}
@@ -448,8 +448,8 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "This order has already been fulfilled.");
 			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now.'n"
-						+ "Or you are trying to add too many visitors");
+				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
+						+ "or you are trying to add too many visitors");
 				// getEntryStatus() = "enter"
 			} else {
 				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
@@ -1308,6 +1308,7 @@ public class ParkEmployeeController implements Initializable {
 		setEntryStatus("");
 		setExitStatus("");
 		txtVisitorsAmount.setDisable(true);
+		txtVisitorsAmount.clear();
 		// setEntryAndExitStatus("");
 		// setRandomVisitorIdNumber("");
 		txtIdOrMemberId.clear();
@@ -1337,7 +1338,6 @@ public class ParkEmployeeController implements Initializable {
 	// output: screen changes
 	public void clearAllOrderFields() {
 		txtOrderNumber.clear();
-		txtVisitorsAmount.clear();
 		lblOrderNumber.setText("");
 		lblParkName.setText("");
 		lblDate.setText("");
