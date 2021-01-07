@@ -155,12 +155,12 @@ public class ParkGate {
 			Member member = NewOrder.MemerCheck(order);
 			order = NewOrder.totalPrice(order, member, true);// updating the prices in the order
 			order.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
-			System.out.println("1:"+order);
+			System.out.println("1:" + order);
 			NewOrder.insertNewOrder(order);
 		}
-		System.out.println("2:"+order);
-		//updateArrived(order, order.getVisitorsNumber());// insert arrived to order
-		insertEnteryExit(order, order.getVisitorsNumber(), "enter");
+		System.out.println("2:" + order);
+		// updateArrived(order, order.getVisitorsNumber());// insert arrived to order
+		insertEnteryExit(order, order.getAmountArrived(), "enter");
 		answer.add("enter");
 		client.sendToClient(answer);
 
@@ -242,7 +242,7 @@ public class ParkGate {
 			answer.add("neverWasHere");
 			client.sendToClient(answer);
 			return;
-		} else if (entryExitArray.get(0).get(2) != null) { // if exittime not null than allready exited
+		} else if (entryExitArray.get(0).get(2) != null) { // if exit time not null than allready exited
 			answer.add("allreadyExited");
 			client.sendToClient(answer);
 			return;
@@ -363,8 +363,8 @@ public class ParkGate {
 		boolean moreThanOrdered = false;
 		Double priceBeforeDiscount = 0.0;
 		Double priceAfterDiscount = 0.0;
-		
-		//calculates the current discount in park that valid
+
+		// calculates the current discount in park that valid
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
 		query.add("park"); // table name
@@ -372,10 +372,10 @@ public class ParkGate {
 		query.add("WHERE parkName = '" + parkName + "'"); // condition
 		query.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
-		
-		Double discount = 1-Double.parseDouble(queryData.get(0).get(0)); // discount in precent
-		System.out.println("Discount = "+ discount);
-		
+
+		Double discount = 1 - Double.parseDouble(queryData.get(0).get(0)); // discount in precent
+		System.out.println("Discount = " + discount);
+
 		ArrayList<Object> objForFech = new ArrayList<Object>();
 		ArrayList<String> stringArr = new ArrayList<String>();
 		if (orderNumber != null) {
@@ -408,10 +408,10 @@ public class ParkGate {
 			System.out.println("stubOrder: " + stubOrder);
 			Member member = NewOrder.MemerCheck(stubOrder);
 			stubOrder = NewOrder.totalPrice(stubOrder, member, true);
-			// dont forget to insert the + thig
+			// don't forget to insert the + thing
 			priceBeforeDiscount += stubOrder.getPrice();
 			priceAfterDiscount += stubOrder.getTotalPrice();
-				
+
 		}
 		ret.add(priceBeforeDiscount);
 		ret.add(discount);
