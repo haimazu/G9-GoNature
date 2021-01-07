@@ -101,6 +101,15 @@ public class DepartmentManagerController implements Initializable {
 
     @FXML
     private TableColumn<TableCurrentVisitors, String> amountColumn;
+    
+//    @FXML
+//    private TableView<TableCurrentVisitors> TVisitorsNew;
+//
+//    @FXML
+//    private TableColumn<TableCurrentVisitors, String> visitorColumnNew;
+//
+//    @FXML
+//    private TableColumn<TableCurrentVisitors, String> amountColumnNew;
 
 	@FXML
 	private Label LabelCount;
@@ -165,9 +174,13 @@ public class DepartmentManagerController implements Initializable {
 	private static boolean error = false;
 	private int index = 0;
 
-	// this function managed the side bar
-	// input: button source that pressed
-	// output: switch to the relevant pane
+	
+	/**
+	 * this function managed the side bar
+	 * input: button source that pressed
+	 * output: switch to the relevant pane
+	 * @param event
+	 */
 	@FXML
 	public void handleSideBar(ActionEvent event) {
 		if (event.getSource() == btnDashboard) {
@@ -193,8 +206,13 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	// input: none
-	// output: moving to 'login' screen
+
+	/**
+	 * input: none 
+	 * output: moving to 'login' screen
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void logout(ActionEvent event) throws IOException {
 		// Data fields
@@ -216,10 +234,14 @@ public class DepartmentManagerController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	// checks if the date is correct and displays the chart if so
-	// input: from -> start date
-	// to -> end date
-	// output: display the chart depending on the dates entered
+
+	/**
+	 * checks if the date is correct and displays the chart if so
+	 * input: from -> start date
+	 *	to -> end date
+	 * output: display the chart depending on the dates entered
+	 * @param event
+	 */
 	@FXML
 	void show(ActionEvent event) {
 		ArrayList<String> data = new ArrayList<>();
@@ -255,6 +277,7 @@ public class DepartmentManagerController implements Initializable {
 	// cell [i][2]: amount
 	// 0 <= i <= cancelledOrders.size() - 1
 	// output: PDF report with all the data shown in the chart
+	
 	@FXML
 	void export(ActionEvent event) {
 		// call the function to fill the cancelledOrders data
@@ -776,7 +799,7 @@ public class DepartmentManagerController implements Initializable {
 	 * @param al
 	 */
 	public void addData(ArrayList<ArrayList<String>> al) {
-		TVisitors.getItems().clear();
+		TableDep.getItems().clear();
 		ObservableList<TableViewSet> listForTable = FXCollections.observableArrayList();
 		String str = null;
 		for (ArrayList<String> arrayList : al) {
@@ -1072,11 +1095,12 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	public void iniailTabelVisitors() {
+		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("parkNameVis"));
+		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("currentAmount"));
 
 		ArrayList<Object> answer = new ArrayList<>();
 		answer.add("parkDateilsForDepartment");
 		ClientUI.sentToChatClient(answer);
-		System.out.println("parkDetails" + parkDetails);
 		addDataToTable();
 
 	}
@@ -1090,8 +1114,8 @@ public class DepartmentManagerController implements Initializable {
 					arrayList.get(1) + " / " + arrayList.get(2));
 			TVV.setMaxVisitors(arrayList.get(2));
 			listForTable.add(TVV);
-			System.out.println(arrayList);
 		}
+
 		TVisitors.setItems(listForTable);
 	}
 	
@@ -1133,8 +1157,6 @@ public class DepartmentManagerController implements Initializable {
 		/*************** for deshbord ***********/
 		iniailTabelVisitors();
 		
-		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("ParkNameVis"));
-		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("CurrentAmount"));
 		
 		iniailTabelPending();
 

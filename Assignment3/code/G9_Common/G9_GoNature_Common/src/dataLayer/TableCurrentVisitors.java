@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class TableCurrentVisitors {
 	
-	private String ParkNameVis;
-	private String CurrentAmount;
+	private String parkNameVis;
+	private String currentAmount;
 	private String MaxVisitors;
 	
 	
@@ -23,26 +23,22 @@ public class TableCurrentVisitors {
 	
 	public TableCurrentVisitors(String parkName, String currentAmount) {
 		super();
-		this.ParkNameVis = parkName;
-		this.CurrentAmount = currentAmount;
+		this.parkNameVis = parkName;
+		this.currentAmount = currentAmount;
 	}
 	
 
 	public String getParkNameVis() {
-		System.out.println("got park");
-		return ParkNameVis;
+		return parkNameVis;
 	}
 	public void setParkNameVis(String parkName) {
-		System.out.println("set park");
-		ParkNameVis = parkName;
+		this.parkNameVis = parkName;
 	}
 	public String getCurrentAmount() {
-		System.out.println("got vis");
-		return CurrentAmount;
+		return currentAmount;
 	}
 	public void setCurrentAmount(String currentAmount) {
-		System.out.println("set vis");
-		CurrentAmount = currentAmount;
+		this.currentAmount = currentAmount;
 	}
 
 	public String getMaxVisitors() {
