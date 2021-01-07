@@ -1090,9 +1090,9 @@ public class DepartmentManagerController implements Initializable {
 					arrayList.get(1) + " / " + arrayList.get(2));
 			TVV.setMaxVisitors(arrayList.get(2));
 			listForTable.add(TVV);
+			System.out.println(arrayList);
 		}
 		TVisitors.setItems(listForTable);
-		System.out.println(TVisitors.toString());
 	}
 	
 
