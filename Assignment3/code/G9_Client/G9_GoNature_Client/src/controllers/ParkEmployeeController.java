@@ -443,10 +443,10 @@ public class ParkEmployeeController implements Initializable {
 		}
 			
 		if (getEntryStatus().equals("allreadyInPark")) {
-			alert.failedAlert("Failed", "The visitors identified by these details have not yet left the park.");
+			alert.failedAlert("Failed", "This order has already been fulfilled.");
 		} else if (getEntryStatus().equals("parkfull")) {
 			alert.failedAlert("Failed", "We are sorry, the park is full right now.");
-			// can enter
+		// can enter
 		} else if (getEntryStatus().equals("enter")) {
 			alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
 		}
