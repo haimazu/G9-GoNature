@@ -1,6 +1,7 @@
 package controllers;
 
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -28,6 +31,7 @@ import client.ClientUI;
 import dataLayer.TableCurrentVisitors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,11 +50,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import reportData.ManagerRequest;
-import reportData.TableViewSet;
+import managerData.ManagerRequest;
+import managerData.TableViewSet;
 
 public class DepartmentManagerController implements Initializable {
 	/***** Side Bar *****/
@@ -387,10 +392,11 @@ public class DepartmentManagerController implements Initializable {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream("VisitorsReport " + fileNameDate + ".pdf"));
 			document.open();
+		
 			Image logo = Image.getInstance(
-					"E:\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+					"Assignment3/code/G9_Client/G9_GoNature_Client/src/gui/logo_small.png");
 			logo.setAlignment(Element.ALIGN_CENTER);
-			document.add(logo);
+			document.add( logo);
 
 			Paragraph title = new Paragraph("Visitors Report\n", titleFont);
 			title.setAlignment(Element.ALIGN_CENTER);

@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import dataLayer.Park;
+import managerData.ManagerRequest;
 import ocsf.server.ConnectionToClient;
-import reportData.ManagerRequest;
 
 /**
  * The PendingMenagerRequest program deals with managers requests
