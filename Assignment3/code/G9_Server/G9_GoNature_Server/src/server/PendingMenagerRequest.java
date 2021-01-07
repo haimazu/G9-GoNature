@@ -305,6 +305,8 @@ public class PendingMenagerRequest implements Serializable {
 			if (yesno.equals("no")) {
 				ret.add(MySQLConnection.deleteCond(query));
 				ret.add(true);
+				retTable.add(ret);
+				continue;
 			}
 
 			else {
@@ -317,7 +319,7 @@ public class PendingMenagerRequest implements Serializable {
 				query1.add("8");
 				ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 				mr = new ManagerRequest(queryData1.get(0));
-				ret.add(MySQLConnection.deleteCond(query));
+				ret.add(MySQLConnection.deleteCond(query));/////////////////////////////////////////////////////////////////
 
 				if (mr.getRequestType().equals("discount")) {
 					String dateCond = "NOT ( GREATEST('" + mr.getFromDate() + "','" + mr.getToDate()
@@ -335,6 +337,8 @@ public class PendingMenagerRequest implements Serializable {
 					if (!queryData2.isEmpty()) {
 						System.out.println("Already has discount on these dates!");
 						ret.add(false);
+						retTable.add(ret);
+						continue;
 					} else {
 
 						ArrayList<String> query3 = new ArrayList<String>();
@@ -349,7 +353,7 @@ public class PendingMenagerRequest implements Serializable {
 				}
 
 				if (mr.getRequestType().equals("max_c")) {
-					ret.add(MySQLConnection.deleteCond(query));
+					//ret.add(MySQLConnection.deleteCond(query));///////////////////////////////////////////////////////////////////////////////////
 
 					ArrayList<String> query2 = new ArrayList<String>();
 					query2.add("update"); // command
