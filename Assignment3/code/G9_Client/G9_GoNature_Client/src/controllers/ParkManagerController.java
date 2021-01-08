@@ -419,9 +419,9 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * sets the style for not pressed tabs
 	 * 
-	 * @param button
-	 * @param button1
-	 * @param button2
+	 * @param button Button
+	 * @param button1 Button
+	 * @param button2 Button
 	 */
 	public void setButtonReleased(Button button, Button button1, Button button2) {
 		button.setStyle("-fx-background-color: transparent;");
