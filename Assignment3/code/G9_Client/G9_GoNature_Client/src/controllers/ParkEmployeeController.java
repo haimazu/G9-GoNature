@@ -157,6 +157,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void barcodeScan(ActionEvent event) {
 		informationExists = true;
+		btnManualAccess.setVisible(false);
 
 		String fromSimulator = BarcodeSimulation.getSim().read(3);
 
@@ -175,7 +176,7 @@ public class ParkEmployeeController implements Initializable {
 
 		txtOrderNumber.setText(String.valueOf(orderDetails.getOrderNumber()));
 		txtVisitorsAmount.setText(String.valueOf(orderDetails.getVisitorsNumber()));
-
+		
 		showDetails(event);
 	}
 
