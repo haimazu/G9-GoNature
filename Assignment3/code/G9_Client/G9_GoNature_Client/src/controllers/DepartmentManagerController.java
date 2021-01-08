@@ -495,6 +495,7 @@ public class DepartmentManagerController implements Initializable {
 			sendToServerArrayList("getRegularsVisitorsData", data);
 
 			if (!isEmpty()) {
+				lblRegular.setText("");
 				addPieChart(pieRegular, "Regular");
 			} else {
 				lblRegular.setText("Regular\n\nThere is no\ninformation about\nthis group.");
@@ -508,6 +509,7 @@ public class DepartmentManagerController implements Initializable {
 			sendToServerArrayList("getMembersVisitorsData", data);
 
 			if (!isEmpty()) {
+				lblMember.setText("");
 				addPieChart(pieMember, "Member");
 			} else {
 				lblMember.setText("Member\n\nThere is no\ninformation about\nthis group.");
@@ -521,6 +523,7 @@ public class DepartmentManagerController implements Initializable {
 			sendToServerArrayList("getGroupsVisitorsData", data);
 
 			if (!isEmpty()) {
+				lblGroup.setText("");
 				addPieChart(pieGroup, "Group");
 			} else {
 				lblGroup.setText("Group\n\nThere is no\ninformation about\nthis group.");
