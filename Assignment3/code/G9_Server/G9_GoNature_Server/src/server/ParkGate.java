@@ -377,7 +377,7 @@ public class ParkGate {
 		ArrayList<Object> answer2 = new ArrayList<Object>();
 		answer2.add("VisitorsUpdateSendToAll");
 		answer2.add(parkName);// park name
-		answer2.add(newAmount);// updatedVisitorsNumber
+		answer2.add(String.valueOf(newAmount));// updatedVisitorsNumber
 		EchoServer.sendToAll(answer2);
 	}
 

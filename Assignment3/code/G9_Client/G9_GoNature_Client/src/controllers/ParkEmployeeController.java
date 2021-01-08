@@ -315,7 +315,7 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("noRoomForRandom")) {
 				alert.failedAlert("Failed", "noRoomForRandom");
 			} else if (getEntryStatus().equals("enter")) {
-				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
+				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
 			} else {
 				alert.failedAlert("Failed", "Wrong case! (notGoodTime)");
 			}
