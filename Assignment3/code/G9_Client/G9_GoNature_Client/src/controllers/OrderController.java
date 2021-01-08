@@ -607,8 +607,7 @@ public class OrderController implements Initializable {
 	 * Receives from the server the status of the action, if it is success Receives
 	 * success message and an object of order ,else receives a failure message
 	 * 
-	 * @param Object
-	 * @return Object Order / String / Boolean
+	 * @param newOrder Object
 	 * 
 	 */
 
@@ -628,7 +627,7 @@ public class OrderController implements Initializable {
 	/**
 	 * return the list of all the parks names
 	 * 
-	 * @param ArrayList of String of parks
+	 * @param parks ArrayList of String of parks
 	 **/
 
 	public static void recivedFromServerParksNames(ArrayList<String> parks) {

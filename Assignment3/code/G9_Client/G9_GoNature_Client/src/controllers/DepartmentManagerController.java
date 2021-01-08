@@ -88,7 +88,6 @@ public class DepartmentManagerController implements Initializable {
 	@FXML
 	private Pane pnCancels;
 
-
 	/***** Dashboard *****/
 	@FXML
 	private TableView<TableViewSet> TableDep;
@@ -177,7 +176,7 @@ public class DepartmentManagerController implements Initializable {
 	 * this function managed the side bar input: button source that pressed output:
 	 * switch to the relevant pane
 	 * 
-	 * @param event
+	 * @param event ActionEvent
 	 */
 	@FXML
 	public void handleSideBar(ActionEvent event) {
@@ -196,7 +195,7 @@ public class DepartmentManagerController implements Initializable {
 			pnCancels.toFront();
 			setButtonPressed(btnCancelsReport);
 			setButtonReleased(btnDashboard, btnVisitsReport);
-		} 
+		}
 	}
 
 	/**
@@ -506,7 +505,7 @@ public class DepartmentManagerController implements Initializable {
 			if (!isEmpty()) {
 				addPieChart(pieRegular, "Regular");
 			} else {
-				lblRegular.setText("Regular\n\nThere is no\ninformation about\nthis group.");	
+				lblRegular.setText("Regular\n\nThere is no\ninformation about\nthis group.");
 			}
 			setEmpty(false);
 
@@ -519,7 +518,7 @@ public class DepartmentManagerController implements Initializable {
 			if (!isEmpty()) {
 				addPieChart(pieMember, "Member");
 			} else {
-				lblMember.setText("Member\n\nThere is no\ninformation about\nthis group.");				
+				lblMember.setText("Member\n\nThere is no\ninformation about\nthis group.");
 			}
 			setEmpty(false);
 
@@ -532,7 +531,7 @@ public class DepartmentManagerController implements Initializable {
 			if (!isEmpty()) {
 				addPieChart(pieGroup, "Group");
 			} else {
-				lblGroup.setText("Group\n\nThere is no\ninformation about\nthis group.");				
+				lblGroup.setText("Group\n\nThere is no\ninformation about\nthis group.");
 			}
 			setEmpty(false);
 		}
@@ -541,8 +540,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * check that the inserted dates are correct
 	 * 
-	 * @param from
-	 * @param to
+	 * @param from LocalDate
+	 * @param to   LocalDate
 	 * @return true if the date is valid, false otherwise
 	 */
 	public boolean checkDate(LocalDate from, LocalDate to) {
@@ -563,8 +562,8 @@ public class DepartmentManagerController implements Initializable {
 	 * visitors between the hours 2 to 3 cell [3]: percentage of visitors between
 	 * the hours 3 to 4
 	 * 
-	 * @param currentPie
-	 * @param title
+	 * @param currentPie PieChart
+	 * @param title      String
 	 */
 	public void addPieChart(PieChart currentPie, String title) {
 		currentPie.getData().clear();
@@ -596,13 +595,6 @@ public class DepartmentManagerController implements Initializable {
 		currentPie.setData(currentVisitorsData);
 	}
 
-	/**
-	 * adding data for the pie chart
-	 * 
-	 * 
-	 * @param currentList
-	 * @return currentVisitorsData
-	 */
 	public ObservableList<PieChart.Data> getChartData(ArrayList<Double> currentList) {
 
 		ObservableList<PieChart.Data> currentVisitorsData = FXCollections.observableArrayList();
@@ -627,47 +619,27 @@ public class DepartmentManagerController implements Initializable {
 		return currentVisitorsData;
 	}
 
-	/**
-	 * get the user first name
-	 * 
-	 * @return firstName
-	 */
 	public static String getFirstName() {
 		return firstName;
 	}
 
-	/**
-	 * set the user first name
-	 * 
-	 * @param firstName
-	 */
 	public static void setFirstName(String firstName) {
 		DepartmentManagerController.firstName = firstName;
 	}
 
-	/************ pending messages ***************/
+	// ************ pending messages ***************
 	/**
 	 * 
-	 * @return ArrayList<ArrayList<Object>>
+	 * @return ArrayList of ArrayList of Object
 	 */
 	public static ArrayList<ArrayList<Object>> getStatus() {
 		return status;
 	}
 
-	/**
-	 * set status list
-	 * 
-	 * @param status
-	 */
 	public static void setStatus(ArrayList<ArrayList<Object>> status) {
 		DepartmentManagerController.status = status;
 	}
 
-	/**
-	 * get data from server
-	 * 
-	 * @param status
-	 */
 	public static void setData(ArrayList<ArrayList<Object>> status) {
 		setStatus(status);
 	}
@@ -675,7 +647,7 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * initializeArr
 	 * 
-	 * @param arr
+	 * @param arr int[]
 	 */
 	public void initializeArr(int[] arr) {
 		for (int i = 0; i < arr.length; i++) {
@@ -689,11 +661,11 @@ public class DepartmentManagerController implements Initializable {
 	 * send to server array list of object [0] name method [1] string "yes" [2]
 	 * object of ManagerRequest
 	 * 
-	 * @param event
+	 * @param event ActionEvent
 	 */
 	@FXML
 	void approve(ActionEvent event) {
-		int flag=0;
+		int flag = 0;
 		int[] arrItems = new int[TableDep.getItems().size()];
 		initializeArr(arrItems);
 		ArrayList<Object> Server = new ArrayList<>();
@@ -710,10 +682,9 @@ public class DepartmentManagerController implements Initializable {
 				data.add("yes");
 				allItems.add(new ArrayList<Object>(data));
 				arrItems[i] = i;
-				if(s.getReqType().equals("max_c") ||s.getReqType().equals("max_o") ) {
-					flag=1;
+				if (s.getReqType().equals("max_c") || s.getReqType().equals("max_o")) {
+					flag = 1;
 				}
-
 
 			}
 			data.clear();
@@ -730,8 +701,8 @@ public class DepartmentManagerController implements Initializable {
 
 			ClientUI.sentToChatClient(Server);
 		}
-		
-		if(flag==1) {
+
+		if (flag == 1) {
 			iniailTabelVisitors();
 		}
 
@@ -812,9 +783,9 @@ public class DepartmentManagerController implements Initializable {
 	}
 
 	/**
-	 * add data to the tabel in the department screen
+	 * add data to the table in the department screen
 	 * 
-	 * @param al
+	 * @param al ArrayList of ArrayList of String
 	 */
 	public void addData(ArrayList<ArrayList<String>> al) {
 		TableDep.getItems().clear();
@@ -844,20 +815,10 @@ public class DepartmentManagerController implements Initializable {
 		TableDep.setItems(listForTable);
 	}
 
-	/**
-	 * get the list
-	 * 
-	 * @param dBList
-	 */
 	public static ArrayList<ArrayList<String>> getDBList() {
 		return DBList;
 	}
 
-	/**
-	 * set the list from the DB
-	 * 
-	 * @param dBList
-	 */
 	public static void setDBList(ArrayList<ArrayList<String>> dBList) {
 		DBList = dBList;
 	}
@@ -881,7 +842,7 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * set style for the pressed button
 	 * 
-	 * @param button
+	 * @param button Button
 	 */
 	public void setButtonPressed(Button button) {
 		button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: brown;"
@@ -891,8 +852,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * set style for the released buttons
 	 * 
-	 * @param button
-	 * @param button1
+	 * @param button  Button
+	 * @param button1 Button
 	 */
 	public void setButtonReleased(Button button, Button button1) {
 		button.setStyle("-fx-background-color: transparent;");
@@ -902,8 +863,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * displays the chart for the information retrieved from DB
 	 *
-	 * ArrayList<ArrayList<String>> cancelledOrders, cells: cell [0]: parkName cell
-	 * [1]: date of canceled/dismissed cell [2]: amount
+	 * ArrayList of ArrayList of String cancelledOrders, cells: cell [0]: parkName
+	 * cell [1]: date of canceled/dismissed cell [2]: amount
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void barChart() {
@@ -990,6 +951,7 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * checks if the date exists and saves the first position where it appears
 	 *
+	 * @param date LocalDate
 	 * @return count
 	 */
 	public int checkIfExists(LocalDate date) {
@@ -1018,8 +980,8 @@ public class DepartmentManagerController implements Initializable {
 	 * ArrayList(String) data, sending to the server to get data [0] case name [1]
 	 * month [2] year
 	 *
-	 * @param caseName
-	 * @param date
+	 * @param caseName String
+	 * @param date     ArrayList of String
 	 */
 	public void sendToServerArrayList(String caseName, ArrayList<String> date) {
 		// Query
@@ -1037,7 +999,7 @@ public class DepartmentManagerController implements Initializable {
 	 * ArrayList(Object): cell[0] list of cancelled orders cell[1] list of dismissed
 	 * orders
 	 *
-	 * @param cancelData
+	 * @param cancelData ArrayList of ArrayList of String
 	 */
 	public static void receivedFromServerCancelReportsData(ArrayList<ArrayList<String>> cancelData) {
 		if (cancelData.isEmpty()) {
@@ -1051,10 +1013,10 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * getting data from the server for regular visitors report
 	 * 
-	 * if empty ==> String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
+	 * if empty == String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
 	 * cell[1] 1 to 2 hours cell[2] 2 to 3 hours cell[3] 3 to 4 hours
 	 *
-	 * @param msgReceived
+	 * @param msgReceived ArrayList Object
 	 */
 	public static void receivedFromServerRegularsVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
@@ -1074,10 +1036,10 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * getting data from the server for members visitors report
 	 * 
-	 * if empty ==> String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
+	 * if empty == String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
 	 * cell[1] 1 to 2 hours cell[2] 2 to 3 hours cell[3] 3 to 4 hours
 	 *
-	 * @param msgReceived
+	 * @param msgReceived ArrayList Object
 	 */
 	public static void receivedFromServerMembersVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
@@ -1097,10 +1059,10 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * getting data from the server for groups visitors report
 	 * 
-	 * if empty ==> String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
+	 * if empty == String "empty", otherwise ArrayList(Object): cell[0] 0 to 1 hour
 	 * cell[1] 1 to 2 hours cell[2] 2 to 3 hours cell[3] 3 to 4 hours
 	 *
-	 * @param msgReceived
+	 * @param msgReceived ArrayList of Object
 	 */
 	public static void receivedFromServerGroupsVisitorsData(ArrayList<Object> msgReceived) {
 		if (msgReceived.get(1) instanceof String) {
@@ -1129,7 +1091,7 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * set errors
 	 * 
-	 * @param error
+	 * @param error boolean
 	 */
 	public static void setError(boolean error) {
 		DepartmentManagerController.error = error;
@@ -1147,16 +1109,16 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * set isEmpty
 	 * 
-	 * @param isEmpty
+	 * @param isEmpty boolean
 	 */
 	public static void setEmpty(boolean isEmpty) {
 		DepartmentManagerController.isEmpty = isEmpty;
 	}
-/**
- * iniailize table current visitors number
- */
-	public void iniailTabelVisitors() {
 
+	/**
+	 * iniailize table current visitors number
+	 */
+	public void iniailTabelVisitors() {
 
 		ArrayList<Object> answer = new ArrayList<>();
 		answer.add("parkDateilsForDepartment");
@@ -1187,29 +1149,28 @@ public class DepartmentManagerController implements Initializable {
 	 * update current visitors number in the park.The number is updated every time
 	 * when visitor enters or exits the park
 	 * 
-	 * @param visitNum
+	 * @param arr visitNum
 	 */
-	
+
 	public void setCurrentVisitors(ArrayList<Object> arr) {
-	    Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-            	String parkName = (String) arr.get(1);
-        		String VisAmount;
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				String parkName = (String) arr.get(1);
+				String VisAmount;
 
-        		for (ArrayList<String> arrayList : parkDetails) {
+				for (ArrayList<String> arrayList : parkDetails) {
 
-        			if (parkName.equals(arrayList.get(0))) {
-        				VisAmount = (String) arr.get(2);
-        				arrayList.set(1, VisAmount);
-        			}
-        		}
+					if (parkName.equals(arrayList.get(0))) {
+						VisAmount = (String) arr.get(2);
+						arrayList.set(1, VisAmount);
+					}
+				}
 
-        		addDataToTable();
-            }
-        });
+				addDataToTable();
+			}
+		});
 
-	
 	}
 
 	public static void setParkDetails(ArrayList<ArrayList<String>> Parks) {
@@ -1223,8 +1184,8 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * Initializing and force each of the fields according to the Required templates
 	 * 
-	 * @param location
-	 * @param resources
+	 * @param location  URL
+	 * @param resources ResourceBundle
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -1237,10 +1198,10 @@ public class DepartmentManagerController implements Initializable {
 
 		/*************** for deshbord ***********/
 		iniailTabelVisitors();
-		
+
 		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("parkNameVis"));
-		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("currentAmount")); 
-		
+		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("currentAmount"));
+
 		iniailTabelPending();
 
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));

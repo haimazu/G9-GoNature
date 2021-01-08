@@ -311,8 +311,8 @@ public class LoginController implements Initializable {
 	/**
 	 * Initializing and force each of the fields according to the Required templates 
 	 * 
-	 * @param arg0
-	 * @param arg1
+	 * @param arg0 URL
+	 * @param arg1 ResourceBundle
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
