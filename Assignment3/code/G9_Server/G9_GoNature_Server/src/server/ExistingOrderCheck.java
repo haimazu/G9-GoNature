@@ -62,6 +62,31 @@ public class ExistingOrderCheck {
 		query.add("12"); // how many columns returned
 		return MySQLConnection.select(query);
 	}
+	
+	/**
+	 * 
+	 * @param recived   array list of object contains: [0] - String ordersByIdOrMemberId OR ordersByOrderNumber
+	 * 													[1] - ArrayList	of String contains:
+	 * 															[0] - orderNumber
+	 * @param tableName table name as string
+	 * @param parkName   park name as string
+	 * @return ArrayList of ArrayList of String containing the order details, empty if
+	 *         no details
+	 */
+	public static ArrayList<ArrayList<String>> fechOrderTodayInPark(ArrayList<Object> recived, String tableName, String parkName) {
+		ArrayList<String> data = (ArrayList<String>) recived.get(1);
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add(tableName); // table name
+		query.add("*"); // columns to select from
+		if (recived.get(0).equals("ordersByIdOrMemberId")) { // ordersByIdOrMemberId case
+			query.add("WHERE ID = '" + data.get(0) + "' OR memberId = '" + data.get(0) + "' AND parkName='" + parkName + "' AND DATE(arrivedTime)=CURDATE()"); // condition
+		} else { // ordersByOrderNumber case
+			return null;
+		}
+		query.add("12"); // how many columns returned
+		return MySQLConnection.select(query);
+	}
 
 	/**
 	 * checks if order is pending

@@ -116,7 +116,11 @@ public class ParkGate {
 		}
 		objForFech.add(stringArr);
 		Order order = null;
-		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
+		ArrayList<ArrayList<String>> orderWrapped=null;
+		if (orderNumber!=null)
+			orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
+		else
+			orderWrapped = ExistingOrderCheck.fechOrderTodayInPark(objForFech, "orders", park.getName());
 		if (!orderWrapped.isEmpty()) {// order was found
 			order = new Order(orderWrapped.get(0));
 			if (orderWasUsed(order)) {
@@ -158,10 +162,11 @@ public class ParkGate {
 			NewOrder.insertNewOrder(order);
 		}
 		//updateArrived(order, order.getVisitorsNumber());// insert arrived to order
-		insertEnteryExit(order, order.getAmountArrived(), "enter");
+		
 		answer.add("enter");
 		answer.add(randomVisitorTicket);
 		client.sendToClient(answer);
+		insertEnteryExit(order, order.getAmountArrived(), "enter");
 
 	}
 
@@ -240,6 +245,7 @@ public class ParkGate {
 		insertEnteryExit(order, order.getAmountArrived(), "exit"); // update exit time to now entryexit
 		answer.add("exited");
 		client.sendToClient(answer);
+		insertEnteryExit(order, order.getAmountArrived(), "enter");
 		return;
 	}
 
@@ -307,10 +313,12 @@ public class ParkGate {
 		query.add("select"); // command
 		query.add("enteryandexit"); // table name
 		query.add("sum(amountArrived)"); // columns to select from
-		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='" + getCapsuleTime().format(formatter).toString() + "' AND timeExit is null"); // condition
+		query.add("WHERE parkName='" + park.getName() + "' AND DATE(timeEnter)=CURDATE() AND timeExit is null"); // condition
 		query.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> randomStillIn = MySQLConnection.select(query);
-		if (randomStillIn.isEmpty())
+		if (randomStillIn.isEmpty()) 
+			return 0;
+		if (randomStillIn.get(0).get(0)==null)
 			return 0;
 		return Integer.parseInt(randomStillIn.get(0).get(0));
 	}
@@ -326,6 +334,8 @@ public class ParkGate {
 		ArrayList<ArrayList<String>> lessThanOrdered = MySQLConnection.select(query);
 		if (lessThanOrdered.isEmpty())
 			return 0;
+		if (lessThanOrdered.get(0).get(0)==null)
+			return 0;
 		return Integer.parseInt(lessThanOrdered.get(0).get(0));
 	}
 
@@ -340,7 +350,11 @@ public class ParkGate {
 		ArrayList<ArrayList<String>> summedCapsule = MySQLConnection.select(query);
 		if (summedCapsule.isEmpty())
 			return 0;
-		return Integer.parseInt(summedCapsule.get(0).get(0));
+		if (summedCapsule.get(0).get(0)==null)
+			return 0;
+		int ret = (int) Double.parseDouble(summedCapsule.get(0).get(0));
+		return ret;
+		//return Integer.parseInt(summedCapsule.get(0).get(0));
 	}
 
 	// input: park name and number to update
@@ -356,6 +370,11 @@ public class ParkGate {
 		query.add("parkName");
 		query.add(parkName);
 		MySQLConnection.update(query);
+		ArrayList<Object> answer2 = new ArrayList<Object>();
+		answer2.add("VisitorsUpdateSendToAll");
+		answer2.add(parkName);// park name
+		answer2.add(newAmount);// updatedVisitorsNumber
+		EchoServer.sendToAll(answer2);
 	}
 
 	// input: order class and amount arrived
@@ -473,14 +492,4 @@ public class ParkGate {
 
 		return ret;
 	}
-
-	private static int enteryAmountLeft(String patkName, String date) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
-
-		int amount = 0;
-
-		return amount;
-	}
-
 }
