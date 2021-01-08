@@ -292,10 +292,6 @@ public class DepartmentManagerController implements Initializable {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream("CanceledReport " + fileNameDate + ".pdf"));
 			document.open();
-			Image logo = Image.getInstance("Assignment3/code/G9_Client/G9_GoNature_Client/src/gui/logo_small.png");
-			// "url('/controllers/logo_small.png')"
-			logo.setAlignment(Element.ALIGN_CENTER);
-			document.add(logo);
 
 			Paragraph title = new Paragraph("Cancellation/Dismissed Report\n", titleFont);
 			title.setAlignment(Element.ALIGN_CENTER);
@@ -343,7 +339,7 @@ public class DepartmentManagerController implements Initializable {
 
 			alert.successAlert("Success", "The report was created successfully.");
 
-			Desktop.getDesktop().open(new File("Visits Report " + fileNameDate + ".pdf"));
+			Desktop.getDesktop().open(new File("CanceledReport " + fileNameDate + ".pdf"));
 
 			document.close();
 			writer.close();
@@ -385,10 +381,6 @@ public class DepartmentManagerController implements Initializable {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream("VisitorsReport " + fileNameDate + ".pdf"));
 			document.open();
-
-			Image logo = Image.getInstance("Assignment3/code/G9_Client/G9_GoNature_Client/src/gui/logo_small.png");
-			logo.setAlignment(Element.ALIGN_CENTER);
-			document.add(logo);
 
 			Paragraph title = new Paragraph("Visitors Report\n", titleFont);
 			title.setAlignment(Element.ALIGN_CENTER);
