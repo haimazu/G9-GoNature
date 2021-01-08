@@ -489,6 +489,9 @@ public class ParkManagerController implements Initializable {
 		dpToU.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpToU.setValue(newValue);
 		});
+		
+		setDatePickerDisableFutureDate(dpFromU);
+		setDatePickerDisableFutureDate(dpToU);
 	}
 
 	/**
@@ -507,6 +510,20 @@ public class ParkManagerController implements Initializable {
 		// listener for updating the date
 		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpTo.setValue(newValue);
+		});
+		
+		setDatePickerDisableFutureDate(dpFrom);
+		setDatePickerDisableFutureDate(dpTo);
+		
+	}
+	
+	public void setDatePickerDisableFutureDate(JFXDatePicker dp) {
+		dp.setDayCellFactory(picker -> new DateCell() {
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				setDisable(empty ||date.compareTo(today) >0);
+			}
 		});
 	}
 
