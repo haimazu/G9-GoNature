@@ -140,9 +140,7 @@ public class ParkEmployeeController implements Initializable {
 		// update as loggedin as logged out
 		data.add(LoginController.getUsername());
 		data.add(String.valueOf(0));
-		// Data fields
 		msg.add(data);
-		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
 
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
@@ -223,7 +221,6 @@ public class ParkEmployeeController implements Initializable {
 		informationExists = false;
 		btnApprove.setDisable(false);
 		orderStatus = true;
-		// approveIsPressed = false;
 	}
 
 	/**
@@ -233,7 +230,6 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	@FXML
 	void approve(ActionEvent event) {
-		// approveIsPressed = true;
 
 		// random mode
 		if (!btnRandomVisitor.isVisible()) {
