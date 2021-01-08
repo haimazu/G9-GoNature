@@ -347,6 +347,15 @@ public class OrderController implements Initializable {
 					stage.setResizable(false);
 					stage.setScene(scene);
 					stage.show();
+					
+					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+						@Override
+						public void handle(WindowEvent t) {
+
+							pnOrder.setDisable(false);
+
+						}
+					});
 				} else if (!faildDB) { // the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
@@ -598,8 +607,7 @@ public class OrderController implements Initializable {
 	 * Receives from the server the status of the action, if it is success Receives
 	 * success message and an object of order ,else receives a failure message
 	 * 
-	 * @param Object
-	 * @return Object Order / String / Boolean
+	 * @param newOrder Object
 	 * 
 	 */
 
@@ -619,7 +627,7 @@ public class OrderController implements Initializable {
 	/**
 	 * return the list of all the parks names
 	 * 
-	 * @param ArrayList of String of parks
+	 * @param parks ArrayList of String of parks
 	 **/
 
 	public static void recivedFromServerParksNames(ArrayList<String> parks) {

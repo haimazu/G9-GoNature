@@ -16,12 +16,12 @@ import ocsf.server.ConnectionToClient;
 public class PendingMenagerRequest implements Serializable {
 
 	/**
-	 * Inserts To Pending table in DB
+	 * Inserts To Pending table in DB. send to client ArrayList of Object : cell[0]
+	 * name ,cell[1] T/F
 	 * 
 	 * @param recived ArrayList of Object: cell[0] name, cell[1] ManagerRequest
 	 *                object
 	 * @param client  ConnectionToClient
-	 * @return ArrayList of Object : cell[0] name ,cell[1] T/F
 	 */
 	public static void InsertToPending(ArrayList<Object> recived, ConnectionToClient client) {
 
@@ -152,22 +152,21 @@ public class PendingMenagerRequest implements Serializable {
 		EchoServer.sendToMyClient(answer, client);
 	}
 
-
 	/**
 	 * deletes approved and disapproved managers requests and executes them in their
 	 * DB, sends to client: ArrayList of Object: cell[0] calling function name,
-	 * <<<<<<< Updated upstream cell[1] ArrayList of ArrayList of Object = call[0-n]
-	 * = ArrayList of Object = cell[0] = request cell[1] = True if deleteCond
-	 * success, false if failed cell[2] = false if discount on this day or failed to
-	 * insert DB, true ======= cell[1] ArrayList<ArrayList<Object>> => call[0-n] =>
-	 * ArrayList of Object => cell[0] => request cell[1] => True if deleteCond
-	 * success, false if failed cell[2] => false if discount on this day or failed
-	 * to insert DB, true >>>>>>> Stashed changes otherwise
+	 * (Updated upstream cell[1] ArrayList of ArrayList of Object = call[0 to n] =
+	 * ArrayList of Object = cell[0] = request cell[1] = True if deleteCond success,
+	 * false if failed cell[2] = false if discount on this day or failed to insert
+	 * DB, true ======= cell[1] ArrayList of ArrayList of Object = call[0 to n] =
+	 * ArrayList of Object = cell[0] = request cell[1] = True if deleteCond success,
+	 * false if failed cell[2] = false if discount on this day or failed to insert
+	 * DB, true ) Stashed changes otherwise
 	 * 
-	 * @param recived ArrayList of Object : cell[0] => String
-	 *                removePendingsManagerReq cell[1] =>
-	 *                ArrayList<ArrayList<Object>> => cell[0-n] => ArrayList Object
-	 *                => cell[0] ManagerRequest object cell[1] yes/no
+	 * @param recived ArrayList of Object : cell[0] = String
+	 *                removePendingsManagerReq cell[1] = ArrayList of ArrayList of
+	 *                Object = cell[0 to n] = ArrayList Object = cell[0]
+	 *                ManagerRequest object cell[1] yes/no
 	 * @param client  ConnectionToClient
 	 * 
 	 */
@@ -237,7 +236,7 @@ public class PendingMenagerRequest implements Serializable {
 				}
 
 				if (mr.getRequestType().equals("max_c")) {
-					//ret.add(MySQLConnection.deleteCond(query));///////////////////////////////////////////////////////////////////////////////////
+					// ret.add(MySQLConnection.deleteCond(query));///////////////////////////////////////////////////////////////////////////////////
 
 					ArrayList<String> query2 = new ArrayList<String>();
 					query2.add("update"); // command

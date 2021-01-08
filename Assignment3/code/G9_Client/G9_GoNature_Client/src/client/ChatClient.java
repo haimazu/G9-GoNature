@@ -34,7 +34,9 @@ public class ChatClient extends AbstractClient {
 	 * @param host     The server to connect to.
 	 * @param port     The port number to connect on.
 	 * @param clientUI The interface type variable.
-	 * @exception IOException
+	 * @exception IOException Signals that an I/O exception of some sort has
+	 *                        occurred
+	 * 
 	 */
 
 	public ChatClient(String host, int port, WelcomeController control2) throws IOException {
@@ -169,9 +171,9 @@ public class ChatClient extends AbstractClient {
 //		case "getVisitorsEntryStatus":
 //			ParkEmployeeController.receivedFromEnterAndExitStatus((String) received.get(1));
 //			break;
-		case "revenueReport" :
+		case "revenueReport":
 			ParkManagerController.recivedFromserverRevenueReport((ArrayList<ArrayList<String>>) received.get(1));
-			break ;
+			break;
 		case "getVisitorsPrice":
 			ParkEmployeeController.receivedFromServerVisitorsPrice((ArrayList<Object>) received);
 			break;
@@ -234,11 +236,9 @@ public class ChatClient extends AbstractClient {
 
 	}
 
-	
 	/**
-	 * Update the current amount of visitor in this current day.
-	 * comes after update from service represintetive
-	 * send to all employees
+	 * Update the current amount of visitor in this current day. comes after update
+	 * from service represintetive send to all employees
 	 * 
 	 * @param arr cell[0] - park name cell[1] -Visitors Number.s
 	 */

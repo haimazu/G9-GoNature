@@ -12,19 +12,19 @@ import userData.Member;
 
 public class ParkGate {
 
-	// input: ArrayList of object
-	// cell[0] contains "getPrice" String
-	// cell[1] contains ParkName
-	// cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data
-	// in cell3)
-	// cell[3] contains value detorment by cell2 as String
-	// cell[4] how many people wants to enter
-	// output: none
-	// send to client: ArrayList of object
-	// cell[0] contains "enterThePark" String
-	// cell[1] contains priceBeforeDiscount as double
-	// cell[2] contains priceAfterDiscount as double
-	// cell[3] contains discount as double
+	/**
+	 * 
+	 * @param recived ArrayList of Object cell[0] contains "getPrice" String cell[1]
+	 *                contains ParkName cell[2] contains String "ID" or "MEMBERID"
+	 *                or "ORDERNUMBER" (depends on data in cell3) cell[3] contains
+	 *                value detorment by cell2 as String cell[4] how many people
+	 *                wants to enter send to client: ArrayList of object cell[0]
+	 *                contains "enterThePark" String cell[1] contains
+	 *                priceBeforeDiscount as double cell[2] contains
+	 *                priceAfterDiscount as double cell[3] contains discount as
+	 *                double
+	 * @param client  ConnectionToClient
+	 */
 	public static void getPrice(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -58,19 +58,26 @@ public class ParkGate {
 		}
 	}
 
-	// input: ArrayList of object
-	// cell[0] contains "enterThePark" String
-	// cell[1] contains Park Class
-	// cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data
-	// in cell3)
-	// cell[3] contains value determent by cell2 as String
-	// cell[4] how many people wants to enter
+	// input:
 	// output: none
-	// send to client: ArrayList of object
-	// cell[0] contains "enterThePark" String
-	// cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark" / "parkfull" / "noRoomForRandom" if not
-	// cell[2] if enterd the park as random ticket numbet as int, if enterd not as random than 0
-	// 
+	//
+	//
+	/**
+	 * send to client: ArrayList of object cell[0] contains "enterThePark" String
+	 * cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark"
+	 * / "parkfull" / "noRoomForRandom" if not cell[2] if enterd the park as random
+	 * ticket numbet as int, if enterd not as random than 0
+	 * 
+	 * @param recived ArrayList of object cell[0] contains "enterThePark" String,
+	 *                cell[1] contains Park Class, cell[2] contains String "ID" or
+	 *                "MEMBERID" or "ORDERNUMBER" (depends on data in cell3),
+	 *                cell[3] contains value determent by cell2 as String, cell[4]
+	 *                how many people wants to enter
+	 * @param client  ConnectionToClient
+	 * @throws IOException Signals that an I/O exception of some sort has occurred.
+	 *                     This class is the general class of exceptions produced by
+	 *                     failed or interrupted I/O operations
+	 */
 	public static void enterThePark(ArrayList<Object> recived, ConnectionToClient client) throws IOException {
 		int randomVisitorTicket = 0;
 		String extras = null;
@@ -116,8 +123,8 @@ public class ParkGate {
 		}
 		objForFech.add(stringArr);
 		Order order = null;
-		ArrayList<ArrayList<String>> orderWrapped=null;
-		if (orderNumber!=null)
+		ArrayList<ArrayList<String>> orderWrapped = null;
+		if (orderNumber != null)
 			orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		else
 			orderWrapped = ExistingOrderCheck.fechOrderTodayInPark(objForFech, "orders", park.getName());
@@ -134,15 +141,15 @@ public class ParkGate {
 				return;
 			}
 
-			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than pepole on reservation
+			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than people on reservation
 				moreThanOrdered = true;
 				extras = "" + (Integer.parseInt(howMany) - order.getVisitorsNumber());
 				updateArrived(order, order.getVisitorsNumber());// insert arrived to order
 				insertEnteryExit(order, order.getVisitorsNumber(), "enter");
-				// dont return yet
+				// not yet returned
 			}
 		}
-		// **********mizdamen**********
+		// **********occasional**********
 		if (orderWrapped.isEmpty() || moreThanOrdered) { // create an order for random visits
 			if (moreThanOrdered)
 				howMany = extras;
@@ -150,7 +157,7 @@ public class ParkGate {
 				answer.add("noRoomForRandom");
 				client.sendToClient(answer);
 				return;
-				}
+			}
 			LocalDateTime now = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			order = new Order(park.getName(), getCapsuleTime().format(formatter).toString(), memberId, id,
@@ -158,11 +165,11 @@ public class ParkGate {
 			Member member = NewOrder.MemerCheck(order);
 			order = NewOrder.totalPrice(order, member, true);// updating the prices in the order
 			order.setOrderNumber(Counter.getCounter().orderNum()); // get an order number
-			randomVisitorTicket=order.getOrderNumber();
+			randomVisitorTicket = order.getOrderNumber();
 			NewOrder.insertNewOrder(order);
 		}
-		//updateArrived(order, order.getVisitorsNumber());// insert arrived to order
-		
+		// updateArrived(order, order.getVisitorsNumber());// insert arrived to order
+
 		answer.add("enter");
 		answer.add(randomVisitorTicket);
 		client.sendToClient(answer);
@@ -170,17 +177,23 @@ public class ParkGate {
 
 	}
 
-	// input: ArrayList of object
-	// cell[0] contains "exitThePark" String
-	// cell[1] contains Park Class
-	// cell[2] contains String "ID" or "MEMBERID" or "ORDERNUMBER" (depends on data
-	// in cell3)
-	// cell[3] contains value determent by cell2 as String
+	// input:
 	// output: non
-	// send to client: ArrayList of object
-	// cell[0] contains "exitThePark" String
-	// cell[1] contains String "exited" if exited "allreadyExited" or "neverWasHere"
-	// if not
+	//
+	/**
+	 * send to client: ArrayList of object cell[0] contains "exitThePark" String,
+	 * cell[1] contains String "exited" if exited "allreadyExited" or "neverWasHere"
+	 * if not
+	 * 
+	 * @param recived ArrayList of object cell[0] contains "exitThePark" String,
+	 *                cell[1] contains Park Class, cell[2] contains String "ID" or
+	 *                "MEMBERID" or "ORDERNUMBER" (depends on data in cell3),
+	 *                cell[3] contains value determent by cell2 as String
+	 * @param client  ConnectionToClient
+	 * @throws IOException Signals that an I/O exception of some sort has occurred.
+	 *                     This class is the general class of exceptions produced by
+	 *                     failed or interrupted I/O operations
+	 */
 	public static void exitThePark(ArrayList<Object> recived, ConnectionToClient client) throws IOException {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -198,7 +211,7 @@ public class ParkGate {
 			orderNumber = (String) recived.get(3);
 			break;
 		default:
-			//System.out.println("bootkeError");
+			// System.out.println("bootkeError");
 			break;
 		}
 		ArrayList<Object> objForFech = new ArrayList<Object>();
@@ -217,8 +230,8 @@ public class ParkGate {
 		}
 		objForFech.add(stringArr);
 		Order order = null;
-		ArrayList<ArrayList<String>> orderWrapped=null;
-		if (orderNumber!=null)
+		ArrayList<ArrayList<String>> orderWrapped = null;
+		if (orderNumber != null)
 			orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		else
 			orderWrapped = ExistingOrderCheck.fechOrderTodayInPark(objForFech, "orders", park.getName());
@@ -246,7 +259,8 @@ public class ParkGate {
 			return;
 		}
 		// if made it here than all good and can exit
-		//insertEnteryExit(order, order.getAmountArrived(), "exit"); // update exit time to now entryexit
+		// insertEnteryExit(order, order.getAmountArrived(), "exit"); // update exit
+		// time to now entryexit
 		answer.add("exited");
 		client.sendToClient(answer);
 		insertEnteryExit(order, order.getAmountArrived(), "exit");
@@ -278,9 +292,9 @@ public class ParkGate {
 			updateParkCapacity(order.getParkName(), -1 * visitorsNumber);
 		}
 	}
-	
-	//input=non
-	//output=find a capsle time for now
+
+	// input=non
+	// output=find a capsle time for now
 	private static LocalDateTime getCapsuleTime() {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime eightAm = LocalDateTime.now().withHour(8).withMinute(0).withSecond(0);
@@ -289,23 +303,24 @@ public class ParkGate {
 		LocalDateTime eightPm = LocalDateTime.now().withHour(20).withMinute(0).withSecond(0);
 		if (now.isBefore(eightAm))
 			now = eightAm;
-		if (now.isAfter(eightAm)&&now.isBefore(twelvePm))
+		if (now.isAfter(eightAm) && now.isBefore(twelvePm))
 			now = eightAm;
-		if (now.isAfter(twelvePm)&&now.isBefore(fourPm))
+		if (now.isAfter(twelvePm) && now.isBefore(fourPm))
 			now = twelvePm;
-		if (now.isAfter(fourPm)&&now.isBefore(eightPm))
+		if (now.isAfter(fourPm) && now.isBefore(eightPm))
 			now = fourPm;
 		if (now.isAfter(eightPm))
 			now = eightAm.plusDays(1);
 		return now;
 	}
-	
+
 	//
 	//
 	//
-	private static int randomVisitorsAvilableSpot(Park park){
-		//int randomVisitorsSpots = park.getMaximumCapacityInPark()-park.getMaxAmountOrders();
-		int randomVisitorsSpots = park.getMaximumCapacityInPark()-capsuleOrdered(park);
+	private static int randomVisitorsAvilableSpot(Park park) {
+		// int randomVisitorsSpots =
+		// park.getMaximumCapacityInPark()-park.getMaxAmountOrders();
+		int randomVisitorsSpots = park.getMaximumCapacityInPark() - capsuleOrdered(park);
 		randomVisitorsSpots += lessThanOrdered(park);
 		randomVisitorsSpots -= randomStillIn(park);
 		return randomVisitorsSpots;
@@ -320,9 +335,9 @@ public class ParkGate {
 		query.add("WHERE parkName='" + park.getName() + "' AND DATE(timeEnter)=CURDATE() AND timeExit is null"); // condition
 		query.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> randomStillIn = MySQLConnection.select(query);
-		if (randomStillIn.isEmpty()) 
+		if (randomStillIn.isEmpty())
 			return 0;
-		if (randomStillIn.get(0).get(0)==null)
+		if (randomStillIn.get(0).get(0) == null)
 			return 0;
 		return Integer.parseInt(randomStillIn.get(0).get(0));
 	}
@@ -333,12 +348,14 @@ public class ParkGate {
 		query.add("select"); // command
 		query.add("orders"); // table name
 		query.add("sum(visitorsNumber-amountArrived)"); // columns to select from
-		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='" + getCapsuleTime().format(formatter).toString() + "' AND visitorsNumber>amountArrived AND amountArrived>0"); // condition
+		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='"
+				+ getCapsuleTime().format(formatter).toString()
+				+ "' AND visitorsNumber>amountArrived AND amountArrived>0"); // condition
 		query.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> lessThanOrdered = MySQLConnection.select(query);
 		if (lessThanOrdered.isEmpty())
 			return 0;
-		if (lessThanOrdered.get(0).get(0)==null)
+		if (lessThanOrdered.get(0).get(0) == null)
 			return 0;
 		return Integer.parseInt(lessThanOrdered.get(0).get(0));
 	}
@@ -349,16 +366,17 @@ public class ParkGate {
 		query.add("select"); // command
 		query.add("orders"); // table name
 		query.add("SUM(visitorsNumber)"); // columns to select from
-		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='" + getCapsuleTime().format(formatter).toString() + "'"); // condition
+		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='"
+				+ getCapsuleTime().format(formatter).toString() + "'"); // condition
 		query.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> summedCapsule = MySQLConnection.select(query);
 		if (summedCapsule.isEmpty())
 			return 0;
-		if (summedCapsule.get(0).get(0)==null)
+		if (summedCapsule.get(0).get(0) == null)
 			return 0;
 		int ret = (int) Double.parseDouble(summedCapsule.get(0).get(0));
 		return ret;
-		//return Integer.parseInt(summedCapsule.get(0).get(0));
+		// return Integer.parseInt(summedCapsule.get(0).get(0));
 	}
 
 	// input: park name and number to update
@@ -464,8 +482,8 @@ public class ParkGate {
 		}
 		objForFech.add(stringArr);
 		Order order = null;
-		ArrayList<ArrayList<String>> orderWrapped=null;
-		if (orderNumber!=null)
+		ArrayList<ArrayList<String>> orderWrapped = null;
+		if (orderNumber != null)
 			orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
 		else
 			orderWrapped = ExistingOrderCheck.fechOrderTodayInPark(objForFech, "orders", parkName);
@@ -474,7 +492,7 @@ public class ParkGate {
 			priceBeforeDiscount += order.getPrice();
 			priceAfterDiscount += order.getTotalPrice();
 			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in
-																										// precent
+																									// precent
 			// suck the order price
 			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than people on reservation
 				moreThanOrdered = true;

@@ -5,7 +5,6 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -64,17 +63,12 @@
                </font>
             </JFXPasswordField>
             <FontAwesomeIconView fx:id="passIcon" fill="#a3a3a3" glyphName="KEY" layoutX="306.0" layoutY="230.0" size="16" />
-            <Hyperlink fx:id="hplForgotPassword" focusTraversable="false" layoutX="213.0" layoutY="239.0" prefHeight="28.0" prefWidth="125.0" styleClass="hyperLink" text="Forgot Password?" textFill="#a3a3a3">
-               <font>
-                  <Font name="Ebrima" size="14.0" />
-               </font>
-            </Hyperlink>
-            <Button fx:id="btnLogin" focusTraversable="false" layoutX="115.0" layoutY="337.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="250.0" styleClass="btnMiddleWide" text="Login" textAlignment="CENTER">
+            <Button fx:id="btnLogin" focusTraversable="false" layoutX="115.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="250.0" styleClass="btnMiddleWide" text="Login" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Label layoutX="71.0" layoutY="283.0" text="* Required fields" textFill="RED" />
+            <Label layoutX="73.0" layoutY="266.0" text="* Required fields" textFill="RED" />
          </children>
       </Pane>
    </children>

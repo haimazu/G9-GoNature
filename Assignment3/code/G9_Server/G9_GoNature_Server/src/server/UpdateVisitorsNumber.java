@@ -113,11 +113,11 @@ public class UpdateVisitorsNumber {
 
 	/**
 	 * pulling details of a selected park from DB. sends to client :
-	 * ArrayList of Object => cell[0] function name, cell[1] ArrayList of String => [0]
+	 * ArrayList of Object = cell[0] function name, cell[1] ArrayList of String = [0]
 	 * parkName, [1] number of visitors to add
 	 * 
 	 * @param recived ArrayList of Object cell[0]: calling function name
-	 * @param client
+	 * @param client ConnectionToClient
 	 */
 	public static void getVisitorsEntryStatus(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
@@ -153,7 +153,7 @@ public class UpdateVisitorsNumber {
 
 	/**
 	 * pulling details of a selected park from DB. sends to client ArrayList of
-	 * Object=> cell[0] function name, cell[1] ArrayList of String => [0] parkName, [1]
+	 * Object= cell[0] function name, cell[1] ArrayList of String = [0] parkName, [1]
 	 * number of visitors to add
 	 * 
 	 * @param recived ArrayList of Object cell[0]: calling function name

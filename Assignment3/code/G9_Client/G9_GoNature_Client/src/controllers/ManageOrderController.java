@@ -331,7 +331,7 @@ public class ManageOrderController implements Initializable {
 	 * approved present edit window ,
 	 * if false  something went wrong int caseApproval : 0 pressed no ,1 pressed yes, 2 false something wrong 
 	 * 
-	 * @param returned ArrayList<Object>
+	 * @param returned ArrayList of Object
 	 */
 	
 	public static void receviedFromserverArrivalConfirmation(ArrayList<Object> returned) {

@@ -33,7 +33,7 @@ public class AlertController {
 	 * showing success alert message
 	 * 
 	 * @param title String
-	 * @param msg String
+	 * @param msg   String
 	 */
 	public void successAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -47,7 +47,7 @@ public class AlertController {
 	 * showing failed alert message
 	 * 
 	 * @param title String
-	 * @param msg String
+	 * @param msg   String
 	 */
 	public void failedAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -60,8 +60,8 @@ public class AlertController {
 	/**
 	 * showing confirmation alert message
 	 * 
-	 * @param title
-	 * @param msg
+	 * @param title String
+	 * @param msg   String
 	 */
 	public void ensureAlert(String title, String msg) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -75,20 +75,10 @@ public class AlertController {
 		}
 	}
 
-	/**
-	 * getResult
-	 * 
-	 * @return
-	 */
 	public String getResult() {
 		return result;
 	}
 
-	/**
-	 * setResult
-	 * 
-	 * @param result
-	 */
 	public void setResult(String result) {
 		this.result = result;
 	}

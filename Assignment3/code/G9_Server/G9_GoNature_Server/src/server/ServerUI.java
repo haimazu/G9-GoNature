@@ -37,7 +37,7 @@ public class ServerUI extends Application {
 	/**
 	 * runs the server
 	 * 
-	 * @param sv
+	 * @param sv EchoServer
 	 * @return T/F
 	 */
 	public static boolean runServer(EchoServer sv) {
