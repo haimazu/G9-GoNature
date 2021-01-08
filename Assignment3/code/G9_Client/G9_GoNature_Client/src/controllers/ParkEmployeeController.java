@@ -10,10 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-
 import client.ClientUI;
 import dataLayer.Park;
 import javafx.application.Platform;
@@ -32,24 +30,24 @@ import orderData.Order;
 import sim.BarcodeSimulation;
 
 /**
-*
-* Controller that gets the user login details
-*
-* @author Haim Azulay Hodaya Mekonen
-*/
+ *
+ * Controller that gets the user login details
+ *
+ * @author Haim Azulay Hodaya Mekonen
+ */
 
 public class ParkEmployeeController implements Initializable {
-	/***** Top/Side Panels Details *****/
+	// ***** Top/Side Panels Details *****
 	@FXML
 	private Label lblFirstNameTitle;
 	@FXML
 	private Button btnLogout;
 
-	/***** Current Park Details *****/
+	// ***** Current Park Details *****
 	@FXML
 	private Label lblCurrentVisitors;
 
-	/***** Order Details *****/
+	// ***** Order Details *****
 	@FXML
 	private Label lblOrderNumber;
 	@FXML
@@ -63,7 +61,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Label lblEmail;
 
-	/***** Payment Details *****/
+	// ***** Payment Details *****
 	@FXML
 	private Label lblPrice;
 	@FXML
@@ -71,11 +69,11 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Label lblTotalPrice;
 
-	/***** BarcodeScan *****/
+	// ***** BarcodeScan *****
 	@FXML
 	private Button btnBarcodeScan;
 
-	/***** Show Details => Regular Entry *****/
+	// ***** Show Details => Regular Entry *****
 	@FXML
 	private Button btnManualAccess;
 	@FXML
@@ -85,7 +83,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnShowDetails;
 
-	/***** Random Entry *****/
+	// ***** Random Entry *****
 	@FXML
 	private Button btnRandomVisitor;
 	@FXML
@@ -99,7 +97,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private JFXTextField txtIdOrMemberId;
 
-	/***** Bottom Right Screen *****/
+	// ***** Bottom Right Screen *****
 	@FXML
 	private JFXRadioButton radEnter;
 	@FXML
@@ -109,7 +107,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	private Button btnApprove;
 
-	/***** Global Variables *****/
+	// ***** Global Variables *****
 	private AlertController alert = new AlertController();
 	private boolean informationExists = false;
 	private boolean orderStatus = false;
@@ -126,8 +124,10 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Moves to the 'login' screen
 	 * 
-	 * @param event
-	 * @throws IOException
+	 * @param event ActionEvent
+	 * @throws IOException Signals that an I/O exception of some sort has occurred.
+	 *                     Thisclass is the general class of exceptions produced by
+	 *                     failed orinterrupted I/O operations
 	 */
 	@FXML
 	void logout(ActionEvent event) throws IOException {
@@ -151,7 +151,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * External simulator that receives ID / MemberId and returns order number
 	 * 
-	 * @param event
+	 * @param event ActionEvent
 	 */
 	@SuppressWarnings("static-access")
 	@FXML
@@ -182,7 +182,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Displays the order data
 	 * 
-	 * @param event
+	 * @param event ActionEvent
 	 */
 	@FXML
 	void showDetails(ActionEvent event) {
@@ -214,7 +214,7 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 
-		if (orderDetails.getVisitorsNumber() != 0) {			
+		if (orderDetails.getVisitorsNumber() != 0) {
 			printOrderDetails();
 		}
 
@@ -226,7 +226,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Payment confirmation at the entrance to the park / update on exit
 	 * 
-	 * @param event
+	 * @param event ActionEvent
 	 */
 	@FXML
 	void approve(ActionEvent event) {
@@ -294,7 +294,8 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	/**
-	 * Entrance control to the park for the case of an invited visitor and an casual visitor
+	 * Entrance control to the park for the case of an invited visitor and an casual
+	 * visitor
 	 * 
 	 */
 	public void execEnter() {
@@ -308,8 +309,8 @@ public class ParkEmployeeController implements Initializable {
 			if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "These visitors have already entered.");
 			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
-						+ "or you are trying to add too many visitors");
+				alert.failedAlert("Failed",
+						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
 			} else if (getEntryStatus().equals("noRoomForRandom")) {
 				alert.failedAlert("Failed", "noRoomForRandom");
 			} else if (getEntryStatus().equals("enter")) {
@@ -317,7 +318,7 @@ public class ParkEmployeeController implements Initializable {
 			} else {
 				alert.failedAlert("Failed", "Wrong case! (notGoodTime)");
 			}
-		// invited visitor
+			// invited visitor
 		} else {
 			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
 
@@ -326,9 +327,9 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "This order has already been fulfilled.");
 			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
-						+ "or you are trying to add too many visitors");
-			// getEntryStatus() = "enter"
+				alert.failedAlert("Failed",
+						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
+				// getEntryStatus() = "enter"
 			} else if (getEntryStatus().equals("enter")) {
 				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
 				if (randomVisitorTicket != 0) {
@@ -352,7 +353,7 @@ public class ParkEmployeeController implements Initializable {
 		if (!orderStatus) {
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetExitStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
-		// invited visitor
+			// invited visitor
 		} else {
 			sendToGetExitStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
 		}
@@ -361,7 +362,7 @@ public class ParkEmployeeController implements Initializable {
 			alert.failedAlert("Failed", "The visitor/s have already leaved.");
 		} else if (getExitStatus().equals("neverWasHere")) {
 			alert.failedAlert("Failed", "The visitor/s didn't enter.");
-		// can leave getExitStatus() = "exited"
+			// can leave getExitStatus() = "exited"
 		} else {
 			alert.successAlert("Success", "Thanks for visiting, hope to see you again soon.");
 		}
@@ -401,12 +402,12 @@ public class ParkEmployeeController implements Initializable {
 			// price for ordered visitor
 		} else {
 			sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-		}		
+		}
 
 		lblPrice.setText(String.format("%.1f", visitorsPrice.get(0)) + "₪");
 		lblDiscount.setText(String.format("%.1f", visitorsPrice.get(1)) + "%");
 		lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(2)) + "₪");
-		
+
 		if (radExit.isSelected()) {
 			clearPaymentFields();
 		}
@@ -415,15 +416,13 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Sends the server some data to get a matching price
 	 * 
-	 * [0] => getVisitorsPrice
-	 * [1] => parkName
-	 * [2] => String "ID" / "MEMBERID" / "ORDERNUMBER"
-	 * [3] => Value ID / MemberId / orderNumber
-	 * [4] => amount of visitors
+	 * [0] => getVisitorsPrice [1] => parkName [2] => String "ID" / "MEMBERID" /
+	 * "ORDERNUMBER" [3] => Value ID / MemberId / orderNumber [4] => amount of
+	 * visitors
 	 * 
-	 * @param type
-	 * @param value
-	 * @param amount
+	 * @param type   String
+	 * @param value  String
+	 * @param amount String
 	 */
 	public void sendToGetPrice(String type, String value, String amount) {
 		ArrayList<Object> msg = new ArrayList<Object>();
@@ -438,15 +437,13 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Sends the server some data to check park entrance cases
 	 * 
-	 * [0] => enterThePark
-	 * [1] => Park object => parkDetails
-	 * [2] => String "ID" / "MEMBERID" / "ORDERNUMBER"
-	 * [3] => Value ID / MemberId / orderNumber
-	 * [4] => amount of visitors
+	 * [0] => enterThePark [1] => Park object => parkDetails [2] => String "ID" /
+	 * "MEMBERID" / "ORDERNUMBER" [3] => Value ID / MemberId / orderNumber [4] =>
+	 * amount of visitors
 	 * 
-	 * @param type
-	 * @param value
-	 * @param amount
+	 * @param type   String
+	 * @param value  String
+	 * @param amount String
 	 */
 	public void sendToGetEntryStatus(String type, String value, String amount) {
 		ArrayList<Object> msg = new ArrayList<Object>();
@@ -461,15 +458,13 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Sends the server some data to check park exit cases
 	 * 
-	 * [0] => exitThePark
-	 * [1] => Park object => parkDetails
-	 * [2] => String "ID" / "MEMBERID" / "ORDERNUMBER"
-	 * [3] => Value ID / MemberId / orderNumber
-	 * [4] => amount of visitors
+	 * [0] => exitThePark [1] => Park object => parkDetails [2] => String "ID" /
+	 * "MEMBERID" / "ORDERNUMBER" [3] => Value ID / MemberId / orderNumber [4] =>
+	 * amount of visitors
 	 * 
-	 * @param type
-	 * @param value
-	 * @param amount
+	 * @param type   String
+	 * @param value  String
+	 * @param amount String
 	 */
 	public void sendToGetExitStatus(String type, String value, String amount) {
 		// Query
@@ -481,7 +476,6 @@ public class ParkEmployeeController implements Initializable {
 		msg.add(amount);
 		ClientUI.sentToChatClient(msg);
 	}
-
 
 	/**
 	 * Sends the server a park name to get the right object for it
@@ -497,12 +491,12 @@ public class ParkEmployeeController implements Initializable {
 		lblCurrentVisitors.setText("[" + getParkName() + "]:  " + String.valueOf(parkDetails.getCurrentAmount()) + "/"
 				+ parkDetails.getMaximumCapacityInPark());
 	}
-	
+
 	/**
 	 * Send an object to a server to get his data
 	 * 
-	 * @param type (the case we use)
-	 * @param dbColumns  (the ArrayList to send)
+	 * @param type      (the case we use)
+	 * @param dbColumns (the ArrayList to send)
 	 */
 	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
 		ArrayList<Object> msg = new ArrayList<Object>();
@@ -511,18 +505,18 @@ public class ParkEmployeeController implements Initializable {
 		ClientUI.sentToChatClient(msg);
 	}
 
-	/** 
+	/**
 	 * update current visitors number in the park.The number is updated every time
 	 * when visitor enters or exits the park
 	 * 
-	 * @param visitNum
+	 * @param visitNum String
 	 */
 	public void setCurrentVisitors(String visitNum) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				lblCurrentVisitors.setText("[" + getParkName() + "]:  " + visitNum + "/"
-						+ parkDetails.getMaximumCapacityInPark());
+				lblCurrentVisitors.setText(
+						"[" + getParkName() + "]:  " + visitNum + "/" + parkDetails.getMaximumCapacityInPark());
 			}
 		});
 	}
@@ -560,7 +554,7 @@ public class ParkEmployeeController implements Initializable {
 			} else {
 				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			}
-			
+
 			if (!txtVisitorsAmount.getText().isEmpty()) {
 				setPrice();
 			} else {
@@ -793,7 +787,7 @@ public class ParkEmployeeController implements Initializable {
 		txtIdOrMemberId.clear();
 		btnRandomVisitor.setVisible(true);
 		/***** Global *****/
-		txtVisitorsAmount.clear();		
+		txtVisitorsAmount.clear();
 		btnApprove.setDisable(true);
 		orderStatus = false;
 		radEnter.setSelected(true);
@@ -813,7 +807,7 @@ public class ParkEmployeeController implements Initializable {
 	}
 
 	/**
-	 * Initializing and force each of the fields according to the Required templates 
+	 * Initializing and force each of the fields according to the Required templates
 	 * 
 	 * @param location
 	 * @param resources
