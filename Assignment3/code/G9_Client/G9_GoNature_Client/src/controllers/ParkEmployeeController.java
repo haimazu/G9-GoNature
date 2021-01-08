@@ -271,10 +271,12 @@ public class ParkEmployeeController implements Initializable {
 			}
 
 			// if the order is for another park
-			if (!orderDetails.getParkName().equals(getParkName())) {
-				alert.failedAlert("Failed", "The order is for the park " + orderDetails.getParkName() + ".");
-				clearAllFields();
-				return;
+			if (!radExit.isSelected() && orderDetails!=null) {
+				if (!orderDetails.getParkName().equals(getParkName())) {
+					alert.failedAlert("Failed", "The order is for the park " + orderDetails.getParkName() + ".");
+					clearAllFields();
+					return;
+				}
 			}
 
 			orderStatus = true;
