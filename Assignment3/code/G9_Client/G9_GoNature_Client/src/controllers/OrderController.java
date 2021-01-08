@@ -164,6 +164,14 @@ public class OrderController implements Initializable {
 	public void setPnOrder(Pane pnOrder) {
 		this.pnOrder = pnOrder;
 	}
+	
+	public Pane getPnPayment() {
+		return pnPayment;
+	}
+
+	public void setPnPayment(Pane pnPayment) {
+		this.pnPayment = pnPayment;
+	}
 
 	/***************** Getters and Setters for statics *****************/
 
@@ -299,11 +307,24 @@ public class OrderController implements Initializable {
 			public void handle(WindowEvent t) {
 
 				radioCash.setSelected(true);
+				pnPayment.setDisable(false);
 
 			}
 		});
+		
+		pnPayment.setDisable(true);
 
 	}
+	
+	
+	/**
+	 * radio button for open screen alert
+	 * @param event
+	 */
+    @FXML
+    void payPalClick(ActionEvent event) {
+    		alert.successAlert("Simulation", "PayPal - simulation");
+    }
 
 	/**
 	 * msgForServer is ArrayList of objects [0] name of the class "order" [1] order
@@ -356,6 +377,9 @@ public class OrderController implements Initializable {
 
 						}
 					});
+					
+				}else if(status.equals("Existing ")) {
+					alert.setAlert("You already have an order on this day for this time ");
 				} else if (!faildDB) { // the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
@@ -655,6 +679,8 @@ public class OrderController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setOrderC(this);
+		
+		txtVisitorsNumber.setText("1");
 		cbxArrivelTime.setItems(FXCollections.observableArrayList("08:00-12:00", "12:00-16:00", "16:00-20:00"));
 
 		// user can choose to date only date today until next year.

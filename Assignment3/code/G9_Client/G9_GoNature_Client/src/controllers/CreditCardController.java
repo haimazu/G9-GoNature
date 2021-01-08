@@ -97,6 +97,9 @@ public class CreditCardController implements Initializable {
 			 
 			 clearDetails();
 		}
+		
+		OrderController ORC = Context.getInstance().getOrderC();
+		ORC.getPnPayment().setDisable(false);
 	}
 	
 	public void clearDetails() {

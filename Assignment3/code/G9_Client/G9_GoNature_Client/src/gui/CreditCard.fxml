@@ -19,7 +19,7 @@
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="txtCardNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Card Number" styleClass="txtField" unFocusColor="#a3a3a3">
+      <JFXTextField fx:id="txtCardNumber" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="70.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="263.0" promptText="*Card Number (XXXX XXXX XXXX XXXX)" styleClass="txtField" unFocusColor="#a3a3a3">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -27,15 +27,15 @@
             <Font name="Ebrima" size="14.0" />
          </font>
       </JFXTextField>
-      <FontAwesomeIconView fill="#a1a1a1" glyphName="CREDIT_CARD" layoutX="306.0" layoutY="97.0" size="16" />
-      <JFXComboBox fx:id="cbxExpiryMonth" focusColor="SEAGREEN" focusTraversable="false" layoutX="75.0" layoutY="118.0" prefHeight="37.0" prefWidth="115.0" promptText="*Expiry Month" styleClass="comboBox" unFocusColor="#a3a3a3" />
+      <FontAwesomeIconView fill="#a1a1a1" glyphName="CREDIT_CARD" layoutX="319.0" layoutY="97.0" size="16" />
+      <JFXComboBox fx:id="cbxExpiryMonth" focusColor="SEAGREEN" focusTraversable="false" layoutX="75.0" layoutY="118.0" prefHeight="37.0" prefWidth="115.0" promptText="*Expire Month" styleClass="comboBox" unFocusColor="#a3a3a3" />
       <Label layoutX="197.0" layoutY="127.0" text="/">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="cbxExpiryYear" focusColor="SEAGREEN" focusTraversable="false" layoutX="213.0" layoutY="118.0" prefHeight="37.0" prefWidth="115.0" promptText="*Expiry Year" styleClass="comboBox" unFocusColor="#a3a3a3" />
-      <JFXTextField fx:id="txtHolderName" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Holder Name" styleClass="txtField" unFocusColor="#a3a3a3">
+      <JFXComboBox fx:id="cbxExpiryYear" focusColor="SEAGREEN" focusTraversable="false" layoutX="213.0" layoutY="118.0" prefHeight="37.0" prefWidth="115.0" promptText="*Expire Year" styleClass="comboBox" unFocusColor="#a3a3a3" />
+      <JFXTextField fx:id="txtHolderName" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Holder Name   (Israel Israeli)" styleClass="txtField" unFocusColor="#a3a3a3">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -44,7 +44,7 @@
          </font>
       </JFXTextField>
       <FontAwesomeIconView fill="#a1a1a1" glyphName="USER" layoutX="309.0" layoutY="194.0" size="16" />
-      <JFXTextField fx:id="txtCVV" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="212.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*CVV (000)" styleClass="txtField" unFocusColor="#a3a3a3">
+      <JFXTextField fx:id="txtCVV" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="75.0" layoutY="212.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*CVV  (XXX)" styleClass="txtField" unFocusColor="#a3a3a3">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -54,7 +54,7 @@
       </JFXTextField>
       <FontAwesomeIconView fill="#a1a1a1" glyphName="CREDIT_CARD" layoutX="307.0" layoutY="249.0" size="16" />
       <CheckBox focusTraversable="false" layoutX="75.0" layoutY="274.0" mnemonicParsing="false" text="Remember my details for next time." visible="false" />
-      <Label layoutX="75.0" layoutY="305.0" text="* Required fields" textFill="RED" />
+      <Label layoutX="75.0" layoutY="305.0" text="*" textFill="RED" />
       <Button fx:id="btnSave" focusTraversable="false" layoutX="113.0" layoutY="337.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#save" prefHeight="40.0" prefWidth="82.0" styleClass="btnMiddleWide" text="Save" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -65,5 +65,6 @@
             <Image url="@credit2-removebg-80.png" />
          </image>
       </ImageView>
+      <Label layoutX="83.0" layoutY="303.0" text="Required fields" />
    </children>
 </Pane>
