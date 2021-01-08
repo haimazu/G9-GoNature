@@ -144,7 +144,7 @@
                         <Font name="Ebrima" size="15.0" />
                      </font>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="radioPayPal" focusTraversable="false" layoutX="110.0" layoutY="343.0" text="PayPal">
+                  <JFXRadioButton fx:id="radioPayPal" focusTraversable="false" layoutX="110.0" layoutY="343.0" onAction="#payPalClick" text="PayPal">
                      <font>
                         <Font name="Ebrima" size="15.0" />
                      </font>
@@ -154,7 +154,7 @@
                         <Font name="Ebrima" size="15.0" />
                      </font>
                   </JFXRadioButton>
-                  <Hyperlink focusTraversable="false" layoutX="211.0" layoutY="440.0" text="Terms of Service" />
+                  <Hyperlink fx:id="hyperTerms" focusTraversable="false" layoutX="211.0" layoutY="440.0" onAction="#termsCond" text="Terms of Service" />
                   <Button fx:id="btnContinue" focusTraversable="false" layoutX="136.0" layoutY="478.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#next" prefHeight="40.0" prefWidth="115.0" styleClass="btnNext" text="Continue" textAlignment="CENTER">
                      <font>
                         <Font name="Bauhaus 93" size="19.0" />

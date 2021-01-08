@@ -65,7 +65,7 @@ public class ParkGate {
 	/**
 	 * send to client: ArrayList of object cell[0] contains "enterThePark" String
 	 * cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark"
-	 * / "parkfull" / "noRoomForRandom" if not cell[2] if enterd the park as random
+	 * / "parkfull" / "noRoomForRandom" / "orderDiffPark" if not cell[2] if enterd the park as random
 	 * ticket numbet as int, if enterd not as random than 0
 	 * 
 	 * @param recived ArrayList of object cell[0] contains "enterThePark" String,
@@ -130,6 +130,11 @@ public class ParkGate {
 			orderWrapped = ExistingOrderCheck.fechOrderTodayInPark(objForFech, "orders", park.getName());
 		if (!orderWrapped.isEmpty()) {// order was found
 			order = new Order(orderWrapped.get(0));
+			if (!order.getParkName().equals(park.getName())) {
+				answer.add("orderDiffPark");
+				client.sendToClient(answer);
+				return;
+			}
 			if (orderWasUsed(order)) {
 				answer.add("allreadyInPark");
 				client.sendToClient(answer);
@@ -182,7 +187,7 @@ public class ParkGate {
 	//
 	/**
 	 * send to client: ArrayList of object cell[0] contains "exitThePark" String,
-	 * cell[1] contains String "exited" if exited "allreadyExited" or "neverWasHere"
+	 * cell[1] contains String "exited" if exited "allreadyExited" or "neverWasHere" or "orderDiffPark"
 	 * if not
 	 * 
 	 * @param recived ArrayList of object cell[0] contains "exitThePark" String,
@@ -241,6 +246,11 @@ public class ParkGate {
 			return;
 		}
 		order = new Order(orderWrapped.get(0));
+		if (!order.getParkName().equals(park.getName())) {
+			answer.add("orderDiffPark");
+			client.sendToClient(answer);
+			return;
+		}
 		// select entry and exit time from exitentry
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -494,7 +504,9 @@ public class ParkGate {
 			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in
 																									// precent
 			// suck the order price
-			if (order.getVisitorsNumber() < Integer.parseInt(howMany)) { // if more than people on reservation
+			if (order.getVisitorsNumber()==0)
+				order.setVisitorsNumber(order.getAmountArrived());
+			if ((order.getVisitorsNumber() < Integer.parseInt(howMany))) { // if more than people on reservation
 				moreThanOrdered = true;
 				howMany = "" + (Integer.parseInt(howMany) - order.getVisitorsNumber());
 			}
