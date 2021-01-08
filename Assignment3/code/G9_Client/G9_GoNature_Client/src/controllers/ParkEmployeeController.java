@@ -156,6 +156,7 @@ public class ParkEmployeeController implements Initializable {
 	@SuppressWarnings("static-access")
 	@FXML
 	void barcodeScan(ActionEvent event) {
+		setError("");
 		informationExists = true;
 		btnManualAccess.setVisible(false);
 
@@ -187,6 +188,7 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	@FXML
 	void showDetails(ActionEvent event) {
+		setError("");
 		if (btnManualAccess.isVisible()) {
 			setRandomModeOff();
 			return;
@@ -308,46 +310,6 @@ public class ParkEmployeeController implements Initializable {
 		default:
 			break;
 		}
-//		
-//		// casual visitor
-//		if (!orderStatus) {
-//			idOrMemberId = checkForIdOrMemberId();
-//			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
-//			if (getEntryStatus().equals("allreadyInPark")) {
-//				alert.failedAlert("Failed", "These visitors have already entered.");
-//			} else if (getEntryStatus().equals("parkFull")) {
-//				alert.failedAlert("Failed",
-//						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
-//			} else if (getEntryStatus().equals("noRoomForRandom")) {
-//				alert.failedAlert("Failed", "noRoomForRandom");
-//			} else if (getEntryStatus().equals("enter")) {
-//				alert.successAlert("Success",
-//						txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
-//			} else {
-//				alert.failedAlert("Failed", "Wrong case! (notGoodTime)");
-//			}
-//			// invited visitor
-//		} else {
-//			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-//
-//			if (getEntryStatus().equals("notGoodTime")) {
-//				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
-//			} else if (getEntryStatus().equals("allreadyInPark")) {
-//				alert.failedAlert("Failed", "This order has already been fulfilled.");
-//			} else if (getEntryStatus().equals("parkFull")) {
-//				alert.failedAlert("Failed",
-//						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
-//				// getEntryStatus() = "enter"
-//			} else if (getEntryStatus().equals("enter")) {
-//				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
-//				if (randomVisitorTicket != 0) {
-//					message = message + "\nYour ticket number for the extra people is: " + randomVisitorTicket;
-//				}
-//				alert.successAlert("Success", message);
-//			} else {
-//				alert.failedAlert("Failed", "Wrong case! (noRoomForRandom)");
-//			}
-//		}
 	}
 
 	/**
@@ -375,20 +337,11 @@ public class ParkEmployeeController implements Initializable {
 			alert.failedAlert("Failed", "The order number match a diffrent park");
 			break;
 		case "exited":
-			alert.failedAlert("Success", "Thanks for visiting, hope to see you again soon.");
+			alert.successAlert("Success", "Thanks for visiting, hope to see you again soon.");
 			break;
 		default:
 			break;
 		}
-//		}
-//		if (getExitStatus().equals("allreadyExited")) {
-//			alert.failedAlert("Failed", "The visitor/s have already leaved.");
-//		} else if (getExitStatus().equals("neverWasHere")) {
-//			alert.failedAlert("Failed", "The visitor/s didn't enter.");
-//			// can leave getExitStatus() = "exited"
-//		} else {
-//			alert.successAlert("Success", "Thanks for visiting, hope to see you again soon.");
-//		}
 	}
 
 	/**
@@ -554,7 +507,6 @@ public class ParkEmployeeController implements Initializable {
 		String[] splitDateAndTime = DateAndTime.split(" ");
 		// 2021-01-01
 		String date = splitDateAndTime[0];
-
 		// changing the date format from "yyyy-MM-dd" to "dd-MM-yyyy"
 		// iFormatter -> input format
 		DateFormat iFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -621,15 +573,6 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	public static void receivedFromServerEntryStatus(ArrayList<Object> received) {
 		setEntryStatus((String)received.get(1));
-//		if (received.get(1).equals("notGoodTime")) {
-//			setEntryStatus("notGoodTime");
-//		} else if (received.get(1).equals("allreadyInPark")) {
-//			setEntryStatus("allreadyInPark");
-//		} else if (received.get(1).equals("parkFull")) {
-//			setEntryStatus("parkFull");
-//		} else if (received.get(1).equals("noRoomForRandom")) {
-//			setEntryStatus("noRoomForRandom");
-//		} else {
 		if (received.get(1).equals("enter"))
 			randomVisitorTicket = (int) received.get(2);
 	}
@@ -640,13 +583,7 @@ public class ParkEmployeeController implements Initializable {
 	 * @param received (ArrayList(Object))
 	 */
 	public static void receivedFromServerExitStatus(ArrayList<Object> received) {
-		if (received.get(1).equals("allreadyExited")) {
-			setExitStatus("allreadyExited");
-		} else if (received.get(1).equals("neverWasHere")) {
-			setExitStatus("neverWasHere");
-		} else {
-			setEntryStatus("exited");
-		}
+		setExitStatus((String)received.get(1));
 	}
 
 	/**
@@ -657,16 +594,6 @@ public class ParkEmployeeController implements Initializable {
 	public static void receivedFromServerParkDetails(Object msg) {
 		if (msg instanceof Park) 
 			ParkEmployeeController.parkDetails = (Park) msg;
-//		} else if (msg instanceof String) {
-//			if (((String) msg).equals("Full")) {
-//				setError("Full");
-//			} else if (((String) msg).equals("Lower")) {
-//				setError("Lower");
-//			} else if (((String) msg).equals("Greater")) {
-//				setError("Greater");
-//			}
-//		}
-		
 	}
 
 	/**
@@ -783,7 +710,6 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
 		clearAllOrderFields();
-
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.format(time));

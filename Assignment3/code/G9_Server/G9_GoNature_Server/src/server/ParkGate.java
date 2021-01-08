@@ -367,8 +367,9 @@ public class ParkGate {
 			return 0;
 		if (lessThanOrdered.get(0).get(0) == null)
 			return 0;
-		return Integer.parseInt(lessThanOrdered.get(0).get(0));
-	}
+		int ret = (int) Double.parseDouble(lessThanOrdered.get(0).get(0));
+		return ret;
+		}
 
 	private static int capsuleOrdered(Park park) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
