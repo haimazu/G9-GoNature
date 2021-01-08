@@ -535,7 +535,7 @@ public class DepartmentManagerController implements Initializable {
 	public boolean checkDate(LocalDate from, LocalDate to) {
 
 		// the dates are correct
-		if (from.isBefore(to) || from.isEqual(to)) {
+		if ((from.isBefore(to) || from.isEqual(to)) && (to.isBefore(LocalDate.now()) || to.isEqual(LocalDate.now()))) {
 			return true;
 		}
 
