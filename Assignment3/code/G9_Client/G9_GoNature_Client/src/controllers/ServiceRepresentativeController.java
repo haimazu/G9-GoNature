@@ -35,11 +35,11 @@ import orderData.OrderType;
 import userData.Member;
 
 /**
-*
-*controller that gets the new member details
-*
-* @author  Hodaya Mekonen
-*/
+ *
+ * controller that gets the new member details
+ *
+ * @author Hodaya Mekonen
+ */
 
 public class ServiceRepresentativeController implements Initializable {
 
@@ -65,11 +65,9 @@ public class ServiceRepresentativeController implements Initializable {
 	private JFXTextField txtPhoneNumber;
 	@FXML
 	private JFXTextField txtMembersAmount;
-	
-	
+
 	@FXML
 	private JFXCheckBox cbGuideMember;
-
 
 	@FXML
 	private Button btnCreditCard;
@@ -83,25 +81,26 @@ public class ServiceRepresentativeController implements Initializable {
 		// Data fields
 		ArrayList<String> data = new ArrayList<String>();
 		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();	
-				
+		ArrayList<Object> msg = new ArrayList<Object>();
+
 		msg.add("updateLoggedIn");
 		// update as loggedin as logged out
 		data.add(LoginController.getUsername());
 		data.add(String.valueOf(0));
 		// Data fields
-		msg.add(data);	
+		msg.add(data);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
-				
+
 		Stage stage = (Stage) btnLogout.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 		stage.setScene(new Scene(root));
 	}
 
 	/**
-	 * a function to add a new Member and credit card data, sends to the server the details
-	 *  and gets answer according to the action status success or fail and the member number.
+	 * a function to add a new Member and credit card data, sends to the server the
+	 * details and gets answer according to the action status success or fail and
+	 * the member number.
 	 * 
 	 * @param ActionEvent
 	 */
@@ -128,11 +127,10 @@ public class ServiceRepresentativeController implements Initializable {
 			return;
 		}
 		if (validIdInput() && validFirstLastNameInput() && validPhoneNumberInput() && validEmailInput()) {
-			
-			//gets the member credit card details
+
+			// gets the member credit card details
 			CreditCard creditCard = CreditCardController.getDetails();
-			
-			
+
 			// member= member/family
 			if (!cbGuideMember.isSelected()) {
 
@@ -150,15 +148,16 @@ public class ServiceRepresentativeController implements Initializable {
 				// Data fields
 				msg.add(newMember);
 
-				 if(creditCard!=null)
-					 msg.add(creditCard);//insert credit card details
-				 else msg.add(null);
+				if (creditCard != null)
+					msg.add(creditCard);// insert credit card details
+				else
+					msg.add(null);
 
 				// set up all the member details of the new member
 				ClientUI.sentToChatClient(msg);
 
 				if (getStatus()) {
-					alert.successAlert("Succesful", "A member add succesfuly, your member number is: "+memberNumber);
+					alert.successAlert("Succesful", "A member add succesfuly, your member number is: " + memberNumber);
 					ClearFields();
 				} else
 					alert.setAlert("Failed! the member u trying to insert allready exist.");
@@ -173,16 +172,17 @@ public class ServiceRepresentativeController implements Initializable {
 				msg.add("newMembershipInsert");
 				// Data fields
 				msg.add(newMember);
-				
-				 if(creditCard!=null)
-					 msg.add(creditCard);//insert credit card details
-				 else msg.add(null);
-				 
+
+				if (creditCard != null)
+					msg.add(creditCard);// insert credit card details
+				else
+					msg.add(null);
+
 				// set up all the member details of the new member
 				ClientUI.sentToChatClient(msg);
 
 				if (getStatus()) {
-					alert.successAlert("Succesful", "A member add succesfuly, your member number is: " +memberNumber);
+					alert.successAlert("Succesful", "A member add succesfuly, your member number is: " + memberNumber);
 					ClearFields();
 				} else
 					alert.setAlert("Failed! the member u trying to insert allready exist.");
@@ -191,9 +191,9 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 
 	}
-	
+
 	/**
-	 * allows the user to open the credit card details page 
+	 * allows the user to open the credit card details page
 	 *
 	 * @param ActionEvent
 	 * @exception IOException
@@ -219,8 +219,9 @@ public class ServiceRepresentativeController implements Initializable {
 	}
 
 	/**
-	 * check valid input for first and last name       
-	 * @return  true if the input is correct false otherwise
+	 * check valid input for first and last name
+	 * 
+	 * @return true if the input is correct false otherwise
 	 */
 
 	public boolean validFirstLastNameInput() {
@@ -232,10 +233,11 @@ public class ServiceRepresentativeController implements Initializable {
 
 		return true;
 	}
-	
+
 	/**
-	 * check valid input for id            
-	 * @return  true if the input is correct false otherwise
+	 * check valid input for id
+	 * 
+	 * @return true if the input is correct false otherwise
 	 */
 	public boolean validIdInput() {
 
@@ -247,12 +249,13 @@ public class ServiceRepresentativeController implements Initializable {
 
 		return true;
 	}
-	
+
 	/**
-	 * check valid input for phoneNumber        
-	 * @return  true if the input is correct false otherwise
+	 * check valid input for phoneNumber
+	 * 
+	 * @return true if the input is correct false otherwise
 	 */
-	
+
 	public boolean validPhoneNumberInput() {
 
 		if (txtPhoneNumber.getText().length() != 10) {
@@ -261,12 +264,13 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
-	
+
 	/**
-	 *  check valid input for email          
-	 * @return  true if the input is correct false otherwise
+	 * check valid input for email
+	 * 
+	 * @return true if the input is correct false otherwise
 	 */
-	
+
 	public boolean validEmailInput() {
 
 		if (!(txtEmail.getText().matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))) {
@@ -275,7 +279,7 @@ public class ServiceRepresentativeController implements Initializable {
 		}
 		return true;
 	}
-	
+
 	public void ClearFields() {
 
 		txtId.clear();
@@ -286,8 +290,7 @@ public class ServiceRepresentativeController implements Initializable {
 		txtPhoneNumber.clear();
 
 	}
-	
-	
+
 	public static String getFirstName() {
 		return firstName;
 	}
@@ -297,9 +300,9 @@ public class ServiceRepresentativeController implements Initializable {
 	}
 
 	/**
-	 * Initializing and force each of the fields according to the Required templates 
+	 * Initializing and force each of the fields according to the Required templates
 	 */
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -362,9 +365,9 @@ public class ServiceRepresentativeController implements Initializable {
 
 			}
 		});
-		
-			//check if the group member type has been selected
-			//if true set disable the member amount text field
+
+		// check if the group member type has been selected
+		// if true set disable the member amount text field
 		cbGuideMember.selectedProperty().addListener((obs, oldValue, newValue) -> {
 
 			if (newValue)
@@ -385,13 +388,17 @@ public class ServiceRepresentativeController implements Initializable {
 	}
 
 	/**
-	 *receive from the server the status of the member addition and the member number
+	 * receive from the server the status of the member addition and the member
+	 * number
+	 * 
+	 * @param status    boolean
+	 * @param memberNum boolean
 	 */
 
-	public static void receivedFromServerAddMemberStatus(boolean status,String memberNum) {
+	public static void receivedFromServerAddMemberStatus(boolean status, String memberNum) {
 		if ((status)) {
 			setStatuss(status);// status=true
-			memberNumber=memberNum;
+			memberNumber = memberNum;
 			System.out.println(memberNumber);
 		} else {
 			setStatuss(status);// status=false

@@ -224,8 +224,8 @@ public class ParkManagerController implements Initializable {
 	private JFXDatePicker dpFrom;
 	@FXML
 	private JFXDatePicker dpTo;
-    @FXML
-    private Button btnExport;
+	@FXML
+	private Button btnExport;
 	@FXML
 	private Button btnShow;
 	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
@@ -419,9 +419,9 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * sets the style for not pressed tabs
 	 * 
-	 * @param button
-	 * @param button1
-	 * @param button2
+	 * @param button Button
+	 * @param button1 Button
+	 * @param button2 Button
 	 */
 	public void setButtonReleased(Button button, Button button1, Button button2) {
 		button.setStyle("-fx-background-color: transparent;");
@@ -434,7 +434,7 @@ public class ParkManagerController implements Initializable {
 	 * update current visitors number in the park.The number is updated every time
 	 * when visitor enters or exits the park
 	 * 
-	 * @param visitNum
+	 * @param visitNum String
 	 */
 	public void setUpdatedCurrentVisitors(String visitNum) {
 		Platform.runLater(new Runnable() {
@@ -940,10 +940,10 @@ public class ParkManagerController implements Initializable {
 	 * "from". return true if the dates are not corresponding , false if
 	 * corresponding.
 	 * 
-	 * @param datefrom
-	 * @param dateto
-	 * @return
-	 * @throws ParseException
+	 * @param datefrom String
+	 * @param dateto String
+	 * @return T/F
+	 * @throws ParseException Signals that an error has been reached unexpectedly while parsing
 	 */
 	public boolean DatesNotCorresponding(String datefrom, String dateto) throws ParseException {
 		LocalDate from;
@@ -968,96 +968,99 @@ public class ParkManagerController implements Initializable {
 	/** Reports **/
 
 	/** visitors chart **/
-	
+
 	private static boolean error = false;
+
 	public static boolean getError() {
 		return error;
 	}
-    @FXML
-    void export(ActionEvent event) throws ParseException {
-    		showChart(event);
 
-    			// cancelledOrders is empty
-    			if (getError()) {
-    				return;
-    			}
+	@FXML
+	void export(ActionEvent event) throws ParseException {
+		showChart(event);
 
-    			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-    			DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// cancelledOrders is empty
+		if (getError()) {
+			return;
+		}
 
-    			String fromFormat = dateFormatter.format(dpFrom.getValue());
-    			String toFormat = dateFormatter.format(dpTo.getValue());
-    			// the date it was created
-    			String fileNameDate = fileNameFormatter.format(LocalDate.now());
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    			Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
-    			try {
-    				Document document = new Document();
-    				// creates a report with the name ==> CanceledReport 'yyyy-MM-dd'.pdf
-    				// the 'yyyy-MM-dd' is the date it was created
-    				PdfWriter writer = PdfWriter.getInstance(document,
-    						new FileOutputStream("Visits Report " + fileNameDate + ".pdf"));
-    				document.open();
-    				Image logo = Image.getInstance(
-    						"C:\\Users\\bar katz\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
-    				logo.setAlignment(Element.ALIGN_CENTER);
-    				document.add(logo);
+		String fromFormat = dateFormatter.format(dpFrom.getValue());
+		String toFormat = dateFormatter.format(dpTo.getValue());
+		// the date it was created
+		String fileNameDate = fileNameFormatter.format(LocalDate.now());
 
-    				Paragraph title = new Paragraph("Visitor numbers including segmented by types of visitors/" + getParkName() +"\n", titleFont);
-    				title.setAlignment(Element.ALIGN_CENTER);
-    				document.add(title);
+		Font titleFont = FontFactory.getFont(FontFactory.COURIER, 18, Font.BOLD, new BaseColor(46, 139, 87));
+		try {
+			Document document = new Document();
+			// creates a report with the name ==> CanceledReport 'yyyy-MM-dd'.pdf
+			// the 'yyyy-MM-dd' is the date it was created
+			PdfWriter writer = PdfWriter.getInstance(document,
+					new FileOutputStream("Visits Report " + fileNameDate + ".pdf"));
+			document.open();
+			Image logo = Image.getInstance(
+					"C:\\Users\\bar katz\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
+			logo.setAlignment(Element.ALIGN_CENTER);
+			document.add(logo);
 
-    				Paragraph date = new Paragraph(new Date().toString() + "\n\n");
-    				date.setAlignment(Element.ALIGN_CENTER);
-    				document.add(date);
+			Paragraph title = new Paragraph(
+					"Visitor numbers including segmented by types of visitors/" + getParkName() + "\n", titleFont);
+			title.setAlignment(Element.ALIGN_CENTER);
+			document.add(title);
 
-    				PdfPTable table = new PdfPTable(3);
-    				table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-    				table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+			Paragraph date = new Paragraph(new Date().toString() + "\n\n");
+			date.setAlignment(Element.ALIGN_CENTER);
+			document.add(date);
 
-    				PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
-    				titleCell.setColspan(3);
-    				titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-    				titleCell.setBackgroundColor(BaseColor.GRAY);
-    				// the title of the table
-    				table.addCell(titleCell);
+			PdfPTable table = new PdfPTable(3);
+			table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-    				PdfPCell visitor = new PdfPCell(new Paragraph("Visitor type"));
-    				visitor.setColspan(1);
-    				visitor.setHorizontalAlignment(Element.ALIGN_CENTER);
-    				visitor.setBackgroundColor(BaseColor.LIGHT_GRAY);
-    				table.addCell(visitor);
+			PdfPCell titleCell = new PdfPCell(new Paragraph(fromFormat + " - " + toFormat));
+			titleCell.setColspan(3);
+			titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			titleCell.setBackgroundColor(BaseColor.GRAY);
+			// the title of the table
+			table.addCell(titleCell);
 
-    				PdfPCell Day = new PdfPCell(new Paragraph("Day in the week"));
-    				Day.setColspan(1);
-    				Day.setHorizontalAlignment(Element.ALIGN_CENTER);
-    				Day.setBackgroundColor(BaseColor.LIGHT_GRAY);
-    				table.addCell(Day);
+			PdfPCell visitor = new PdfPCell(new Paragraph("Visitor type"));
+			visitor.setColspan(1);
+			visitor.setHorizontalAlignment(Element.ALIGN_CENTER);
+			visitor.setBackgroundColor(BaseColor.LIGHT_GRAY);
+			table.addCell(visitor);
 
-    				PdfPCell amount = new PdfPCell(new Paragraph("Amount"));
-    				amount.setColspan(1);
-    				amount.setHorizontalAlignment(Element.ALIGN_CENTER);
-    				amount.setBackgroundColor(BaseColor.LIGHT_GRAY);
-    				table.addCell(amount);
+			PdfPCell Day = new PdfPCell(new Paragraph("Day in the week"));
+			Day.setColspan(1);
+			Day.setHorizontalAlignment(Element.ALIGN_CENTER);
+			Day.setBackgroundColor(BaseColor.LIGHT_GRAY);
+			table.addCell(Day);
 
-    				for (int i = 0; i < visitorsReport.size(); i++) {
-    					table.addCell(visitorsReport.get(i).get(0));
-    					table.addCell(visitorsReport.get(i).get(1));
-    					table.addCell(visitorsReport.get(i).get(2));
-    				}
-    				document.add(table);
+			PdfPCell amount = new PdfPCell(new Paragraph("Amount"));
+			amount.setColspan(1);
+			amount.setHorizontalAlignment(Element.ALIGN_CENTER);
+			amount.setBackgroundColor(BaseColor.LIGHT_GRAY);
+			table.addCell(amount);
 
-    				alert.successAlert("Success", "The report was created successfully.");
+			for (int i = 0; i < visitorsReport.size(); i++) {
+				table.addCell(visitorsReport.get(i).get(0));
+				table.addCell(visitorsReport.get(i).get(1));
+				table.addCell(visitorsReport.get(i).get(2));
+			}
+			document.add(table);
 
-    				Desktop.getDesktop().open(new File("Visits Report " + fileNameDate + ".pdf"));
+			alert.successAlert("Success", "The report was created successfully.");
 
-    				document.close();
-    				writer.close();
+			Desktop.getDesktop().open(new File("Visits Report " + fileNameDate + ".pdf"));
 
-    			} catch (Exception e) {
-    				alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
-    			}
-    }
+			document.close();
+			writer.close();
+
+		} catch (Exception e) {
+			alert.failedAlert("Failed", "It looks like the file is already open, close it and try again.");
+		}
+	}
 
 	/**
 	 * create chart for visitors by membership kind : 1) member 2)regular- not a
@@ -1249,6 +1252,7 @@ public class ParkManagerController implements Initializable {
 		alert.setAlert("There is no Data to present for selected dates.");
 		System.out.println("no data to present");
 	}
+
 //get the date and split it 
 	/**
 	 * 
@@ -1261,12 +1265,16 @@ public class ParkManagerController implements Initializable {
 		return arrDateAndTime[0];
 	}
 
-	/*-------usage report section --------*/
-	/**send to server array list of object :[0]UsageReport, [1] array list of string [0] park name ,[1]from date .[2] to date.
-	 * @param event
-	 * @throws ParseException
+	// usage report section *****
+	/**
+	 * send to server array list of object :[0]UsageReport, [1] array list of string
+	 * [0] park name ,[1]from date .[2] to date.
+	 * 
+	 * @param event ActionEvent
+	 * @throws ParseException Signals that an error has been reached
+	 *                        unexpectedlywhile parsing
 	 */
-	
+
 	@FXML
 	void showUsage(ActionEvent event) throws ParseException {
 		ArrayList<Object> msg = new ArrayList<>();
@@ -1292,9 +1300,10 @@ public class ParkManagerController implements Initializable {
 		}
 
 	}
-	
+
 	/**
-	 * create usage report 
+	 * create usage report
+	 * 
 	 * @throws ParseException
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -1371,7 +1380,8 @@ public class ParkManagerController implements Initializable {
 
 	/*-------Revenue report section --------*/
 	/**
-	 * create revenue report 
+	 * create revenue report
+	 * 
 	 * @throws ParseException
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -1416,12 +1426,16 @@ public class ParkManagerController implements Initializable {
 		bcRevenue.getData().addAll(DailyRevenue);
 
 	}
-	/**on click on show - send to server the current month and the next month 
-	 * send to server array list of object :[0]revenueReport, [1] array list of string ,[0]from date .[1] to date,[2] park name 
+
+	/**
+	 * on click on show - send to server the current month and the next month send
+	 * to server array list of object :[0]revenueReport, [1] array list of string
+	 * ,[0]from date .[1] to date,[2] park name
+	 * 
 	 * @param event
 	 * @throws ParseException
 	 */
-	
+
 	@FXML
 	void ShowReuvenue(ActionEvent event) throws ParseException {
 		ArrayList<String> monthArr = new ArrayList<>();
@@ -1471,13 +1485,15 @@ public class ParkManagerController implements Initializable {
 			setDatesComboForRevenue(monthArr);
 		}
 	}
-	/*-------end of revenue report section --------*/
+	// end of revenue report section ***
 
-	/*---------received from server section ------*/
-	
+	// received from server section ***
+
 	/**
-	 * receive the answer if the request for park manager was successful - true if so , false if not 
-	 * @param answer
+	 * receive the answer if the request for park manager was successful - true if
+	 * so , false if not
+	 * 
+	 * @param answer boolean
 	 */
 	public static void recivedFromserver(boolean answer) {
 		setRequestAnswerFromServer(answer);
@@ -1485,8 +1501,9 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * returned from server park details if in case of an error returneed null 
-	 * @param object
+	 * returned from server park details if in case of an error returneed null
+	 * 
+	 * @param object Object
 	 */
 	public static void recivedFromserverParkDetails(Object object) {
 		if (object instanceof Park)
@@ -1496,7 +1513,8 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * returned from server employee id 
+	 * returned from server employee id
+	 * 
 	 * @param answer
 	 */
 	public static void recivedFromserverEmployeeID(String answer) {
@@ -1506,7 +1524,8 @@ public class ParkManagerController implements Initializable {
 
 	/**
 	 * visitors report - if the report is empty we will receive 'failed'
-	 * @param visitorsReportAnswer
+	 * 
+	 * @param visitorsReportAnswer ArrayList of ArrayList of String
 	 */
 	public static void recivedFromserverVisitorsReport(ArrayList<ArrayList<String>> visitorsReportAnswer) {
 		setVisitorsReport(null);
@@ -1519,10 +1538,12 @@ public class ParkManagerController implements Initializable {
 		}
 
 	}
-/**
- * usage report - if the report is empty we will receive null
- * @param usageReportAnswer
- */
+
+	/**
+	 * usage report - if the report is empty we will receive null
+	 * 
+	 * @param usageReportAnswer ArrayList of ArrayList of String
+	 */
 	public static void recivedFromserverUsageReport(ArrayList<ArrayList<String>> usageReportAnswer) {
 		setUsageReport(null);
 		if (usageReportAnswer.isEmpty())
@@ -1533,9 +1554,11 @@ public class ParkManagerController implements Initializable {
 
 		}
 	}
+
 	/**
 	 * revenue report - if the report is empty we will receive null
-	 * @param revReportAnswer
+	 * 
+	 * @param revReportAnswer ArrayList of ArrayList of String
 	 */
 
 	public static void recivedFromserverRevenueReport(ArrayList<ArrayList<String>> revReportAnswer) {

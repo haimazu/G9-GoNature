@@ -49,12 +49,12 @@
                         <Image url="@qr6.png" />
                      </image>
                   </ImageView>
-                  <Label focusTraversable="false" layoutX="91.0" layoutY="562.0" text="You can edit your order,">
+                  <Label focusTraversable="false" layoutX="91.0" layoutY="562.0" text="You can edit your order," visible="false">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Hyperlink fx:id="btnHere" focusTraversable="false" layoutX="261.0" layoutY="558.0" onAction="#here" text="here">
+                  <Hyperlink fx:id="btnHere" focusTraversable="false" layoutX="261.0" layoutY="558.0" onAction="#here" text="here" visible="false">
                      <font>
                         <Font size="16.0" />
                      </font>

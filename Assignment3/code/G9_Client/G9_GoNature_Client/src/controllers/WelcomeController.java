@@ -171,6 +171,7 @@ public class WelcomeController implements Initializable {
 	
 	/**
 	 *receive from the server order details
+	 *@param orderDetails ArrayList of object
 	 */
 	
 	public static void recievedFromServerValidOrderAndPending(ArrayList<Object> orderDetails) {
@@ -186,8 +187,8 @@ public class WelcomeController implements Initializable {
 	/**
 	 * 
 	 * Updates the user's login status if necessary by the server 
-	 * @param Stage            
-	 * 
+	 * @param primaryStage Stage            
+	 * @exception Exception conditions that a reasonableapplication might want to catch
 	 */
 
 	public void start(Stage primaryStage) throws Exception {
@@ -235,8 +236,8 @@ public class WelcomeController implements Initializable {
 	/**
 	 * Checks whether the entry time of the order number you want to edit is relevant 
 	 * to the current time
-	 * 
-	 * @exception ParseException
+	 * @return T/F
+	 * @exception ParseException Signals that an error has been reached unexpectedly while parsing
 	 * 
 	 */
 
