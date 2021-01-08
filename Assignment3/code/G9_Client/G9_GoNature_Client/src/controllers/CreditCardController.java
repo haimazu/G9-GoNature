@@ -94,8 +94,16 @@ public class CreditCardController implements Initializable {
 
 			Stage stage = (Stage) btnSave.getScene().getWindow();
 			 stage.close();
+			 
+			 clearDetails();
 
 		}
+	}
+	
+	public void clearDetails() {
+		txtCardNumber.clear();
+		txtHolderName.clear();
+		txtCVV.clear();
 	}
 
 
