@@ -385,9 +385,11 @@ public class OrderController implements Initializable {
 				} else if (!faildDB) { // the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
-					this.txtprice.setText((String.format("%.1f", orderSuccess.getPrice()) + " ₪"));
-					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()) + " ₪");
-					double value = (1 - (orderSuccess.getTotalPrice() / orderSuccess.getPrice())) * 100;
+					double value=orderSuccess.getPrice();
+					this.txtprice.setText(String.format("%.1f", value) + " ₪");
+					value=orderSuccess.getTotalPrice();
+					this.txtTotalPrice.setText(String.format("%.1f", value) + " ₪");
+					 value = (1 - (orderSuccess.getTotalPrice() / orderSuccess.getPrice())) * 100;
 					this.txtdDiscount.setText(String.format("%.1f", value) + "%");
 					this.txtVisitoramountPrice.setText(String.valueOf(orderSuccess.getVisitorsNumber()));
 					pnPayment.toFront();
@@ -664,9 +666,11 @@ public class OrderController implements Initializable {
 		} else if (newOrder instanceof Boolean) {
 			boolean flag = (boolean) newOrder;
 			setFaildDB(flag);
+			setStatus("not");
 		} else {
 			Order myOrder = (Order) newOrder;
 			setOrderSuccess(myOrder);
+			setStatus("not");
 		}
 	}
 
