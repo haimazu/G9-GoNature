@@ -232,63 +232,95 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 
-		// random mode
-		if (!btnRandomVisitor.isVisible()) {
-			if (txtIdOrMemberId.getText().isEmpty()) {
-				alert.failedAlert("Failed", "You must enter id/memberid.");
-				return;
-			} else if (!Character.isLetter(txtIdOrMemberId.getText().charAt(0))
-					&& txtIdOrMemberId.getText().length() != 9) {
-				alert.failedAlert("Failed", "Id must be 9 digits long.");
-				return;
-			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
-				alert.failedAlert("Failed", "You must enter amount of visitors.");
-				return;
-			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
-				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
-				return;
-			} else {
-				orderStatus = false;
-				/*** Enter ***/
-				if (radEnter.isSelected()) {
-					execEnter();
-					/*** Exit ***/
-				} else if (radExit.isSelected()) {
-					execExit();
-				}
-			}
-			// barcode / regular entry
-		} else {
-			if (txtOrderNumber.getText().isEmpty()) {
-				alert.failedAlert("Failed", "All fields required.");
-				return;
-			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
-				alert.failedAlert("Failed", "You must enter amount of visitors.");
-				return;
-			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
-				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
-				return;
-			}
-
-			// if the order is for another park
-			if (!radExit.isSelected() && orderDetails!=null) {
-				if (!orderDetails.getParkName().equals(getParkName())) {
-					alert.failedAlert("Failed", "The order is for the park " + orderDetails.getParkName() + ".");
-					clearAllFields();
-					return;
-				}
-			}
-
+//		// random mode
+//		if (!btnRandomVisitor.isVisible()) {
+//			if (txtIdOrMemberId.getText().isEmpty()) {
+//				alert.failedAlert("Failed", "You must enter id/memberid.");
+//				return;
+//			} else if (!Character.isLetter(txtIdOrMemberId.getText().charAt(0))
+//					&& txtIdOrMemberId.getText().length() != 9) {
+//				alert.failedAlert("Failed", "Id must be 9 digits long.");
+//				return;
+//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
+//				alert.failedAlert("Failed", "You must enter amount of visitors.");
+//				return;
+//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
+//				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
+//				return;
+//			} else {
+//				orderStatus = false;
+//				/*** Enter ***/
+//				if (radEnter.isSelected()) {
+//					execEnter();
+//					/*** Exit ***/
+//				} else if (radExit.isSelected()) {
+//					execExit();
+//				}
+//			}
+//			// barcode / regular entry
+//		} else {
+//			if (txtOrderNumber.getText().isEmpty()) {
+//				alert.failedAlert("Failed", "All fields required.");
+//				return;
+//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
+//				alert.failedAlert("Failed", "You must enter amount of visitors.");
+//				return;
+//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
+//				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
+//				return;
+//			}
+//
+//			// if the order is for another park
+//			if (!radExit.isSelected() && orderDetails!=null) {
+//				if (!orderDetails.getParkName().equals(getParkName())) {
+//					alert.failedAlert("Failed", "The order is for the park " + orderDetails.getParkName() + ".");
+//					clearAllFields();
+//					return;
+//				}
+//			}
+//
+//			orderStatus = true;
+//			/*** Enter ***/ // check date and time
+//			if (radEnter.isSelected()) {
+//				execEnter();
+//				/*** Exit ***/
+//			} else if (radExit.isSelected()) {
+//				execExit();
+//			}
+//		}
+	
+		if (btnRandomVisitor.isVisible() && radEnter.isSelected()) {
+			if(txtIdOrMemberId.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter id/memberid.");return;}
+			else if(txtVisitorsAmount.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter amount of visitors.");return;}
+			else if(!Character.isLetter(txtIdOrMemberId.getText().charAt(0))&& txtIdOrMemberId.getText().length() != 9) {alert.failedAlert("Input Error", "Id must be 9 digits long.");return;}
+			else if(txtVisitorsAmount.getText().charAt(0) == '0') {alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");return;}
+			//try to enter the park
 			orderStatus = true;
-			/*** Enter ***/ // check date and time
-			if (radEnter.isSelected()) {
-				execEnter();
-				/*** Exit ***/
-			} else if (radExit.isSelected()) {
-				execExit();
-			}
+			execEnter();
 		}
-
+		else if (!btnRandomVisitor.isVisible() && radEnter.isSelected()) {
+			if(txtVisitorsAmount.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter amount of visitors.");return;}
+			else if (txtOrderNumber.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter Order Number!");return;}
+			else if(txtVisitorsAmount.getText().charAt(0) == '0') {alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");return;}
+			//try to enter the park
+			orderStatus = false;
+			execEnter();
+		}
+		else if (btnRandomVisitor.isVisible() && radExit.isSelected()) {
+			if(txtIdOrMemberId.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter id/memberid.");return;}
+			else if(!Character.isLetter(txtIdOrMemberId.getText().charAt(0))&& txtIdOrMemberId.getText().length() != 9) {alert.failedAlert("Input Error", "Id must be 9 digits long.");return;}
+			//try to exit park
+			orderStatus = true;
+			execExit();
+		}
+		else if (!btnRandomVisitor.isVisible() && radExit.isSelected()) {
+			if (txtOrderNumber.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter Order Number!.");return;}
+			//try to exit park
+			orderStatus = false;
+			execExit();
+		}
+		//////////////////
+		//////////////////
 		orderStatus = false;
 		// update park status
 		// updateParkStatus(0);
