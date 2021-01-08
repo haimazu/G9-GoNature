@@ -80,7 +80,7 @@ public class ExistingOrderCheck {
 		query.add(tableName); // table name
 		query.add("*"); // columns to select from
 		if (recived.get(0).equals("ordersByIdOrMemberId")) { // ordersByIdOrMemberId case
-			query.add("WHERE ID = '" + data.get(0) + "' OR memberId = '" + data.get(0) + "' AND parkName='" + parkName + "' AND DATE(arrivedTime)=CURDATE()"); // condition
+			query.add("WHERE (ID = '" + data.get(0) + "' OR memberId = '" + data.get(0) + "') AND parkName='" + parkName + "' AND DATE(arrivedTime)=CURDATE()"); // condition
 		} else { // ordersByOrderNumber case
 			return null;
 		}

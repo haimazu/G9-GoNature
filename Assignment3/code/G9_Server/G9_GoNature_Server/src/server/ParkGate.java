@@ -217,7 +217,11 @@ public class ParkGate {
 		}
 		objForFech.add(stringArr);
 		Order order = null;
-		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
+		ArrayList<ArrayList<String>> orderWrapped=null;
+		if (orderNumber!=null)
+			orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
+		else
+			orderWrapped = ExistingOrderCheck.fechOrderTodayInPark(objForFech, "orders", park.getName());
 		if (orderWrapped.isEmpty()) {
 			answer.add("neverWasHere");
 			client.sendToClient(answer);
@@ -459,9 +463,14 @@ public class ParkGate {
 				stringArr.add(id);
 		}
 		objForFech.add(stringArr);
-		ArrayList<ArrayList<String>> orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
+		Order order = null;
+		ArrayList<ArrayList<String>> orderWrapped=null;
+		if (orderNumber!=null)
+			orderWrapped = ExistingOrderCheck.fechOrder(objForFech, "orders", "orderNumber");
+		else
+			orderWrapped = ExistingOrderCheck.fechOrderTodayInPark(objForFech, "orders", parkName);
 		if (!orderWrapped.isEmpty()) {// order was found
-			Order order = new Order(orderWrapped.get(0));
+			order = new Order(orderWrapped.get(0));
 			priceBeforeDiscount += order.getPrice();
 			priceAfterDiscount += order.getTotalPrice();
 			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100; // discount in
@@ -483,13 +492,10 @@ public class ParkGate {
 			priceBeforeDiscount += stubOrder.getPrice();
 			priceAfterDiscount += stubOrder.getTotalPrice();
 			discount = ((priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100;
-
 		}
-
 		ret.add(priceBeforeDiscount);
 		ret.add(discount);
 		ret.add(priceAfterDiscount);
-
 		return ret;
 	}
 }
