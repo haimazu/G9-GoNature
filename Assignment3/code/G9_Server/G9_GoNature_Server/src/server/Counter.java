@@ -88,7 +88,7 @@ class Counter {
 		query.add("1");
 		ArrayList<ArrayList<String>> lastNum = MySQLConnection.select(query);
 		if (lastNum.isEmpty())
-			return 1111;
+			return 1005;
 		return Integer.parseInt(lastNum.get(0).get(0));
 	}
 }
