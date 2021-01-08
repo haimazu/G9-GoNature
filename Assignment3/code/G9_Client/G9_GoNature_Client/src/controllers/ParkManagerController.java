@@ -959,8 +959,7 @@ public class ParkManagerController implements Initializable {
 	void export(ActionEvent event) throws ParseException {
 		showChart(event);
 
-		// cancelledOrders is empty
-		if (getError()) {
+		if (getErrorInchart()) {
 			return;
 		}
 
@@ -980,10 +979,6 @@ public class ParkManagerController implements Initializable {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream("Visits Report " + fileNameDate + ".pdf"));
 			document.open();
-			Image logo = Image.getInstance(
-					"C:\\Users\\bar katz\\Documents\\GitHub\\G9-GoNature\\Assignment3\\code\\G9_Client\\G9_GoNature_Client\\src\\gui\\logo_small.png");
-			logo.setAlignment(Element.ALIGN_CENTER);
-			document.add(logo);
 
 			Paragraph title = new Paragraph(
 					"Visitor numbers including segmented by types of visitors/" + getParkName() + "\n", titleFont);
@@ -1132,7 +1127,7 @@ public class ParkManagerController implements Initializable {
 
 			if (!getErrorInchart())
 				chartVisitors();
-			else {
+			else {			
 				noDataTopresentInchartForDates();
 				bcVisitorsChart.getData().clear();
 				setDatePickerForVisitsReport();
@@ -1230,7 +1225,7 @@ public class ParkManagerController implements Initializable {
 	 * prints alert when there is no data in the data base for the dates entered
 	 */
 	static void noDataTopresentInchartForDates() {
-		alert.setAlert("There is no Data to present for selected dates.");
+		alert.setAlert("There is no data to present for selected dates.");
 		System.out.println("no data to present");
 	}
 
@@ -1482,7 +1477,7 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * returned from server park details if in case of an error returneed null
+	 * returned from server park details if in case of an error returned null
 	 * 
 	 * @param object Object
 	 */
@@ -1500,7 +1495,6 @@ public class ParkManagerController implements Initializable {
 	 */
 	public static void recivedFromserverEmployeeID(String answer) {
 		setEmpID(Integer.parseInt(answer));
-
 	}
 
 	/**
