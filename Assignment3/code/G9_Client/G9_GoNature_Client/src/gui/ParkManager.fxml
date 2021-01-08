@@ -116,12 +116,12 @@
             </Pane>
             <Pane fx:id="pnMonthlyRev" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
-                  <Label fx:id="lblTitle1112" focusTraversable="false" layoutX="39.0" layoutY="14.0" styleClass="labelBold" text="Monthly report, revenue:">
+                  <Label fx:id="lblTitle1112" focusTraversable="false" layoutX="149.0" styleClass="labelBold" text="Revenue report per month">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Button fx:id="ShowReuvenue" focusTraversable="false" layoutX="430.0" layoutY="70.0" mnemonicParsing="false" onAction="#ShowReuvenue" styleClass="btnSmallGreen" text="Show" />
+                  <Button fx:id="ShowReuvenue" focusTraversable="false" layoutX="429.0" layoutY="52.0" mnemonicParsing="false" onAction="#ShowReuvenue" styleClass="btnSmallGreen" text="Show" />
                   <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true" visible="false">
                     <columns>
                       <TableColumn prefWidth="113.0" text="Financial Income" />
@@ -137,7 +137,7 @@
                   </Label>
                   <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" visible="false" />
                   <Button fx:id="btnReportView11" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" visible="false" />
-                  <BarChart fx:id="bcRevenue" barGap="5.0" categoryGap="2.0" layoutY="101.0" prefHeight="430.0" prefWidth="613.0" title="Revenue Rrport">
+                  <BarChart fx:id="bcRevenue" barGap="5.0" categoryGap="2.0" layoutX="-8.0" layoutY="83.0" prefHeight="348.0" prefWidth="613.0" title="Revenue Rrport">
                      <xAxis>
                         <CategoryAxis label="Dates" side="BOTTOM" fx:id="xAxisR">
                            <tickLabelFont>
@@ -156,25 +156,25 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
-                  <JFXComboBox fx:id="cbxMonth" focusColor="SEAGREEN" focusTraversable="false" layoutX="116.0" layoutY="55.0" prefHeight="37.0" prefWidth="115.0" promptText="*Month" styleClass="comboBox" unFocusColor="#a3a3a3" />
-                  <Label layoutX="238.0" layoutY="64.0" text="/">
+                  <JFXComboBox fx:id="cbxMonth" focusColor="SEAGREEN" focusTraversable="false" layoutX="145.0" layoutY="43.0" prefHeight="37.0" prefWidth="115.0" promptText="*Month" styleClass="comboBox" unFocusColor="#a3a3a3" />
+                  <Label layoutX="267.0" layoutY="52.0" text="/">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="cbxYear" focusColor="SEAGREEN" focusTraversable="false" layoutX="254.0" layoutY="55.0" prefHeight="37.0" prefWidth="115.0" promptText="*Year" styleClass="comboBox" unFocusColor="#a3a3a3" />
+                  <JFXComboBox fx:id="cbxYear" focusColor="SEAGREEN" focusTraversable="false" layoutX="283.0" layoutY="43.0" prefHeight="37.0" prefWidth="115.0" promptText="*Year" styleClass="comboBox" unFocusColor="#a3a3a3" />
                </children>
             </Pane>
             <Pane fx:id="pnUsage" prefHeight="530.0" prefWidth="618.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
-                  <Label fx:id="lblTitle111" focusTraversable="false" layoutX="39.0" layoutY="14.0" styleClass="labelBold" text="Usage Report - Park is not full:">
+                  <Label fx:id="lblTitle111" focusTraversable="false" layoutX="201.0" styleClass="labelBold" text="Usage report">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="dpFromU" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="39.0" layoutY="53.0" promptText="From Date" styleClass="date-picker" stylesheets="@application.css" />
-                  <JFXDatePicker fx:id="dpToU" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="235.0" layoutY="53.0" promptText="To Date" />
-                  <Button fx:id="showUsage" focusTraversable="false" layoutX="434.0" layoutY="55.0" mnemonicParsing="false" onAction="#showUsage" styleClass="btnSmallGreen" text="Show" />
+                  <JFXDatePicker fx:id="dpFromU" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="128.0" layoutY="67.0" prefHeight="29.0" prefWidth="122.0" promptText="From Date" styleClass="date-picker" stylesheets="@application.css" />
+                  <JFXDatePicker fx:id="dpToU" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="296.0" layoutY="67.0" prefHeight="29.0" prefWidth="122.0" promptText="To Date" />
+                  <Button fx:id="showUsage" focusTraversable="false" layoutX="440.0" layoutY="70.0" mnemonicParsing="false" onAction="#showUsage" styleClass="btnSmallGreen" text="Show" />
                   <TableView focusTraversable="false" layoutX="39.0" layoutY="124.0" prefHeight="135.0" prefWidth="456.0" tableMenuButtonVisible="true" visible="false">
                     <columns>
                       <TableColumn prefWidth="98.0" text="Entered" />
@@ -190,7 +190,7 @@
                   </Label>
                   <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" visible="false" />
                   <Button fx:id="btnReportView1" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" visible="false" />
-                  <BarChart fx:id="bcUsageChart" barGap="5.0" categoryGap="2.0" layoutY="91.0" prefHeight="430.0" prefWidth="613.0" title="Usage Rrport">
+                  <BarChart fx:id="bcUsageChart" barGap="5.0" categoryGap="2.0" layoutX="-8.0" layoutY="96.0" prefHeight="348.0" prefWidth="613.0" title="Usage Rrport">
                      <xAxis>
                         <CategoryAxis label="Dates" side="BOTTOM" fx:id="xAxisU">
                            <tickLabelFont>
@@ -209,19 +209,34 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
-               </children>
-            </Pane>
-            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
-               <children>
-                  <Label fx:id="lblTitle11" focusTraversable="false" layoutX="22.0" layoutY="13.0" styleClass="labelBold" text="Monthly report, segmented by type of visitors:">
+                  <Label fx:id="lblTitle1113" focusTraversable="false" layoutX="72.0" layoutY="28.0" styleClass="labelBold" text="When the park is not fully occupied">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="dpFrom" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="22.0" layoutY="72.0" promptText="From Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
-                  <JFXDatePicker fx:id="dpTo" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="218.0" layoutY="72.0" promptText="To Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
-                  <Button fx:id="btnShow" focusTraversable="false" layoutX="422.0" layoutY="75.0" mnemonicParsing="false" onAction="#showChart" styleClass="btnSmallGreen" text="Show" />
-                  <BarChart fx:id="bcVisitorsChart" barGap="5.0" categoryGap="2.0" layoutX="-9.0" layoutY="116.0" prefHeight="430.0" prefWidth="613.0">
+                  <Label fx:id="lblTitle11211" focusTraversable="false" layoutX="80.0" layoutY="71.0" style="-fx-font-size: 14px;" text="From:" textOverrun="WORD_ELLIPSIS">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTitle112131" focusTraversable="false" layoutX="267.0" layoutY="71.0" style="-fx-font-size: 14px;" text="To:" textOverrun="WORD_ELLIPSIS">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pnVisits" layoutX="10.0" layoutY="10.0" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
+               <children>
+                  <Label fx:id="lblTitle11" focusTraversable="false" layoutX="143.0" layoutY="2.0" styleClass="labelBold" text="Report of visitor numbers">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <JFXDatePicker fx:id="dpFrom" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="135.0" layoutY="77.0" prefHeight="29.0" prefWidth="122.0" promptText="From Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
+                  <JFXDatePicker fx:id="dpTo" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="309.0" layoutY="77.0" prefHeight="29.0" prefWidth="122.0" promptText="To Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
+                  <Button fx:id="btnShow" focusTraversable="false" layoutX="453.0" layoutY="80.0" mnemonicParsing="false" onAction="#showChart" styleClass="btnSmallGreen" text="Show" />
+                  <BarChart fx:id="bcVisitorsChart" barGap="5.0" categoryGap="2.0" layoutX="-8.0" layoutY="106.0" prefHeight="363.0" prefWidth="573.0">
                      <xAxis>
                         <CategoryAxis label="day of week" side="BOTTOM" fx:id="xAxis">
                            <tickLabelFont>
@@ -240,7 +255,22 @@
                         <Insets />
                      </opaqueInsets>
                   </BarChart>
-                  <Button fx:id="btnExport" focusTraversable="false" layoutX="510.0" layoutY="74.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
+                  <Button fx:id="btnExport" focusTraversable="false" layoutX="528.0" layoutY="80.0" mnemonicParsing="false" onAction="#export" styleClass="btnSmallGreen" text="Export" />
+                  <Label fx:id="lblTitle112" focusTraversable="false" layoutX="62.0" layoutY="37.0" styleClass="labelBold" text="Including segmented by types of visitors">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTitle1121" focusTraversable="false" layoutX="86.0" layoutY="80.0" style="-fx-font-size: 14px;" text="From:" textOverrun="WORD_ELLIPSIS">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTitle11213" focusTraversable="false" layoutX="276.0" layoutY="80.0" style="-fx-font-size: 14px;" text="To:" textOverrun="WORD_ELLIPSIS">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <Pane fx:id="pnDashboard" prefHeight="536.0" prefWidth="618.0" styleClass="pnRight">
