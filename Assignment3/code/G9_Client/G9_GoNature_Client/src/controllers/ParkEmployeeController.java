@@ -240,10 +240,10 @@ public class ParkEmployeeController implements Initializable {
 					&& txtIdOrMemberId.getText().length() != 9) {
 				alert.failedAlert("Failed", "Id must be 9 digits long.");
 				return;
-			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0' && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			} else {
@@ -261,10 +261,10 @@ public class ParkEmployeeController implements Initializable {
 			if (txtOrderNumber.getText().isEmpty()) {
 				alert.failedAlert("Failed", "All fields required.");
 				return;
-			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0' && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			}
