@@ -176,7 +176,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txtFirstName" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="38.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="First Name" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtFirstName" focusColor="#0080ff" labelFloat="true" layoutX="38.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="First Name" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -184,7 +184,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txtLastName" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="38.0" layoutY="202.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Last Name" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtLastName" focusColor="#0080ff" labelFloat="true" layoutX="38.0" layoutY="202.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Last Name" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -192,7 +192,7 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txtEmail" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="38.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Email" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtEmail" focusColor="#0080ff" labelFloat="true" layoutX="38.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Email" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -200,21 +200,6 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXCheckBox fx:id="cbGuideMember" layoutX="378.0" layoutY="113.0" text="Tour Guide " />
-                  <JFXTextField fx:id="txtMembersAmount" focusColor="#0080ff" focusTraversable="false" labelFloat="true" layoutX="38.0" layoutY="362.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="Ebrima" size="14.0" />
-                     </font>
-                  </JFXTextField>
-                  <Button focusTraversable="false" layoutX="387.0" layoutY="382.0" mnemonicParsing="false" onAction="#addMember" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddle" text="Add" />
-                  <ImageView fitHeight="158.0" fitWidth="250.0" layoutX="297.0" layoutY="213.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@park_minimal_nobg_500.png" />
-                     </image>
-                  </ImageView>
                   <JFXTextField fx:id="txtPhoneNumber" focusColor="#0080ff" labelFloat="true" layoutX="38.0" layoutY="302.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Phone Number" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
@@ -223,6 +208,21 @@
                         <Font name="Ebrima" size="14.0" />
                      </font>
                   </JFXTextField>
+                  <JFXTextField fx:id="txtMembersAmount" focusColor="#0080ff" labelFloat="true" layoutX="38.0" layoutY="362.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Members Amount" styleClass="txtField" unFocusColor="#a3a3a3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="Ebrima" size="14.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXCheckBox fx:id="cbGuideMember" layoutX="378.0" layoutY="113.0" text="Tour Guide " />
+                  <Button focusTraversable="false" layoutX="387.0" layoutY="382.0" mnemonicParsing="false" onAction="#addMember" prefHeight="25.0" prefWidth="157.0" styleClass="btnMiddle" text="Add" />
+                  <ImageView fitHeight="158.0" fitWidth="250.0" layoutX="297.0" layoutY="213.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@park_minimal_nobg_500.png" />
+                     </image>
+                  </ImageView>
                   <Button fx:id="btnCreditCard" layoutX="371.0" layoutY="180.0" mnemonicParsing="false" onAction="#creditCard" text="Add Credit Card" textAlignment="CENTER" />
                </children>
             </Pane>
