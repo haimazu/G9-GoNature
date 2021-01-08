@@ -65,7 +65,7 @@ public class ParkGate {
 	/**
 	 * send to client: ArrayList of object cell[0] contains "enterThePark" String
 	 * cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark"
-	 * / "parkfull" / "noRoomForRandom" if not cell[2] if enterd the park as random
+	 * / "parkfull" / "noRoomForRandom" / "orderDiffPark" if not cell[2] if enterd the park as random
 	 * ticket numbet as int, if enterd not as random than 0
 	 * 
 	 * @param recived ArrayList of object cell[0] contains "enterThePark" String,

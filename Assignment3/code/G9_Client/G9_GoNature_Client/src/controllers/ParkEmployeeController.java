@@ -10,6 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
+import javax.swing.event.SwingPropertyChangeSupport;
+
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import client.ClientUI;
@@ -231,99 +234,37 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	@FXML
 	void approve(ActionEvent event) {
-
-//		// random mode
-//		if (!btnRandomVisitor.isVisible()) {
-//			if (txtIdOrMemberId.getText().isEmpty()) {
-//				alert.failedAlert("Failed", "You must enter id/memberid.");
-//				return;
-//			} else if (!Character.isLetter(txtIdOrMemberId.getText().charAt(0))
-//					&& txtIdOrMemberId.getText().length() != 9) {
-//				alert.failedAlert("Failed", "Id must be 9 digits long.");
-//				return;
-//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
-//				alert.failedAlert("Failed", "You must enter amount of visitors.");
-//				return;
-//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
-//				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
-//				return;
-//			} else {
-//				orderStatus = false;
-//				/*** Enter ***/
-//				if (radEnter.isSelected()) {
-//					execEnter();
-//					/*** Exit ***/
-//				} else if (radExit.isSelected()) {
-//					execExit();
-//				}
-//			}
-//			// barcode / regular entry
-//		} else {
-//			if (txtOrderNumber.getText().isEmpty()) {
-//				alert.failedAlert("Failed", "All fields required.");
-//				return;
-//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
-//				alert.failedAlert("Failed", "You must enter amount of visitors.");
-//				return;
-//			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
-//				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
-//				return;
-//			}
-//
-//			// if the order is for another park
-//			if (!radExit.isSelected() && orderDetails!=null) {
-//				if (!orderDetails.getParkName().equals(getParkName())) {
-//					alert.failedAlert("Failed", "The order is for the park " + orderDetails.getParkName() + ".");
-//					clearAllFields();
-//					return;
-//				}
-//			}
-//
-//			orderStatus = true;
-//			/*** Enter ***/ // check date and time
-//			if (radEnter.isSelected()) {
-//				execEnter();
-//				/*** Exit ***/
-//			} else if (radExit.isSelected()) {
-//				execExit();
-//			}
-//		}
-	
-		if (btnRandomVisitor.isVisible() && radEnter.isSelected()) {
+		if (!btnRandomVisitor.isVisible() && radEnter.isSelected()) {
 			if(txtIdOrMemberId.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter id/memberid.");return;}
 			else if(txtVisitorsAmount.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter amount of visitors.");return;}
 			else if(!Character.isLetter(txtIdOrMemberId.getText().charAt(0))&& txtIdOrMemberId.getText().length() != 9) {alert.failedAlert("Input Error", "Id must be 9 digits long.");return;}
 			else if(txtVisitorsAmount.getText().charAt(0) == '0') {alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");return;}
 			//try to enter the park
-			orderStatus = true;
+			orderStatus = false;
 			execEnter();
 		}
-		else if (!btnRandomVisitor.isVisible() && radEnter.isSelected()) {
+		else if (btnRandomVisitor.isVisible() && radEnter.isSelected()) {
 			if(txtVisitorsAmount.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter amount of visitors.");return;}
 			else if (txtOrderNumber.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter Order Number!");return;}
 			else if(txtVisitorsAmount.getText().charAt(0) == '0') {alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");return;}
 			//try to enter the park
-			orderStatus = false;
+			orderStatus = true;
 			execEnter();
 		}
-		else if (btnRandomVisitor.isVisible() && radExit.isSelected()) {
+		else if (!btnRandomVisitor.isVisible() && radExit.isSelected()) {
 			if(txtIdOrMemberId.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter id/memberid.");return;}
 			else if(!Character.isLetter(txtIdOrMemberId.getText().charAt(0))&& txtIdOrMemberId.getText().length() != 9) {alert.failedAlert("Input Error", "Id must be 9 digits long.");return;}
+			//try to exit park
+			orderStatus = false;
+			execExit();
+		}
+		else if (btnRandomVisitor.isVisible() && radExit.isSelected()) {
+			if (txtOrderNumber.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter Order Number!.");return;}
 			//try to exit park
 			orderStatus = true;
 			execExit();
 		}
-		else if (!btnRandomVisitor.isVisible() && radExit.isSelected()) {
-			if (txtOrderNumber.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter Order Number!.");return;}
-			//try to exit park
-			orderStatus = false;
-			execExit();
-		}
-		//////////////////
-		//////////////////
 		orderStatus = false;
-		// update park status
-		// updateParkStatus(0);
 		clearAllFields();
 		txtVisitorsAmount.setDisable(true);
 	}
@@ -335,47 +276,81 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	public void execEnter() {
 		ArrayList<String> idOrMemberId;
-
-		// casual visitor
-		if (!orderStatus) {
+		if (!orderStatus) { //random visitor
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
-
-			if (getEntryStatus().equals("allreadyInPark")) {
-				alert.failedAlert("Failed", "These visitors have already entered.");
-			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed",
-						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
-			} else if (getEntryStatus().equals("noRoomForRandom")) {
-				alert.failedAlert("Failed", "noRoomForRandom");
-			} else if (getEntryStatus().equals("enter")) {
-				alert.successAlert("Success",
-						txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
-			} else {
-				alert.failedAlert("Failed", "Wrong case! (notGoodTime)");
-			}
-			// invited visitor
-		} else {
+		} else { //has an order number
 			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-
-			if (getEntryStatus().equals("notGoodTime")) {
-				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
-			} else if (getEntryStatus().equals("allreadyInPark")) {
-				alert.failedAlert("Failed", "This order has already been fulfilled.");
-			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed",
-						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
-				// getEntryStatus() = "enter"
-			} else if (getEntryStatus().equals("enter")) {
-				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
-				if (randomVisitorTicket != 0) {
-					message = message + "\nYour ticket number for the extra people is: " + randomVisitorTicket;
-				}
-				alert.successAlert("Success", message);
-			} else {
-				alert.failedAlert("Failed", "Wrong case! (noRoomForRandom)");
-			}
 		}
+		switch (getEntryStatus()) { //"enter"/"notGoodTime" / "allreadyInPark" / "parkfull" / "noRoomForRandom"
+		case "notGoodTime":
+			alert.failedAlert("Failed", "The time in the existing order not match the time now");
+			break;
+		case "allreadyInPark":
+			alert.failedAlert("Failed", "The ticket user is allready in the park");
+			break;
+		case "parkFull":
+			alert.failedAlert("Failed", "The park is too full for so many visitors");
+			break;
+		case "noRoomForRandom":
+			alert.failedAlert("Failed", "The park is has reserved room for Orders\nif someone leave they will have room");
+			break;
+		case "orderDiffPark":
+			alert.failedAlert("Failed", "The order belongs to another park");
+			break;
+		case "enter":
+			if (!orderStatus)
+				alert.successAlert("Success",txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
+			else {
+				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
+				if (randomVisitorTicket != 0)
+					message = message + "\nYour ticket number for the extra people is: " + randomVisitorTicket;
+				alert.successAlert("Success", message);	
+				}
+			break;
+		default:
+			break;
+		}
+//		
+//		// casual visitor
+//		if (!orderStatus) {
+//			idOrMemberId = checkForIdOrMemberId();
+//			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
+//			if (getEntryStatus().equals("allreadyInPark")) {
+//				alert.failedAlert("Failed", "These visitors have already entered.");
+//			} else if (getEntryStatus().equals("parkFull")) {
+//				alert.failedAlert("Failed",
+//						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
+//			} else if (getEntryStatus().equals("noRoomForRandom")) {
+//				alert.failedAlert("Failed", "noRoomForRandom");
+//			} else if (getEntryStatus().equals("enter")) {
+//				alert.successAlert("Success",
+//						txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
+//			} else {
+//				alert.failedAlert("Failed", "Wrong case! (notGoodTime)");
+//			}
+//			// invited visitor
+//		} else {
+//			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
+//
+//			if (getEntryStatus().equals("notGoodTime")) {
+//				alert.failedAlert("Failed", "Arrival date/time doesn't match the date/time on order.");
+//			} else if (getEntryStatus().equals("allreadyInPark")) {
+//				alert.failedAlert("Failed", "This order has already been fulfilled.");
+//			} else if (getEntryStatus().equals("parkFull")) {
+//				alert.failedAlert("Failed",
+//						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
+//				// getEntryStatus() = "enter"
+//			} else if (getEntryStatus().equals("enter")) {
+//				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
+//				if (randomVisitorTicket != 0) {
+//					message = message + "\nYour ticket number for the extra people is: " + randomVisitorTicket;
+//				}
+//				alert.successAlert("Success", message);
+//			} else {
+//				alert.failedAlert("Failed", "Wrong case! (noRoomForRandom)");
+//			}
+//		}
 	}
 
 	/**
@@ -384,8 +359,6 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	public void execExit() {
 		ArrayList<String> idOrMemberId;
-
-		// casual visitor
 		if (!orderStatus) {
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetExitStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
@@ -394,14 +367,31 @@ public class ParkEmployeeController implements Initializable {
 			sendToGetExitStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
 		}
 
-		if (getExitStatus().equals("allreadyExited")) {
-			alert.failedAlert("Failed", "The visitor/s have already leaved.");
-		} else if (getExitStatus().equals("neverWasHere")) {
-			alert.failedAlert("Failed", "The visitor/s didn't enter.");
-			// can leave getExitStatus() = "exited"
-		} else {
-			alert.successAlert("Success", "Thanks for visiting, hope to see you again soon.");
+		switch (getExitStatus()) {
+		case "allreadyExited":
+			alert.failedAlert("Failed", "The order already has an exit registered");
+			break;
+		case "neverWasHere":
+			alert.failedAlert("Failed", "The order does not match any entery listed");
+			break;
+		case "orderDiffPark":
+			alert.failedAlert("Failed", "The order number match a diffrent park");
+			break;
+		case "exited":
+			alert.failedAlert("Success", "Thanks for visiting, hope to see you again soon.");
+			break;
+		default:
+			break;
 		}
+//		}
+//		if (getExitStatus().equals("allreadyExited")) {
+//			alert.failedAlert("Failed", "The visitor/s have already leaved.");
+//		} else if (getExitStatus().equals("neverWasHere")) {
+//			alert.failedAlert("Failed", "The visitor/s didn't enter.");
+//			// can leave getExitStatus() = "exited"
+//		} else {
+//			alert.successAlert("Success", "Thanks for visiting, hope to see you again soon.");
+//		}
 	}
 
 	/**
