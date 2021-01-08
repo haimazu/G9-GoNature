@@ -49,9 +49,9 @@ public class Login {
 
 	/**
 	 * the function add the relevant data for the query and call MySQLConnection
-	 * send to client: ArrayList of objects - cell [0]: the client function who
-	 * called for service (in that case "updateLoggedIn") cell [1]: boolean value -
-	 * {if failed:} ==> false {if success:} ==> true
+	 * send to client: ArrayList of objects = cell [0]: the client function who
+	 * called for service (in that case "updateLoggedIn") cell [1]: boolean value =
+	 * {if failed:} == false {if success:} == true
 	 * 
 	 * @param recived ArrayList of Object cell [0]: the client function who called for
 	 *                service (in that case "updateLoggedIn"), cell [1]: ArrayList

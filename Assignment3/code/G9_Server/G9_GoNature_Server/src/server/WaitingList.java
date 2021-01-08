@@ -57,8 +57,8 @@ public class WaitingList {
 	 * @param recived ArrayList of Objects: cell [0]: String
 	 *                "checkForAvailableSpots" cell, [1]: Order class of a given
 	 *                order to check if it can fit
-	 * @return True => if there are available spots at the given park at the given
-	 *         time, False => if there are no spots available
+	 * @return True = if there are available spots at the given park at the given
+	 *         time, False = if there are no spots available
 	 */
 
 	public static boolean checkForAvailableSpots(ArrayList<Object> recived) {

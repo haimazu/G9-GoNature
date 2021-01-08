@@ -20,10 +20,10 @@ public class NewOrder {
 
 	/**
 	 * inserting a new reservation in order table in DB. sends to client :ArrayList
-	 * of Object => cell[0] function name, cell[1] Order object with updated cells:
+	 * of Object = cell[0] function name, cell[1] Order object with updated cells:
 	 * price ,totalPrice
 	 * 
-	 * @param ArrayList of Object: cell[0] function name, cell[1] order object
+	 * @param recived ArrayList of Object: cell[0] function name, cell[1] order object
 	 * @param client    ConnectionToClient
 	 * 
 	 **/

@@ -24,11 +24,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
-*
-* Controller that gets the user login details
-*
-* @author Haim Azulay Hodaya Mekonen
-*/
+ *
+ * Controller that gets the user login details
+ *
+ * @author Haim Azulay Hodaya Mekonen
+ */
 
 public class LoginController implements Initializable {
 	@FXML
@@ -62,13 +62,13 @@ public class LoginController implements Initializable {
 	 * Switch screens: Welcome
 	 **/
 	@FXML
-	void back(ActionEvent event) throws IOException {			
+	void back(ActionEvent event) throws IOException {
 		Stage stage = (Stage) btnBack.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		stage.setScene(new Scene(root));
 	}
-		
-	 /**
+
+	/**
 	 * Checks login status for employee
 	 * 
 	 * @param ActionEvent event
@@ -92,7 +92,7 @@ public class LoginController implements Initializable {
 				// needed for check in parkManager
 				setPassword(txtPassword.getText());
 				setUsername(txtUsername.getText());
-				
+
 				// update as loggedin
 				data.add(getUsername());
 				data.add(String.valueOf(1));
@@ -108,9 +108,9 @@ public class LoginController implements Initializable {
 	}
 
 	/**
-	 * Check Username input before sending to DB     
+	 * Check Username input before sending to DB
 	 * 
-	 * @return  true if the input is correct, false otherwise
+	 * @return true if the input is correct, false otherwise
 	 */
 	public boolean checkUsername() {
 		String username = txtUsername.getText();
@@ -129,10 +129,10 @@ public class LoginController implements Initializable {
 	}
 
 	/**
-	 * Check password input before sending to DB     
+	 * Check password input before sending to DB
 	 * 
-	 * @return  true if the input is correct false otherwise
-	 */	
+	 * @return true if the input is correct false otherwise
+	 */
 	public boolean checkPassword() {
 		String password = txtPassword.getText();
 
@@ -146,19 +146,19 @@ public class LoginController implements Initializable {
 
 		return passStatus;
 	}
-	
+
 	/**
 	 * Sends the case we dealing with and dbColumns to the server to get data
-	 *  
-	 * @param type String depending on the case         
+	 * 
+	 * @param type      String depending on the case
 	 * @param dbColumns ArrayList of String
 	 */
 	public void sendToServerArrayList(String type, ArrayList<String> dbColumns) {
 		// Query
-		ArrayList<Object> msg = new ArrayList<Object>();	
+		ArrayList<Object> msg = new ArrayList<Object>();
 		msg.add(type);
 		// Data fields
-		msg.add(dbColumns);	
+		msg.add(dbColumns);
 		// set up all the order details and the payment method
 		ClientUI.sentToChatClient(msg);
 	}
@@ -166,10 +166,9 @@ public class LoginController implements Initializable {
 	/**
 	 * Receives information returning from the server with user status
 	 * 
-	 * @param msgReceived data from the server               
-	 * @return cell 0: the 'role' of the user
-	 *	       cell 1: the first name of the user
-	 *		   cell 2: name of the park where the employee works
+	 * @param msgReceived data from the server
+	 * @return cell 0: the 'role' of the user cell 1: the first name of the user
+	 *         cell 2: name of the park where the employee works
 	 */
 	@SuppressWarnings("unchecked")
 	public static void receivedFromServerUserStatus(Object msgReceived) {
@@ -185,13 +184,12 @@ public class LoginController implements Initializable {
 	}
 
 	/**
-	 * Receives information that is returned from the server with the user login status
+	 * Receives information that is returned from the server with the user login
+	 * status
 	 * 
-	 * @param msgReceived boolean value with the result of the action Status                 
-	 * @return T / F, 
-	 *	       T Update logged in status success
-	 *		   F Update logged in status failed
-	 */	
+	 * @param msgReceived boolean value with the result of the action Status
+	 * @return T Update logged in status success F Update logged in status failed
+	 */
 	public static void receivedFromServerLoggedInStatus(boolean msgReceived) {
 		if (msgReceived) {
 			System.out.println("Update logged in / out status success.");
@@ -212,7 +210,7 @@ public class LoginController implements Initializable {
 	/**
 	 * set the 'role' of the user
 	 * 
-	 * @param status
+	 * @param status String
 	 */
 	public static void setStatus(String status) {
 		LoginController.status = status;
@@ -230,7 +228,7 @@ public class LoginController implements Initializable {
 	/**
 	 * set the 'firstName' of the user
 	 * 
-	 * @param firstName
+	 * @param firstName String
 	 */
 	public static void setFirstName(String firstName) {
 		LoginController.firstName = firstName;
@@ -248,7 +246,7 @@ public class LoginController implements Initializable {
 	/**
 	 * set the 'parkName'
 	 * 
-	 * @param parkName
+	 * @param parkName String
 	 */
 	public static void setParkName(String parkName) {
 		LoginController.parkName = parkName;
@@ -266,7 +264,7 @@ public class LoginController implements Initializable {
 	/**
 	 * set errors
 	 * 
-	 * @param error
+	 * @param error String
 	 */
 	public static void setError(String error) {
 		LoginController.error = error;
@@ -284,7 +282,7 @@ public class LoginController implements Initializable {
 	/**
 	 * set the 'password'
 	 * 
-	 * @param password
+	 * @param password String
 	 */
 	public static void setPassword(String password) {
 		LoginController.password = password;
@@ -302,14 +300,14 @@ public class LoginController implements Initializable {
 	/**
 	 * set the 'username'
 	 * 
-	 * @param username
+	 * @param username String
 	 */
 	public static void setUsername(String username) {
 		LoginController.username = username;
 	}
 
 	/**
-	 * Initializing and force each of the fields according to the Required templates 
+	 * Initializing and force each of the fields according to the Required templates
 	 * 
 	 * @param arg0 URL
 	 * @param arg1 ResourceBundle

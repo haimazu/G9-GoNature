@@ -54,7 +54,6 @@ public class WaitListSingelton {
 	 * function that sends notifications to the client (SMS and Mail notification)
 	 * 
 	 * @param order Order object that is pulled from the wait list
-	 * @return none
 	 */
 
 	public static void sendWaitlistNotification(Order order) {
