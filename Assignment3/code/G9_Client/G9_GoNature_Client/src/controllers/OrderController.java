@@ -77,6 +77,8 @@ public class OrderController implements Initializable {
 	private Button btnHome;
 	@FXML
 	private Button information;
+	@FXML
+	private Hyperlink hyperTerms;
 
 	/********* Order screen ************/
 	@FXML
@@ -156,7 +158,7 @@ public class OrderController implements Initializable {
 
 	private URL location;
 	private ResourceBundle resources;
-	
+
 	public Pane getPnOrder() {
 		return pnOrder;
 	}
@@ -164,7 +166,7 @@ public class OrderController implements Initializable {
 	public void setPnOrder(Pane pnOrder) {
 		this.pnOrder = pnOrder;
 	}
-	
+
 	public Pane getPnPayment() {
 		return pnPayment;
 	}
@@ -311,20 +313,20 @@ public class OrderController implements Initializable {
 
 			}
 		});
-		
+
 		pnPayment.setDisable(true);
 
 	}
-	
-	
+
 	/**
 	 * radio button for open screen alert
+	 * 
 	 * @param event
 	 */
-    @FXML
-    void payPalClick(ActionEvent event) {
-    		alert.successAlert("Simulation", "PayPal - simulation");
-    }
+	@FXML
+	void payPalClick(ActionEvent event) {
+		alert.successAlert("Simulation", "PayPal - simulation");
+	}
 
 	/**
 	 * msgForServer is ArrayList of objects [0] name of the class "order" [1] order
@@ -368,7 +370,7 @@ public class OrderController implements Initializable {
 					stage.setResizable(false);
 					stage.setScene(scene);
 					stage.show();
-					
+
 					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 						@Override
 						public void handle(WindowEvent t) {
@@ -377,14 +379,13 @@ public class OrderController implements Initializable {
 
 						}
 					});
-					
-				}else if(status.equals("Existing ")) {
+
+				} else if (status.equals("Existing")) {
 					alert.setAlert("You already have an order on this day for this time ");
 				} else if (!faildDB) { // the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
-
-					this.txtprice.setText(String.valueOf(orderSuccess.getPrice()) + " ₪");
+					this.txtprice.setText((String.format("%.1f", orderSuccess.getPrice()) + " ₪"));
 					this.txtTotalPrice.setText(String.valueOf(orderSuccess.getTotalPrice()) + " ₪");
 					double value = (1 - (orderSuccess.getTotalPrice() / orderSuccess.getPrice())) * 100;
 					this.txtdDiscount.setText(String.format("%.1f", value) + "%");
@@ -410,8 +411,8 @@ public class OrderController implements Initializable {
 					} else
 						alert.setAlert("something went wrong\nplease close the program and start again");
 				}
-				
-				CreditCardController.setDetails(null);//set null in credut card
+
+				CreditCardController.setDetails(null);// set null in credut card
 
 			}
 
@@ -444,6 +445,26 @@ public class OrderController implements Initializable {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
 		stage.setScene(new Scene(root));
 
+	}
+
+	@FXML
+	void termsCond(ActionEvent event) throws IOException {
+		Stage stage = new Stage();
+		Pane root = FXMLLoader.load(getClass().getResource("/gui/terms.fxml"));
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.setResizable(false);
+		stage.show();
+
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent t) {
+				pnPayment.setDisable(false);
+
+			}
+		});
+
+		pnPayment.setDisable(true);
 	}
 
 	/*******************************
@@ -489,7 +510,7 @@ public class OrderController implements Initializable {
 			return false;
 		}
 		if (!CheckBoxAgreed.isSelected()) {
-			alert.setAlert("you need to aprove the terms");
+			alert.setAlert("you need to approve the terms");
 			return false;
 		}
 		return true;
@@ -636,6 +657,7 @@ public class OrderController implements Initializable {
 	 */
 
 	public static void recivedFromServer(Object newOrder) {
+		System.out.println(newOrder);
 		if (newOrder instanceof String) {
 			String status = (String) newOrder;
 			setStatus(status);
@@ -672,14 +694,13 @@ public class OrderController implements Initializable {
 	 * Done with the server
 	 **********************************************/
 
-	
 	/**
 	 * Initialize the fields according to the actions performed by the user
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setOrderC(this);
-		
+
 		txtVisitorsNumber.setText("1");
 		cbxArrivelTime.setItems(FXCollections.observableArrayList("08:00-12:00", "12:00-16:00", "16:00-20:00"));
 
