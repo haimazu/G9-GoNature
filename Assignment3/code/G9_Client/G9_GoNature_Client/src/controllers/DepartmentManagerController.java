@@ -660,7 +660,6 @@ public class DepartmentManagerController implements Initializable {
 	 * @param status
 	 */
 	public static void setStatus(ArrayList<ArrayList<Object>> status) {
-		System.out.println("set data: " + status);
 		DepartmentManagerController.status = status;
 	}
 
@@ -670,7 +669,6 @@ public class DepartmentManagerController implements Initializable {
 	 * @param status
 	 */
 	public static void setData(ArrayList<ArrayList<Object>> status) {
-		System.out.println("status" + status);
 		setStatus(status);
 	}
 
@@ -695,6 +693,7 @@ public class DepartmentManagerController implements Initializable {
 	 */
 	@FXML
 	void approve(ActionEvent event) {
+		int flag=0;
 		int[] arrItems = new int[TableDep.getItems().size()];
 		initializeArr(arrItems);
 		ArrayList<Object> Server = new ArrayList<>();
@@ -711,8 +710,10 @@ public class DepartmentManagerController implements Initializable {
 				data.add("yes");
 				allItems.add(new ArrayList<Object>(data));
 				arrItems[i] = i;
+				if(s.getReqType().equals("max_c") ||s.getReqType().equals("max_o") ) {
+					flag=1;
+				}
 
-				//
 
 			}
 			data.clear();
@@ -728,6 +729,10 @@ public class DepartmentManagerController implements Initializable {
 //			}
 
 			ClientUI.sentToChatClient(Server);
+		}
+		
+		if(flag==1) {
+			iniailTabelVisitors();
 		}
 
 		if (status != null && !status.isEmpty()) {
@@ -1151,8 +1156,7 @@ public class DepartmentManagerController implements Initializable {
  * iniailize table current visitors number
  */
 	public void iniailTabelVisitors() {
-		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("parkNameVis"));
-		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("currentAmount"));
+
 
 		ArrayList<Object> answer = new ArrayList<>();
 		answer.add("parkDateilsForDepartment");
@@ -1233,7 +1237,10 @@ public class DepartmentManagerController implements Initializable {
 
 		/*************** for deshbord ***********/
 		iniailTabelVisitors();
-
+		
+		visitorColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("parkNameVis"));
+		amountColumn.setCellValueFactory(new PropertyValueFactory<TableCurrentVisitors, String>("currentAmount")); 
+		
 		iniailTabelPending();
 
 		parkName.setCellValueFactory(new PropertyValueFactory<TableViewSet, String>("ParkName"));

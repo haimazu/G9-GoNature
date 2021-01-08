@@ -347,6 +347,15 @@ public class OrderController implements Initializable {
 					stage.setResizable(false);
 					stage.setScene(scene);
 					stage.show();
+					
+					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+						@Override
+						public void handle(WindowEvent t) {
+
+							pnOrder.setDisable(false);
+
+						}
+					});
 				} else if (!faildDB) { // the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success

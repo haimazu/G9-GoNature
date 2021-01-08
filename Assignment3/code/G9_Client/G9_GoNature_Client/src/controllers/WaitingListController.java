@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import client.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +24,7 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
 /**
@@ -283,6 +285,16 @@ public class WaitingListController implements Initializable {
 		stage.setResizable(false);
 		stage.setScene(scene);
 		stage.show();
+		
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent t) {
+
+				OrderController ORC = Context.getInstance().getOrderC();
+				ORC.getPnOrder().setDisable(false);
+
+			}
+		});
 
 		Stage stage2 = (Stage) btnHere.getScene().getWindow();
 		stage2.close();
@@ -325,6 +337,7 @@ public class WaitingListController implements Initializable {
 			nonReleventDatesForCalender(nonReleventDates);
 		}
 		setArrForTime();
+		
 	}
 
 }
