@@ -188,7 +188,10 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	@FXML
 	void showDetails(ActionEvent event) {
+		txtOrderNumber.setVisible(true);
+		btnShowDetails.setVisible(true);
 		setError("");
+		txtVisitorsAmount.clear();
 		if (btnManualAccess.isVisible()) {
 			setRandomModeOff();
 			return;
@@ -710,10 +713,21 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
 		clearAllOrderFields();
+		txtOrderNumber.clear();
+		txtOrderNumber.setVisible(false);
+		btnShowDetails.setVisible(false);
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.format(time));
 	}
+	
+    @FXML
+    void exitAction(ActionEvent event) {
+    	System.out.println(txtOrderNumber.getText() + " " + txtVisitorsAmount.getText());
+    	if(!txtOrderNumber.getText().isEmpty() || !txtVisitorsAmount.getText().isEmpty()) {
+    		btnApprove.setDisable(false);
+    	}
+    }
 
 	/**
 	 * Turns off order mode
@@ -800,12 +814,11 @@ public class ParkEmployeeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Context.getInstance().setPEC(this);
-
+		btnManualAccess.setVisible(false);
 		txtVisitorsAmount.setDisable(true);
 		btnApprove.setDisable(true);
 		radEnter.setSelected(true);
 		setRandomModeOff();
-		btnManualAccess.setVisible(true);
 
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
