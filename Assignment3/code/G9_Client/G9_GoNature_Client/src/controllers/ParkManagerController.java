@@ -484,7 +484,7 @@ public class ParkManagerController implements Initializable {
 
 		// plusMonths(1) to get the next month
 		// withDayOfMonth(1) to get the first day
-		dpToU.setValue(dpFromU.getValue().plusMonths(1).withDayOfMonth(1));
+		dpToU.setValue(LocalDate.now());
 		// listener for updating the date
 		dpToU.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpToU.setValue(newValue);
@@ -506,7 +506,7 @@ public class ParkManagerController implements Initializable {
 		});
 		// plusMonths(1) to get the next month
 		// withDayOfMonth(1) to get the first day
-		dpTo.setValue(dpFrom.getValue().plusMonths(1).withDayOfMonth(1));
+		dpTo.setValue(LocalDate.now());
 		// listener for updating the date
 		dpTo.valueProperty().addListener((ov, oldValue, newValue) -> {
 			dpTo.setValue(newValue);
