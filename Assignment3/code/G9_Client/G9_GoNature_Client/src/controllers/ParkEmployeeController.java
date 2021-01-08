@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,6 +17,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
 import dataLayer.Park;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +32,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import orderData.Order;
 import sim.BarcodeSimulation;
+
+/**
+*
+* Controller that gets the user login details
+*
+* @author Haim Azulay Hodaya Mekonen
+*/
 
 public class ParkEmployeeController implements Initializable {
 	/***** Top/Side Panels Details *****/
@@ -101,8 +110,6 @@ public class ParkEmployeeController implements Initializable {
 	private Label lblRandomTime;
 	@FXML
 	private JFXTextField txtIdOrMemberId;
-//	@FXML
-//	private JFXTextField txtRandomVisitorsAmount;
 
 	/***** Bottom Right Screen *****/
 	@FXML
@@ -119,18 +126,13 @@ public class ParkEmployeeController implements Initializable {
 	// private String timeFormat = "";
 	// private String dateAndTimeFormat = "";
 	private boolean orderStatus = false;
-	// private boolean approveIsPressed = false;
-	// private boolean addFakeOrderToDB = false;
 	private static String firstName;
 	private static String parkName;
 	private static Order orderDetails;
-	// private static Order randomVisitorFakeOrderDetails;
 	private static Park parkDetails;
 	private static String error = "";
-	// private static String entryAndExitStatus = "";
 	private static String entryStatus = "";
 	private static String exitStatus = "";
-	// private static String randomVisitorIdNumber = "";
 	private static ArrayList<Double> visitorsPrice = new ArrayList<Double>();
 	private static int randomVisitorTicket = 0;
 
@@ -435,7 +437,6 @@ public class ParkEmployeeController implements Initializable {
 
 			if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "These visitors have already entered.");
-				return;
 			} else if (getEntryStatus().equals("parkFull")) {
 				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
 						+ "or you are trying to add too many visitors");
@@ -443,6 +444,8 @@ public class ParkEmployeeController implements Initializable {
 				alert.failedAlert("Failed", "noRoomForRandom");
 			} else if (getEntryStatus().equals("enter")) {
 				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitor/s entered.");
+			} else {
+				alert.failedAlert("Failed", "Wrong case! (notGoodTime)");
 			}
 			// order
 		} else {
@@ -455,13 +458,15 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("parkFull")) {
 				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
 						+ "or you are trying to add too many visitors");
-				// getEntryStatus() = "enter"
-			} else {
+			// getEntryStatus() = "enter"
+			} else if (getEntryStatus().equals("enter")) {
 				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
 				if (randomVisitorTicket != 0) {
 					message = message + "\nYour ticket number for the extra people is: " + randomVisitorTicket;
 				}
 				alert.successAlert("Success", message);
+			} else {
+				alert.failedAlert("Failed", "Wrong case! (noRoomForRandom)");
 			}
 		}
 
@@ -984,41 +989,32 @@ public class ParkEmployeeController implements Initializable {
 		data.add(getParkName());
 		data.add(String.valueOf(addToEnter));
 		sendToServerArrayList("getParkDetails", data);
-//
-//		// the park is empty
-//		if (parkDetails.getCurrentAmount() == 0) {
-//			theParkIsFullOrEmpty("Empty");
-//		} else {
-//			radExit.setDisable(false);
-//		}
-//
-//		// the park is full
-//		if (getError().equals("Full")) {
-//			theParkIsFullOrEmpty("Full");
-//			return;
-//		}
-//
-//		// too many visitors (check after enter)
-//		if (approveIsPressed && getError().equals("Greater") && radEnter.isSelected()) {
-//			alert.failedAlert("Failed", "The amount of visitors is greater than the number existing in the park.");
-//			approveIsPressed = false;
-//			return;
-//		}
-//
-//		setError("Free");
+
 		lblCurrentVisitors.setText("[" + getParkName() + "]:  " + String.valueOf(parkDetails.getCurrentAmount()) + "/"
 				+ parkDetails.getMaximumCapacityInPark());
 	}
 
+	/** 
+	 * update current visitors number in the park.The number is updated every time
+	 * when visitor enters or exits the park
+	 * 
+	 * @param visitNum
+	 */
 	public void setCurrentVisitors(String visitNum) {
-//	lblCurrentVisitors.setText("[" + getParkName() + "]:  " 
-//			+ String.valueOf(visitNum + "/" 
-//			+ parkDetails.getMaximumCapacityInPark()));
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				lblCurrentVisitors.setText("[" + getParkName() + "]:  " + visitNum + "/"
+						+ parkDetails.getMaximumCapacityInPark());
+			}
+		});
 	}
 
-	// prints order data
-	// input: order
-	// output: prints the order data
+
+	/**
+	 * prints order data
+	 * 
+	 */
 	public void printOrderDetails() {
 		// 2021-01-01 08:00:00
 		String DateAndTime = orderDetails.getArrivedTime();
@@ -1361,6 +1357,7 @@ public class ParkEmployeeController implements Initializable {
 	// input: none
 	// output: screen changes
 	public void clearPaymentFields() {
+		txtVisitorsAmount.clear();
 		txtVisitorsAmount.setDisable(true);
 		lblPrice.setText("");
 		lblDiscount.setText("");
