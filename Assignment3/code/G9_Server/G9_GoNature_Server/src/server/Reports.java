@@ -53,7 +53,6 @@ public class Reports {
 			return;
 		} else {
 			answer.add(queryData);
-			System.out.println(queryData);
 			EchoServer.sendToMyClient(answer, client);
 		}
 	}
@@ -80,7 +79,6 @@ public class Reports {
 		String startDate = dataFromClient.get(1);
 		String endDate = dataFromClient.get(2);
 		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
-		System.out.println("here1");
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // select
 		query.add("orders"); // tableName
@@ -88,8 +86,6 @@ public class Reports {
 		query.add("WHERE parkName='" + parkName + "' AND " + dateCond + " GROUP BY arrivedTime ORDER BY arrivedTime"); // condition
 		query.add("2"); // replyColNum
 		ArrayList<ArrayList<String>> parkSummedCapacityByCapsule = MySQLConnection.select(query);
-		System.out.println(parkSummedCapacityByCapsule);
-		System.out.println("here2");
 		query.clear();
 		query.add("select"); // select
 		query.add("park"); // tableName
@@ -98,26 +94,18 @@ public class Reports {
 		query.add("1"); // replyColNum
 
 		ArrayList<ArrayList<String>> maxCapacityForPark = MySQLConnection.select(query);
-		System.out.println("here3");
-		System.out.println(maxCapacityForPark);
 		int maxCapacity = Integer.parseInt(maxCapacityForPark.get(0).get(0));
 		for (ArrayList<String> row : parkSummedCapacityByCapsule) {
 			double capacityInCapsule = Double.parseDouble(row.get(1));
 			if (capacityInCapsule < maxCapacity) {
 				ArrayList<String> notFullDaysRow = new ArrayList<String>();
 				notFullDaysRow.add(row.get(0));
-				System.out.println("maxCapacity=" + maxCapacity);
-				System.out.println("capacityInCapsule=" + capacityInCapsule);
 				String dif = "" + (maxCapacity - capacityInCapsule);
-				System.out.println("dif=" + dif);
 				notFullDaysRow.add(dif);
-				System.out.println(notFullDaysRow);
 				notFullDaysTable.add(notFullDaysRow);
 			}
 		}
 
-		System.out.println("here4");
-		System.out.println(notFullDaysTable);
 		answer.add(notFullDaysTable);
 		try {
 			client.sendToClient(answer);
@@ -159,12 +147,10 @@ public class Reports {
 
 		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 		if (queryData1.get(0) == null) {
-			System.out.println("check");
 			EchoServer.sendToMyClient(answer, client);
 			return;
 		}
 		if (!(queryData1.get(0).get(0) == null)) {
-			System.out.println("1:" + queryData1);
 			temp[0] = Double.parseDouble(queryData1.get(0).get(0));
 			amountArrivedOverall += temp[0];
 		} else
@@ -180,7 +166,6 @@ public class Reports {
 		query2.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
 		if (!(queryData2.get(0).get(0) == null)) {
-			System.out.println("2:" + queryData2);
 			temp[1] = Double.parseDouble(queryData2.get(0).get(0));
 			amountArrivedOverall += temp[1];
 		} else
@@ -196,7 +181,6 @@ public class Reports {
 		query3.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
 		if (!(queryData3.get(0).get(0) == null)) {
-			System.out.println("3:" + queryData3);
 			temp[2] = Double.parseDouble(queryData3.get(0).get(0));
 			amountArrivedOverall += temp[2];
 		} else
@@ -212,7 +196,6 @@ public class Reports {
 		query4.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
 		if (!(queryData4.get(0).get(0) == null)) {
-			System.out.println("4:" + queryData4);
 			temp[3] = Double.parseDouble(queryData4.get(0).get(0));
 			amountArrivedOverall += temp[3];
 		} else
@@ -220,7 +203,6 @@ public class Reports {
 
 		if (amountArrivedOverall != 0) {
 			for (int i = 0; i < temp.length; i++) {
-				System.out.println("arr [" + i + "]=" + ((temp[i] / amountArrivedOverall) * 100));
 				answer.add((temp[i] / amountArrivedOverall) * 100);
 
 			}
@@ -258,12 +240,8 @@ public class Reports {
 		query1.add("parkName, arrivedTime, SUM(visitorsNumber)"); // columns to present
 		query1.add("GROUP BY Day(arrivedTime), parkname"); // condition
 		query1.add("3"); // how many columns returned
-		System.out.println(query1.toString());
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query1);
-
 		answer.add(queryData);
-		System.out.println(queryData);// **
-
 		EchoServer.sendToMyClient(answer, client);
 	}
 
@@ -272,8 +250,8 @@ public class Reports {
 	 * Object: cell[0] func_name, cell[1] ArrayList of String cell[0] Date and time
 	 * cell[1] amount of money earned
 	 * 
-	 * @param recived ArrayList of Object : cell[0] name, cell[1] ArrayList of String
-	 *                cell[0] start date, cell[1] end date, cell[2] park name
+	 * @param recived ArrayList of Object : cell[0] name, cell[1] ArrayList of
+	 *                String cell[0] start date, cell[1] end date, cell[2] park name
 	 * @param client  ConnectionToClient
 	 * 
 	 */
@@ -300,7 +278,6 @@ public class Reports {
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData);
-		System.out.println("revenues on these dates are : " + queryData);
 		EchoServer.sendToMyClient(answer, client);
 	}
 
