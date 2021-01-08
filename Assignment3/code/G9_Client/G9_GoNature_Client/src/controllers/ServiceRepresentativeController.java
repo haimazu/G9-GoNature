@@ -155,7 +155,8 @@ public class ServiceRepresentativeController implements Initializable {
 
 				// set up all the member details of the new member
 				ClientUI.sentToChatClient(msg);
-
+				CreditCardController.setDetails(null);//set detail in credit card
+				
 				if (getStatus()) {
 					alert.successAlert("Succesful", "A member add succesfuly, your member number is: " + memberNumber);
 					ClearFields();
