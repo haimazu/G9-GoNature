@@ -29,6 +29,7 @@ import com.jfoenix.controls.JFXDatePicker;
 
 import client.ClientUI;
 import dataLayer.TableCurrentVisitors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -1182,19 +1183,25 @@ public class DepartmentManagerController implements Initializable {
 	 * @param visitNum
 	 */
 	public void setCurrentVisitors(ArrayList<Object> arr) {
+	    Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	String parkName = (String) arr.get(1);
+        		String VisAmount;
 
-		String parkName = (String) arr.get(1);
-		String VisAmount;
+        		for (ArrayList<String> arrayList : parkDetails) {
 
-		for (ArrayList<String> arrayList : parkDetails) {
+        			if (parkName.equals(arrayList.get(0))) {
+        				VisAmount = (String) arr.get(2);
+        				arrayList.set(1, VisAmount);
+        			}
+        		}
 
-			if (parkName.equals(arrayList.get(0))) {
-				VisAmount = (String) arr.get(2);
-				arrayList.set(1, VisAmount);
-			}
-		}
+        		addDataToTable();
+            }
+        });
 
-		addDataToTable();
+	
 	}
 
 	public static void setParkDetails(ArrayList<ArrayList<String>> Parks) {
