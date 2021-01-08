@@ -508,7 +508,7 @@ public class DepartmentManagerController implements Initializable {
 			sendToServerArrayList("getMembersVisitorsData", data);
 
 			if (!isEmpty()) {
-				addPieChart(pieMember, "Member");
+				addPieChart(pieRegular, "Member");
 			} else {
 				lblMember.setText("Member\n\nThere is no\ninformation about\nthis group.");
 			}
