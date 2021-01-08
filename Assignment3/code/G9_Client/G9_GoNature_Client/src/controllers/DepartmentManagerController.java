@@ -1185,6 +1185,7 @@ public class DepartmentManagerController implements Initializable {
 	 * 
 	 * @param visitNum
 	 */
+	
 	public void setCurrentVisitors(ArrayList<Object> arr) {
 	    Platform.runLater(new Runnable() {
             @Override
