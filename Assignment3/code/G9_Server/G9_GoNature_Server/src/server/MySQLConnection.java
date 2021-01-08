@@ -105,7 +105,7 @@ public class MySQLConnection {
 	/**
 	 * delete query for DB
 	 * 
-	 * @param data ArrayList<String> cell [0]: command (in this case will always be
+	 * @param data ArrayList of String cell [0]: command (in this case will always be
 	 *             "delete") cell [1]: table name to delete from cell [2]: primary
 	 *             key column name of that table cell [3]: primary key value of the
 	 *             row that need to be deleted
@@ -121,7 +121,7 @@ public class MySQLConnection {
 	/**
 	 * update query for DB
 	 * 
-	 * @param data ArrayList String cell [0]: command (in this case will always be
+	 * @param data ArrayList of String cell [0]: command (in this case will always be
 	 *             "update"), cell [1]: table name to update data in cell, [2]:
 	 *             column names and value to put inside them (need to look
 	 * @return true if update successful, false if failed
