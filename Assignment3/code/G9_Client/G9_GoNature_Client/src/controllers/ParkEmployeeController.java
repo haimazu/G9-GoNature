@@ -34,11 +34,11 @@ import orderData.Order;
 import sim.BarcodeSimulation;
 
 /**
-*
-* Controller that gets the user login details
-*
-* @author Haim Azulay Hodaya Mekonen
-*/
+ *
+ * Controller that gets the user login details
+ *
+ * @author Haim Azulay Hodaya Mekonen
+ */
 
 public class ParkEmployeeController implements Initializable {
 	/***** Top/Side Panels Details *****/
@@ -246,7 +246,7 @@ public class ParkEmployeeController implements Initializable {
 			return;
 		}
 
-		if (orderDetails.getVisitorsNumber() != 0) {			
+		if (orderDetails.getVisitorsNumber() != 0) {
 			printOrderDetails();
 		}
 
@@ -438,8 +438,8 @@ public class ParkEmployeeController implements Initializable {
 			if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "These visitors have already entered.");
 			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
-						+ "or you are trying to add too many visitors");
+				alert.failedAlert("Failed",
+						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
 			} else if (getEntryStatus().equals("noRoomForRandom")) {
 				alert.failedAlert("Failed", "noRoomForRandom");
 			} else if (getEntryStatus().equals("enter")) {
@@ -456,9 +456,9 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("allreadyInPark")) {
 				alert.failedAlert("Failed", "This order has already been fulfilled.");
 			} else if (getEntryStatus().equals("parkFull")) {
-				alert.failedAlert("Failed", "We are sorry, the park is full right now\n"
-						+ "or you are trying to add too many visitors");
-			// getEntryStatus() = "enter"
+				alert.failedAlert("Failed",
+						"We are sorry, the park is full right now\n" + "or you are trying to add too many visitors");
+				// getEntryStatus() = "enter"
 			} else if (getEntryStatus().equals("enter")) {
 				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
 				if (randomVisitorTicket != 0) {
@@ -800,12 +800,12 @@ public class ParkEmployeeController implements Initializable {
 			// price for ordered visitor
 		} else {
 			sendToGetPrice("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
-		}		
+		}
 
 		lblPrice.setText(String.format("%.1f", visitorsPrice.get(0)) + "₪");
 		lblDiscount.setText(String.format("%.1f", visitorsPrice.get(1)) + "%");
 		lblTotalPrice.setText(String.format("%.1f", visitorsPrice.get(2)) + "₪");
-		
+
 		if (radExit.isSelected()) {
 			clearPaymentFields();
 		}
@@ -994,22 +994,21 @@ public class ParkEmployeeController implements Initializable {
 				+ parkDetails.getMaximumCapacityInPark());
 	}
 
-	/** 
+	/**
 	 * update current visitors number in the park.The number is updated every time
 	 * when visitor enters or exits the park
 	 * 
-	 * @param visitNum
+	 * @param visitNum String
 	 */
 	public void setCurrentVisitors(String visitNum) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				lblCurrentVisitors.setText("[" + getParkName() + "]:  " + visitNum + "/"
-						+ parkDetails.getMaximumCapacityInPark());
+				lblCurrentVisitors.setText(
+						"[" + getParkName() + "]:  " + visitNum + "/" + parkDetails.getMaximumCapacityInPark());
 			}
 		});
 	}
-
 
 	/**
 	 * prints order data
@@ -1044,7 +1043,7 @@ public class ParkEmployeeController implements Initializable {
 			} else {
 				lblVisitorsNumber.setText(String.valueOf(orderDetails.getVisitorsNumber()));
 			}
-			
+
 			if (!txtVisitorsAmount.getText().isEmpty()) {
 				setPrice();
 			} else {
@@ -1306,7 +1305,7 @@ public class ParkEmployeeController implements Initializable {
 	// input: none
 	// output: none
 	public void clearAllFields() {
-		//alert.setResult("");
+		// alert.setResult("");
 		setError("");
 		setEntryStatus("");
 		setExitStatus("");
@@ -1379,7 +1378,7 @@ public class ParkEmployeeController implements Initializable {
 		setFirstName(LoginController.getFirstName());
 		lblFirstNameTitle.setText(getFirstName());
 		setParkName(LoginController.getParkName());
-	    //setParkName("jurasic");
+		// setParkName("jurasic");
 		updateParkStatus(0);
 
 		/***** Random *****/
