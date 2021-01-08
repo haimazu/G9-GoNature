@@ -166,7 +166,7 @@ public class UpdateVisitorsNumber {
 		// the data that sent from the client
 		// cell 1: parkName
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
-		int visitorsToAddorRemove = Integer.parseInt(data.get(1));
+//		int visitorsToAddorRemove = Integer.parseInt(data.get(1));
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -178,15 +178,15 @@ public class UpdateVisitorsNumber {
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		Park park = new Park(queryData.get(0));
 
-		if (park.getCurrentAmount() + visitorsToAddorRemove > park.getMaximumCapacityInPark()) {
-			answer.add("Greater");
-		} else if (park.getCurrentAmount() - visitorsToAddorRemove < 0) {
-			answer.add("Lower");
-		} else if (park.getCurrentAmount() == park.getMaximumCapacityInPark()) {
-			answer.add("Full");
-		} else {
+//		if (park.getCurrentAmount() + visitorsToAddorRemove > park.getMaximumCapacityInPark()) {
+//			answer.add("Greater");
+//		} else if (park.getCurrentAmount() - visitorsToAddorRemove < 0) {
+//			answer.add("Lower");
+//		} else if (park.getCurrentAmount() == park.getMaximumCapacityInPark()) {
+//			answer.add("Full");
+//		} else {
 			answer.add(park);
-		}
+//		}
 
 		EchoServer.sendToMyClient(answer, client);
 	}

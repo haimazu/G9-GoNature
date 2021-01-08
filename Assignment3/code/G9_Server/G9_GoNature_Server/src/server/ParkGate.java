@@ -246,10 +246,10 @@ public class ParkGate {
 			return;
 		}
 		// if made it here than all good and can exit
-		insertEnteryExit(order, order.getAmountArrived(), "exit"); // update exit time to now entryexit
+		//insertEnteryExit(order, order.getAmountArrived(), "exit"); // update exit time to now entryexit
 		answer.add("exited");
 		client.sendToClient(answer);
-		insertEnteryExit(order, order.getAmountArrived(), "enter");
+		insertEnteryExit(order, order.getAmountArrived(), "exit");
 		return;
 	}
 
