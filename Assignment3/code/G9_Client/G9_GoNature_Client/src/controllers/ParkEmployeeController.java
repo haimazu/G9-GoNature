@@ -157,6 +157,7 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void barcodeScan(ActionEvent event) {
 		informationExists = true;
+		btnManualAccess.setVisible(false);
 
 		String fromSimulator = BarcodeSimulation.getSim().read(3);
 
@@ -175,7 +176,7 @@ public class ParkEmployeeController implements Initializable {
 
 		txtOrderNumber.setText(String.valueOf(orderDetails.getOrderNumber()));
 		txtVisitorsAmount.setText(String.valueOf(orderDetails.getVisitorsNumber()));
-
+		
 		showDetails(event);
 	}
 
@@ -240,10 +241,10 @@ public class ParkEmployeeController implements Initializable {
 					&& txtIdOrMemberId.getText().length() != 9) {
 				alert.failedAlert("Failed", "Id must be 9 digits long.");
 				return;
-			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0' && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			} else {
@@ -261,10 +262,10 @@ public class ParkEmployeeController implements Initializable {
 			if (txtOrderNumber.getText().isEmpty()) {
 				alert.failedAlert("Failed", "All fields required.");
 				return;
-			} else if (txtVisitorsAmount.getText().isEmpty() && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().isEmpty()) {
 				alert.failedAlert("Failed", "You must enter amount of visitors.");
 				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0' && radEnter.isSelected()) {
+			} else if (radEnter.isSelected() && txtVisitorsAmount.getText().charAt(0) == '0') {
 				alert.failedAlert("Failed", "Number of visitors '0#' is invalid.");
 				return;
 			}
@@ -742,6 +743,41 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	public static void setParkName(String parkName) {
 		ParkEmployeeController.parkName = parkName;
+	}
+	
+	/**
+	 * Enter random mode
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void randomVisitor(ActionEvent event) {
+		btnManualAccess.setVisible(true);
+		btnRandomVisitor.setVisible(false);
+		lblDateTitle.setVisible(true);
+		lblRandomDate.setVisible(true);
+		lblTimeTitle.setVisible(true);
+		lblRandomTime.setVisible(true);
+		txtIdOrMemberId.setVisible(true);
+		clearAllOrderFields();
+	
+		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
+		LocalDateTime arrivelTime = LocalDateTime.now();
+		lblRandomTime.setText(arrivelTime.format(time));
+	}
+	
+	/**
+	 * Turns off order mode
+	 * 
+	 */
+	public void clearAllOrderFields() {
+		txtOrderNumber.clear();
+		lblOrderNumber.setText("");
+		lblParkName.setText("");
+		lblDate.setText("");
+		lblTime.setText("");
+		lblVisitorsNumber.setText("");
+		lblEmail.setText("");
 	}
 
 	/**
