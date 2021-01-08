@@ -96,7 +96,6 @@ public class CreditCardController implements Initializable {
 			 stage.close();
 			 
 			 clearDetails();
-
 		}
 	}
 	

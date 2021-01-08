@@ -377,6 +377,8 @@ public class OrderController implements Initializable {
 					} else
 						alert.setAlert("something went wrong\nplease close the program and start again");
 				}
+				
+				CreditCardController.setDetails(null);//set null in credut card
 
 			}
 
