@@ -47,7 +47,7 @@ public class BarcodeSimulation {
 	
 	private static String nextIn() {
 		if (pool.isEmpty())
-			return null;
+			return read(0);
 		String ret = pool.get(0);
 		pool.remove(ret);
 		return ret;
