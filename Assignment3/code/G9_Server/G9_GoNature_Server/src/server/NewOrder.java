@@ -202,7 +202,7 @@ public class NewOrder {
 								+ (((Double.parseDouble(memb.getMemberAmount()) * parkEnteryPrice) * 0.8)
 										* parkDiscount));
 					else
-						ord.setTotalPrice(numberOfPeople * parkEnteryPrice * 0.8 * parkDiscount);
+						ord.setTotalPrice(((numberOfPeople * parkEnteryPrice) * 0.8) * parkDiscount);
 					break;
 				case GROUP:
 					ord.setOrderType(OrderType.GROUP);
@@ -226,9 +226,15 @@ public class NewOrder {
 					ord.setOrderType(OrderType.MEMBER);
 					int nonFamily = numberOfPeople - Integer.parseInt(memb.getMemberAmount());
 					if (nonFamily > 0) {
-						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)
-								* ((Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.8));
-						ord.setTotalPrice((ord.getPrice() * 0.85) * parkDiscount);
+						// non family calculation
+						ord.setTotalPrice(((nonFamily * parkEnteryPrice) * parkDiscount) * 0.85);
+						// add the family members payment to sum
+						ord.setTotalPrice(ord.getTotalPrice()
+								+ (((Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.8) * 0.85)
+										* parkDiscount);
+//						ord.setTotalPrice(ord.getTotalPrice() - (ord.getTotalPrice() / numberOfPeople)
+//								* ((Integer.parseInt(memb.getMemberAmount()) * parkEnteryPrice) * 0.8));
+//						ord.setTotalPrice((ord.getPrice() * 0.85) * parkDiscount);
 					} else {
 						ord.setTotalPrice((numberOfPeople * parkEnteryPrice) * 0.85);
 						ord.setTotalPrice((ord.getTotalPrice() * 0.8) * parkDiscount);
@@ -303,7 +309,7 @@ public class NewOrder {
 		if (!newDiscountsQ.isEmpty())
 			discount = Double.parseDouble(newDiscountsQ.get(0).get(1));
 		else
-			discount = 1;
+			discount = 1.0;
 		// if there is no change in discount
 		if (Double.parseDouble(currentParkDiscountQ.get(0).get(1)) == discount) {
 			return;
