@@ -33,7 +33,7 @@ import sim.BarcodeSimulation;
  *
  * Controller that gets the user login details
  *
- * @author Haim Azulay Hodaya Mekonen
+ * @author Haim Azulay Hodaya Mekonen Roi Amar
  */
 
 public class ParkEmployeeController implements Initializable {
@@ -620,18 +620,18 @@ public class ParkEmployeeController implements Initializable {
 	 * @param received (ArrayList(Object))
 	 */
 	public static void receivedFromServerEntryStatus(ArrayList<Object> received) {
-		if (received.get(1).equals("notGoodTime")) {
-			setEntryStatus("notGoodTime");
-		} else if (received.get(1).equals("allreadyInPark")) {
-			setEntryStatus("allreadyInPark");
-		} else if (received.get(1).equals("parkFull")) {
-			setEntryStatus("parkFull");
-		} else if (received.get(1).equals("noRoomForRandom")) {
-			setEntryStatus("noRoomForRandom");
-		} else {
-			setEntryStatus("enter");
+		setEntryStatus((String)received.get(1));
+//		if (received.get(1).equals("notGoodTime")) {
+//			setEntryStatus("notGoodTime");
+//		} else if (received.get(1).equals("allreadyInPark")) {
+//			setEntryStatus("allreadyInPark");
+//		} else if (received.get(1).equals("parkFull")) {
+//			setEntryStatus("parkFull");
+//		} else if (received.get(1).equals("noRoomForRandom")) {
+//			setEntryStatus("noRoomForRandom");
+//		} else {
+		if (received.get(1).equals("enter"))
 			randomVisitorTicket = (int) received.get(2);
-		}
 	}
 
 	/**
