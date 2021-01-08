@@ -176,7 +176,7 @@ public class ParkEmployeeController implements Initializable {
 
 		txtOrderNumber.setText(String.valueOf(orderDetails.getOrderNumber()));
 		txtVisitorsAmount.setText(String.valueOf(orderDetails.getVisitorsNumber()));
-		
+
 		showDetails(event);
 	}
 
@@ -315,7 +315,8 @@ public class ParkEmployeeController implements Initializable {
 			} else if (getEntryStatus().equals("noRoomForRandom")) {
 				alert.failedAlert("Failed", "noRoomForRandom");
 			} else if (getEntryStatus().equals("enter")) {
-				alert.successAlert("Success", txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
+				alert.successAlert("Success",
+						txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
 			} else {
 				alert.failedAlert("Failed", "Wrong case! (notGoodTime)");
 			}
@@ -744,7 +745,7 @@ public class ParkEmployeeController implements Initializable {
 	public static void setParkName(String parkName) {
 		ParkEmployeeController.parkName = parkName;
 	}
-	
+
 	/**
 	 * Enter random mode
 	 * 
@@ -760,12 +761,12 @@ public class ParkEmployeeController implements Initializable {
 		lblRandomTime.setVisible(true);
 		txtIdOrMemberId.setVisible(true);
 		clearAllOrderFields();
-	
+
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
 		LocalDateTime arrivelTime = LocalDateTime.now();
 		lblRandomTime.setText(arrivelTime.format(time));
 	}
-	
+
 	/**
 	 * Turns off order mode
 	 * 
@@ -911,6 +912,17 @@ public class ParkEmployeeController implements Initializable {
 
 			if (!newValue.isEmpty()) {
 				txtIdOrMemberId.setText(newValue);
+			}
+		});
+
+		txtOrderNumber.textProperty().addListener((obs, oldValue, newValue) -> {
+			if (radExit.isSelected()) {
+				btnApprove.setDisable(false);
+				txtVisitorsAmount.setDisable(false);
+
+				if (!newValue.isEmpty()) {
+					txtOrderNumber.setText(newValue);
+				}
 			}
 		});
 
