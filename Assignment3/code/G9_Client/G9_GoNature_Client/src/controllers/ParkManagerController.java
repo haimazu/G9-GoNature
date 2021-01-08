@@ -605,7 +605,13 @@ public class ParkManagerController implements Initializable {
 			}
 		});
 	}
-
+	/**
+	 * by clicking on set visitors capacity button - make the relevant text field and button
+	 * to be visible and the rest no. If there is other request editing field
+	 * vsisible - set them be not visible
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void setVisitorsCapacityByorder(ActionEvent event) {
 		if (!btnSetDisc.isVisible()) {
