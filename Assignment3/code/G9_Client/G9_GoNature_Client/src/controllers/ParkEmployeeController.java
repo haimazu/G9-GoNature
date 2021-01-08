@@ -633,17 +633,18 @@ public class ParkEmployeeController implements Initializable {
 	 * @param msg (Object)
 	 */
 	public static void receivedFromServerParkDetails(Object msg) {
-		if (msg instanceof Park) {
+		if (msg instanceof Park) 
 			ParkEmployeeController.parkDetails = (Park) msg;
-		} else if (msg instanceof String) {
-			if (((String) msg).equals("Full")) {
-				setError("Full");
-			} else if (((String) msg).equals("Lower")) {
-				setError("Lower");
-			} else if (((String) msg).equals("Greater")) {
-				setError("Greater");
-			}
-		}
+//		} else if (msg instanceof String) {
+//			if (((String) msg).equals("Full")) {
+//				setError("Full");
+//			} else if (((String) msg).equals("Lower")) {
+//				setError("Lower");
+//			} else if (((String) msg).equals("Greater")) {
+//				setError("Greater");
+//			}
+//		}
+		
 	}
 
 	/**
