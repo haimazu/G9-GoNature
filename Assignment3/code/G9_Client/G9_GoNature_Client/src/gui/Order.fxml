@@ -39,14 +39,9 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="174.0" layoutY="240.0" styleClass="labelBold" text="QR Code" textFill="#009eff">
-                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                     </font>
-                  </Label>
-                  <ImageView fx:id="picOR" fitHeight="150.0" fitWidth="200.0" layoutX="124.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="picOR" fitHeight="153.0" fitWidth="170.0" layoutX="124.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@qr6.png" />
+                        <Image url="@rockStargif.gif" />
                      </image>
                   </ImageView>
                   <Label focusTraversable="false" layoutX="91.0" layoutY="562.0" text="You can edit your order," visible="false">

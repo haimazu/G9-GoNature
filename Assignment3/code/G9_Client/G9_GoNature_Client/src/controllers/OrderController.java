@@ -156,6 +156,14 @@ public class OrderController implements Initializable {
 
 	private URL location;
 	private ResourceBundle resources;
+	
+	public Pane getPnOrder() {
+		return pnOrder;
+	}
+
+	public void setPnOrder(Pane pnOrder) {
+		this.pnOrder = pnOrder;
+	}
 
 	/***************** Getters and Setters for statics *****************/
 
@@ -332,6 +340,7 @@ public class OrderController implements Initializable {
 
 				if (status.equals("Failed")) { // the user can't order
 					OrderController.status = "not";
+					pnOrder.setDisable(true);
 					Stage stage = new Stage();
 					Pane root = FXMLLoader.load(getClass().getResource("/gui/WaitingList.fxml"));
 					Scene scene = new Scene(root);
@@ -629,6 +638,7 @@ public class OrderController implements Initializable {
 	 * Done with the server
 	 **********************************************/
 
+	
 	/**
 	 * Initialize the fields according to the actions performed by the user
 	 */

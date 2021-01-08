@@ -87,6 +87,7 @@ public class WaitingListConfirmContoller {
 			if (alert.getResult().equals("OK")) {
 				Stage stage = (Stage) btnListMe.getScene().getWindow();
 				OrderController ORC = Context.getInstance().getOrderC();
+				ORC.getPnOrder().setDisable(false);
 				ORC.back(event);
 				stage.close();
 

@@ -261,6 +261,7 @@ public class WaitingListController implements Initializable {
 		anotherDates.add(txtdate.getValue());
 		anotherDates.add(cbxArrivelTime.getValue());
 		OrderController ORC = Context.getInstance().getOrderC();
+		ORC.getPnOrder().setDisable(false);
 		ORC.initialize(ORC.getLocation(), ORC.getResources());
 		Stage stage2 = (Stage) btnContinue.getScene().getWindow();
 		stage2.close();
