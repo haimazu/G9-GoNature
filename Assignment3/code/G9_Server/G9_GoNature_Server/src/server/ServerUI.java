@@ -65,7 +65,6 @@ public class ServerUI extends Application {
 	public static boolean stopServer() {
 		try {
 			echoServ.close();
-			// System.out.println("covefee");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

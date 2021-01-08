@@ -50,10 +50,10 @@ public class UpdateVisitorsNumber {
 
 	/**
 	 * information depending on entry or exit status. sends to
-	 * client:rrayList<Object>=> cell[0] function name // cell[1] T if update
+	 * client:rrayList of Object => cell[0] function name // cell[1] T if update
 	 * succeeded, F if not, Full if we can add more visitors
 	 * 
-	 * @param recived ArrayList<Object> [0]: case name updateAccessControl cell [1]:
+	 * @param recived ArrayList of Object [0]: case name updateAccessControl cell [1]:
 	 *                cell [0]: orderNumber, cell [1]: timeEnter / timeExit cell
 	 *                [2]: parkName, cell [3]: orderType, cell [4]: amountArrived
 	 * @param client  ConnectionToClient
@@ -113,10 +113,10 @@ public class UpdateVisitorsNumber {
 
 	/**
 	 * pulling details of a selected park from DB. sends to client :
-	 * ArrayList<Object>=> cell[0] function name, cell[1] ArrayList<String>=> [0]
+	 * ArrayList of Object => cell[0] function name, cell[1] ArrayList of String => [0]
 	 * parkName, [1] number of visitors to add
 	 * 
-	 * @param recived ArrayList<Object> cell[0]: calling function name
+	 * @param recived ArrayList of Object cell[0]: calling function name
 	 * @param client
 	 */
 	public static void getVisitorsEntryStatus(ArrayList<Object> recived, ConnectionToClient client) {
@@ -153,14 +153,13 @@ public class UpdateVisitorsNumber {
 
 	/**
 	 * pulling details of a selected park from DB. sends to client ArrayList of
-	 * Object=> cell[0] function name, cell[1] ArrayList<String>=> [0] parkName, [1]
+	 * Object=> cell[0] function name, cell[1] ArrayList of String => [0] parkName, [1]
 	 * number of visitors to add
 	 * 
 	 * @param recived ArrayList of Object cell[0]: calling function name
 	 * @param client  ConnectionToClient
 	 */
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
-		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : getParkDetails
 		answer.add(recived.get(0));
