@@ -743,6 +743,41 @@ public class ParkEmployeeController implements Initializable {
 	public static void setParkName(String parkName) {
 		ParkEmployeeController.parkName = parkName;
 	}
+	
+	/**
+	 * Enter random mode
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void randomVisitor(ActionEvent event) {
+		btnManualAccess.setVisible(true);
+		btnRandomVisitor.setVisible(false);
+		lblDateTitle.setVisible(true);
+		lblRandomDate.setVisible(true);
+		lblTimeTitle.setVisible(true);
+		lblRandomTime.setVisible(true);
+		txtIdOrMemberId.setVisible(true);
+		clearAllOrderFields();
+	
+		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
+		LocalDateTime arrivelTime = LocalDateTime.now();
+		lblRandomTime.setText(arrivelTime.format(time));
+	}
+	
+	/**
+	 * Turns off order mode
+	 * 
+	 */
+	public void clearAllOrderFields() {
+		txtOrderNumber.clear();
+		lblOrderNumber.setText("");
+		lblParkName.setText("");
+		lblDate.setText("");
+		lblTime.setText("");
+		lblVisitorsNumber.setText("");
+		lblEmail.setText("");
+	}
 
 	/**
 	 * Turns off random mode
