@@ -188,7 +188,7 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Label lblCurrentVisitors;
 
-	// ------for visitors chart----- 
+	// ------for visitors chart-----
 	@FXML
 	private BarChart<String, Double> bcVisitorsChart;
 	@FXML
@@ -206,8 +206,7 @@ public class ParkManagerController implements Initializable {
 	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
 	private double[] sumByweekDays = new double[8];
 
-
-	// ----for usage chart----- 
+	// ----for usage chart-----
 
 	@FXML
 	private BarChart<String, Double> bcUsageChart;
@@ -450,13 +449,13 @@ public class ParkManagerController implements Initializable {
 		setDatesComboForRevenue(monthArr);
 
 	}
-	/*---------setting date pickers in the conroller --------------*/
+	// *---------setting date pickers in the conroller --------------*
 
 	/**
 	 * set default values in combo box for elevant months and years . NOTICE :
 	 * revenue report will be saved only forlast 3 years !
 	 * 
-	 * @param mounthArr
+	 * @param mounthArr ArrayList of String
 	 */
 	public void setDatesComboForRevenue(ArrayList<String> mounthArr) {
 		for (int i = 1; i <= 12; i++) {
@@ -605,10 +604,11 @@ public class ParkManagerController implements Initializable {
 			}
 		});
 	}
+
 	/**
-	 * by clicking on set visitors capacity button - make the relevant text field and button
-	 * to be visible and the rest no. If there is other request editing field
-	 * vsisible - set them be not visible
+	 * by clicking on set visitors capacity button - make the relevant text field
+	 * and button to be visible and the rest no. If there is other request editing
+	 * field vsisible - set them be not visible
 	 * 
 	 * @param event
 	 */
@@ -749,12 +749,12 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * check the fields before submiting a discount. Check if the discount is not
-	 * empty and that the date are crrect
+	 * check the fields before submitting a discount. Check if the discount is not
+	 * empty and that the date are correct
 	 * 
-	 * @param discount
-	 * @return
-	 * @throws ParseException
+	 * @param discount String
+	 * @return T/F
+	 * @throws ParseException ArrayList of String
 	 */
 	public boolean illegalValuesForSubmitingDiscount(String discount) throws ParseException {
 		String datefrom = txtDateFrom.getValue().toString();
@@ -772,9 +772,9 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * send to server request : arraylist of object : [0] parkManagerRequest
+	 * send to server request : ArrayList of object : [0] parkManagerRequest
 	 * [1]Request object with the relevant fields for the specific request. In this
-	 * request : ssend the new value for maximum capacity for ordered visits. All
+	 * request : send the new value for maximum capacity for ordered visits. All
 	 * the rest fields that are not relevant will be empty
 	 * 
 	 * @param event
@@ -1043,10 +1043,11 @@ public class ParkManagerController implements Initializable {
 	}
 
 	/**
-	 * create chart for visitors by membership kind : 1) member 2)regular- not a
-	 * memeber, single visitor 3)group with a guide
+	 * create chart for visitors by membership kind : 1) member 2)regular not a
+	 * member, single visitor 3)group with a guide
 	 * 
-	 * @throws ParseException
+	 * @throws ParseException Signals that an error has been reached
+	 *                        unexpectedly while parsing
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartVisitors() throws ParseException {
