@@ -683,7 +683,7 @@ public class OrderController implements Initializable {
 
 		information.setTooltip(new Tooltip(
 				"In order to get a discount insert member ID or ID number\nof the person that made the order"));
-		btnBack.setTooltip(new Tooltip("Don't worry your detail will wait here"));
+		btnBack.setTooltip(new Tooltip("Don't worry your details will wait here"));
 
 		/*********** need to do this**** for save detail after fill **********/
 
