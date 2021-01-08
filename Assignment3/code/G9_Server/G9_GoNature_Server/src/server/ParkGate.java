@@ -68,7 +68,7 @@ public class ParkGate {
 	// output: none
 	// send to client: ArrayList of object
 	// cell[0] contains "enterThePark" String
-	// cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark" / "parkfull" if not
+	// cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark" / "parkfull" / "noRoomForRandom" if not
 	// cell[2] if enterd the park as random ticket numbet as int, if enterd not as random than 0
 	// 
 	public static void enterThePark(ArrayList<Object> recived, ConnectionToClient client) throws IOException {
@@ -142,9 +142,14 @@ public class ParkGate {
 		if (orderWrapped.isEmpty() || moreThanOrdered) { // create an order for random visits
 			if (moreThanOrdered)
 				howMany = extras;
+			if (randomVisitorsAvilableSpot(park) < Integer.parseInt(howMany)) {
+				answer.add("noRoomForRandom");
+				client.sendToClient(answer);
+				return;
+				}
 			LocalDateTime now = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			order = new Order(park.getName(), now.format(formatter).toString(), memberId, id,
+			order = new Order(park.getName(), getCapsuleTime().format(formatter).toString(), memberId, id,
 					Integer.parseInt(howMany));
 			Member member = NewOrder.MemerCheck(order);
 			order = NewOrder.totalPrice(order, member, true);// updating the prices in the order
@@ -262,6 +267,80 @@ public class ParkGate {
 			MySQLConnection.update(query);
 			updateParkCapacity(order.getParkName(), -1 * visitorsNumber);
 		}
+	}
+	
+	//input=non
+	//output=find a capsle time for now
+	private static LocalDateTime getCapsuleTime() {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime eightAm = LocalDateTime.now().withHour(8).withMinute(0).withSecond(0);
+		LocalDateTime twelvePm = LocalDateTime.now().withHour(12).withMinute(0).withSecond(0);
+		LocalDateTime fourPm = LocalDateTime.now().withHour(16).withMinute(0).withSecond(0);
+		LocalDateTime eightPm = LocalDateTime.now().withHour(20).withMinute(0).withSecond(0);
+		if (now.isBefore(eightAm))
+			now = eightAm;
+		if (now.isAfter(eightAm)&&now.isBefore(twelvePm))
+			now = eightAm;
+		if (now.isAfter(twelvePm)&&now.isBefore(fourPm))
+			now = twelvePm;
+		if (now.isAfter(fourPm)&&now.isBefore(eightPm))
+			now = fourPm;
+		if (now.isAfter(eightPm))
+			now = eightAm.plusDays(1);
+		return now;
+	}
+	
+	//
+	//
+	//
+	private static int randomVisitorsAvilableSpot(Park park){
+		//int randomVisitorsSpots = park.getMaximumCapacityInPark()-park.getMaxAmountOrders();
+		int randomVisitorsSpots = park.getMaximumCapacityInPark()-capsuleOrdered(park);
+		randomVisitorsSpots += lessThanOrdered(park);
+		randomVisitorsSpots -= randomStillIn(park);
+		return randomVisitorsSpots;
+	}
+
+	private static int randomStillIn(Park park) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("enteryandexit"); // table name
+		query.add("sum(amountArrived)"); // columns to select from
+		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='" + getCapsuleTime().format(formatter).toString() + "' AND timeExit is null"); // condition
+		query.add("1"); // how many columns returned
+		ArrayList<ArrayList<String>> randomStillIn = MySQLConnection.select(query);
+		if (randomStillIn.isEmpty())
+			return 0;
+		return Integer.parseInt(randomStillIn.get(0).get(0));
+	}
+
+	private static int lessThanOrdered(Park park) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("orders"); // table name
+		query.add("sum(visitorsNumber-amountArrived)"); // columns to select from
+		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='" + getCapsuleTime().format(formatter).toString() + "' AND visitorsNumber>amountArrived AND amountArrived>0"); // condition
+		query.add("1"); // how many columns returned
+		ArrayList<ArrayList<String>> lessThanOrdered = MySQLConnection.select(query);
+		if (lessThanOrdered.isEmpty())
+			return 0;
+		return Integer.parseInt(lessThanOrdered.get(0).get(0));
+	}
+
+	private static int capsuleOrdered(Park park) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		ArrayList<String> query = new ArrayList<String>();
+		query.add("select"); // command
+		query.add("orders"); // table name
+		query.add("SUM(visitorsNumber)"); // columns to select from
+		query.add("WHERE parkName='" + park.getName() + "' AND arrivedTime='" + getCapsuleTime().format(formatter).toString() + "'"); // condition
+		query.add("1"); // how many columns returned
+		ArrayList<ArrayList<String>> summedCapsule = MySQLConnection.select(query);
+		if (summedCapsule.isEmpty())
+			return 0;
+		return Integer.parseInt(summedCapsule.get(0).get(0));
 	}
 
 	// input: park name and number to update
