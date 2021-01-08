@@ -1,37 +1,19 @@
 package controllers;
 
 import java.awt.Desktop;
-import java.beans.beancontext.BeanContext;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.ByteOrder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.TooManyListenersException;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
-import javax.swing.plaf.basic.BasicTabbedPaneUI.TabSelectionHandler;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-import javax.xml.stream.events.StartDocument;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
-import java.util.PrimitiveIterator.OfDouble;
-
-import org.omg.CORBA.BAD_POLICY_TYPE;
-import org.omg.CORBA.Request;
-import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -39,18 +21,12 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-import com.itextpdf.text.pdf.codec.TiffWriter.FieldShort;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import com.mysql.cj.conf.BooleanPropertyDefinition.AllowableValues;
-import com.mysql.cj.protocol.a.SimplePacketSender;
-import com.mysql.cj.x.protobuf.MysqlxExpr.Identifier;
 //import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
 import com.sun.javafx.webkit.ThemeClientImpl;
 
@@ -78,7 +54,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import managerData.ManagerRequest;
-import orderData.Order;
 
 /**
  * controller for all of the park manager : it is responsible for setting new
@@ -213,7 +188,7 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private Label lblCurrentVisitors;
 
-	/* ------for visitors chart----- */
+	// ------for visitors chart----- 
 	@FXML
 	private BarChart<String, Double> bcVisitorsChart;
 	@FXML
@@ -231,9 +206,8 @@ public class ParkManagerController implements Initializable {
 	private static ArrayList<ArrayList<String>> visitorsReport = new ArrayList<>();
 	private double[] sumByweekDays = new double[8];
 
-	/*------------------------*/
 
-	/* ----for usage chart----- */
+	// ----for usage chart----- 
 
 	@FXML
 	private BarChart<String, Double> bcUsageChart;
@@ -279,7 +253,6 @@ public class ParkManagerController implements Initializable {
 //	@FXML
 //	private JFXComboBox<String> cbxMounth;
 
-	/*-------------------------*/
 	private static ManagerRequest Req = new ManagerRequest(0, "", 0, 0, "", "", "", "");
 	private static String firstName;
 	private static String parkName;
@@ -375,7 +348,7 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * handles switching tabs in park manager controller
 	 * 
-	 * @param event
+	 * @param event ActionEvent
 	 */
 
 	@FXML
@@ -408,7 +381,7 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * sets the style for pressed tabs
 	 * 
-	 * @param button
+	 * @param button Button
 	 */
 
 	public void setButtonPressed(Button button) {
@@ -419,7 +392,7 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * sets the style for not pressed tabs
 	 * 
-	 * @param button Button
+	 * @param button  Button
 	 * @param button1 Button
 	 * @param button2 Button
 	 */
@@ -941,9 +914,10 @@ public class ParkManagerController implements Initializable {
 	 * corresponding.
 	 * 
 	 * @param datefrom String
-	 * @param dateto String
+	 * @param dateto   String
 	 * @return T/F
-	 * @throws ParseException Signals that an error has been reached unexpectedly while parsing
+	 * @throws ParseException Signals that an error has been reached unexpectedly
+	 *                        while parsing
 	 */
 	public boolean DatesNotCorresponding(String datefrom, String dateto) throws ParseException {
 		LocalDate from;
