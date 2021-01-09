@@ -147,8 +147,12 @@ public class ParkGate {
 				moreThanOrdered = true;
 				extras = "" + (Integer.parseInt(howMany) - order.getVisitorsNumber());
 				updateArrived(order, order.getVisitorsNumber());// insert arrived to order
+				order.setAmountArrived(order.getVisitorsNumber());
 				insertEnteryExit(order, order.getVisitorsNumber(), "enter");
 				// not yet returned
+			} else {
+				order.setAmountArrived(Integer.parseInt(howMany));
+				updateArrived(order, Integer.parseInt(howMany));
 			}
 		}
 		// **********occasional**********
