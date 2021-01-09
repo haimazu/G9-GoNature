@@ -226,7 +226,7 @@
                         <ToggleGroup fx:id="radGroupStatus" />
                      </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton fx:id="radExit" layoutX="342.0" layoutY="489.0" onAction="#exitAction" text="Exit" textFill="#da0101" toggleGroup="$radGroupStatus">
+                  <JFXRadioButton fx:id="radExit" layoutX="342.0" layoutY="489.0" text="Exit" textFill="#da0101" toggleGroup="$radGroupStatus">
                      <font>
                         <Font name="Ebrima Bold" size="14.0" />
                      </font>
