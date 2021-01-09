@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.zxing.WriterException;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -97,6 +98,8 @@ public class OrderController implements Initializable {
 	private JFXTextField txtPhoneNum;
 	@FXML
 	private ImageView imgOrder;
+    @FXML
+    private ImageView picOR;
 
 	/***** confirmation screen ***/
 	@FXML
@@ -385,6 +388,18 @@ public class OrderController implements Initializable {
 				} else if (!faildDB) { // the Order details didnt enter to DB
 					alert.setAlert("something went wrong\nplease close the program and start again");
 				} else { // Order success
+					try {
+						QRcode.generate(String.valueOf(orderSuccess.getOrderNumber()+1));
+						Image newImg = new Image("file:QR1.png");
+						picOR = new ImageView();
+						picOR.setImage(newImg);
+					} catch (WriterException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					double value=orderSuccess.getPrice();
 					this.txtprice.setText(String.format("%.1f", value) + " ₪");
 					value=orderSuccess.getTotalPrice();
