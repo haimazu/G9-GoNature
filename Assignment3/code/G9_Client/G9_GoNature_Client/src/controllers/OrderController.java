@@ -440,14 +440,26 @@ public class OrderController implements Initializable {
 		stage.setScene(new Scene(root));
 	}
 
-	// need to fix
+	
+	/**
+	 * doesnt work - if we will want in the future to edit orders
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
-	void here(ActionEvent event) throws IOException {
-		Stage stage = (Stage) btnHere.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
-		stage.setScene(new Scene(root));
+    void here(ActionEvent event) throws IOException {
+        Stage stage = (Stage) btnHere.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/gui/EditOrder.fxml"));
+        stage.setScene(new Scene(root));
 
-	}
+    }
+	
+	
+	/**
+	 *  hyperlink for terms and coditiond
+	 * @param event ActionEvent
+	 * @throws IOException
+	 */
 
 	@FXML
 	void termsCond(ActionEvent event) throws IOException {
