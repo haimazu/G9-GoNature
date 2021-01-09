@@ -167,7 +167,7 @@ public class ParkEmployeeController implements Initializable {
 			fromSimulator.substring(1);
 		}
 
-		sendToServerArrayList("ordersByIdOrMemberId", new ArrayList<String>(Arrays.asList(fromSimulator)));
+		sendToServerArrayList("ordersByOrderNumber", new ArrayList<String>(Arrays.asList(fromSimulator)));
 
 		if (getError().equals("No such order")) {
 			alert.failedAlert("Failed", "No such order.");
