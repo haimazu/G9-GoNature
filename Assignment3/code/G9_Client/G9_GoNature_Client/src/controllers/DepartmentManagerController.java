@@ -1010,6 +1010,7 @@ public class DepartmentManagerController implements Initializable {
 	 * @param msgReceived ArrayList Object
 	 */
 	public static void receivedFromServerRegularsVisitorsData(ArrayList<Object> msgReceived) {
+		DepartmentManagerController.regularVisitors.clear();
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
@@ -1033,6 +1034,7 @@ public class DepartmentManagerController implements Initializable {
 	 * @param msgReceived ArrayList Object
 	 */
 	public static void receivedFromServerMembersVisitorsData(ArrayList<Object> msgReceived) {
+		DepartmentManagerController.memberVisitors.clear();
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
@@ -1056,6 +1058,7 @@ public class DepartmentManagerController implements Initializable {
 	 * @param msgReceived ArrayList of Object
 	 */
 	public static void receivedFromServerGroupsVisitorsData(ArrayList<Object> msgReceived) {
+		DepartmentManagerController.groupVisitors.clear();
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
