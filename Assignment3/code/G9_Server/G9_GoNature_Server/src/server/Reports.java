@@ -136,8 +136,7 @@ public class Reports {
 		String endDate = (String) dataFromClient.get(1);
 		String ot = (String) dataFromClient.get(2);
 		String dateCond = "timeEnter BETWEEN '" + startDate + "' AND '" + endDate + "'";
-		System.out.println("start: " + startDate);
-		System.out.println("End" + endDate);
+
 		double[] temp = new double[4];
 		int amountArrivedOverall = 0;
 		ArrayList<String> query1 = new ArrayList<String>();
@@ -150,7 +149,7 @@ public class Reports {
 		query1.add("1"); // how many columns returned
 		
 		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
-		System.out.println("sum =" + queryData1);
+
 		if (queryData1.get(0) == null) {
 			EchoServer.sendToMyClient(answer, client);
 			return;
@@ -175,7 +174,6 @@ public class Reports {
 			amountArrivedOverall += temp[1];
 		} else
 			temp[1] = 0;
-		System.out.println("sum =" + queryData2);
 
 		ArrayList<String> query3 = new ArrayList<String>();
 		query3.add("select"); // command
@@ -191,7 +189,6 @@ public class Reports {
 			amountArrivedOverall += temp[2];
 		} else
 			temp[2] = 0;
-		System.out.println("sum =" + queryData3);
 
 		ArrayList<String> query4 = new ArrayList<String>();
 		query4.add("select"); // command
@@ -207,7 +204,6 @@ public class Reports {
 			amountArrivedOverall += temp[3];
 		} else
 			temp[3] = 0;
-		System.out.println("sum =" + queryData4);
 		if (amountArrivedOverall != 0) {
 			for (int i = 0; i < temp.length; i++) {
 				answer.add((temp[i] / amountArrivedOverall) * 100);
