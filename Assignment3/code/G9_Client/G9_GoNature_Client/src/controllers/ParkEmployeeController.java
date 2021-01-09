@@ -389,8 +389,11 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 
+	
+	
+	
 	/**
-	 * Sends the server some data to get a matching price
+	 * Sends the server some data to get a matching price.
 	 * 
 	 * [0] => getVisitorsPrice [1] => parkName [2] => String "ID" / "MEMBERID" /
 	 * "ORDERNUMBER" [3] => Value ID / MemberId / orderNumber [4] => amount of
