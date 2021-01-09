@@ -86,7 +86,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnPayment" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" visible="false">
+            <Pane fx:id="pnPayment" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
                   <Label focusTraversable="false" layoutX="67.0" layoutY="173.0" prefHeight="88.0" prefWidth="253.0" style="-fx-border-color: #deceb8;" />
                   <Label layoutX="72.0" layoutY="174.0" styleClass="labelBold" text="Price:">
@@ -183,7 +183,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnOrder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css" visible="false">
+            <Pane fx:id="pnOrder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="pnRight" stylesheets="@application.css">
                <children>
                   <ImageView fitHeight="112.0" fitWidth="189.0" layoutX="109.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
                      <image>
