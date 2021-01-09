@@ -19,7 +19,7 @@ public class SendMail {
 	 * simulations for sending email
 	 */
 
-	private static String USER_NAME = "gonature.g9"; // GMail user name (just the part before "@gmail.com")
+	private static String USER_NAME = "sim.gonature.g9"; // GMail user name (just the part before "@gmail.com")
 	private static String PASSWORD = "Aa123456!"; // GMail password
 
 	/**
@@ -57,7 +57,7 @@ public class SendMail {
 	public static void simulateSms(SmsMessege sms) {
 		String from = USER_NAME;
 		String pass = PASSWORD;
-		String[] to = { "gonature.g9@gmail.com" }; // list of recipient email addresses
+		String[] to = { "sim.gonature.g9@gmail.com" }; // list of recipient email addresses
 		String subject = "sms simulation for " + sms.getTo();
 		String body = sms.getMessage();
 		sendFromGMail(from, pass, to, subject, body);
@@ -70,7 +70,7 @@ public class SendMail {
 	public static void simulateMail(EmailMessege email) {
 		String from = USER_NAME;
 		String pass = PASSWORD;
-		String[] to = { "gonature.g9@gmail.com" }; // list of recipient email addresses
+		String[] to = { "sim.gonature.g9@gmail.com" }; // list of recipient email addresses
 		String subject = "mail simulation for " + email.getTo();
 		String body = email.getSubject() + ":\n\n " + email.getMessage();
 		sendFromGMail(from, pass, to, subject, body);
