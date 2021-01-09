@@ -22,6 +22,7 @@ public class EditOrder {
 	 * @param recived ArrayList of Object
 	 * @param client  ConnectionToClient
 	 */
+	@SuppressWarnings("static-access")
 	public static void edit(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList waitlist = new WaitingList(); // see if even needed
 		ArrayList<Object> answer = new ArrayList<Object>();

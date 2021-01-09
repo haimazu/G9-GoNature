@@ -11,6 +11,11 @@ import java.io.Serializable;
 public class CreditCard  implements Serializable{
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * constructor for CreditCard object
 	 * @param cardNumber String
 	 * @param cardHolderName String

@@ -40,6 +40,7 @@ public class CancelOrder {
 		String body = "Oh boy, we hate to see you go..."
 				+ "\nWe would like to inform you that your order has been canceled" + "\nWe hope to see you again"
 				+ "\n\n" + order.messegeString();
+		@SuppressWarnings("unused")
 		EmailMessege waitlistMail = new EmailMessege(order.getOrderEmail(), subject, body, order);
 		Comunication.sendNotification(subject, body, order);
 	}

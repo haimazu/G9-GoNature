@@ -1,7 +1,5 @@
 package dataLayer;
 
-import java.util.ArrayList;
-
 /**
  * The TableCurrentVisitors contain current visitors for a park
  *

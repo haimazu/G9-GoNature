@@ -2,9 +2,6 @@ package userData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import javax.swing.text.StyledEditorKit.ForegroundAction;
-
 import orderData.OrderType;
 
 /**
@@ -15,6 +12,10 @@ import orderData.OrderType;
 
 public class Member implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String memberID;
 	String memberFirstName;
 	String memberLastName;
