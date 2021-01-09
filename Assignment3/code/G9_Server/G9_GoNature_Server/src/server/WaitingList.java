@@ -16,7 +16,7 @@ public class WaitingList {
 
 	/**
 	 * enters an order to a waiting list. send to client: ArrayList of Objects: cell
-	 * [0]: String "", cell [1]: boolean = true if entry successful false if not
+	 * [0]: String "", cell [1]: boolean => true if entry successful false if not
 	 * 
 	 * @param recived ArrayList of Objects: cell [0]: String "enterTheWaitList",
 	 *                cell [1]: Order class of a given order to put in the wait list

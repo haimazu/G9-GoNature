@@ -164,12 +164,11 @@ public class LoginController implements Initializable {
 	}
 
 	/**
-	 * Receives information returning from the server with user status. sends to
-	 * client: cell 0: the 'role' of the user cell 1: the first name of the user
-	 * cell 2: name of the park where the employee works
+	 * Receives information returning from the server with user status
 	 * 
 	 * @param msgReceived data from the server
-	 * 
+	 * @return cell 0: the 'role' of the user cell 1: the first name of the user
+	 *         cell 2: name of the park where the employee works
 	 */
 	@SuppressWarnings("unchecked")
 	public static void receivedFromServerUserStatus(Object msgReceived) {
@@ -186,11 +185,10 @@ public class LoginController implements Initializable {
 
 	/**
 	 * Receives information that is returned from the server with the user login
-	 * status. prints T Update logged in status success F Update logged in status
-	 * failed
+	 * status
 	 * 
 	 * @param msgReceived boolean value with the result of the action Status
-	 * 
+	 * @return T Update logged in status success F Update logged in status failed
 	 */
 	public static void receivedFromServerLoggedInStatus(boolean msgReceived) {
 		if (msgReceived) {

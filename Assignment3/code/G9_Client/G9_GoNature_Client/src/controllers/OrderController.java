@@ -178,7 +178,7 @@ public class OrderController implements Initializable {
 		this.pnPayment = pnPayment;
 	}
 
-	//***************** Getters and Setters for statics *****************
+	/***************** Getters and Setters for statics *****************/
 
 	public static boolean isConfirmOrder() {
 		return confirmOrder;

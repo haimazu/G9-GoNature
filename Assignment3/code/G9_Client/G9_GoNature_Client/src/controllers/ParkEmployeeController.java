@@ -234,55 +234,32 @@ public class ParkEmployeeController implements Initializable {
 	@FXML
 	void approve(ActionEvent event) {
 		if (!btnRandomVisitor.isVisible() && radEnter.isSelected()) {
-			if (txtIdOrMemberId.getText().isEmpty()) {
-				alert.failedAlert("Input Error", "You must enter id/memberid.");
-				return;
-			} else if (txtVisitorsAmount.getText().isEmpty()) {
-				alert.failedAlert("Input Error", "You must enter amount of visitors.");
-				return;
-			} else if (!Character.isLetter(txtIdOrMemberId.getText().charAt(0))
-					&& txtIdOrMemberId.getText().length() != 9) {
-				alert.failedAlert("Input Error", "Id must be 9 digits long.");
-				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
-				alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");
-				return;
-			}
-			// try to enter the park
+			if(txtIdOrMemberId.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter id/memberid.");return;}
+			else if(txtVisitorsAmount.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter amount of visitors.");return;}
+			else if(!Character.isLetter(txtIdOrMemberId.getText().charAt(0))&& txtIdOrMemberId.getText().length() != 9) {alert.failedAlert("Input Error", "Id must be 9 digits long.");return;}
+			else if(txtVisitorsAmount.getText().charAt(0) == '0') {alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");return;}
+			//try to enter the park
 			orderStatus = false;
 			execEnter();
-		} else if (btnRandomVisitor.isVisible() && radEnter.isSelected()) {
-			if (txtVisitorsAmount.getText().isEmpty()) {
-				alert.failedAlert("Input Error", "You must enter amount of visitors.");
-				return;
-			} else if (txtOrderNumber.getText().isEmpty()) {
-				alert.failedAlert("Input Error", "You must enter Order Number!");
-				return;
-			} else if (txtVisitorsAmount.getText().charAt(0) == '0') {
-				alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");
-				return;
-			}
-			// try to enter the park
+		}
+		else if (btnRandomVisitor.isVisible() && radEnter.isSelected()) {
+			if(txtVisitorsAmount.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter amount of visitors.");return;}
+			else if (txtOrderNumber.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter Order Number!");return;}
+			else if(txtVisitorsAmount.getText().charAt(0) == '0') {alert.failedAlert("Input Error", "Number of visitors '0#' is invalid.");return;}
+			//try to enter the park
 			orderStatus = true;
 			execEnter();
-		} else if (!btnRandomVisitor.isVisible() && radExit.isSelected()) {
-			if (txtIdOrMemberId.getText().isEmpty()) {
-				alert.failedAlert("Input Error", "You must enter id/memberid.");
-				return;
-			} else if (!Character.isLetter(txtIdOrMemberId.getText().charAt(0))
-					&& txtIdOrMemberId.getText().length() != 9) {
-				alert.failedAlert("Input Error", "Id must be 9 digits long.");
-				return;
-			}
-			// try to exit park
+		}
+		else if (!btnRandomVisitor.isVisible() && radExit.isSelected()) {
+			if(txtIdOrMemberId.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter id/memberid.");return;}
+			else if(!Character.isLetter(txtIdOrMemberId.getText().charAt(0))&& txtIdOrMemberId.getText().length() != 9) {alert.failedAlert("Input Error", "Id must be 9 digits long.");return;}
+			//try to exit park
 			orderStatus = false;
 			execExit();
-		} else if (btnRandomVisitor.isVisible() && radExit.isSelected()) {
-			if (txtOrderNumber.getText().isEmpty()) {
-				alert.failedAlert("Input Error", "You must enter Order Number!.");
-				return;
-			}
-			// try to exit park
+		}
+		else if (btnRandomVisitor.isVisible() && radExit.isSelected()) {
+			if (txtOrderNumber.getText().isEmpty()) {alert.failedAlert("Input Error", "You must enter Order Number!.");return;}
+			//try to exit park
 			orderStatus = true;
 			execExit();
 		}
@@ -298,13 +275,13 @@ public class ParkEmployeeController implements Initializable {
 	 */
 	public void execEnter() {
 		ArrayList<String> idOrMemberId;
-		if (!orderStatus) { // random visitor
+		if (!orderStatus) { //random visitor
 			idOrMemberId = checkForIdOrMemberId();
 			sendToGetEntryStatus(idOrMemberId.get(0), idOrMemberId.get(1), txtVisitorsAmount.getText());
-		} else { // has an order number
+		} else { //has an order number
 			sendToGetEntryStatus("ORDERNUMBER", txtOrderNumber.getText(), txtVisitorsAmount.getText());
 		}
-		switch (getEntryStatus()) { // "enter"/"notGoodTime" / "allreadyInPark" / "parkfull" / "noRoomForRandom"
+		switch (getEntryStatus()) { //"enter"/"notGoodTime" / "allreadyInPark" / "parkfull" / "noRoomForRandom"
 		case "notGoodTime":
 			alert.failedAlert("Failed", "The time in the existing order not match the time now");
 			break;
@@ -315,22 +292,20 @@ public class ParkEmployeeController implements Initializable {
 			alert.failedAlert("Failed", "The park is too full for so many visitors");
 			break;
 		case "noRoomForRandom":
-			alert.failedAlert("Failed",
-					"The park is has reserved room for Orders\nif someone leave they will have room");
+			alert.failedAlert("Failed", "The park is has reserved room for Orders\nif someone leave they will have room");
 			break;
 		case "orderDiffPark":
 			alert.failedAlert("Failed", "The order belongs to another park");
 			break;
 		case "enter":
 			if (!orderStatus)
-				alert.successAlert("Success",
-						txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
+				alert.successAlert("Success",txtVisitorsAmount.getText() + " visitors entered.\nYour ticket is: " + randomVisitorTicket);
 			else {
 				String message = txtVisitorsAmount.getText() + " visitor/s entered.";
 				if (randomVisitorTicket != 0)
 					message = message + "\nYour ticket number for the extra people is: " + randomVisitorTicket;
-				alert.successAlert("Success", message);
-			}
+				alert.successAlert("Success", message);	
+				}
 			break;
 		default:
 			break;
@@ -414,11 +389,14 @@ public class ParkEmployeeController implements Initializable {
 		}
 	}
 
+	
+	
+	
 	/**
 	 * Sends the server some data to get a matching price.
 	 * 
-	 * [0] = getVisitorsPrice [1] = parkName [2] = String "ID" / "MEMBERID" /
-	 * "ORDERNUMBER" [3] = Value ID / MemberId / orderNumber [4] = amount of
+	 * [0] => getVisitorsPrice [1] => parkName [2] => String "ID" / "MEMBERID" /
+	 * "ORDERNUMBER" [3] => Value ID / MemberId / orderNumber [4] => amount of
 	 * visitors
 	 * 
 	 * @param type   String
@@ -438,8 +416,8 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Sends the server some data to check park entrance cases
 	 * 
-	 * [0] = enterThePark [1] = Park object = parkDetails [2] = String "ID" /
-	 * "MEMBERID" / "ORDERNUMBER" [3] = Value ID / MemberId / orderNumber [4] =
+	 * [0] => enterThePark [1] => Park object => parkDetails [2] => String "ID" /
+	 * "MEMBERID" / "ORDERNUMBER" [3] => Value ID / MemberId / orderNumber [4] =>
 	 * amount of visitors
 	 * 
 	 * @param type   String
@@ -459,8 +437,8 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Sends the server some data to check park exit cases
 	 * 
-	 * [0] = exitThePark [1] = Park object = parkDetails [2] = String "ID" /
-	 * "MEMBERID" / "ORDERNUMBER" [3] = Value ID / MemberId / orderNumber [4] =
+	 * [0] => exitThePark [1] => Park object => parkDetails [2] => String "ID" /
+	 * "MEMBERID" / "ORDERNUMBER" [3] => Value ID / MemberId / orderNumber [4] =>
 	 * amount of visitors
 	 * 
 	 * @param type   String
@@ -597,7 +575,7 @@ public class ParkEmployeeController implements Initializable {
 	 * @param received (ArrayList(Object))
 	 */
 	public static void receivedFromServerEntryStatus(ArrayList<Object> received) {
-		setEntryStatus((String) received.get(1));
+		setEntryStatus((String)received.get(1));
 		if (received.get(1).equals("enter"))
 			randomVisitorTicket = (int) received.get(2);
 	}
@@ -608,7 +586,7 @@ public class ParkEmployeeController implements Initializable {
 	 * @param received (ArrayList(Object))
 	 */
 	public static void receivedFromServerExitStatus(ArrayList<Object> received) {
-		setExitStatus((String) received.get(1));
+		setExitStatus((String)received.get(1));
 	}
 
 	/**
@@ -617,7 +595,7 @@ public class ParkEmployeeController implements Initializable {
 	 * @param msg (Object)
 	 */
 	public static void receivedFromServerParkDetails(Object msg) {
-		if (msg instanceof Park)
+		if (msg instanceof Park) 
 			ParkEmployeeController.parkDetails = (Park) msg;
 	}
 
@@ -633,7 +611,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * set the 'firstName' of the user
 	 * 
-	 * @param firstName String
+	 * @param firstName
 	 */
 	public static void setFirstName(String firstName) {
 		ParkEmployeeController.firstName = firstName;
@@ -651,7 +629,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * set errors
 	 * 
-	 * @param error String
+	 * @param error
 	 */
 	public static void setError(String error) {
 		ParkEmployeeController.error = error;
@@ -669,7 +647,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * set entryStatus
 	 * 
-	 * @param entryStatus String
+	 * @param entryStatus
 	 */
 	public static void setEntryStatus(String entryStatus) {
 		ParkEmployeeController.entryStatus = entryStatus;
@@ -687,7 +665,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * set exitStatus
 	 * 
-	 * @param exitStatus String
+	 * @param exitStatus
 	 */
 	public static void setExitStatus(String exitStatus) {
 		ParkEmployeeController.exitStatus = exitStatus;
@@ -714,7 +692,7 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * set parkName
 	 * 
-	 * @param parkName String
+	 * @param parkName
 	 */
 	public static void setParkName(String parkName) {
 		ParkEmployeeController.parkName = parkName;
@@ -819,8 +797,8 @@ public class ParkEmployeeController implements Initializable {
 	/**
 	 * Initializing and force each of the fields according to the Required templates
 	 * 
-	 * @param location  URL
-	 * @param resources ResourceBundle
+	 * @param location
+	 * @param resources
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
