@@ -278,6 +278,7 @@ public class Reports {
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData);
 		EchoServer.sendToMyClient(answer, client);
+		
 	}
 
 }
