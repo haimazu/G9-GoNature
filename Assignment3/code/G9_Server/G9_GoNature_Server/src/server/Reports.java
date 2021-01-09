@@ -279,6 +279,7 @@ public class Reports {
 		answer.add(queryData);
 		EchoServer.sendToMyClient(answer, client);
 		
+		
 	}
 
 }
