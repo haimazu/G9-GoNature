@@ -6,6 +6,7 @@ import controllers.WelcomeController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+
 public class ClientUI extends Application {
 	private static ChatClient client;
 
