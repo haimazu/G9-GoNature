@@ -136,6 +136,8 @@ public class Reports {
 		String endDate = (String) dataFromClient.get(1);
 		String ot = (String) dataFromClient.get(2);
 		String dateCond = "timeEnter BETWEEN '" + startDate + "' AND '" + endDate + "'";
+		System.out.println("start: " + startDate);
+		System.out.println("End" + endDate);
 		double[] temp = new double[4];
 		int amountArrivedOverall = 0;
 		ArrayList<String> query1 = new ArrayList<String>();
@@ -143,11 +145,12 @@ public class Reports {
 		query1.add("enteryandexit"); // table name
 		query1.add("SUM(amountArrived)"); // columns to present
 		query1.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '01:00:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '00:00:00'"); // condition
+				+ " AND HOUR(TIME(timeExit))- HOUR(TIME(timeEnter)) <=1 "
+				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 0"); // condition
 		query1.add("1"); // how many columns returned
-
+		
 		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
+		System.out.println("sum =" + queryData1);
 		if (queryData1.get(0) == null) {
 			EchoServer.sendToMyClient(answer, client);
 			return;
@@ -163,8 +166,8 @@ public class Reports {
 		query2.add("enteryandexit"); // table name
 		query2.add("SUM(amountArrived)"); // columns to present
 		query2.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '02:01:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '01:00:00'"); // condition
+				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) <= 2 "
+				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 1"); // condition
 		query2.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
 		if (!(queryData2.get(0).get(0) == null)) {
@@ -172,14 +175,15 @@ public class Reports {
 			amountArrivedOverall += temp[1];
 		} else
 			temp[1] = 0;
+		System.out.println("sum =" + queryData2);
 
 		ArrayList<String> query3 = new ArrayList<String>();
 		query3.add("select"); // command
 		query3.add("enteryandexit"); // table name
 		query3.add("SUM(amountArrived)"); // columns to present
 		query3.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '03:01:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '02:00:00'"); // condition
+				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) <= 3 "
+				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 2"); // condition
 		query3.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
 		if (!(queryData3.get(0).get(0) == null)) {
@@ -187,14 +191,15 @@ public class Reports {
 			amountArrivedOverall += temp[2];
 		} else
 			temp[2] = 0;
+		System.out.println("sum =" + queryData3);
 
 		ArrayList<String> query4 = new ArrayList<String>();
 		query4.add("select"); // command
 		query4.add("enteryandexit"); // table name
 		query4.add("SUM(amountArrived)"); // columns to present
 		query4.add("WHERE orderType='" + ot.toString() + "' AND " + dateCond + " "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) < '04:01:00' "
-				+ " AND SUBTIME(TIME(timeExit), TIME(timeEnter)) > '03:00:00'"); // condition
+				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) <=4 "
+				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 3"); // condition
 		query4.add("1"); // how many columns returned
 		ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
 		if (!(queryData4.get(0).get(0) == null)) {
@@ -202,7 +207,7 @@ public class Reports {
 			amountArrivedOverall += temp[3];
 		} else
 			temp[3] = 0;
-
+		System.out.println("sum =" + queryData4);
 		if (amountArrivedOverall != 0) {
 			for (int i = 0; i < temp.length; i++) {
 				answer.add((temp[i] / amountArrivedOverall) * 100);
@@ -272,14 +277,13 @@ public class Reports {
 		query.add("select");
 		query.add("orders");
 		query.add("arrivedTime, SUM(afterDiscountPrice) AS price");
-		query.add("WHERE amountArrived>0 AND parkName='" + parkName + "' AND (arrivedTime BETWEEN '" + startDate + "' AND '" + endDate
-				+ "') GROUP BY day(arrivedTime) order by day(arrivedTime) ");
+		query.add("WHERE amountArrived>0 AND parkName='" + parkName + "' AND (arrivedTime BETWEEN '" + startDate
+				+ "' AND '" + endDate + "') GROUP BY day(arrivedTime) order by day(arrivedTime) ");
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData);
 		EchoServer.sendToMyClient(answer, client);
-		
-		
+
 	}
 
 }
