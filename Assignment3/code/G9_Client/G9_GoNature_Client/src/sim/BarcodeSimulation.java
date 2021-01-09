@@ -10,14 +10,14 @@ public class BarcodeSimulation {
 	// SingletonBuilder
 	private BarcodeSimulation() {
 		pool = new ArrayList<String>();
-		pool.add("123456");
-		pool.add("m1132");
-		pool.add("123456789");
+		pool.add("565656895");
+		pool.add("m1114");
+		pool.add("895898568");
 		pool.add("112233441");
-		pool.add("g1111");
-		pool.add("m4212");
-		pool.add("987654321");
-		pool.add("144331122");
+		pool.add("g1141");
+		pool.add("m1131");
+		pool.add("123456789");
+		pool.add("123456123");
 	}
 
 	// Singleton, create one instance only

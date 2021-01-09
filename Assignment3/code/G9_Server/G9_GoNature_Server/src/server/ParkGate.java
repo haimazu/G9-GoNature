@@ -58,10 +58,7 @@ public class ParkGate {
 		}
 	}
 
-	// input:
-	// output: none
-	//
-	//
+
 	/**
 	 * send to client: ArrayList of object cell[0] contains "enterThePark" String
 	 * cell[1] contains String "enter" upon success "notGoodTime" / "allreadyInPark"
@@ -182,9 +179,7 @@ public class ParkGate {
 
 	}
 
-	// input:
-	// output: non
-	//
+
 	/**
 	 * send to client: ArrayList of object cell[0] contains "exitThePark" String,
 	 * cell[1] contains String "exited" if exited "allreadyExited" or "neverWasHere" or "orderDiffPark"
