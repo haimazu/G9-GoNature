@@ -1,12 +1,7 @@
 package managerData;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import com.jfoenix.controls.JFXCheckBox;
-
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
 
 /**
  * class to display a table and value in it
@@ -17,6 +12,10 @@ import javafx.scene.control.RadioButton;
 
 public class TableViewSet implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String reqType;
 	private String reqDetails;
 	private String ParkName;

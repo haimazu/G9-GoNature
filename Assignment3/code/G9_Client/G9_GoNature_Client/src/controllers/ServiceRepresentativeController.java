@@ -4,18 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.function.ToDoubleBiFunction;
-
-import javax.swing.text.StyledEditorKit.ForegroundAction;
-import javax.tools.Tool;
-
-import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
-
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
-//import com.sun.javafx.webkit.ThemeClientImpl;
-
 import client.ClientUI;
 import dataLayer.CreditCard;
 import javafx.event.ActionEvent;

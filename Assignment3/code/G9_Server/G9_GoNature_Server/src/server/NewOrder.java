@@ -1,7 +1,6 @@
 package server;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import dataLayer.CreditCard;
@@ -28,6 +27,7 @@ public class NewOrder {
 	 * @param client  ConnectionToClient
 	 * 
 	 **/
+	@SuppressWarnings("static-access")
 	public static void NewReservation(ArrayList<Object> recived, ConnectionToClient client) {
 		WaitingList a = new WaitingList();
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -268,7 +268,6 @@ public class NewOrder {
 	 * @param parkName String
 	 */
 	public static void updatingParkCurrentPrice(String parkName) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 
 		// new park discount
@@ -306,8 +305,6 @@ public class NewOrder {
 		query3.add("mangerDiscount= '" + discount + "'");
 		query3.add("parkName");
 		query3.add(parkName);
-		boolean a;
-		a = MySQLConnection.update(query3);
 	}
 
 	////////////// ********************* Park **************************************
@@ -360,6 +357,7 @@ public class NewOrder {
 	 * 
 	 **/
 
+	@SuppressWarnings("unchecked")
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();

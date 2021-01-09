@@ -19,7 +19,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -27,9 +26,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-//import com.sun.prism.shader.Mask_TextureRGB_AlphaTest_Loader;
-import com.sun.javafx.webkit.ThemeClientImpl;
-
 import client.ClientUI;
 import dataLayer.Park;
 import javafx.application.Platform;
@@ -1256,6 +1252,7 @@ public class ParkManagerController implements Initializable {
 	 * @param date: string value of date
 	 * @return String
 	 */
+	@SuppressWarnings("unused")
 	public String getDate(String date) {
 		String[] arrDateAndTime = date.split(" ");
 		String[] arrDate = arrDateAndTime[0].split("-");
@@ -1303,7 +1300,7 @@ public class ParkManagerController implements Initializable {
 	 * 
 	 * @throws ParseException Signals that an error has been reached unexpectedlywhile parsing
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
 	public void chartUsage() throws ParseException {
 		boolean count = false;
 		xAxisU = new CategoryAxis();
@@ -1397,7 +1394,6 @@ public class ParkManagerController implements Initializable {
 		Series<String, Double> DailyRevenue = new Series<>();
 
 		String someDate;
-		ArrayList<String> firstArrIncome;
 		String firstDate;
 		LocalDate checkDate = LocalDate.now();
 

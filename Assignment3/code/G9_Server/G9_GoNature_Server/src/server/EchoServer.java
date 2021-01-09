@@ -1,6 +1,5 @@
 package server;
 
-import java.awt.print.Book;
 import java.io.IOException;
 //import java.sql.Connection;
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ public class EchoServer extends AbstractServer {
 	 * @param msg    Object
 	 * @param client ConnectionToClient
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		@SuppressWarnings("unchecked")

@@ -16,6 +16,11 @@ import ocsf.server.ConnectionToClient;
 public class PendingMenagerRequest implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Inserts To Pending table in DB. send to client ArrayList of Object : cell[0]
 	 * name ,cell[1] T/F
 	 * 
@@ -105,6 +110,7 @@ public class PendingMenagerRequest implements Serializable {
 	 * @param client  ConnectionToClient
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	public static void getParkDetails(ArrayList<Object> recived, ConnectionToClient client) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -173,6 +179,7 @@ public class PendingMenagerRequest implements Serializable {
 	public static void deleteFromPending(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
+		@SuppressWarnings("unchecked")
 		ArrayList<ArrayList<Object>> reqTable = (ArrayList<ArrayList<Object>>) recived.get(1);
 		ArrayList<ArrayList<Object>> retTable = new ArrayList<ArrayList<Object>>();
 

@@ -11,6 +11,10 @@ import java.util.ArrayList;
 
 public class Park implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private int maximumCapacityInPark = 0;
 	private int currentAmount = 0;

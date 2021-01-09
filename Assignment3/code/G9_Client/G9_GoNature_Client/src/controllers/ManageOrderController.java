@@ -6,28 +6,15 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
-import java.util.logging.Handler;
-import java.util.prefs.BackingStoreException;
-
-import javax.imageio.stream.MemoryCacheImageInputStream;
-
-import org.omg.CORBA.PRIVATE_MEMBER;
-
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
-
 import client.ClientUI;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +27,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import orderData.Order;
-import javafx.scene.control.Label;
 
 /**
  * controller handle all the manage orders options

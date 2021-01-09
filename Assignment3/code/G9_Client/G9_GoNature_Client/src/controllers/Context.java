@@ -1,8 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * controller create instance that save the controller that active now
  * when we want to use another controller we approach from this class

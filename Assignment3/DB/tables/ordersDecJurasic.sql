@@ -16,6 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders` (
+  `visitorsNumber` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `orderType` varchar(45) DEFAULT NULL,
+  `beforeDiscountPrice` double DEFAULT NULL,
+  `afterDiscountPrice` double DEFAULT NULL,
+  `parkName` varchar(45) DEFAULT NULL,
+  `arrivedTime` datetime DEFAULT NULL,
+  `memberID` varchar(45) DEFAULT NULL,
+  `ID` varchar(45) DEFAULT NULL,
+  `amountArrived` varchar(45) DEFAULT '0',
+  `orderNumber` int NOT NULL,
+  PRIMARY KEY (`orderNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `orders`
 --
 
@@ -39,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-09 13:49:40
+-- Dump completed on 2021-01-09 12:15:57

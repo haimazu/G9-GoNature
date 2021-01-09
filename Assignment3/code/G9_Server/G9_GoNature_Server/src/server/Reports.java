@@ -27,6 +27,7 @@ public class Reports {
 	 * @param client  ConnectionToClient
 	 */
 
+	@SuppressWarnings("unchecked")
 	public static void OverallVisitorsReport(ArrayList<Object> recived, ConnectionToClient client) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -69,6 +70,7 @@ public class Reports {
 	 * @param client  ConnectionToClient
 	 */
 
+	@SuppressWarnings("unchecked")
 	public static void UsageReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		ArrayList<Object> answer = new ArrayList<Object>();
@@ -125,6 +127,7 @@ public class Reports {
 	 *                date cell[2] to date cell[3] orderType
 	 * @param client  ConnectionToClient
 	 */
+	@SuppressWarnings("unchecked")
 	public static void VisitsReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -220,6 +223,7 @@ public class Reports {
 	 * 
 	 */
 
+	@SuppressWarnings("unchecked")
 	public static void CancellationReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : getCancellationReports
@@ -255,10 +259,7 @@ public class Reports {
 	 * 
 	 */
 
-	// select arrivedTime, SUM(afterDiscountPrice) AS price from g9_gonature.orders
-	// where parkName='disney' and (arrivedTime BETWEEN '2021-01-01' and
-	// '2021-02-02' ) GROUP BY day(arrivedTime) order by day(arrivedTime);
-
+	@SuppressWarnings("unchecked")
 	public static void incomesReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -266,14 +267,13 @@ public class Reports {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
 		String startDate = dataFromClient.get(0);
 		String endDate = dataFromClient.get(1);
-		String dateCond = "arrivedTime BETWEEN '" + startDate + "' AND '" + endDate + "'";
 
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select");
 		query.add("orders");
 		query.add("arrivedTime, SUM(afterDiscountPrice) AS price");
 		query.add("WHERE parkName='" + parkName + "' AND (arrivedTime BETWEEN '" + startDate + "' AND '" + endDate
-				+ "') GROUP BY day(arrivedTime) order by day(arrivedTime)");
+				+ "') GROUP BY day(arrivedTime) order by day(arrivedTime) AND amountArrived>0");
 		query.add("2");
 		ArrayList<ArrayList<String>> queryData = MySQLConnection.select(query);
 		answer.add(queryData);

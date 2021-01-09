@@ -2,9 +2,6 @@ package client;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import com.mysql.cj.admin.ServerController;
-
 import controllers.WelcomeController;
 import javafx.application.Application;
 import javafx.stage.Stage;
