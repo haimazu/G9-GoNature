@@ -15,7 +15,7 @@ public class UpdateVisitorsNumber {
 
 	/**
 	 * updates the ParkCurrentVisitors in Park table. sends to client ArrayList of
-	 * Object => cell[0] function name, cell[1] T if update succeeded, F if not,
+	 * Object = cell[0] function name, cell[1] T if update succeeded, F if not,
 	 * Full if we can add more visitors
 	 * 
 	 * @param recived ArrayList of Object cell [0]: parkName, cell [1]:
@@ -50,7 +50,7 @@ public class UpdateVisitorsNumber {
 
 	/**
 	 * information depending on entry or exit status. sends to
-	 * client:rrayList of Object => cell[0] function name // cell[1] T if update
+	 * client:rrayList of Object = cell[0] function name // cell[1] T if update
 	 * succeeded, F if not, Full if we can add more visitors
 	 * 
 	 * @param recived ArrayList of Object [0]: case name updateAccessControl cell [1]:
