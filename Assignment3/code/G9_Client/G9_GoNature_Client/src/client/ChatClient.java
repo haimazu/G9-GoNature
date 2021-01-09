@@ -242,6 +242,7 @@ public class ChatClient extends AbstractClient {
 	 * 
 	 * @param arr cell[0] - park name cell[1] -Visitors Number.s
 	 */
+	@SuppressWarnings("static-access")
 	public static void sendToAllEmployee(ArrayList<Object> arr) {
 		String parkName = (String) arr.get(1);
 		String updatedVisitorsNumber = (String) arr.get(2);

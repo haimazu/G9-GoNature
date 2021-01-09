@@ -3,10 +3,7 @@ package server;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import dataLayer.EmailMessege;
-import dataLayer.Messege;
-import dataLayer.SmsMessege;
 import orderData.Order;
 
 /**
@@ -99,6 +96,7 @@ public class WaitListSingelton {
 	 * more than once per day
 	 */
 
+	@SuppressWarnings("unused")
 	public static void CheckTheWaitList() {
 		Date timeNow = new Date();
 		Date LastPlusMinute = new Date(timeLastChecked.getTime() + 60 * 1000);
@@ -206,11 +204,6 @@ public class WaitListSingelton {
 	private static boolean limitReach(Order order) {
 		Date now = (Date) new Date();
 		Date limit = new Date(selectDateForPending(order).getTime());
-
-		int test3 = limit.compareTo(now);
-		boolean test = (limit.compareTo(now) <= 0);
-		boolean test2 = limit.equals(null);
-
 		if (limit.equals(null) || limit.compareTo(now) <= 0) // to<from: to.compareTo(from)<0
 			return false;
 		return true;

@@ -5,12 +5,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
-
 import client.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -308,6 +305,7 @@ public class WaitingListController implements Initializable {
 	 * initialize the screen
 	 */
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.time.clear();

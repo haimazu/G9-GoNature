@@ -48,6 +48,7 @@ public class ExistingOrderCheck {
 	 * @return ArrayList of ArrayList of String containing the order details, empty
 	 *         if no details
 	 */
+	@SuppressWarnings("unchecked")
 	public static ArrayList<ArrayList<String>> fechOrder(ArrayList<Object> recived, String tableName, String colName) {
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
 		ArrayList<String> query = new ArrayList<String>();
@@ -75,6 +76,7 @@ public class ExistingOrderCheck {
 	 */
 	public static ArrayList<ArrayList<String>> fechOrderTodayInPark(ArrayList<Object> recived, String tableName,
 			String parkName) {
+		@SuppressWarnings("unchecked")
 		ArrayList<String> data = (ArrayList<String>) recived.get(1);
 		ArrayList<String> query = new ArrayList<String>();
 		query.add("select"); // command
@@ -120,6 +122,7 @@ public class ExistingOrderCheck {
 	public static void checkOrderForGo(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
+		@SuppressWarnings("unchecked")
 		String orderNum = ((ArrayList<String>) recived.get(1)).get(0);
 		ArrayList<ArrayList<String>> queryData = fechOrder(recived, "orders", "orderNumber");
 		if (queryData.isEmpty()) {
