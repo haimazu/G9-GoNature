@@ -39,9 +39,9 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="picOR" fitHeight="198.0" fitWidth="204.0" layoutX="98.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="picOR" fitHeight="153.0" fitWidth="170.0" layoutX="124.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../QR1.png" />
+                        <Image url="@rockStargif.gif" />
                      </image>
                   </ImageView>
                   <Label focusTraversable="false" layoutX="91.0" layoutY="562.0" text="You can edit your order," visible="false">
@@ -54,7 +54,7 @@
                         <Font size="16.0" />
                      </font>
                   </Hyperlink>
-                  <Label layoutX="112.0" layoutY="480.0" styleClass="labelBold" text="We'll send you a reminder!">
+                  <Label layoutX="109.0" layoutY="474.0" styleClass="labelBold" text="We'll send you a reminder!">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -69,12 +69,12 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="126.0" layoutY="430.0" styleClass="labelBold" text="Your order number is: ">
+                  <Label layoutX="132.0" layoutY="417.0" styleClass="labelBold" text="Your order number is: ">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="txtOrderNum" focusTraversable="false" layoutX="171.0" layoutY="441.0" style="-fx-font-size: 30;" styleClass="labelBold" text="111" textFill="SEAGREEN">
+                  <Label fx:id="txtOrderNum" focusTraversable="false" layoutX="184.0" layoutY="443.0" styleClass="labelBold" text="111" textFill="SEAGREEN">
                      <font>
                         <Font size="18.0" />
                      </font>
