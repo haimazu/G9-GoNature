@@ -1254,7 +1254,7 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * 
 	 * @param date: string value of date
-	 * @return
+	 * @return String
 	 */
 	public String getDate(String date) {
 		String[] arrDateAndTime = date.split(" ");
@@ -1301,7 +1301,7 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * create usage report
 	 * 
-	 * @throws ParseException
+	 * @throws ParseException Signals that an error has been reached unexpectedlywhile parsing
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartUsage() throws ParseException {
@@ -1379,7 +1379,7 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * create revenue report
 	 * 
-	 * @throws ParseException
+	 * @throws ParseException Signals that an error has been reached unexpectedlywhile parsing
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void chartRevenue() throws ParseException {
@@ -1512,7 +1512,7 @@ public class ParkManagerController implements Initializable {
 	/**
 	 * returned from server employee id
 	 * 
-	 * @param answer
+	 * @param answer String
 	 */
 	public static void recivedFromserverEmployeeID(String answer) {
 		setEmpID(Integer.parseInt(answer));

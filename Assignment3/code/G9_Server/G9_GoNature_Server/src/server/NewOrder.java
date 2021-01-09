@@ -74,12 +74,12 @@ public class NewOrder {
 
 	/**
 	 * function that called when we want to insert a new order and credit card into
-	 * the DB
+	 * the DB.sends to client: T/F
 	 * 
 	 * @param recived cell[0] function name cell[1] order object cell[2] credit card
 	 *                object/null
 	 * @param client  ConnectionToClient
-	 * @return T/F
+	 * 
 	 * 
 	 **/
 	public static void queInsert(ArrayList<Object> recived, ConnectionToClient client) {
@@ -265,7 +265,7 @@ public class NewOrder {
 	/**
 	 * updates the discount in the park table in DB by the right dates
 	 * 
-	 * @param parkName
+	 * @param parkName String
 	 */
 	public static void updatingParkCurrentPrice(String parkName) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -351,12 +351,13 @@ public class NewOrder {
 	}
 
 	/**
-	 * updating column amountArrived in order table for an order
+	 * updating column amountArrived in order table for an order. sends to client:
+	 * ArrayList of Object = cell[0] function name, cell[1]: ArrayList of String [0]
+	 * orderNumber, [1] number of visitors to add
 	 * 
 	 * @param recived ArrayList of object cell[0]: calling function name
 	 * @param client  ConnectionToClient
-	 * @return ArrayList of Object = cell[0] function name, cell[1]: ArrayList of
-	 *         String [0] orderNumber, [1] number of visitors to add
+	 * 
 	 **/
 
 	public static void updateOrderAmountArrived(ArrayList<Object> recived, ConnectionToClient client) {

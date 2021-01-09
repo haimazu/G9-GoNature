@@ -33,7 +33,7 @@ public class ChatClient extends AbstractClient {
 	 *
 	 * @param host     The server to connect to.
 	 * @param port     The port number to connect on.
-	 * @param clientUI The interface type variable.
+	 * @param control2 clientUI The interface type variable.
 	 * @exception IOException Signals that an I/O exception of some sort has
 	 *                        occurred
 	 * 
