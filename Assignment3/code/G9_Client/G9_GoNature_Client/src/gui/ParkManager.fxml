@@ -137,7 +137,7 @@
                   </Label>
                   <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" visible="false" />
                   <Button fx:id="btnReportView11" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" visible="false" />
-                  <BarChart fx:id="bcRevenue" barGap="5.0" categoryGap="2.0" layoutX="-8.0" layoutY="83.0" prefHeight="348.0" prefWidth="613.0" title="Revenue Rrport">
+                  <BarChart fx:id="bcRevenue" barGap="5.0" categoryGap="2.0" layoutX="-8.0" layoutY="83.0" prefHeight="348.0" prefWidth="613.0" title="Revenue Report">
                      <xAxis>
                         <CategoryAxis label="Dates" side="BOTTOM" fx:id="xAxisR">
                            <tickLabelFont>
@@ -190,7 +190,7 @@
                   </Label>
                   <TextArea focusTraversable="false" layoutX="39.0" layoutY="305.0" prefHeight="159.0" prefWidth="456.0" visible="false" />
                   <Button fx:id="btnReportView1" focusTraversable="false" layoutX="425.0" layoutY="480.0" mnemonicParsing="false" styleClass="btnMiddle" text="Submit" visible="false" />
-                  <BarChart fx:id="bcUsageChart" barGap="5.0" categoryGap="2.0" layoutX="-8.0" layoutY="96.0" prefHeight="348.0" prefWidth="613.0" title="Usage Rrport">
+                  <BarChart fx:id="bcUsageChart" barGap="5.0" categoryGap="2.0" layoutX="-8.0" layoutY="96.0" prefHeight="348.0" prefWidth="613.0" title="Usage Report">
                      <xAxis>
                         <CategoryAxis label="Dates" side="BOTTOM" fx:id="xAxisU">
                            <tickLabelFont>
