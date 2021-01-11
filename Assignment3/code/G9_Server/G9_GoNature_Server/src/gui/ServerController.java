@@ -168,6 +168,8 @@ public class ServerController implements Initializable {
 		serverport.setText("5555");
 		btnDisonnect.setDisable(true);
 		stopServer.setDisable(true);
+		connect(null);
+		startServerBtn(null);
 	}
 	
 	
