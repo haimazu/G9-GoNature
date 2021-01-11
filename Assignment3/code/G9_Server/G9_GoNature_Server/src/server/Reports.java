@@ -70,6 +70,7 @@ public class Reports {
 	 * @param client  ConnectionToClient
 	 */
 
+	// Unit Testing 
 	@SuppressWarnings("unchecked")
 	public static void UsageReport(ArrayList<Object> recived, ConnectionToClient client) {
 		ArrayList<String> dataFromClient = (ArrayList<String>) recived.get(1);
