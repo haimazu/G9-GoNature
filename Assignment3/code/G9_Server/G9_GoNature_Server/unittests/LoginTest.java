@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import ocsf.server.ConnectionToClient;
 import server.Login;
 
 class LoginTest {
@@ -16,6 +17,8 @@ class LoginTest {
 	
 	@Mock
 	private Login mockLogin;
+	@Mock
+	private ConnectionToClient client;
 	
 	// Executed before each test. It is used to prepare the test environment
 	@BeforeEach
@@ -23,7 +26,9 @@ class LoginTest {
 		received = new ArrayList<Object>();
 		
 		mockLogin = Mockito.mock(Login.class);
-		//mockLogin.login(received, client);
+		client = Mockito.mock(ConnectionToClient.class);
+		
+		mockLogin.login(received, client);
 		
 		//Mockito.when(Login.login(received, null));
 	}
