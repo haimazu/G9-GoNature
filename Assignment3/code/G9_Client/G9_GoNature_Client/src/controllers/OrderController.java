@@ -541,7 +541,7 @@ public class OrderController implements Initializable {
 		String Phone = txtPhoneNum.getText();
 
 		if (visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || memberId.isEmpty()
-				|| Phone.isEmpty()) {
+				|| Phone.isEmpty() ||txtdate.getValue()==null) {
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 			return false;
 		}
