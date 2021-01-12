@@ -428,7 +428,9 @@ public class OrderController implements Initializable {
 	 */
 
 	@FXML
-	void home(ActionEvent event) throws IOException {
+	void home(ActionEvent event) throws IOException {		
+		alert.successAlert("confirmation", "You have new order : " + orderSuccess.getOrderNumber()
+		+ "\nThank you for ordering in Go - Nature");
 		Stage stage = (Stage) btnHere.getScene().getWindow();
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/Welcome.fxml"));
 		stage.setScene(new Scene(root));
@@ -563,7 +565,7 @@ public class OrderController implements Initializable {
 
 		LocalTime now = LocalTime.now();
 		if (date.compareTo(LocalDate.now()) <= 0 && now.compareTo(arrivalTime) >= 0) {
-			alert.setAlert("You're trying to book for a time that has already passed. Please select a future time\r\n");
+			alert.setAlert("You are trying to book for a time that has already passed. Please select a future time");
 
 			return false;
 		}
