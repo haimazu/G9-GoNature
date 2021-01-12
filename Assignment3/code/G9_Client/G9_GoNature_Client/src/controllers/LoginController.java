@@ -59,6 +59,69 @@ public class LoginController implements Initializable {
 	private AlertController alert = new AlertController();
 
 	/**
+	 * for test case
+	 */
+	class UserName implements IUserName {
+		@Override
+		public boolean checkLoginUserName() {
+			// TODO Auto-generated method stub
+
+			return checkUsername();
+		}
+	}
+
+	class Password implements IPassword {
+		@Override
+		public boolean checkLoginPassword() {
+			// TODO Auto-generated method stub
+
+			return checkPassword();
+		}
+	}
+
+	class RecievedFromSreverForLogin implements IRecievedFromSreverForLogin {
+
+		@Override
+		public void receivedFromServerUserStatus(Object msgReceived) {
+			// TODO Auto-generated method stub
+			LoginController.receivedFromServerUserStatus(msgReceived);
+		}
+
+		@Override
+		public void receivedFromServerLoggedInStatus(boolean msgReceived) {
+			// TODO Auto-generated method stub
+			LoginController.receivedFromServerUserStatus(msgReceived);
+		}
+
+		@Override
+		public void sendToServerArrayListLogin(String type, ArrayList<String> dbColumns) {
+			// TODO Auto-generated method stub
+			sendToServerArrayList(type, dbColumns);
+		}
+
+	}
+
+	private IUserName iUserName;
+	private IPassword iPassword;
+	private IRecievedFromSreverForLogin iRecievedFromSreverForLogin;
+
+	public LoginController() {
+		// TODO Auto-generated constructor stub
+		iUserName = new UserName();
+		iPassword = new Password();
+		iRecievedFromSreverForLogin = new RecievedFromSreverForLogin();
+
+	}
+
+	public LoginController(IUserName iUserName, IPassword iPassword,
+			IRecievedFromSreverForLogin iRecievedFromSreverForLogin) {
+
+		this.iUserName = iUserName;
+		this.iPassword = iPassword;
+		this.iRecievedFromSreverForLogin = iRecievedFromSreverForLogin;
+	}
+
+	/**
 	 * Switch screens: Welcome
 	 **/
 	@FXML
@@ -75,34 +138,43 @@ public class LoginController implements Initializable {
 	 * @exception IOException
 	 */
 	@FXML
-	void login(ActionEvent event) throws IOException {
+	public void login(ActionEvent event) throws IOException {
 		// Data fields
 		ArrayList<String> data = new ArrayList<String>();
 
-		if (checkUsername() && checkPassword()) {
-			data.add(txtUsername.getText());
-			data.add(txtPassword.getText());
-			sendToServerArrayList("login", data);
+		// if (checkUsername() && checkPassword())
+		// hodaya changes for tests
+		if (iUserName.checkLoginUserName() && iPassword.checkLoginPassword()) {
+			if (txtUsername != null && txtPassword != null) {
+				data.add(txtUsername.getText());
+				data.add(txtPassword.getText());
+			}
+			// sendToServerArrayList("login", data);
+			iRecievedFromSreverForLogin.sendToServerArrayListLogin("login", data);
 			data.clear();
 
 			// Username and password doesn't match / the user is already logged in
 			if (getError().equals("Failed")) {
 				alert.failedAlert("Failed", "Username / password doesn't match or the user is already logged in.");
 			} else {
-				// needed for check in parkManager
-				setPassword(txtPassword.getText());
-				setUsername(txtUsername.getText());
-
+				if (txtUsername != null && txtPassword != null) {
+					// needed for check in parkManager
+					setPassword(txtPassword.getText());
+					setUsername(txtUsername.getText());
+				}
 				// update as loggedin
 				data.add(getUsername());
 				data.add(String.valueOf(1));
-				sendToServerArrayList("updateLoggedIn", data);
+				// sendToServerArrayList("updateLoggedIn", data);
+				iRecievedFromSreverForLogin.sendToServerArrayListLogin("updateLoggedIn", data);
 
 				// Check the employee type
 				// Switch to the screen
-				Stage stage = (Stage) btnLogin.getScene().getWindow();
-				Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
-				stage.setScene(new Scene(root));
+				if (btnLogin != null) {
+					Stage stage = (Stage) btnLogin.getScene().getWindow();
+					Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
+					stage.setScene(new Scene(root));
+				}
 			}
 		}
 	}
