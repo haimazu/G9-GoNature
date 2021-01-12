@@ -15,6 +15,7 @@ public class Reports {
 
 	private static ISQL isql = new wrapSQL();
 	public static ConnectionToClient client;
+	public static ArrayList<Object> test;
 
 	public static class wrapSQL implements ISQL {
 
@@ -24,7 +25,7 @@ public class Reports {
 		}
 
 	}
-	
+
 //	public void sendToClient(ArrayList<ArrayList<String>> answer,ConnectionToClient client) {
 //		
 //		
@@ -69,6 +70,10 @@ public class Reports {
 
 		// original
 		// ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
+
+		if (queryData1 == null) {
+			return;
+		}
 
 		if (!(queryData1.get(0).get(0) == null)) {
 			temp[0] = Double.parseDouble(queryData1.get(0).get(0));
@@ -137,6 +142,11 @@ public class Reports {
 		} else
 			answer.add("empty");
 		System.out.println("answer= " + answer);
+		test = new ArrayList<Object>();
+		for (Object a : answer) {
+			test.add(a);
+		}
+		System.out.println(test);
 		EchoServer.sendToMyClient(answer, client);
 
 	}

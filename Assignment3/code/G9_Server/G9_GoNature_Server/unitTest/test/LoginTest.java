@@ -1,16 +1,16 @@
 package test;
 
 import java.util.ArrayList;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import ocsf.server.ConnectionToClient;
 import server.Login;
 
-class LoginTest {
+public class LoginTest {
 	private ArrayList<Object> received;
 	
 	private String expected = "Falied";
@@ -21,8 +21,8 @@ class LoginTest {
 	private ConnectionToClient client;
 	
 	// Executed before each test. It is used to prepare the test environment
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		received = new ArrayList<Object>();
 		
 		mockLogin = Mockito.mock(Login.class);
@@ -43,7 +43,7 @@ class LoginTest {
 	
 	// the user is already logged in (the user must be exists in the system)
 	@Test
-	void test() {
+	public void test() {
 		
 		// username
 		received.add("Haim");
