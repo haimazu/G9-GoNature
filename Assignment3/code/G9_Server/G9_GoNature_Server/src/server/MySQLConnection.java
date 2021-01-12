@@ -163,10 +163,6 @@ public class MySQLConnection {
 		return true;
 	}
 
-	// input: ArrayList of strings ->
-	// string in
-	//
-	// output:
 
 	/**
 	 * select query for DB, NOTE: even if you don't want to filter you will need to

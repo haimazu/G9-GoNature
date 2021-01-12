@@ -120,6 +120,7 @@ public class Reports {
 			answer.add("empty");
 
 		// changed by Anastasia for testing proposes
+		//EchoServer.sendToMyClient(answer, client);
 		return answer;
 	}
 

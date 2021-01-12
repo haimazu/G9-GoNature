@@ -2,13 +2,16 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import ocsf.server.ConnectionToClient;
 import server.MySQLConnection;
 import server.Reports;
+
+/**
+ * @Author Anastasia Kokin
+ */
 
 public class ReportsTest {
 
@@ -17,6 +20,7 @@ public class ReportsTest {
 
 	@Before
 	public void setUp() throws Exception {
+		// setting a connection for DB without the Gui
 		ArrayList<String> data = new ArrayList<String>(
 				Arrays.asList("localhost", "3306", "g9_gonature", "root", "Aa123456"));
 		MySQLConnection.connectToDB(data);
@@ -24,8 +28,9 @@ public class ReportsTest {
 		acctualResult = new ArrayList<Object>();
 	}
 
+	//a test for good outcome. right input
 	@Test
-	public void test1() {
+	public void testGoodOutcome() {
 		ArrayList<Object> recived = new ArrayList<Object>();
 		recived.add("getRegularsVisitorsData");
 		ArrayList<String> a = new ArrayList<String>();
@@ -39,8 +44,9 @@ public class ReportsTest {
 		assertEquals(5, acctualResult.size());
 	}
 
+	//test for no data came back from the DB. returns empty
 	@Test
-	public void test2() {
+	public void testNoDataToPresrntFromDB() {
 		ArrayList<Object> recived = new ArrayList<Object>();
 		recived.add("getRegularsVisitorsData");
 		ArrayList<String> a = new ArrayList<String>();
@@ -54,8 +60,9 @@ public class ReportsTest {
 		assertEquals(2, acctualResult.size());
 	}
 
+	//test for no good connection to the DB
 	@Test
-	public void test3() {
+	public void testNoConnectionToDB() {
 		MySQLConnection.setDbConn(null);
 		ArrayList<Object> recived = new ArrayList<Object>();
 		recived.add("getRegularsVisitorsData");
