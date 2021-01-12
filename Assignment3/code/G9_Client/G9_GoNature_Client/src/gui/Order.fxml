@@ -253,7 +253,7 @@
                   <Image url="@cart-removebg-80.png" />
                </image>
             </ImageView>
-            <Label layoutX="103.0" layoutY="70.0" prefHeight="37.0" prefWidth="215.0" styleClass="labelTitle" text="Standard Order" textAlignment="CENTER">
+            <Label layoutX="103.0" layoutY="70.0" prefHeight="37.0" prefWidth="215.0" styleClass="labelTitle" text="Standart Order" textAlignment="CENTER">
                <font>
                   <Font name="Arial Black" size="24.0" />
                </font>
