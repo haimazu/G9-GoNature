@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import client.ClientUI;
@@ -47,7 +51,7 @@ public class WaitingListController implements Initializable {
 
 	@FXML
 	private JFXComboBox<String> cbxArrivelTime;
-
+	private static AlertController alert = new AlertController();
 	private static ArrayList<String> Dates = new ArrayList<>();
 	private static ArrayList<String> time = new ArrayList<>();
 	private ArrayList<String> nonReleventDates = new ArrayList<>();
@@ -256,6 +260,12 @@ public class WaitingListController implements Initializable {
 
 	@FXML
 	void Continue(ActionEvent event) {
+		if(checkToolate())
+		{
+			alert.setAlert("Invalid date");
+			txtdate.setValue(LocalDate.now());		
+		}
+		else {
 		WaitingListController.setSetDateFromWaitList(1);
 		anotherDates.add(txtdate.getValue());
 		anotherDates.add(cbxArrivelTime.getValue());
@@ -264,6 +274,7 @@ public class WaitingListController implements Initializable {
 		ORC.initialize(ORC.getLocation(), ORC.getResources());
 		Stage stage2 = (Stage) btnContinue.getScene().getWindow();
 		stage2.close();
+		}
 	}
 
 	/**
@@ -282,7 +293,7 @@ public class WaitingListController implements Initializable {
 		stage.setResizable(false);
 		stage.setScene(scene);
 		stage.show();
-		
+
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
@@ -301,6 +312,19 @@ public class WaitingListController implements Initializable {
 		setDates(arr);
 	}
 
+	// rinat : added for jubula testing
+	private boolean checkToolate ()
+	{
+		LocalDate date = txtdate.getValue();
+		
+		LocalDate today = LocalDate.now();
+		LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+		if(date.compareTo(nextYear)>0)
+			return true;
+		return false;
+	}
+
+	
 	/**
 	 * initialize the screen
 	 */
@@ -335,7 +359,7 @@ public class WaitingListController implements Initializable {
 			nonReleventDatesForCalender(nonReleventDates);
 		}
 		setArrForTime();
-		
+
 	}
 
 }
