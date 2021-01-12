@@ -105,10 +105,10 @@ public class MySQLConnection {
 	/**
 	 * delete query for DB
 	 * 
-	 * @param data ArrayList of String cell [0]: command (in this case will always be
-	 *             "delete") cell [1]: table name to delete from cell [2]: primary
-	 *             key column name of that table cell [3]: primary key value of the
-	 *             row that need to be deleted
+	 * @param data ArrayList of String cell [0]: command (in this case will always
+	 *             be "delete") cell [1]: table name to delete from cell [2]:
+	 *             primary key column name of that table cell [3]: primary key value
+	 *             of the row that need to be deleted
 	 * @return true if update successful, false if failed
 	 */
 	public static boolean deleteCond(ArrayList<String> data) {
@@ -121,8 +121,8 @@ public class MySQLConnection {
 	/**
 	 * update query for DB
 	 * 
-	 * @param data ArrayList of String cell [0]: command (in this case will always be
-	 *             "update"), cell [1]: table name to update data in cell, [2]:
+	 * @param data ArrayList of String cell [0]: command (in this case will always
+	 *             be "update"), cell [1]: table name to update data in cell, [2]:
 	 *             column names and value to put inside them (need to look
 	 * @return true if update successful, false if failed
 	 */
@@ -172,14 +172,14 @@ public class MySQLConnection {
 	 * select query for DB, NOTE: even if you don't want to filter you will need to
 	 * provide an empty string on cell [3]
 	 * 
-	 * @param data ArrayList of String cell [0]: command (in this case will always be
-	 *             "select"), cell [1]: table name to select from, cell [2]: columns
-	 *             that you want select to return (example: "*" for all, "ID,email"
-	 *             for those only two columns), cell [3]: condition can contain a
-	 *             filter for a more refine search (example: "WHERE ID='1234'", ""
-	 *             if you don't want a filter), cell [4]: the number of columns that
-	 *             you want select to return (important! provide a string of that
-	 *             number! i.e "7")
+	 * @param data ArrayList of String cell [0]: command (in this case will always
+	 *             be "select"), cell [1]: table name to select from, cell [2]:
+	 *             columns that you want select to return (example: "*" for all,
+	 *             "ID,email" for those only two columns), cell [3]: condition can
+	 *             contain a filter for a more refine search (example: "WHERE
+	 *             ID='1234'", "" if you don't want a filter), cell [4]: the number
+	 *             of columns that you want select to return (important! provide a
+	 *             string of that number! i.e "7")
 	 * 
 	 * @return in case of success returns ArrayList that contains ArrayList of
 	 *         Strings = each ArrayList of string represent a row in the DB replayed
@@ -216,4 +216,9 @@ public class MySQLConnection {
 	public static Connection getDbConn() {
 		return dbConn;
 	}
+
+	public static void setDbConn(Connection dbConn) {
+		MySQLConnection.dbConn = dbConn;
+	}
+
 }

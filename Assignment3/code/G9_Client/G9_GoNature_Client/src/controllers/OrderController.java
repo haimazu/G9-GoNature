@@ -279,6 +279,7 @@ public class OrderController implements Initializable {
 		txtInvitingEmail.clear();
 		txtmemberID.clear();
 		txtPhoneNum.clear();
+		cbxParkName.getSelectionModel().clearSelection();
 	}
 
 	/**
@@ -540,7 +541,7 @@ public class OrderController implements Initializable {
 		String Phone = txtPhoneNum.getText();
 
 		if (visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || memberId.isEmpty()
-				|| Phone.isEmpty()) {
+				|| Phone.isEmpty() ||txtdate.getValue()==null) {
 			alert.setAlert("One or more of the fields are empty.\n Please fill them in and try again.");
 			return false;
 		}
@@ -561,13 +562,24 @@ public class OrderController implements Initializable {
 		LocalTime arrivalTime = LocalTime.of(Integer.parseInt(hour[0]), 00, 00);
 
 		LocalTime now = LocalTime.now();
-		if (date.compareTo(LocalDate.now()) == 0 && now.compareTo(arrivalTime) >= 0) {
+		if (date.compareTo(LocalDate.now()) <= 0 && now.compareTo(arrivalTime) >= 0) {
 			alert.setAlert("You're trying to book for a time that has already passed. Please select a future time\r\n");
 
 			return false;
 		}
 		return true;
 	}
+	private boolean checkToolate ()
+	{
+		LocalDate date = txtdate.getValue();
+		
+		LocalDate today = LocalDate.now();
+		LocalDate nextYear = LocalDate.of(today.getYear() + 1, today.getMonth(), today.getDayOfMonth());
+		if(date.compareTo(nextYear)>0)
+			return true;
+		return false;
+	}
+
 
 	/**
 	 * creates a string for the DB according to cbxArrivelTime
@@ -588,6 +600,11 @@ public class OrderController implements Initializable {
 	 **/
 
 	public boolean checkCorrectFields() {
+		if(checkToolate()) {
+			alert.setAlert("Invalid date");
+			txtdate.setValue(LocalDate.now());
+			return false;
+		}
 		if (!validInput("email", txtInvitingEmail.getText())) {
 			alert.setAlert("Invalid email address");
 			return false;
@@ -627,7 +644,7 @@ public class OrderController implements Initializable {
 	public static final Pattern VALIDMemberId = Pattern.compile("^[m,g]{1}[0-9]{4}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDID = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDPhone = Pattern.compile("^[0-9]{3}[0-9]{7}$", Pattern.CASE_INSENSITIVE);
-
+	
 	/**
 	 * checks valid input for each nameMathod according to relevant the pattern
 	 * 
@@ -646,11 +663,12 @@ public class OrderController implements Initializable {
 			matcher = VALIDMemberId.matcher(txt);
 		} else if (nameMathod.equals("ID")) {
 			matcher = VALIDID.matcher(txt);
-		} else if (nameMathod.equals("Phone"))
+		} else if (nameMathod.equals("Phone")) {
 			matcher = VALIDPhone.matcher(txt);
+		}
 		return matcher.find();
 	}
-
+	
 	/**********************
 	 * Methods that get answer from server
 	 *************************************/

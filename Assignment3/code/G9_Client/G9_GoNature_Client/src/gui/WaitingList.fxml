@@ -37,7 +37,7 @@
             <Image url="@oops3-removebg-80.png" />
          </image>
       </ImageView>
-      <JFXDatePicker fx:id="txtdate" defaultColor="SEAGREEN" editable="false" focusTraversable="false" layoutX="85.0" layoutY="258.0" onAction="#chooseDate" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
+      <JFXDatePicker fx:id="txtdate" defaultColor="SEAGREEN" focusTraversable="false" layoutX="85.0" layoutY="258.0" onAction="#chooseDate" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
       <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" focusTraversable="false" layoutX="199.0" layoutY="238.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
       <Label layoutX="159.0" layoutY="300.0" text="Required fields" textFill="#404040" />
       <Label layoutX="152.0" layoutY="300.0" text="*" textFill="RED" />

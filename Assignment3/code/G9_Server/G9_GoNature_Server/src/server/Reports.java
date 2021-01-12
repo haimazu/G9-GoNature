@@ -13,23 +13,12 @@ import ocsf.server.ConnectionToClient;
 
 public class Reports {
 
-	private static ISQL isql = new wrapSQL();
-	public static ConnectionToClient client;
+	// changed by Anastasia for testing
+	// only executes the sending to client part
+	public static void VisitsReport(ArrayList<Object> recived, ConnectionToClient client) {
 
-	public static class wrapSQL implements ISQL {
-
-		@Override
-		public ArrayList<ArrayList<String>> SelectWrap(ArrayList<String> query) {
-			return MySQLConnection.select(query);
-		}
-
+		EchoServer.sendToMyClient(getVisitsReportData(recived), client);
 	}
-	
-//	public void sendToClient(ArrayList<ArrayList<String>> answer,ConnectionToClient client) {
-//		
-//		
-//		
-//	}
 
 	/**
 	 * calculate the percentage of people that were in the park for some amount of
@@ -43,7 +32,7 @@ public class Reports {
 	 * @param client  ConnectionToClient
 	 */
 	@SuppressWarnings("unchecked")
-	public static void VisitsReport(ArrayList<Object> recived, ConnectionToClient client) {
+	public static ArrayList<Object> getVisitsReportData(ArrayList<Object> recived) {
 
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -64,12 +53,10 @@ public class Reports {
 				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 0"); // condition
 		query1.add("1"); // how many columns returned
 
-		// nastya & bar changed for testing
-		ArrayList<ArrayList<String>> queryData1 = isql.SelectWrap(query1);
+		ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
 
-		// original
-		// ArrayList<ArrayList<String>> queryData1 = MySQLConnection.select(query1);
-
+		if (queryData1 == null)
+			return null;
 		if (!(queryData1.get(0).get(0) == null)) {
 			temp[0] = Double.parseDouble(queryData1.get(0).get(0));
 			amountArrivedOverall += temp[0];
@@ -85,8 +72,7 @@ public class Reports {
 				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 1"); // condition
 		query2.add("1"); // how many columns returned
 
-		ArrayList<ArrayList<String>> queryData2 = isql.SelectWrap(query2);
-		// ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
+		ArrayList<ArrayList<String>> queryData2 = MySQLConnection.select(query2);
 		if (!(queryData2.get(0).get(0) == null)) {
 			temp[1] = Double.parseDouble(queryData2.get(0).get(0));
 			amountArrivedOverall += temp[1];
@@ -102,9 +88,7 @@ public class Reports {
 				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 2"); // condition
 		query3.add("1"); // how many columns returned
 
-		ArrayList<ArrayList<String>> queryData3 = isql.SelectWrap(query3);
-
-		// ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
+		ArrayList<ArrayList<String>> queryData3 = MySQLConnection.select(query3);
 
 		if (!(queryData3.get(0).get(0) == null)) {
 			temp[2] = Double.parseDouble(queryData3.get(0).get(0));
@@ -121,9 +105,7 @@ public class Reports {
 				+ " AND HOUR(TIME(timeExit)) - HOUR(TIME(timeEnter)) > 3"); // condition
 		query4.add("1"); // how many columns returned
 
-		ArrayList<ArrayList<String>> queryData4 = isql.SelectWrap(query4);
-
-		// ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
+		ArrayList<ArrayList<String>> queryData4 = MySQLConnection.select(query4);
 		if (!(queryData4.get(0).get(0) == null)) {
 			temp[3] = Double.parseDouble(queryData4.get(0).get(0));
 			amountArrivedOverall += temp[3];
@@ -136,9 +118,9 @@ public class Reports {
 			}
 		} else
 			answer.add("empty");
-		System.out.println("answer= " + answer);
-		EchoServer.sendToMyClient(answer, client);
 
+		// changed by Anastasia for testing proposes
+		return answer;
 	}
 
 	/**
@@ -313,3 +295,18 @@ public class Reports {
 	}
 
 }
+
+//private static ISendToClient wrapSendToClient = new WrapSendToClient();
+
+//public static class WrapSendToClient implements ISendToClient {
+//
+//	@Override
+//	public void sendToMyClient(ArrayList<Object> answer, ConnectionToClient client) {
+//		EchoServer.sendToMyClient(answer, client);
+//	}
+//
+//}
+
+//public Reports(ISendToClient wrapSendToClient) {
+//	Reports.wrapSendToClient = wrapSendToClient;
+//}
