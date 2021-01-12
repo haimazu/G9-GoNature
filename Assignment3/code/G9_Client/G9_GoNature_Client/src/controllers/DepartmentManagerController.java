@@ -130,12 +130,18 @@ public class DepartmentManagerController implements Initializable {
 	private JFXDatePicker dpVisitorsFrom;
 	@FXML
 	private JFXDatePicker dpVisitorsTo;
+	// @FXML
+	// private PieChart pieRegular;
 	@FXML
-	private PieChart pieRegular;
+	public PieChart pieRegular;
+	// @FXML
+	// private PieChart pieMember;
 	@FXML
-	private PieChart pieMember;
+	public PieChart pieMember;
+	// @FXML
+	// private PieChart pieGroup;
 	@FXML
-	private PieChart pieGroup;
+	public PieChart pieGroup;
 	@FXML
 	private Label lblRegular;
 	@FXML
@@ -352,9 +358,10 @@ public class DepartmentManagerController implements Initializable {
 	 * with all the data shown in the chart
 	 * 
 	 * @param event
+	 * @throws Exception 
 	 */
 	@FXML
-	void exportPieChart(ActionEvent event) {
+	void exportPieChart(ActionEvent event) throws Exception {
 		// call the function to fill the cancelledOrders data
 		showPieChart(event);
 
@@ -462,11 +469,43 @@ public class DepartmentManagerController implements Initializable {
 		}
 	}
 
-	/*********************************************For Testing************************************************************/
-	private static IDataBaseManager dataBaseManager = new DataBaseManager();
-	private static IDates dates = new Dates();
-	private static IEmpty empty = new Empty();
-	private static IRecievedFromServer recievedFromServer = new RecievedFromServer();
+	/******************************** For Testing *******************************/
+	private IDataBaseManager dataBaseManager = new DataBaseManager();
+	private IDates dates = new Dates();
+	private IEmpty empty = new Empty();
+	private IRecievedFromServer recievedFromServer = new RecievedFromServer();
+	public static ObservableList<PieChart.Data> DataRegular = FXCollections.observableArrayList();
+	public static ObservableList<PieChart.Data> DataMember = FXCollections.observableArrayList();
+	public static ObservableList<PieChart.Data> DataGroup = FXCollections.observableArrayList();
+
+	/**
+	 * Bar
+	 * constructor for DepartmentManagerController with no feilds
+	 */
+	public DepartmentManagerController() {
+		dataBaseManager = new DataBaseManager();
+		dates = new Dates();
+		empty = new Empty();
+		recievedFromServer = new RecievedFromServer();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Bar
+	 * constructor for DepartmentManagerController with  feilds
+	 * @param dataBaseManager call the server 
+	 * @param dates check valid dates
+	 * @param empty check the value string from server
+	 * @param recievedFromServer check the value aray list object from server
+	 */
+	public DepartmentManagerController(IDataBaseManager dataBaseManager, IDates dates, IEmpty empty,
+			IRecievedFromServer recievedFromServer) {
+		super();
+		this.dataBaseManager = dataBaseManager;
+		this.dates = dates;
+		this.empty = empty;
+		this.recievedFromServer = recievedFromServer;
+	}
 
 	/**
 	 * displays the chart for the information retrieved from DB input: from = start
@@ -480,94 +519,105 @@ public class DepartmentManagerController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	void showPieChart(ActionEvent event) {
+	public void showPieChart(ActionEvent event) throws Exception{
 		ArrayList<String> data = new ArrayList<>();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		pieRegular.getData().clear();
-		pieMember.getData().clear();
-		pieGroup.getData().clear();
-		lblRegular.setText("");
-		lblMember.setText("");
-		lblGroup.setText("");
 
-		// the dates are correct
+		if (pieRegular != null && pieMember != null && pieGroup != null) {
+			pieRegular.getData().clear();
+			pieMember.getData().clear();
+			pieGroup.getData().clear();
+			lblRegular.setText("");
+			lblMember.setText("");
+			lblGroup.setText("");
+		}
+
+		// the dates are correct - new Bar
 		// if(checkDate(dpVisitorsFrom.getValue(),
 		// dpVisitorsTo.getValue().plusDays(1))))
-		if (dates.checkLocalDate(dpVisitorsFrom.getValue(), dpVisitorsTo.getValue().plusDays(1))) {
-			String fromFormat = dateTimeFormatter.format(dpVisitorsFrom.getValue());
-			String toFormat = dateTimeFormatter.format(dpVisitorsTo.getValue().plusDays(1));
+		if (dates.checkLocalDate(dates.getValueDate(dpVisitorsFrom), dates.getValueDate(dpVisitorsTo).plusDays(1))) {
+			String fromFormat = dateTimeFormatter.format(dates.getValueDate(dpVisitorsFrom));
+			String toFormat = dateTimeFormatter.format(dates.getValueDate(dpVisitorsTo).plusDays(1));
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("regular");
 			dataBaseManager.sendToServer("getRegularsVisitorsData", data);
-			// sendToServerArrayList("getRegularsVisitorsData", data);
+			// sendToServerArrayList("getRegularsVisitorsData", data);-Bar
 
-			// if (!isEmpty()) {
+			// if (!isEmpty()) {-Bar
 			if (!empty.isEmptyFromSErver()) {
 				addPieChart(pieRegular, "Regular");
+				// System.out.println("pieRegular" + pieRegular.getData());-Bar
 			} else {
 				lblRegular.setText("Regular\n\nThere is no\ninformation about\nthis group.");
 			}
 			empty.setEmptyToChart(false);
-			// setEmpty(false);
+			// setEmpty(false);-Bar
 
 			data.clear();
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("member");
 			dataBaseManager.sendToServer("getMembersVisitorsData", data);
-			// sendToServerArrayList("getMembersVisitorsData", data);
+			// sendToServerArrayList("getMembersVisitorsData", data);-Bar
 
-			// if (!isEmpty()) {
+			// if (!isEmpty()) {-Bar
 			if (!empty.isEmptyFromSErver()) {
 				addPieChart(pieMember, "Member");
+				// System.out.println("pieMember" + pieMember.getData());-Bar
 			} else {
 				lblMember.setText("Member\n\nThere is no\ninformation about\nthis group.");
 			}
 			empty.setEmptyToChart(false);
-			// setEmpty(false);
+			// setEmpty(false);-Bar
 
 			data.clear();
 			data.add(fromFormat);
 			data.add(toFormat);
 			data.add("group");
 			dataBaseManager.sendToServer("getGroupsVisitorsData", data);
-			// sendToServerArrayList("getGroupsVisitorsData", data);
+			// sendToServerArrayList("getGroupsVisitorsData", data);-Bar
 
-			// if (!isEmpty()) {
+			// if (!isEmpty()) {-Bar
 			if (!empty.isEmptyFromSErver()) {
 				addPieChart(pieGroup, "Group");
 			} else {
 				lblGroup.setText("Group\n\nThere is no\ninformation about\nthis group.");
 			}
 			empty.setEmptyToChart(false);
-			// setEmpty(false);
+			// setEmpty(false);-Bar
 		}
 	}
 
-	static class RecievedFromServer implements IRecievedFromServer {
+	
+	/* Wrapper for  get server method */
+	class RecievedFromServer implements IRecievedFromServer {
 
+		/* Wrapper for setRegularVisitors method */
 		@Override
 		public void setRegularVisitorsToChart(ArrayList<Object> msgReceived) {
 			DepartmentManagerController.setRegularVisitors(msgReceived);
-			
+
 		}
 
+		/* Wrapper for setMemberVisitors method */
 		@Override
 		public void setMemberVisitorsToChart(ArrayList<Object> msgReceived) {
 			DepartmentManagerController.setMemberVisitors(msgReceived);
-			
+
 		}
 
+		/* Wrapper for setGroupVisitors method */
 		@Override
 		public void setGroupVisitorsToChart(ArrayList<Object> msgReceived) {
 			DepartmentManagerController.setGroupVisitors(msgReceived);
-			
+
 		}
 
 	}
 
-	static class DataBaseManager implements IDataBaseManager {
+	/* Wrapper for sendToServer method */
+	class DataBaseManager implements IDataBaseManager {
 
 		@Override
 		public void sendToServer(String caseName, ArrayList<String> date) {
@@ -578,16 +628,30 @@ public class DepartmentManagerController implements Initializable {
 
 	}
 
-	static class Dates implements IDates {
+	/* Wrapper for Local Date method */
+	class Dates implements IDates {
 
+		/* Wrapper for checkLocalDate method */
 		@Override
 		public boolean checkLocalDate(LocalDate from, LocalDate to) {
 			DepartmentManagerController DMC = new DepartmentManagerController();
 			return DMC.checkDate(from, to);
 		}
+
+		/* Wrapper for getValueDate method */
+		@Override
+		public LocalDate getValueDate(JFXDatePicker date) {
+			if (date != null)
+				return date.getValue();
+			// for UnitTest
+			LocalDate toDate = LocalDate.parse("2020-12-10");
+			return toDate;
+		}
+
 	}
 
-	static class Empty implements IEmpty {
+	/* Wrapper for Empty String from server method */
+	class Empty implements IEmpty {
 
 		@Override
 		public boolean isEmptyFromSErver() {
@@ -630,59 +694,74 @@ public class DepartmentManagerController implements Initializable {
 	 * @param title      String
 	 */
 	public void addPieChart(PieChart currentPie, String title) {
-		currentPie.getData().clear();
-		// setting the length of the label line
-		currentPie.setLabelLineLength(5);
-		currentPie.setClockwise(false);
-		currentPie.setAnimated(false);
-		currentPie.setLegendVisible(false);
 
 		ObservableList<PieChart.Data> currentVisitorsData = null;
 
 		switch (title) {
 		case "Regular":
-			lblRegular.setText("Regular");
-			System.out.println("regularVisitors :  " + regularVisitors);
-			currentVisitorsData = FXCollections.observableArrayList(getChartData(regularVisitors));
+			/****** change - Bar ******/
+			// lblRegular.setText("Regular");
+			// System.out.println("regularVisitors : " + regularVisitors);
+			DataRegular = getChartData(regularVisitors);
+			currentVisitorsData = FXCollections.observableArrayList(DataRegular);
+
 			// currentVisitorsData =
 			// FXCollections.observableArrayList(getChartData(regularVisitors));
 			break;
 		case "Member":
-			lblMember.setText("Member");
-			System.out.println("memberVisitors : " + memberVisitors);
-			currentVisitorsData = FXCollections.observableArrayList(getChartData(memberVisitors));
+			/****** change - Bar ******/
+			// lblMember.setText("Member");
+			// System.out.println("memberVisitors : " + memberVisitors);
+			DataMember = getChartData(memberVisitors);
+			currentVisitorsData = FXCollections.observableArrayList(DataMember);
 			break;
 		case "Group":
-			lblGroup.setText("Group");
-			System.out.println("groupVisitors : " + groupVisitors);
-			currentVisitorsData = FXCollections.observableArrayList(getChartData(groupVisitors));
+			/****** change - Bar ******/
+			// lblGroup.setText("Group");
+			// System.out.println("groupVisitors : " + groupVisitors);
+			DataGroup = getChartData(groupVisitors);
+			currentVisitorsData = FXCollections.observableArrayList(DataGroup);
 			break;
 		default:
 			return;
 		}
 
-		currentPie.setData(currentVisitorsData);
+		// check if currentPie null - chenged
+		if (currentPie != null) {
+			currentPie.getData().clear();
+			// setting the length of the label line
+			currentPie.setLabelLineLength(5);
+			currentPie.setClockwise(false);
+			currentPie.setAnimated(false);
+			currentPie.setLegendVisible(false);
+			lblGroup.setText("Group");
+			lblMember.setText("Member");
+			lblRegular.setText("Regular");
+			currentPie.setData(currentVisitorsData);
+		}
+
 	}
 
 	public ObservableList<PieChart.Data> getChartData(ArrayList<Double> currentList) {
 
 		ObservableList<PieChart.Data> currentVisitorsData = FXCollections.observableArrayList();
-
-		if (currentList.get(0) != 0) {
-			currentVisitorsData.add(
-					new PieChart.Data("0-1 hours, " + String.valueOf(currentList.get(0) + "%"), currentList.get(0)));
-		}
-		if (currentList.get(1) != 0) {
-			currentVisitorsData.add(
-					new PieChart.Data("1-2 hours, " + String.valueOf(currentList.get(1) + "%"), currentList.get(1)));
-		}
-		if (currentList.get(2) != 0) {
-			currentVisitorsData.add(
-					new PieChart.Data("2-3 hours, " + String.valueOf(currentList.get(2) + "%"), currentList.get(2)));
-		}
-		if (currentList.get(3) != 0) {
-			currentVisitorsData.add(
-					new PieChart.Data("3-4 hours, " + String.valueOf(currentList.get(3) + "%"), currentList.get(3)));
+		if (!currentList.isEmpty()) {
+			if (currentList.get(0) != 0) {
+				currentVisitorsData.add(new PieChart.Data("0-1 hours, " + String.valueOf(currentList.get(0) + "%"),
+						currentList.get(0)));
+			}
+			if (currentList.get(1) != 0) {
+				currentVisitorsData.add(new PieChart.Data("1-2 hours, " + String.valueOf(currentList.get(1) + "%"),
+						currentList.get(1)));
+			}
+			if (currentList.get(2) != 0) {
+				currentVisitorsData.add(new PieChart.Data("2-3 hours, " + String.valueOf(currentList.get(2) + "%"),
+						currentList.get(2)));
+			}
+			if (currentList.get(3) != 0) {
+				currentVisitorsData.add(new PieChart.Data("3-4 hours, " + String.valueOf(currentList.get(3) + "%"),
+						currentList.get(3)));
+			}
 		}
 
 		return currentVisitorsData;
@@ -1092,12 +1171,12 @@ public class DepartmentManagerController implements Initializable {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
-			//call the new method
+			// call the new method
 			setRegularVisitors(msgReceived);
 		}
 	}
 
-	//new method for set the array list of regular from server 
+	// new method for set the array list of regular from server
 	public static void setRegularVisitors(ArrayList<Object> msgReceived) {
 		DepartmentManagerController.regularVisitors
 				.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
@@ -1122,12 +1201,12 @@ public class DepartmentManagerController implements Initializable {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
-			//call the new method
+			// call the new method
 			setMemberVisitors(msgReceived);
 		}
 	}
 
-	//new method for set the array list of member from server 
+	// new method for set the array list of member from server
 	public static void setMemberVisitors(ArrayList<Object> msgReceived) {
 		DepartmentManagerController.memberVisitors
 				.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
@@ -1152,12 +1231,12 @@ public class DepartmentManagerController implements Initializable {
 		if (msgReceived.get(1) instanceof String) {
 			setEmpty(true);
 		} else if (msgReceived instanceof ArrayList) {
-			//call the new method
+			// call the new method
 			setGroupVisitors(msgReceived);
 		}
 	}
 
-	//new method for set the array list of group from server 
+	// new method for set the array list of group from server
 	public static void setGroupVisitors(ArrayList<Object> msgReceived) {
 		DepartmentManagerController.groupVisitors
 				.add(Double.parseDouble(new DecimalFormat("##.##").format((msgReceived).get(1))));
