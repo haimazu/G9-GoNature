@@ -279,6 +279,7 @@ public class OrderController implements Initializable {
 		txtInvitingEmail.clear();
 		txtmemberID.clear();
 		txtPhoneNum.clear();
+		cbxParkName.getSelectionModel().clearSelection();
 	}
 
 	/**
@@ -592,6 +593,10 @@ public class OrderController implements Initializable {
 			alert.setAlert("Invalid email address");
 			return false;
 		}
+		if (!validInput("Date", txtdate.getValue().toString())) {
+			alert.setAlert("Invalid date");
+			return false;
+		}
 		if (!validInput("Phone", txtPhoneNum.getText())) {
 			alert.setAlert("Invalid phone number");
 			return false;
@@ -627,7 +632,8 @@ public class OrderController implements Initializable {
 	public static final Pattern VALIDMemberId = Pattern.compile("^[m,g]{1}[0-9]{4}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDID = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern VALIDPhone = Pattern.compile("^[0-9]{3}[0-9]{7}$", Pattern.CASE_INSENSITIVE);
-
+	public static final Pattern VALIDdate = Pattern.compile("^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$\r\n" + 
+			"", Pattern.CASE_INSENSITIVE);
 	/**
 	 * checks valid input for each nameMathod according to relevant the pattern
 	 * 
@@ -646,7 +652,9 @@ public class OrderController implements Initializable {
 			matcher = VALIDMemberId.matcher(txt);
 		} else if (nameMathod.equals("ID")) {
 			matcher = VALIDID.matcher(txt);
-		} else if (nameMathod.equals("Phone"))
+		} else if (nameMathod.equals("Phone")) {
+			matcher = VALIDdate.matcher(txt);
+		} else if (nameMathod.equals("Date")) 
 			matcher = VALIDPhone.matcher(txt);
 		return matcher.find();
 	}

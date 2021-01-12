@@ -201,7 +201,7 @@
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="userIcon" fill="#a3a3a3" glyphName="USER" layoutX="306.0" layoutY="207.0" size="16" />
                   <JFXComboBox fx:id="cbxParkName" focusColor="SEAGREEN" layoutX="75.0" layoutY="211.0" prefHeight="50.0" prefWidth="250.0" promptText="*Park Name" styleClass="txtField" unFocusColor="#a3a3a3" />
-                  <JFXDatePicker fx:id="txtdate" defaultColor="SEAGREEN" editable="false" layoutX="75.0" layoutY="289.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
+                  <JFXDatePicker fx:id="txtdate" defaultColor="SEAGREEN" layoutX="75.0" layoutY="289.0" prefHeight="29.0" prefWidth="110.0" promptText="*Arrivel Date" style="-fx-background-color: #FFFFF0;" styleClass="datePicker" stylesheets="@application.css" />
                   <JFXComboBox fx:id="cbxArrivelTime" focusColor="SEAGREEN" layoutX="189.0" layoutY="269.0" promptText="*Arrivel Time " styleClass="txtField" unFocusColor="#a3a3a3" />
                   <JFXTextField fx:id="txtVisitorsNumber" focusColor="#0080ff" labelFloat="true" layoutX="75.0" layoutY="327.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Visitors Amount" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
