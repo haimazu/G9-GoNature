@@ -562,7 +562,7 @@ public class OrderController implements Initializable {
 		LocalTime arrivalTime = LocalTime.of(Integer.parseInt(hour[0]), 00, 00);
 
 		LocalTime now = LocalTime.now();
-		if (date.compareTo(LocalDate.now()) == 0 && now.compareTo(arrivalTime) >= 0) {
+		if (date.compareTo(LocalDate.now()) <= 0 && now.compareTo(arrivalTime) >= 0) {
 			alert.setAlert("You're trying to book for a time that has already passed. Please select a future time\r\n");
 
 			return false;
