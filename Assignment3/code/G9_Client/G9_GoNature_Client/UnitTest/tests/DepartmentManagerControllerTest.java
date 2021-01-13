@@ -149,7 +149,7 @@ class DepartmentManagerControllerTest {
 	private ObservableList<PieChart.Data> expectedResult;
 
 	@Before
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
 		value = false;
 		empty = new StubEmpty();
 		dateDecember = new StubDatesDecember();
@@ -170,7 +170,7 @@ class DepartmentManagerControllerTest {
 	 * currentexpecteVisitorsData.size()=4
 	 */
 	@Test
-	void successTestPaiChartSizeRegular() throws Exception {
+	public void successTestPaiChartSizeRegular() throws Exception {
 		db.sendToServer("getRegularsVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> regular = new ArrayList<Object>();
@@ -194,7 +194,7 @@ class DepartmentManagerControllerTest {
 	 * currentexpecteVisitorsData
 	 */
 	@Test
-	void successTestPaiChartValuesRegular() throws Exception {
+	public void successTestPaiChartValuesRegular() throws Exception {
 		db.sendToServer("getRegularsVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> regular = new ArrayList<Object>();
@@ -220,7 +220,7 @@ class DepartmentManagerControllerTest {
 	 * ToDate:2018-12-10 actualResult=dpc.DataRegular expectedResult = null
 	 */
 	@Test
-	void FaildTestPaiChartEmptyRegular() throws Exception {
+	public void FaildTestPaiChartEmptyRegular() throws Exception {
 		try {
 			db.sendToServer("getRegularsVisitorsData", new ArrayList<String>());
 			value = true;
@@ -244,7 +244,7 @@ class DepartmentManagerControllerTest {
 	 * currentexpecteVisitorsData.size()=3
 	 */
 	@Test
-	void successTestPaiChartSizeMember() throws Exception {
+	public void successTestPaiChartSizeMember() throws Exception {
 		db.sendToServer("getMembersVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> member = new ArrayList<Object>();
@@ -269,7 +269,7 @@ class DepartmentManagerControllerTest {
 	 * currentexpecteVisitorsData
 	 */
 	@Test
-	void successTestPaiChartValuesMember() throws Exception {
+	public void successTestPaiChartValuesMember() throws Exception {
 		db.sendToServer("getMembersVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> member = new ArrayList<Object>();
@@ -295,7 +295,7 @@ class DepartmentManagerControllerTest {
 	 * ToDate:2018-12-10 actualResult=dpc.DataGroup expectedResult = null
 	 */
 	@Test
-	void FaildTestPaiChartEmptyMember() throws Exception {
+	public void FaildTestPaiChartEmptyMember() throws Exception {
 		try {
 			db.sendToServer("getMembersVisitorsData", new ArrayList<String>());
 			value = true;
@@ -319,7 +319,7 @@ class DepartmentManagerControllerTest {
 	 * currentexpecteVisitorsData.size()=3
 	 */
 	@Test
-	void successTestPaiChartSizeGroup() throws Exception {
+	public void successTestPaiChartSizeGroup() throws Exception {
 		db.sendToServer("getGroupsVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> group = new ArrayList<Object>();
@@ -345,7 +345,7 @@ class DepartmentManagerControllerTest {
 	 * actualResult= dpc.DataGroup expectedResult = currentexpecteVisitorsData
 	 */
 	@Test
-	void successTestPaiChartValuesGroup() throws Exception {
+	public void successTestPaiChartValuesGroup() throws Exception {
 		db.sendToServer("getGroupsVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> group = new ArrayList<Object>();
@@ -371,7 +371,7 @@ class DepartmentManagerControllerTest {
 	 * actualResult=dpc.DataGroupr expectedResult = null
 	 */
 	@Test
-	void FaildTestPaiChartEmptyGRoup() throws Exception {
+	public void FaildTestPaiChartEmptyGRoup() throws Exception {
 		try {
 			db.sendToServer("getGroupsVisitorsData", new ArrayList<String>());
 			value = true;

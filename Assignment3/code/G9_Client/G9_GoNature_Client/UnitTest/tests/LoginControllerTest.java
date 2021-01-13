@@ -154,7 +154,7 @@ public class LoginControllerTest {
 	private ActionEvent event;
 
 	@Before
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
 
 		iUserName = new StubUserName();
 		iPassword = new StubPassword();
@@ -176,7 +176,7 @@ public class LoginControllerTest {
 	 * expectedResult ="hodaya"
 	 */
 	@Test
-	void firstNameExist() throws IOException {
+	public void firstNameExist() throws IOException {
 		updateStatusValue=true;
 		valueUserNamePassword = true;
 		iRecievedFromSreverForLogin.receivedFromServerUserStatus(new ArrayList<String>());
@@ -196,7 +196,7 @@ public class LoginControllerTest {
 	 */
 
 	@Test
-	void firstNameNotCorrect() throws IOException {
+	public void firstNameNotCorrect() throws IOException {
 		updateStatusValue=false;
 		LoginController.setFirstName(null);
 		valueUserNamePassword = false;
@@ -216,7 +216,7 @@ public class LoginControllerTest {
 	 */
 	
 	@Test
-	void parkNameExist() throws IOException {
+	public void parkNameExist() throws IOException {
 		updateStatusValue=true;
 		valueUserNamePassword = true;
 		iRecievedFromSreverForLogin.receivedFromServerUserStatus(new ArrayList<String>());
@@ -236,7 +236,7 @@ public class LoginControllerTest {
 	 */
 	
 	@Test
-	void parkNameNotcorrect() throws IOException {
+	public void parkNameNotcorrect() throws IOException {
 		updateStatusValue=false;
 		LoginController.setParkName(null);
 		valueUserNamePassword = false;
@@ -256,7 +256,7 @@ public class LoginControllerTest {
 	 */
 
 	@Test
-	void statusConnected() throws IOException {
+	public void statusConnected() throws IOException {
 		updateStatusValue=true;
 		valueUserNamePassword = true;
 		iRecievedFromSreverForLogin.receivedFromServerUserStatus(new ArrayList<String>());
@@ -276,7 +276,7 @@ public class LoginControllerTest {
 	 */
 	
 	@Test
-	void statusNotConnected() throws IOException {
+	public void statusNotConnected() throws IOException {
 		updateStatusValue=false;
 		valueUserNamePassword = true;
 		iRecievedFromSreverForNotConnected.receivedFromServerUserStatus(new ArrayList<String>());
@@ -296,7 +296,7 @@ public class LoginControllerTest {
 	 */
 
 	@Test
-	void failedMessageTest() throws IOException {
+	public void failedMessageTest() throws IOException {
 		updateStatusValue=false;
 		valueUserNamePassword = true;
 		iRecievedFromSreverForNotConnected.receivedFromServerUserStatus(new String());
