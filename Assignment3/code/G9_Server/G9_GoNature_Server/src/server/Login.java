@@ -13,6 +13,11 @@ import ocsf.server.ConnectionToClient;
 
 public class Login {
 
+	// for testing
+	public static void login(ArrayList<Object> recived, ConnectionToClient client) {
+		EchoServer.sendToMyClient(getAnswerForLogin(recived), client);
+	}
+	
 	/**
 	 * the function add the relevant data for the query and call MySQLConnection
 	 * send to client: ArrayList of objects - cell [0]: the client function who
@@ -26,7 +31,7 @@ public class Login {
 	 * @param client  ConnectionToClient
 	 */
 	@SuppressWarnings("unchecked")
-	public static void login(ArrayList<Object> recived, ConnectionToClient client) {
+	public static ArrayList<Object> getAnswerForLogin(ArrayList<Object> recived) {
 		// add if db up later
 		ArrayList<Object> answer = new ArrayList<Object>();
 		answer.add(recived.get(0));
@@ -45,9 +50,15 @@ public class Login {
 		} else {
 			answer.add(queryData.get(0));
 		}
-		EchoServer.sendToMyClient(answer, client);
+		
+		return answer;
 	}
-
+	
+	// for testing
+	public static void updateLoggedInStatus(ArrayList<Object> recived, ConnectionToClient client) {
+		EchoServer.sendToMyClient(setLoggedInStatus(recived), client);
+	}
+	
 	/**
 	 * the function add the relevant data for the query and call MySQLConnection
 	 * send to client: ArrayList of objects = cell [0]: the client function who
@@ -58,9 +69,9 @@ public class Login {
 	 *                service (in that case "updateLoggedIn"), cell [1]: ArrayList
 	 *                of String = cell [0]: user name, cell [1]: logged in status
 	 * @param client  ConnectionToClient
-	 */
+	 */ 
 	@SuppressWarnings("unchecked")
-	public static void updateLoggedInStatus(ArrayList<Object> recived, ConnectionToClient client) {
+	public static ArrayList<Object> setLoggedInStatus(ArrayList<Object> recived) {
 		// query
 		ArrayList<Object> answer = new ArrayList<Object>();
 		// the service name : updateLoggedIn
@@ -76,7 +87,8 @@ public class Login {
 		query.add(data.get(0)); // username value
 
 		answer.add(MySQLConnection.update(query));
-		EchoServer.sendToMyClient(answer, client);
+		
+		return answer;
 	}
 
 	/**
