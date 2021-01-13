@@ -22,6 +22,10 @@ import javafx.scene.chart.PieChart;
 
 class DepartmentManagerControllerTest {
 
+	/*
+	 * This is a stub class.
+	 * This class meant to recieved array lists from the server data base.
+	 */
 	class StubRecievedFromServer implements IRecievedFromServer {
 
 		@Override
@@ -61,6 +65,10 @@ class DepartmentManagerControllerTest {
 		}
 	}
 
+	/*
+	 * This is a stub class.
+	 * This class meant to sent array list to the server.
+	 */
 	class StubDataBaseManager implements IDataBaseManager {
 
 		@Override
@@ -70,6 +78,11 @@ class DepartmentManagerControllerTest {
 
 	}
 
+	
+	/*
+	 * This is a stub class.
+	 * This class meant to check correct dates that show in the data base 
+	 */
 	class StubDatesDecember implements IDates {
 
 		@Override
@@ -87,6 +100,10 @@ class DepartmentManagerControllerTest {
 		}
 	}
 
+	/*
+	 * This is a stub class.
+	 * This class meant to check correct dates that doesnts show in the data base 
+	 */
 	class StubDatesAnoterYear implements IDates {
 
 		@Override
@@ -104,6 +121,10 @@ class DepartmentManagerControllerTest {
 		}
 	}
 
+	/*
+	 * This is a stub class.
+	 * This class meant to recieved string from the server data base and to set boolean value to T/F.
+	 */
 	class StubEmpty implements IEmpty {
 
 		@Override
