@@ -17,7 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.chart.PieChart;
 
-class DepartmentManagerControllerTest {
+public class DepartmentManagerControllerTest {
 
 	/*
 	 * This is a stub class. This class meant to recieved array lists from the
@@ -208,10 +208,10 @@ class DepartmentManagerControllerTest {
 		currentexpecteVisitorsData.add(new PieChart.Data("2-3 hours, 56.45%", 56.45));
 		currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 30.65%", 30.65));
 		expectedResult = currentexpecteVisitorsData;
-		assertEquals(expectedResult.get(0).getPieValue(), actualResult.get(0).getPieValue());
-		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue());
-		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue());
-		assertEquals(expectedResult.get(3).getPieValue(), actualResult.get(3).getPieValue());
+		assertEquals(expectedResult.get(0).getPieValue(), actualResult.get(0).getPieValue(), 0);
+		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue(), 0);
+		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue(), 0);
+		assertEquals(expectedResult.get(3).getPieValue(), actualResult.get(3).getPieValue(), 0);
 	}
 
 	/*
@@ -284,9 +284,9 @@ class DepartmentManagerControllerTest {
 		// currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 0.0%", 0.0)); -
 		// do not enter to the ObservableList because it zero
 		expectedResult = currentexpecteVisitorsData;
-		assertEquals(expectedResult.get(0).getPieValue(), actualResult.get(0).getPieValue());
-		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue());
-		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue());
+		assertEquals(expectedResult.get(0).getPieValue(), actualResult.get(0).getPieValue(), 0);
+		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue(), 0);
+		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue(), 0);
 	}
 
 	/*
@@ -344,6 +344,7 @@ class DepartmentManagerControllerTest {
 	 * input: value =false, group = "group" fromDate:"2020-12-01 ToDate:2020-12-10
 	 * actualResult= dpc.DataGroup expectedResult = currentexpecteVisitorsData
 	 */
+	@SuppressWarnings("static-access")
 	@Test
 	public void successTestPaiChartValuesGroup() throws Exception {
 		db.sendToServer("getGroupsVisitorsData", new ArrayList<String>());
@@ -360,9 +361,9 @@ class DepartmentManagerControllerTest {
 		currentexpecteVisitorsData.add(new PieChart.Data("2-3 hours, 25.81%", 25.81));
 		currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 48.39%", 48.39));
 		expectedResult = currentexpecteVisitorsData;
-		assertEquals(expectedResult.get(0).getPieValue(), actualResult.get(0).getPieValue());
-		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue());
-		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue());
+		assertEquals(expectedResult.get(0).getPieValue(), actualResult.get(0).getPieValue(), 0);
+		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue(), 0);
+		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue(), 0);
 	}
 
 	/*
