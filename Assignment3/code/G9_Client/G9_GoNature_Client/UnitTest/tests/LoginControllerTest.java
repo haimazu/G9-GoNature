@@ -99,7 +99,8 @@ public class LoginControllerTest {
 		}
 	}
 
-	// Inside class
+	
+	// Inside class.
 	// hodaya
 	/*
 	 * This is a stub class.
