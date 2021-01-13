@@ -22,7 +22,7 @@ public class ReportsTest {
 	public void setUp() throws Exception {
 		// setting a connection for DB without the Gui
 		ArrayList<String> data = new ArrayList<String>(
-				Arrays.asList("localhost", "3306", "g9_gonature", "root", "Aa123456"));
+				Arrays.asList("localhost", "3306", "g9_gonature", "root", "NewP@ssword4theSQL"));
 		MySQLConnection.connectToDB(data);
 
 		acctualResult = new ArrayList<Object>();
