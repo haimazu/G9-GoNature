@@ -26,6 +26,10 @@ public class LoginControllerTest {
 
 	// Inside class
 	// hodaya
+	/*
+	 * This is a stub class.
+	 * This class meant to check correct username
+	 */
 	public class StubUserName implements IUserName {
 
 		@Override
@@ -38,6 +42,10 @@ public class LoginControllerTest {
 
 	// Inside class
 	// hodaya
+	/*
+	 * This is a stub class.
+	 * This class meant to check correct password
+	 */
 	public class StubPassword implements IPassword {
 
 		@Override
@@ -49,6 +57,10 @@ public class LoginControllerTest {
 
 	// Inside class
 	// hodaya
+	/*
+	 * This is a stub class.
+	 * This class meant to send a failed message
+	 */
 	public class StubFailMessage implements IAlert {
 
 		@Override
@@ -61,6 +73,10 @@ public class LoginControllerTest {
 
 	// Inside class
 	// hodaya
+	/*
+	 * This is a stub class.
+	 * This class meant to recieved data from the server data base and to send data to the server.
+	 */
 	public class StubRecivedFromServerConnected implements IRecievedFromSreverForLogin {
 
 		@Override
@@ -95,6 +111,10 @@ public class LoginControllerTest {
 
 	// Inside class
 	// hodaya
+	/*
+	 * This is a stub class.
+	 * This class meant to recieved data from the server data base and to send data to the server.
+	 */
 	public class StubRecivedFromServerNotconnected implements IRecievedFromSreverForLogin {
 
 		@Override

@@ -63,6 +63,8 @@ public class LoginController implements Initializable {
 	/*
 	 * for test case hodaya and bar
 	 */
+	
+	/* Wrapper for checkUsername method */
 	class UserName implements IUserName {
 		@Override
 		public boolean checkLoginUserName() {
@@ -71,7 +73,8 @@ public class LoginController implements Initializable {
 			return checkUsername();
 		}
 	}
-
+	
+	/* Wrapper for checkPassword method */
 	class Password implements IPassword {
 		@Override
 		public boolean checkLoginPassword() {
@@ -80,7 +83,8 @@ public class LoginController implements Initializable {
 			return checkPassword();
 		}
 	}
-
+	
+	/* Wrapper for  get server method */
 	class RecievedFromSreverForLogin implements IRecievedFromSreverForLogin {
 
 		@Override
@@ -102,7 +106,8 @@ public class LoginController implements Initializable {
 		}
 
 	}
-
+	
+	/* Wrapper for alert.failedAlert method */
 	class SendFailMassage implements IAlert {
 
 		@Override
