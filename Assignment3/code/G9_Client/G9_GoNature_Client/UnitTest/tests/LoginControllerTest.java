@@ -1,20 +1,16 @@
 package tests;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import com.itextpdf.text.log.SysoLogger;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.itextpdf.text.xml.simpleparser.NewLineHandler;
-
 import controllers.IAlert;
 import controllers.IPassword;
 import controllers.IRecievedFromSreverForLogin;
@@ -163,7 +159,7 @@ public class LoginControllerTest {
 
 	private ActionEvent event;
 
-	@BeforeEach
+	@Before
 	void setUp() throws Exception {
 
 		iUserName = new StubUserName();

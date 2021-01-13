@@ -1,15 +1,12 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import com.jfoenix.controls.JFXDatePicker;
-
 import controllers.DepartmentManagerController;
 import controllers.IDataBaseManager;
 import controllers.IDates;
@@ -23,10 +20,10 @@ import javafx.scene.chart.PieChart;
 class DepartmentManagerControllerTest {
 
 	/*
-	 * This is a stub class.
-	 * This class meant to recieved array lists from the server data base.
+	 * This is a stub class. This class meant to recieved array lists from the
+	 * server data base.
 	 */
-	class StubRecievedFromServer implements IRecievedFromServer {
+	public class StubRecievedFromServer implements IRecievedFromServer {
 
 		@Override
 		public void setRegularVisitorsToChart(ArrayList<Object> msgReceived) {
@@ -54,7 +51,7 @@ class DepartmentManagerControllerTest {
 
 		@Override
 		public void setGroupVisitorsToChart(ArrayList<Object> msgReceived) {
-			ArrayList<Object>group = new ArrayList<>();
+			ArrayList<Object> group = new ArrayList<>();
 			group.add("group");
 			group.add(25.81);
 			group.add(0.0);
@@ -66,10 +63,9 @@ class DepartmentManagerControllerTest {
 	}
 
 	/*
-	 * This is a stub class.
-	 * This class meant to sent array list to the server.
+	 * This is a stub class. This class meant to sent array list to the server.
 	 */
-	class StubDataBaseManager implements IDataBaseManager {
+	public class StubDataBaseManager implements IDataBaseManager {
 
 		@Override
 		public void sendToServer(String caseName, ArrayList<String> date) {
@@ -78,12 +74,11 @@ class DepartmentManagerControllerTest {
 
 	}
 
-	
 	/*
-	 * This is a stub class.
-	 * This class meant to check correct dates that show in the data base 
+	 * This is a stub class. This class meant to check correct dates that show in
+	 * the data base
 	 */
-	class StubDatesDecember implements IDates {
+	public class StubDatesDecember implements IDates {
 
 		@Override
 		public boolean checkLocalDate(LocalDate from, LocalDate to) {
@@ -101,10 +96,10 @@ class DepartmentManagerControllerTest {
 	}
 
 	/*
-	 * This is a stub class.
-	 * This class meant to check correct dates that doesnts show in the data base 
+	 * This is a stub class. This class meant to check correct dates that doesnts
+	 * show in the data base
 	 */
-	class StubDatesAnoterYear implements IDates {
+	public class StubDatesAnoterYear implements IDates {
 
 		@Override
 		public boolean checkLocalDate(LocalDate from, LocalDate to) {
@@ -122,10 +117,10 @@ class DepartmentManagerControllerTest {
 	}
 
 	/*
-	 * This is a stub class.
-	 * This class meant to recieved string from the server data base and to set boolean value to T/F.
+	 * This is a stub class. This class meant to recieved string from the server
+	 * data base and to set boolean value to T/F.
 	 */
-	class StubEmpty implements IEmpty {
+	public class StubEmpty implements IEmpty {
 
 		@Override
 		public boolean isEmptyFromSErver() {
@@ -153,7 +148,7 @@ class DepartmentManagerControllerTest {
 	private ObservableList<PieChart.Data> actualResult;
 	private ObservableList<PieChart.Data> expectedResult;
 
-	@BeforeEach
+	@Before
 	void setUp() throws Exception {
 		value = false;
 		empty = new StubEmpty();
@@ -169,11 +164,10 @@ class DepartmentManagerControllerTest {
 	}
 
 	/*
-	 * Test case for a size Pai Chart Regular type traveler that have data in the database. 
-	 * input: value=false, regular = "reglar" 
-	 * fromDate:"2020-12-01 ToDate:2020-12-10
-	 * actualResult= dpc.DataRegular.size() 
-	 * expectedResult = currentexpecteVisitorsData.size()=4
+	 * Test case for a size Pai Chart Regular type traveler that have data in the
+	 * database. input: value=false, regular = "reglar" fromDate:"2020-12-01
+	 * ToDate:2020-12-10 actualResult= dpc.DataRegular.size() expectedResult =
+	 * currentexpecteVisitorsData.size()=4
 	 */
 	@Test
 	void successTestPaiChartSizeRegular() throws Exception {
@@ -194,11 +188,10 @@ class DepartmentManagerControllerTest {
 	}
 
 	/*
-	 * Test case for a Pai Chart Regular type traveler that have data in the database.
-	 * input: value =false, regular = "reglar" fromDate:"2020-12-01 
-	 * ToDate:2020-12-10 
-	 * actualResult= dpc.DataRegular 
-	 * expectedResult = currentexpecteVisitorsData
+	 * Test case for a Pai Chart Regular type traveler that have data in the
+	 * database. input: value =false, regular = "reglar" fromDate:"2020-12-01
+	 * ToDate:2020-12-10 actualResult= dpc.DataRegular expectedResult =
+	 * currentexpecteVisitorsData
 	 */
 	@Test
 	void successTestPaiChartValuesRegular() throws Exception {
@@ -222,10 +215,9 @@ class DepartmentManagerControllerTest {
 	}
 
 	/*
-	 * Test case for a Pai Chart Regular type traveler that lack data in the database. 
-	 * input: value=true,regular = "reglar" 
-	 * fromDate:"2018-12-01 ToDate:2018-12-10
-	 * actualResult=dpc.DataRegular expectedResult = null
+	 * Test case for a Pai Chart Regular type traveler that lack data in the
+	 * database. input: value=true,regular = "reglar" fromDate:"2018-12-01
+	 * ToDate:2018-12-10 actualResult=dpc.DataRegular expectedResult = null
 	 */
 	@Test
 	void FaildTestPaiChartEmptyRegular() throws Exception {
@@ -244,15 +236,12 @@ class DepartmentManagerControllerTest {
 			assertEquals(null, e.getMessage());
 		}
 	}
-	
-	
-	
+
 	/*
-	 * Test case for a size Pai Chart Member type traveler that have data in the database. 
-	 * input: value=false, member = "member" 
-	 * fromDate:"2020-12-01 ToDate:2020-12-10
-	 * actualResult= dpc.DataMember.size() 
-	 * expectedResult = currentexpecteVisitorsData.size()=3
+	 * Test case for a size Pai Chart Member type traveler that have data in the
+	 * database. input: value=false, member = "member" fromDate:"2020-12-01
+	 * ToDate:2020-12-10 actualResult= dpc.DataMember.size() expectedResult =
+	 * currentexpecteVisitorsData.size()=3
 	 */
 	@Test
 	void successTestPaiChartSizeMember() throws Exception {
@@ -267,19 +256,17 @@ class DepartmentManagerControllerTest {
 		currentexpecteVisitorsData.add(new PieChart.Data("0-1 hours, 50.0%", 50.0));
 		currentexpecteVisitorsData.add(new PieChart.Data("1-2 hours, 16.67%", 16.67));
 		currentexpecteVisitorsData.add(new PieChart.Data("2-3 hours, 33.33%", 33.33));
-		//currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 0.0%", 0.0));
+		// currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 0.0%", 0.0));
 		expectedResult = currentexpecteVisitorsData;
 		assertEquals(expectedResult.size(), actualResult.size());
-	
-		
+
 	}
-	
+
 	/*
-	 * Test case for a Pai Chart Member type traveler that have data in the database.
-	 * input: value =false, member = "member" fromDate:"2020-12-01 
-	 * ToDate:2020-12-10 
-	 * actualResult= dpc.DataMember 
-	 * expectedResult = currentexpecteVisitorsData
+	 * Test case for a Pai Chart Member type traveler that have data in the
+	 * database. input: value =false, member = "member" fromDate:"2020-12-01
+	 * ToDate:2020-12-10 actualResult= dpc.DataMember expectedResult =
+	 * currentexpecteVisitorsData
 	 */
 	@Test
 	void successTestPaiChartValuesMember() throws Exception {
@@ -294,20 +281,18 @@ class DepartmentManagerControllerTest {
 		currentexpecteVisitorsData.add(new PieChart.Data("0-1 hours, 50.0%", 50.0));
 		currentexpecteVisitorsData.add(new PieChart.Data("1-2 hours, 16.67%", 16.67));
 		currentexpecteVisitorsData.add(new PieChart.Data("2-3 hours, 33.33%", 33.33));
-		//currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 0.0%", 0.0)); - do not enter to the ObservableList because it zero
+		// currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 0.0%", 0.0)); -
+		// do not enter to the ObservableList because it zero
 		expectedResult = currentexpecteVisitorsData;
 		assertEquals(expectedResult.get(0).getPieValue(), actualResult.get(0).getPieValue());
 		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue());
 		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue());
 	}
-	
-	
 
 	/*
-	 * Test case for a Pai Chart Member type traveler that lack data in the database. 
-	 * input: value=true,member = "member" 
-	 * fromDate:"2018-12-01 ToDate:2018-12-10
-	 * actualResult=dpc.DataGroup expectedResult = null
+	 * Test case for a Pai Chart Member type traveler that lack data in the
+	 * database. input: value=true,member = "member" fromDate:"2018-12-01
+	 * ToDate:2018-12-10 actualResult=dpc.DataGroup expectedResult = null
 	 */
 	@Test
 	void FaildTestPaiChartEmptyMember() throws Exception {
@@ -326,15 +311,12 @@ class DepartmentManagerControllerTest {
 			assertEquals(null, e.getMessage());
 		}
 	}
-	
-	
-	
+
 	/*
-	 * Test case for a size Pai Chart Group type traveler that have data in the database. 
-	 * input: value=false, group = "group" 
-	 * fromDate:"2020-12-01 ToDate:2020-12-10
-	 * actualResult= dpc.DataGroup.size() 
-	 * expectedResult = currentexpecteVisitorsData.size()=3
+	 * Test case for a size Pai Chart Group type traveler that have data in the
+	 * database. input: value=false, group = "group" fromDate:"2020-12-01
+	 * ToDate:2020-12-10 actualResult= dpc.DataGroup.size() expectedResult =
+	 * currentexpecteVisitorsData.size()=3
 	 */
 	@Test
 	void successTestPaiChartSizeGroup() throws Exception {
@@ -348,21 +330,19 @@ class DepartmentManagerControllerTest {
 
 		ObservableList<PieChart.Data> currentexpecteVisitorsData = FXCollections.observableArrayList();
 		currentexpecteVisitorsData.add(new PieChart.Data("0-1 hours, 25.81%", 25.81));
-		//currentexpecteVisitorsData.add(new PieChart.Data("1-2 hours, 0.07%", 0.0));- do not enter to the ObservableList because it zero
+		// currentexpecteVisitorsData.add(new PieChart.Data("1-2 hours, 0.07%", 0.0));-
+		// do not enter to the ObservableList because it zero
 		currentexpecteVisitorsData.add(new PieChart.Data("2-3 hours, 25.81%", 25.81));
 		currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 48.39%", 48.39));
 		expectedResult = currentexpecteVisitorsData;
 		assertEquals(expectedResult.size(), actualResult.size());
-		
-		
+
 	}
-	
+
 	/*
 	 * Test case for a Pai Chart Group type traveler that have data in the database.
-	 * input: value =false, group = "group" fromDate:"2020-12-01 
-	 * ToDate:2020-12-10 
-	 * actualResult= dpc.DataGroup 
-	 * expectedResult = currentexpecteVisitorsData
+	 * input: value =false, group = "group" fromDate:"2020-12-01 ToDate:2020-12-10
+	 * actualResult= dpc.DataGroup expectedResult = currentexpecteVisitorsData
 	 */
 	@Test
 	void successTestPaiChartValuesGroup() throws Exception {
@@ -375,7 +355,8 @@ class DepartmentManagerControllerTest {
 		actualResult = dpcExist.DataGroup;
 		ObservableList<PieChart.Data> currentexpecteVisitorsData = FXCollections.observableArrayList();
 		currentexpecteVisitorsData.add(new PieChart.Data("0-1 hours, 25.81%", 25.81));
-		//currentexpecteVisitorsData.add(new PieChart.Data("1-2 hours, 0.07%", 0.0));- do not enter to the ObservableList because it zero
+		// currentexpecteVisitorsData.add(new PieChart.Data("1-2 hours, 0.07%", 0.0));-
+		// do not enter to the ObservableList because it zero
 		currentexpecteVisitorsData.add(new PieChart.Data("2-3 hours, 25.81%", 25.81));
 		currentexpecteVisitorsData.add(new PieChart.Data("3-4 hours, 48.39%", 48.39));
 		expectedResult = currentexpecteVisitorsData;
@@ -383,13 +364,10 @@ class DepartmentManagerControllerTest {
 		assertEquals(expectedResult.get(1).getPieValue(), actualResult.get(1).getPieValue());
 		assertEquals(expectedResult.get(2).getPieValue(), actualResult.get(2).getPieValue());
 	}
-	
-	
 
 	/*
-	 * Test case for a Pai Chart Group type traveler that lack data in the database. 
-	 * input: value=true,group = "group" 
-	 * fromDate:"2018-12-01 ToDate:2018-12-10
+	 * Test case for a Pai Chart Group type traveler that lack data in the database.
+	 * input: value=true,group = "group" fromDate:"2018-12-01 ToDate:2018-12-10
 	 * actualResult=dpc.DataGroupr expectedResult = null
 	 */
 	@Test
@@ -409,7 +387,5 @@ class DepartmentManagerControllerTest {
 			assertEquals(null, e.getMessage());
 		}
 	}
-	
-	
 
 }
