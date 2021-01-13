@@ -13,7 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/G9_GoNature_Common"/>
 	<classpathentry kind="lib" path="lib/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/javax.mail.jar"/>
-	<classpathentry kind="lib" path="lib/mockito-all-2.0.2-beta.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
