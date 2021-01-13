@@ -17,8 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -58,8 +60,8 @@ public class LoginController implements Initializable {
 	private boolean userStatus = false, passStatus = false;
 	private AlertController alert = new AlertController();
 
-	/**
-	 * for test case
+	/*
+	 * for test case hodaya and bar
 	 */
 	class UserName implements IUserName {
 		@Override
@@ -101,24 +103,37 @@ public class LoginController implements Initializable {
 
 	}
 
+	class SendFailMassage implements IAlert {
+
+		@Override
+		public void failedAlert(String title, String msg) {
+			// TODO Auto-generated method stub
+				alert.failedAlert("Failed", "Username / password doesn't match or the user is already logged in.");
+		}
+
+	}
+
 	private IUserName iUserName;
 	private IPassword iPassword;
 	private IRecievedFromSreverForLogin iRecievedFromSreverForLogin;
+	private IAlert message;
 
 	public LoginController() {
 		// TODO Auto-generated constructor stub
 		iUserName = new UserName();
 		iPassword = new Password();
 		iRecievedFromSreverForLogin = new RecievedFromSreverForLogin();
+		message = new SendFailMassage();
 
 	}
 
 	public LoginController(IUserName iUserName, IPassword iPassword,
-			IRecievedFromSreverForLogin iRecievedFromSreverForLogin) {
+			IRecievedFromSreverForLogin iRecievedFromSreverForLogin, IAlert message) {
 
 		this.iUserName = iUserName;
 		this.iPassword = iPassword;
 		this.iRecievedFromSreverForLogin = iRecievedFromSreverForLogin;
+		this.message = message;
 	}
 
 	/**
@@ -155,7 +170,11 @@ public class LoginController implements Initializable {
 
 			// Username and password doesn't match / the user is already logged in
 			if (getError().equals("Failed")) {
-				alert.failedAlert("Failed", "Username / password doesn't match or the user is already logged in.");
+				// alert.failedAlert("Failed", "Username / password doesn't match or the user is
+				// already logged in.");
+				// bar and hodaya
+				message.failedAlert("Failed", "Username / password doesn't match or the user is already logged in.");
+
 			} else {
 				if (txtUsername != null && txtPassword != null) {
 					// needed for check in parkManager
@@ -166,10 +185,12 @@ public class LoginController implements Initializable {
 				data.add(getUsername());
 				data.add(String.valueOf(1));
 				// sendToServerArrayList("updateLoggedIn", data);
+				// bar and hodaya
 				iRecievedFromSreverForLogin.sendToServerArrayListLogin("updateLoggedIn", data);
 
 				// Check the employee type
 				// Switch to the screen
+				// bar and hodaya
 				if (btnLogin != null) {
 					Stage stage = (Stage) btnLogin.getScene().getWindow();
 					Parent root = FXMLLoader.load(getClass().getResource("/gui/" + getStatus() + ".fxml"));
