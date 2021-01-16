@@ -174,7 +174,7 @@ public class DepartmentManagerControllerTest {
 		db.sendToServer("getRegularsVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> regular = new ArrayList<Object>();
-		regular.add("reglar");
+		regular.add("regular");
 		rs.setRegularVisitorsToChart(regular);
 		dpcExist.showPieChart(event);
 		actualResult = dpcExist.DataRegular;
@@ -198,7 +198,7 @@ public class DepartmentManagerControllerTest {
 		db.sendToServer("getRegularsVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> regular = new ArrayList<Object>();
-		regular.add("reglar");
+		regular.add("regular");
 		rs.setRegularVisitorsToChart(regular);
 		dpcExist.showPieChart(event);
 		actualResult = dpcExist.DataRegular;
@@ -225,7 +225,7 @@ public class DepartmentManagerControllerTest {
 			db.sendToServer("getRegularsVisitorsData", new ArrayList<String>());
 			value = true;
 			ArrayList<Object> regular = new ArrayList<Object>();
-			regular.add("reglar");
+			regular.add("regular");
 			rs.setRegularVisitorsToChart(regular);
 			dpcNotExist.showPieChart(event);
 			actualResult = dpcNotExist.DataRegular;
@@ -350,7 +350,7 @@ public class DepartmentManagerControllerTest {
 		db.sendToServer("getGroupsVisitorsData", new ArrayList<String>());
 		value = false;
 		ArrayList<Object> group = new ArrayList<Object>();
-		group.add("member");
+		group.add("group");
 		rs.setGroupVisitorsToChart(group);
 		dpcExist.showPieChart(event);
 		actualResult = dpcExist.DataGroup;
